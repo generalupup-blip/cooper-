@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CENTRAL LABS PREMIUM LTDA - Catálogo de Produtos</title>
+    <style>
+        :root {
+            --gold: #c8a000;
+            --gold-bright: #f4c430;
+            --gold-light: #e6c619;
+            --black: #111111;
+            --white: #ffffff;
+            --gray-bg: #f9f9f9;
+            --gray-border: #e0e0e0;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.14);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            color: #1a1a1a;
+            font-family: 'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* GLOBAL ANIMATIONS */
+        @keyframes goldPulseStrong {
+            0%,
+            100% {
+                color: #b8860b;
+                text-shadow: 0 0 8px rgba(184, 134, 11, 0.4), 0 0 20px rgba(218, 165, 32, 0.25);
+            }
+            25% {
+                color: #f4c430;
+                text-shadow: 0 0 18px rgba(244, 196, 48, 0.9), 0 0 40px rgba(255, 215, 0, 0.7), 0 0 60px rgba(218, 165, 32, 0.5);
+            }
+            50% {
+                color: #ffd700;
+                text-shadow: 0 0 25px rgba(255, 215, 0, 1), 0 0 55px rgba(255, 200, 0, 0.85), 0 0 80px rgba(218, 165, 32, 0.6);
+            }
+            75% {
+                color: #f0b800;
+                text-shadow: 0 0 14px rgba(240, 184, 0, 0.75), 0 0 35px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        @keyframes goldPulseMild {
+            0%,
+            100% {
+                color: #b8860b;
+                text-shadow: 0 0 4px rgba(184, 134, 11, 0.3);
+            }
+            50% {
+                color: #ffd700;
+                text-shadow: 0 0 14px rgba(255, 215, 0, 0.7), 0 0 28px rgba(218, 165, 32, 0.45);
+            }
+        }
+
+        @keyframes whatsappPulse {
+            0%,
+            100% {
+                box-shadow: 0 4px 16px rgba(37, 211, 102, 0.5), 0 0 0 0 rgba(37, 211, 102, 0.6);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 6px 28px rgba(37, 211, 102, 0.9), 0 0 0 18px rgba(37, 211, 102, 0);
+                transform: scale(1.08);
+            }
+        }
+
+        @keyframes borderGlow {
+            0%,
+            100% {
+                border-color: #b8860b;
+                box-shadow: 0 0 8px rgba(184, 134, 11, 0.3);
+            }
+            50% {
+                border-color: #ffd700;
+                box-shadow: 0 0 22px rgba(255, 215, 0, 0.65), 0 0 40px rgba(218, 165, 32, 0.35);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .gold-pulse-strong {
+            animation: goldPulseStrong 1.6s ease-in-out infinite;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+        }
+        .gold-pulse-mild {
+            animation: goldPulseMild 2s ease-in-out infinite;
+            font-weight: 700;
+        }
+        .gold-static {
+            color: #c8a000;
+            font-weight: 700;
+        }
+        .whatsapp-float {
+            animation: whatsappPulse 1.8s ease-in-out infinite;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 18px 50px;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            padding: 30px 20px 20px;
+            border-bottom: 2px solid #f0e6c0;
+            margin-bottom: 28px;
+            animation: fadeInUp 0.7s ease-out;
+        }
+        .header .logo-icon {
+            font-size: 42px;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .header h1 {
+            font-size: 1.75rem;
+            letter-spacing: 0.3px;
+            margin-bottom: 4px;
+            line-height: 1.35;
+        }
+        .header .subtitle {
+            font-size: 1rem;
+            color: #333;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        .header .highlight-text {
+            display: inline-block;
+            background: #fffbe6;
+            border: 1px solid #e6d480;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #8b7300;
+            margin-top: 8px;
+        }
+
+        /* FREIGHT TABLE */
+        .freight-section {
+            background: #fdfdfd;
+            border: 2px solid #e8d87a;
+            border-radius: 14px;
+            padding: 22px 20px;
+            margin-bottom: 32px;
+            animation: borderGlow 3s ease-in-out infinite;
+            box-shadow: var(--shadow);
+        }
+        .freight-section h2 {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+            color: #8b7300;
+            letter-spacing: 0.4px;
+        }
+        .freight-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+        .freight-table th,
+        .freight-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ececec;
+        }
+        .freight-table th {
+            background: #fffbe6;
+            color: #5c4a00;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .freight-table tr:hover td {
+            background: #fffef5;
+        }
+        .freight-table .price-cell {
+            font-weight: 700;
+            color: #1a1a1a;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* INTRO SECTION */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.7s ease-out;
+        }
+        .intro-section .fire-text {
+            font-size: 1.2rem;
+            letter-spacing: 0.3px;
+            margin-bottom: 8px;
+        }
+        .intro-section .brands-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 14px;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #444;
+        }
+        .intro-section .brands-grid span {
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+            padding: 5px 12px;
+            border-radius: 16px;
+            white-space: nowrap;
+            font-weight: 500;
+            transition: all 0.25s;
+        }
+        .intro-section .brands-grid span:hover {
+            border-color: #c8a000;
+            background: #fffef7;
+            box-shadow: 0 2px 10px rgba(200, 160, 0, 0.12);
+        }
+
+        /* PRODUCT SECTIONS */
+        .brand-section {
+            margin-bottom: 28px;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .brand-section:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .brand-header {
+            background: #fdfdfd;
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .brand-header:hover {
+            background: #fffef7;
+        }
+        .brand-header h3 {
+            font-size: 1.05rem;
+            letter-spacing: 0.3px;
+            color: #1a1a1a;
+            margin: 0;
+        }
+        .brand-header .arrow {
+            font-size: 1.2rem;
+            color: #888;
+            transition: transform 0.3s;
+        }
+        .brand-section.open .brand-header .arrow {
+            transform: rotate(180deg);
+            color: #c8a000;
+        }
+        .brand-body {
+            display: none;
+            padding: 16px 20px;
+            background: #fff;
+        }
+        .brand-section.open .brand-body {
+            display: block;
+        }
+
+        /* PRODUCT TABLE */
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        .product-table tr {
+            border-bottom: 1px solid #f2f2f2;
+            transition: background 0.2s;
+        }
+        .product-table tr:hover {
+            background: #fffefa;
+        }
+        .product-table td {
+            padding: 9px 8px;
+            vertical-align: middle;
+        }
+        .product-table .prod-name {
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+        .product-table .prod-price {
+            font-weight: 700;
+            color: #1a1a1a;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .product-table .prod-action {
+            text-align: center;
+            width: 44px;
+        }
+        .btn-whatsapp-sm {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            background: #25d366;
+            color: #fff;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.25s;
+            box-shadow: 0 2px 8px rgba(37, 211, 102, 0.35);
+            position: relative;
+        }
+        .btn-whatsapp-sm:hover {
+            background: #1ebc59;
+            transform: scale(1.12);
+            box-shadow: 0 4px 16px rgba(37, 211, 102, 0.55);
+        }
+        .btn-whatsapp-sm::after {
+            content: 'Solicitar';
+            position: absolute;
+            right: 42px;
+            background: #333;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 4px 9px;
+            border-radius: 4px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+        }
+        .btn-whatsapp-sm:hover::after {
+            opacity: 1;
+        }
+
+        /* FLOATING WHATSAPP */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9999;
+            background: #25d366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.7rem;
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5);
+            transition: transform 0.3s;
+        }
+        .floating-whatsapp:hover {
+            transform: scale(1.1);
+        }
+        .floating-whatsapp .tooltip {
+            position: absolute;
+            right: 72px;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .floating-whatsapp:hover .tooltip {
+            opacity: 1;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.35rem;
+            }
+            .freight-table th,
+            .freight-table td {
+                padding: 7px 6px;
+                font-size: 0.78rem;
+            }
+            .product-table {
+                font-size: 0.76rem;
+            }
+            .product-table td {
+                padding: 6px 4px;
+            }
+            .brand-header h3 {
+                font-size: 0.9rem;
+            }
+            .floating-whatsapp {
+                width: 50px;
+                height: 50px;
+                bottom: 18px;
+                right: 16px;
+                font-size: 1.4rem;
+            }
+            .btn-whatsapp-sm {
+                width: 28px;
+                height: 28px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px 8px 40px;
+            }
+            .freight-table {
+                font-size: 0.7rem;
+            }
+            .product-table {
+                font-size: 0.7rem;
+            }
+            .product-table .prod-action {
+                width: 30px;
+            }
+            .btn-whatsapp-sm {
+                width: 26px;
+                height: 26px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header class="header">
+            <span class="logo-icon">🏆</span>
+            <h1 class="gold-pulse-strong">CENTRAL LABS PREMIUM LTDA</h1>
+            <p class="subtitle">SEGUE COM TABELA: <span class="gold-static">TABELA DE PRODUTOS</span></p>
+            <p class="highlight-text">🔥 TRABALHAMOS COM OS MELHORES LABORATÓRIOS DO MERCADO 🔥</p>
+        </header>
+
+        <!-- INTRO -->
+        <div class="intro-section">
+            <p class="fire-text gold-pulse-mild">⚡ LINHAS DISPONÍVEIS ⚡</p>
+            <div class="brands-grid">
+                <span>🇬🇧 PEPTÍDEOS</span><span>🇵🇾 Landerlan / Gold</span><span>🇮🇳 Alpha Pharma</span>
+                <span>🇵🇾 Muscle Pharma</span><span>🇨🇦 Canada Bio Labs</span><span>🇨🇳 ZPHC</span>
+                <span>🇮🇳 Cooper Pharma</span><span>🇮🇳 Eminence</span><span>🇲🇩 Pharmacom</span>
+                <span>🇵🇾 King Pharma</span><span>🇵🇾 Bratva Labs</span><span>🐉 Dragon Elite</span>
+                <span>🌎 GH / Hormônio do Crescimento</span><span>🇧🇷 Farmácia / Nacionais</span><span>🇧🇷 Manipulados</span>
+            </div>
+        </div>
+
+        <!-- FREIGHT TABLE -->
+        <section class="freight-section">
+            <h2 class="gold-pulse-mild">🚚 FRETE COM PREÇO FIXO POR ESTADO</h2>
+            <p style="text-align:center;font-size:0.85rem;color:#666;margin-bottom:10px;">Trabalhamos exclusivamente com transportadoras — não utilizamos os Correios devido à fiscalização.</p>
+            <table class="freight-table">
+                <thead>
+                    <tr><th>Região / Estados</th><th>Valor (R$)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>São Paulo (SP)</td><td class="price-cell">R$ 50,00</td></tr>
+                    <tr><td>RJ, MG, SC, RS, PR, ES</td><td class="price-cell">R$ 60,00</td></tr>
+                    <tr><td>Distrito Federal (DF)</td><td class="price-cell">R$ 65,00</td></tr>
+                    <tr><td>CE, BA, AL, MA</td><td class="price-cell">R$ 70,00</td></tr>
+                    <tr><td>MT, PE, PB, PI</td><td class="price-cell">R$ 75,00</td></tr>
+                    <tr><td>Pará (PA) e Tocantins (TO)</td><td class="price-cell">R$ 80,00</td></tr>
+                    <tr><td>Mato Grosso do Sul (MS)</td><td class="price-cell">R$ 90,00</td></tr>
+                    <tr><td>Sergipe (SE), Rio Grande do Norte (RN), Rondônia (RO)</td><td class="price-cell">R$ 100,00</td></tr>
+                    <tr><td>Amazonas (AM)</td><td class="price-cell">R$ 120,00</td></tr>
+                </tbody>
+            </table>
+            <p style="text-align:center;font-size:0.8rem;color:#999;margin-top:6px;">COOPER PHARMA LTD — Frete com Preço Fixo</p>
+        </section>
+
+        <!-- PRODUCT SECTIONS -->
+        <!-- Each brand is collapsible -->
+
+        <!-- NEOPEPTIDES -->
+        <div class="brand-section open">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🧬 NEOPEPTIDES</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">GHK-Cu 100mg/3ml</td><td class="prod-price">R$ 800,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GHK-Cu 100mg/3ml - R\$ 800,00');return false;" title="Solicitar">💬</a></td></tr>
+                        <tr><td class="prod-name">SLU-PP-332 5mg/3ml</td><td class="prod-price">R$ 600,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('SLU-PP-332 5mg/3ml - R\$ 600,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Tesamorelin 10mg/3ml</td><td class="prod-price">R$ 750,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Tesamorelin 10mg/3ml - R\$ 750,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">GLOW 70mg/3ml</td><td class="prod-price">R$ 800,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GLOW 70mg/3ml - R\$ 800,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">GHK-CU NOVAX 100MG/2ML</td><td class="prod-price">R$ 750,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GHK-CU NOVAX 100MG/2ML - R\$ 750,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- NOVAX PHARMACEUTICA -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>💎 PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA 🇬🇧</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">KLOW-4 - 80mg/2ml</td><td class="prod-price">R$ 1.200,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('KLOW-4 80mg/2ml - R\$ 1.200,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">KPV - 10mg/2ml</td><td class="prod-price">R$ 580,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('KPV 10mg/2ml - R\$ 580,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Semax -10mg/2ml</td><td class="prod-price">R$ 580,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Semax 10mg/2ml - R\$ 580,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Selank -10mg/2ml</td><td class="prod-price">R$ 580,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Selank 10mg/2ml - R\$ 580,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Humanin -10mg/2ml</td><td class="prod-price">R$ 820,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Humanin 10mg/2ml - R\$ 820,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">BPC-157 10mg/2ml</td><td class="prod-price">R$ 650,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('BPC-157 10mg/2ml - R\$ 650,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">SS-31 50mg/2ml</td><td class="prod-price">R$ 1.140,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('SS-31 50mg/2ml - R\$ 1.140,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HGH FRAG 176-191 10mg/2ml</td><td class="prod-price">R$ 770,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HGH FRAG 176-191 10mg/2ml - R\$ 770,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">5-Amino-1MQ 5mg/2ml</td><td class="prod-price">R$ 485,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('5-Amino-1MQ 5mg/2ml - R\$ 485,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">IPAMORELIN 10mg/2ml</td><td class="prod-price">R$ 590,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('IPAMORELIN 10mg/2ml - R\$ 590,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">GLOW-3 70mg/2ml</td><td class="prod-price">R$ 1.130,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GLOW-3 70mg/2ml - R\$ 1.130,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">IGF-1 LR3 1000mcg/2ml</td><td class="prod-price">R$ 820,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('IGF-1 LR3 1000mcg/2ml - R\$ 820,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">TB-500 10mg/2ml</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('TB-500 10mg/2ml - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">GHK-Cu 100mg/2ml</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GHK-Cu 100mg/2ml - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">SLU-PP-332 5mg/2ml</td><td class="prod-price">R$ 670,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('SLU-PP-332 5mg/2ml - R\$ 670,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">AOD-9604 5mg/2ml</td><td class="prod-price">R$ 580,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('AOD-9604 5mg/2ml - R\$ 580,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">CJC-1295 (No DAC) 10mg/2ml</td><td class="prod-price">R$ 675,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('CJC-1295 No DAC 10mg/2ml - R\$ 675,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">CJC-1295 (DAC) 5mg/2ml</td><td class="prod-price">R$ 675,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('CJC-1295 DAC 5mg/2ml - R\$ 675,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">MOTS-c 10mg/2ml</td><td class="prod-price">R$ 575,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('MOTS-c 10mg/2ml - R\$ 575,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">PT-141 10mg/2ml</td><td class="prod-price">R$ 570,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('PT-141 10mg/2ml - R\$ 570,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">TESAMORELIN 10mg/2ml</td><td class="prod-price">R$ 830,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('TESAMORELIN 10mg/2ml - R\$ 830,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- ZPHC LABS PREMIUM (peptides) -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🏆 ZPHC LABS PREMIUM</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">✅ Retatrutide 60mg</td><td class="prod-price">R$ 2.950,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Retatrutide 60mg ZPHC - R\$ 2.950,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">✅ Retatrutide 30mg (caneta)</td><td class="prod-price">R$ 2.200,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Retatrutide 30mg caneta ZPHC - R\$ 2.200,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">✅ Retatrutide 15mg</td><td class="prod-price">R$ 900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Retatrutide 15mg ZPHC - R\$ 900,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">✅ Tirzepatide 30mg (caneta)</td><td class="prod-price">R$ 1.600,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Tirzepatide 30mg caneta ZPHC - R\$ 1.600,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">✅ Tirzepatide 15mg</td><td class="prod-price">R$ 495,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Tirzepatide 15mg ZPHC - R\$ 495,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">✅ GH 16ui</td><td class="prod-price">R$ 370,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GH 16ui ZPHC - R\$ 370,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Retatrutida 40mg Synedica</td><td class="prod-price">R$ 2.800,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Retatrutida 40mg Synedica - R\$ 2.800,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">TIZERPATIDA 60MG KING PHARMA</td><td class="prod-price">R$ 1.400,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('TIZERPATIDA 60MG KING PHARMA - R\$ 1.400,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Mounjaro 15mg</td><td class="prod-price">R$ 5.000,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Mounjaro 15mg - R\$ 5.000,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Lipoless 60mg</td><td class="prod-price">R$ 1.700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Lipoless 60mg - R\$ 1.700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Tizerpatida (60mg)</td><td class="prod-price">R$ 1.800,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Tizerpatida 60mg - R\$ 1.800,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Semaglutide Ozenpic 5mg ZPHC</td><td class="prod-price">R$ 1.000,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Semaglutide Ozenpic 5mg ZPHC - R\$ 1.000,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Prosoy retardador 30mg/6cmp</td><td class="prod-price">R$ 125,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Prosoy retardador 30mg/6cmp - R\$ 125,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">NAD+ 1.000mg ZPHC</td><td class="prod-price">R$ 865,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('NAD+ 1.000mg ZPHC - R\$ 865,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">GLOW Pro Mix 60mg ZPHC</td><td class="prod-price">R$ 2.700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GLOW Pro Mix 60mg ZPHC - R\$ 2.700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">GHK-Cu Zphc 60mg</td><td class="prod-price">R$ 1.600,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GHK-Cu Zphc 60mg - R\$ 1.600,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Melanotan II Zphc 10mg</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Melanotan II Zphc 10mg - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HGH Frag 5mg Zphc</td><td class="prod-price">R$ 1.700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HGH Frag 5mg Zphc - R\$ 1.700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HGH Frag zphc 10mg</td><td class="prod-price">R$ 2.700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HGH Frag zphc 10mg - R\$ 2.700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ultra Rehab Mix Zphc (10mg BPC + 10mg TB500)</td><td class="prod-price">R$ 1.900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ultra Rehab Mix Zphc - R\$ 1.900,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">TB500 20mg Zphc</td><td class="prod-price">R$ 1.950,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('TB500 20mg Zphc - R\$ 1.950,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">BPC-157 20mg Zphc</td><td class="prod-price">R$ 1.450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('BPC-157 20mg Zphc - R\$ 1.450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">GH ZPTrop 90ui vial</td><td class="prod-price">R$ 1.900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GH ZPTrop 90ui vial - R\$ 1.900,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">GH ZPTrop 72ui caneta</td><td class="prod-price">R$ 1.800,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('GH ZPTrop 72ui caneta - R\$ 1.800,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron 100mg/10ml Canadá Bio Labs</td><td class="prod-price">R$ 500,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron 100mg/10ml Canadá Bio Labs - R\$ 500,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">IGF-1 LR3 1,4mg caneta Spectrum</td><td class="prod-price">R$ 2.450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('IGF-1 LR3 1,4mg caneta Spectrum - R\$ 2.450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Enantato 300mg spectrum</td><td class="prod-price">R$ 380,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Enantato 300mg spectrum - R\$ 380,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">IGF1-LR3 500mcg Muscle Pharma</td><td class="prod-price">R$ 950,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('IGF1-LR3 500mcg Muscle Pharma - R\$ 950,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">RETATRUTIDA OXYGEN Retage 40mg Caneta</td><td class="prod-price">R$ 1.950,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('RETATRUTIDA OXYGEN Retage 40mg Caneta - R\$ 1.950,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Primobolan 200mg/ZPHC (ampola 2ml)</td><td class="prod-price">R$ 1.250,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolan 200mg/ZPHC - R\$ 1.250,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">T.G Varejo</td><td class="prod-price">R$ 1.700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('T.G Varejo - R\$ 1.700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron - pharmacom</td><td class="prod-price">R$ 550,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron pharmacom - R\$ 550,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA BRATVA -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇵🇾 LINHA BRATVA</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <p style="font-weight:700;color:#b8860b;margin-bottom:8px;">💉 Injetáveis</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">NPP 100mg/10ml NOVO</td><td class="prod-price">R$ 190,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('NPP 100mg/10ml Bratva - R\$ 190,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Enantato 250mg/10ml</td><td class="prod-price">R$ 170,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Enantato 250mg/10ml Bratva - R\$ 170,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Sales de Testosterona (Durateston) 250mg/10ml</td><td class="prod-price">R$ 175,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Durateston 250mg/10ml Bratva - R\$ 175,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Propionato 100mg/10ml</td><td class="prod-price">R$ 165,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Propionato 100mg/10ml Bratva - R\$ 165,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Cipionato 200mg/10ml</td><td class="prod-price">R$ 170,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Cipionato 200mg/10ml Bratva - R\$ 170,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Decanoato de Nandrolona 200mg/10ml</td><td class="prod-price">R$ 180,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Decanoato Nandrolona 200mg/10ml Bratva - R\$ 180,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Boldenona 250mg/10ml</td><td class="prod-price">R$ 180,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Boldenona 250mg/10ml Bratva - R\$ 180,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron Propionato 100mg/10ml</td><td class="prod-price">R$ 190,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron Propionato 100mg/10ml Bratva - R\$ 190,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trembo enantato novo 200mg</td><td class="prod-price">R$ 205,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trembo enantato 200mg Bratva - R\$ 205,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trembolona Acetato 100mg/10ml</td><td class="prod-price">R$ 195,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trembolona Acetato 100mg/10ml Bratva - R\$ 195,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">B-Blend (CutStack) 150mg/10ml NOVO</td><td class="prod-price">R$ 200,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('B-Blend CutStack 150mg/10ml Bratva - R\$ 200,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Primobolan 100mg/10ml NOVO</td><td class="prod-price">R$ 400,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolan 100mg/10ml Bratva - R\$ 400,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Stano OLEOSO NOVO 50mg/10ml</td><td class="prod-price">R$ 170,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stano OLEOSO 50mg/10ml Bratva - R\$ 170,00');return false;">💬</a></td></tr>
+                </tbody></table>
+                <p style="font-weight:700;color:#b8860b;margin:10px 0 8px;">💊 Orais</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Dianabol 100cmp/10mg</td><td class="prod-price">R$ 125,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Dianabol 100cmp/10mg Bratva - R\$ 125,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxandrolona 50cmp/10mg</td><td class="prod-price">R$ 275,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxandrolona 50cmp/10mg Bratva - R\$ 275,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Proviron 25cmcp/25mg</td><td class="prod-price">R$ 140,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Proviron 25cmcp/25mg Bratva - R\$ 140,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Hemogenin 25cmp/50mg</td><td class="prod-price">R$ 135,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Hemogenin 25cmp/50mg Bratva - R\$ 135,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA LANDERLAN -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇵🇾 LINHA LANDERLAN</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <p style="font-weight:700;color:#b8860b;margin-bottom:8px;">💉 Injetáveis</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Durateston 250mg/1ml</td><td class="prod-price">R$ 35,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Durateston 250mg/1ml Landerlan - R\$ 35,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testoland (Cipionato) 200mg/3amp</td><td class="prod-price">R$ 95,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testoland Cipionato 200mg/3amp Landerlan - R\$ 95,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testenat (Enantato) 250mg/4ml</td><td class="prod-price">R$ 107,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testenat Enantato 250mg/4ml Landerlan - R\$ 107,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Decaland 200mg/5ml</td><td class="prod-price">R$ 107,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Decaland 200mg/5ml Landerlan - R\$ 107,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Stanozolol 50mg/30ml</td><td class="prod-price">R$ 205,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stanozolol 50mg/30ml Landerlan - R\$ 205,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Stanozolol 50mg/15ml</td><td class="prod-price">R$ 110,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stanozolol 50mg/15ml Landerlan - R\$ 110,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Landertropin (GH) 100ui</td><td class="prod-price">R$ 2.450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Landertropin GH 100ui Landerlan - R\$ 2.450,00');return false;">💬</a></td></tr>
+                </tbody></table>
+                <p style="font-weight:700;color:#b8860b;margin:10px 0 8px;">💊 Orais</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Drostenoland 50cmp/10mg</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Drostenoland 50cmp/10mg Landerlan - R\$ 240,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Primobolan oral 30cmp/25mg</td><td class="prod-price">R$ 500,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolan oral 30cmp/25mg Landerlan - R\$ 500,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxitoland (Hemogenim) 20cmp/50mg</td><td class="prod-price">R$ 135,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxitoland Hemogenim 20cmp/50mg Landerlan - R\$ 135,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Dianabol 100cmp/10mg</td><td class="prod-price">R$ 130,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Dianabol 100cmp/10mg Landerlan - R\$ 130,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Stanozolol 100cmp/10mg</td><td class="prod-price">R$ 110,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stanozolol 100cmp/10mg Landerlan - R\$ 110,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Androlic (Proviron) 20cmp/25mg</td><td class="prod-price">R$ 150,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Androlic Proviron 20cmp/25mg Landerlan - R\$ 150,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxandroland 100cmp/5mg</td><td class="prod-price">R$ 330,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxandroland 100cmp/5mg Landerlan - R\$ 330,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxandroland 50cmp/10mg</td><td class="prod-price">R$ 300,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxandroland 50cmp/10mg Landerlan - R\$ 300,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Melatonina 120caps/10mg</td><td class="prod-price">R$ 95,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Melatonina 120caps/10mg Landerlan - R\$ 95,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">DHEA 90caps/50mg</td><td class="prod-price">R$ 160,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('DHEA 90caps/50mg Landerlan - R\$ 160,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA LANDERLAN GOLD -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇵🇾 LINHA LANDERLAN GOLD</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Testenat (Enantato) 250mg/10ml</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testenat Enantato 250mg/10ml Landerlan Gold - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Durateston 250mg/10ml</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Durateston 250mg/10ml Landerlan Gold - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Deca 200mg/10ml</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Deca 200mg/10ml Landerlan Gold - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testoland (Cipionato) 100mg/10ml</td><td class="prod-price">R$ 190,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testoland Cipionato 100mg/10ml Landerlan Gold - R\$ 190,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Propionato 100mg/10ml</td><td class="prod-price">R$ 169,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Propionato 100mg/10ml Landerlan Gold - R\$ 169,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Fenilpropionato (NPP) 100mg/10ml</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Fenilpropionato NPP 100mg/10ml Landerlan Gold - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Boldenona 250mg/10ml</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Boldenona 250mg/10ml Landerlan Gold - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron 100mg/10ml</td><td class="prod-price">R$ 235,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron 100mg/10ml Landerlan Gold - R\$ 235,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Primobolan 100mg/10ml</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolan 100mg/10ml Landerlan Gold - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trembo Enantato 200mg/10ml</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trembo Enantato 200mg/10ml Landerlan Gold - R\$ 240,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trembo Acetato 100mg/10ml</td><td class="prod-price">R$ 280,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trembo Acetato 100mg/10ml Landerlan Gold - R\$ 280,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Tritrembo 200mg/10ml</td><td class="prod-price">R$ 399,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Tritrembo 200mg/10ml Landerlan Gold - R\$ 399,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trembo Hexa 51mg/10ml</td><td class="prod-price">R$ 290,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trembo Hexa 51mg/10ml Landerlan Gold - R\$ 290,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Clembuterol 50 comp/40mcg</td><td class="prod-price">R$ 180,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Clembuterol 50comp/40mcg Landerlan Gold - R\$ 180,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HCG 5000 UI</td><td class="prod-price">R$ 500,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HCG 5000 UI Landerlan Gold - R\$ 500,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA KING PHARMA -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇲🇽 LINHA KING PHARMA</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <p style="font-weight:700;color:#b8860b;margin-bottom:8px;">💉 Injetáveis</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Testoviron (Enantato) 250mg/10ml</td><td class="prod-price">R$ 185,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testoviron Enantato 250mg/10ml King Pharma - R\$ 185,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Sustan (Durateston) 250mg/10ml</td><td class="prod-price">R$ 185,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Sustan Durateston 250mg/10ml King Pharma - R\$ 185,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testex (Cipionato) 250mg/10ml</td><td class="prod-price">R$ 185,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testex Cipionato 250mg/10ml King Pharma - R\$ 185,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Propiobolic (Propionato) 200mg/10ml</td><td class="prod-price">R$ 165,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Propiobolic Propionato 200mg/10ml King Pharma - R\$ 165,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Deca Durabolin 300mg/10ml</td><td class="prod-price">R$ 190,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Deca Durabolin 300mg/10ml King Pharma - R\$ 190,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron 100mg/10ml</td><td class="prod-price">R$ 195,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron 100mg/10ml King Pharma - R\$ 195,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron Slow (Masteron Enantato) 100mg/10ml</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron Slow Enantato 100mg/10ml King Pharma - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Parabolan (Trembo Ace) 100mg/10ml</td><td class="prod-price">R$ 199,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Parabolan Trembo Ace 100mg/10ml King Pharma - R\$ 199,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Finaplix (Trembo Enan) 100mg/10ml</td><td class="prod-price">R$ 199,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Finaplix Trembo Enan 100mg/10ml King Pharma - R\$ 199,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Parabolin Blend (Tritrembo) 200mg/10ml</td><td class="prod-price">R$ 295,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Parabolin Blend Tritrembo 200mg/10ml King Pharma - R\$ 295,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Boldabolic (Boldenona) 300mg/10ml</td><td class="prod-price">R$ 195,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Boldabolic Boldenona 300mg/10ml King Pharma - R\$ 195,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">CutStack 150mg/10ml</td><td class="prod-price">R$ 195,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('CutStack 150mg/10ml King Pharma - R\$ 195,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Estanozolol 15 50mg/15ml</td><td class="prod-price">R$ 100,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Estanozolol 15 50mg/15ml King Pharma - R\$ 100,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Estanozolol 30 50mg/30ml</td><td class="prod-price">R$ 185,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Estanozolol 30 50mg/30ml King Pharma - R\$ 185,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Primobolan 100mg/10ml</td><td class="prod-price">R$ 410,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolan 100mg/10ml King Pharma - R\$ 410,00');return false;">💬</a></td></tr>
+                </tbody></table>
+                <p style="font-weight:700;color:#b8860b;margin:10px 0 8px;">💊 Orais</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Anadrol (Hemogenin) 50cmp/50mg</td><td class="prod-price">R$ 195,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anadrol Hemogenin 50cmp/50mg King Pharma - R\$ 195,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Anavar (Oxandrolona) 50cmp/10mg</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anavar Oxandrolona 50cmp/10mg King Pharma - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxandrolone 50cmp/20mg</td><td class="prod-price">R$ 320,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxandrolone 50cmp/20mg King Pharma - R\$ 320,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Dianabol 100cmp/10mg</td><td class="prod-price">R$ 110,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Dianabol 100cmp/10mg King Pharma - R\$ 110,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron-New oral 50cmp/10mg</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron-New oral 50cmp/10mg King Pharma - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Estanozolol 100cmp/10mg</td><td class="prod-price">R$ 110,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Estanozolol 100cmp/10mg King Pharma - R\$ 110,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Turinabol 50cmp/10mg</td><td class="prod-price">R$ 199,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Turinabol 50cmp/10mg King Pharma - R\$ 199,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Halotestin 30comp/10mg</td><td class="prod-price">R$ 400,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Halotestin 30comp/10mg King Pharma - R\$ 400,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Proviron 20cmp/25mg</td><td class="prod-price">R$ 135,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Proviron 20cmp/25mg King Pharma - R\$ 135,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA ZPHC PREMIUM -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇨🇳 LINHA ZPHC PREMIUM 🥇</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <p style="font-weight:700;color:#b8860b;margin-bottom:8px;">💉 Injetáveis</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Testosteone Mix (Dura) 250mg/10ml</td><td class="prod-price">R$ 390,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testosteone Mix Dura 250mg/10ml ZPHC - R\$ 390,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testosterone Enanthate (Enan) 250mg/10ml</td><td class="prod-price">R$ 370,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testosterone Enanthate 250mg/10ml ZPHC - R\$ 370,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testosterone Cypionate (Cipio) 200mg/10ml</td><td class="prod-price">R$ 290,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testosterone Cypionate 200mg/10ml ZPHC - R\$ 290,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testosterone Propionate (Prop) 100mg/10ml</td><td class="prod-price">R$ 229,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testosterone Propionate 100mg/10ml ZPHC - R\$ 229,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">DHB 75mg/10ml</td><td class="prod-price">R$ 650,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('DHB 75mg/10ml ZPHC - R\$ 650,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Nandrolone Mix 300mg/10ml</td><td class="prod-price">R$ 600,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Nandrolone Mix 300mg/10ml ZPHC - R\$ 600,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Nandrolone Decanoate (Deca) 250mg/10ml</td><td class="prod-price">R$ 450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Nandrolone Decanoate 250mg/10ml ZPHC - R\$ 450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Nandrolone Phenylpropionate (NPP) 100mg/10ml</td><td class="prod-price">R$ 350,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('NPP 100mg/10ml ZPHC - R\$ 350,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Drostanolone Propionate (Masteron) 100mg/10ml</td><td class="prod-price">R$ 550,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron 100mg/10ml ZPHC - R\$ 550,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Drostanolone Enanthate (Master Enan) 200mg/10ml</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron Enanthate 200mg/10ml ZPHC - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trembolone Acetate 100mg/10ml</td><td class="prod-price">R$ 530,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trembolone Acetate 100mg/10ml ZPHC - R\$ 530,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trembolone Enanthate 200mg/10ml</td><td class="prod-price">R$ 550,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trembolone Enanthate 200mg/10ml ZPHC - R\$ 550,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trestolone Acetato 50mg/10ml</td><td class="prod-price">R$ 750,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trestolone Acetato 50mg/10ml ZPHC - R\$ 750,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trestolone Enanthate 50mg/10ml</td><td class="prod-price">R$ 800,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trestolone Enanthate 50mg/10ml ZPHC - R\$ 800,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Boldenone Undecylenate 250mg/10ml</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Boldenone 250mg/10ml ZPHC - R\$ 240,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Methenolone Enanthate (Primo) 100mg/10ml</td><td class="prod-price">R$ 750,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolan 100mg/10ml ZPHC - R\$ 750,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Zptropin 80 (HGH) 80ui</td><td class="prod-price">R$ 1.830,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Zptropin 80 HGH 80ui ZPHC - R\$ 1.830,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HP-hCG 1 vial x 5.000ui</td><td class="prod-price">R$ 380,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HP-hCG 5.000ui ZPHC - R\$ 380,00');return false;">💬</a></td></tr>
+                </tbody></table>
+                <p style="font-weight:700;color:#b8860b;margin:10px 0 8px;">💊 Orais</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Methandienone (Diana) 100cmp/10mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Dianabol 100cmp/10mg ZPHC oral - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Stanozolol 100cmp/10mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stanozolol 100cmp/10mg ZPHC oral - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxymetholone (Hemogenin) 100cmp/25mg</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Hemogenin 100cmp/25mg ZPHC oral - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Clenbuterol 100cmp/50mcg</td><td class="prod-price">R$ 260,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Clenbuterol 100cmp/50mcg ZPHC - R\$ 260,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Turinabol 100cmp/10mg</td><td class="prod-price">R$ 420,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Turinabol 100cmp/10mg ZPHC oral - R\$ 420,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxandrolone 100cmp/10mg</td><td class="prod-price">R$ 440,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxandrolone 100cmp/10mg ZPHC oral - R\$ 440,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA MUSCLE PHARMA -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🐍🇮🇳 LINHA MUSCLE PHARMA</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <p style="font-weight:700;color:#b8860b;margin-bottom:8px;">💉 Injetáveis</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Sustan (Dura) 250mg/1ml</td><td class="prod-price">R$ 29,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Sustan Dura 250mg/1ml Muscle Pharma - R\$ 29,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Sustan XT (Dura) 250mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Sustan XT Dura 250mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testoviron 250 (Enan) 250mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testoviron 250 Enan 250mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testex 250 (Cipio) 250mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testex 250 Cipio 250mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testoviron 100 (Prop) 100mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testoviron 100 Prop 100mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Deca Durabolin XT 300mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Deca Durabolin XT 300mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Dynabolon (NPP) 100mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Dynabolon NPP 100mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Boldebol 200mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Boldebol 200mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Parabolan (Trembo Acetato) 100mg/10ml</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Parabolan Trembo Acetato 100mg/10ml Muscle Pharma - R\$ 240,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Parabolan L.A (Trembo Enantato) 200mg/10ml</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Parabolan L.A Trembo Enantato 200mg/10ml Muscle Pharma - R\$ 240,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Parabolin Blend (Tritrembo) 200mg/10ml</td><td class="prod-price">R$ 350,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Parabolin Blend Tritrembo 200mg/10ml Muscle Pharma - R\$ 350,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron 100mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron 100mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Primobolan 100mg/10ml</td><td class="prod-price">R$ 380,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolan 100mg/10ml Muscle Pharma - R\$ 380,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Stanozolol 50mg/30ml</td><td class="prod-price">R$ 180,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stanozolol 50mg/30ml Muscle Pharma - R\$ 180,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">D-Bol (Diana Injet.) 50mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('D-Bol Diana Injet 50mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Anadrol Inject (Hemo Injet.) 50mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anadrol Inject Hemo 50mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Cut Stack XT 200mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Cut Stack XT 200mg/10ml Muscle Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HCG-Rx² 5.000ui</td><td class="prod-price">R$ 250,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HCG-Rx² 5.000ui Muscle Pharma - R\$ 250,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HGH Fragment 5 vials x 2mg</td><td class="prod-price">R$ 950,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HGH Fragment 5vials x2mg Muscle Pharma - R\$ 950,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HGH Somatropin 50ui</td><td class="prod-price">R$ 950,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HGH Somatropin 50ui Muscle Pharma - R\$ 950,00');return false;">💬</a></td></tr>
+                </tbody></table>
+                <p style="font-weight:700;color:#b8860b;margin:10px 0 8px;">💊 Orais</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Turinabol 60cmp/25mg</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Turinabol 60cmp/25mg Muscle Pharma - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Anavar5 100caps/5mg</td><td class="prod-price">R$ 260,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anavar5 100caps/5mg Muscle Pharma - R\$ 260,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Anavar10 50caps/10mg</td><td class="prod-price">R$ 260,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anavar10 50caps/10mg Muscle Pharma - R\$ 260,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Anavar25 50caps/25mg</td><td class="prod-price">R$ 390,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anavar25 50caps/25mg Muscle Pharma - R\$ 390,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Halotestin 30cmp/10mg</td><td class="prod-price">R$ 370,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Halotestin 30cmp/10mg Muscle Pharma - R\$ 370,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Dianabol 50cmp/25mg</td><td class="prod-price">R$ 130,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Dianabol 50cmp/25mg Muscle Pharma - R\$ 130,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Stano Tablet 100cmp/10mg</td><td class="prod-price">R$ 130,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stano Tablet 100cmp/10mg Muscle Pharma - R\$ 130,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Anadrol 25 (Hemogenin) 50cmp/25mg</td><td class="prod-price">R$ 160,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anadrol 25 Hemogenin 50cmp/25mg Muscle Pharma - R\$ 160,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">T3 Cytomel 50cmp/100mcg</td><td class="prod-price">R$ 170,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('T3 Cytomel 50cmp/100mcg Muscle Pharma - R\$ 170,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Aromazin XT (Anastrozol) 30cmp/10mg</td><td class="prod-price">R$ 160,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Aromazin XT 30cmp/10mg Muscle Pharma - R\$ 160,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Proviron 40cmp/25mg</td><td class="prod-price">R$ 170,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Proviron 40cmp/25mg Muscle Pharma - R\$ 170,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA COOPER PHARMA -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇮🇳 LINHA COOPER PHARMA PREMIUM 🥇</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <p style="font-weight:700;color:#b8860b;margin-bottom:8px;">💉 Injetáveis</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Probolic (Prop) 100mg/10ml</td><td class="prod-price">R$ 340,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Probolic Prop 100mg/10ml Cooper Pharma - R\$ 340,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Enanbolic (Enan) 250mg/10ml</td><td class="prod-price">R$ 390,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Enanbolic 250mg/10ml Cooper Pharma - R\$ 390,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Susobolic (Dura) 250mg/10ml</td><td class="prod-price">R$ 440,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Susobolic Dura 250mg/10ml Cooper Pharma - R\$ 440,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Cypiobolic (Cipio) 250mg/10ml</td><td class="prod-price">R$ 380,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Cypiobolic 250mg/10ml Cooper Pharma - R\$ 380,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Bolbolic (Bold) 250mg/10ml</td><td class="prod-price">R$ 580,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Bolbolic Bold 250mg/10ml Cooper Pharma - R\$ 580,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Decabolic (Deca) 250mg/10ml</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Decabolic Deca 250mg/10ml Cooper Pharma - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Nanbolic-PH (NPP) 100mg/10ml</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Nanbolic-PH NPP 100mg/10ml Cooper Pharma - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masterbolic (Master) 100mg/10ml</td><td class="prod-price">R$ 550,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masterbolic 100mg/10ml Cooper Pharma - R\$ 550,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteronbolic (Masteron Enantato) 200mg/10ml</td><td class="prod-price">R$ 650,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteronbolic 200mg/10ml Cooper Pharma - R\$ 650,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Primobolic (Primo) 100mg/10ml</td><td class="prod-price">R$ 870,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolic 100mg/10ml Cooper Pharma - R\$ 870,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trenanbolic (Tren Enan) 200mg/5ml</td><td class="prod-price">R$ 550,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trenanbolic Tren Enan 200mg/5ml Cooper Pharma - R\$ 550,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trenbolic (Tren ACE) 100mg/5ml</td><td class="prod-price">R$ 350,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trenbolic Tren ACE 100mg/5ml Cooper Pharma - R\$ 350,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">T6bolic (Tren Hexa) 76.5mg/5ml</td><td class="prod-price">R$ 420,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('T6bolic Tren Hexa 76.5mg/5ml Cooper Pharma - R\$ 420,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Winobolic (Estano) 50mg/10ml</td><td class="prod-price">R$ 300,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Winobolic Estano 50mg/10ml Cooper Pharma - R\$ 300,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Cotropin (HCG) 5000ui</td><td class="prod-price">R$ 430,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Cotropin HCG 5000ui Cooper Pharma - R\$ 430,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HGH-Frag 176-191 (10 vials x 2000mcg)</td><td class="prod-price">R$ 2.999,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HGH-Frag 176-191 Cooper Pharma - R\$ 2.999,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HGH Somatropin 100ui</td><td class="prod-price">R$ 3.300,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HGH Somatropin 100ui Cooper Pharma - R\$ 3.300,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">IGF-1 LR3 (10 vials x 100mcg)</td><td class="prod-price">R$ 2.900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('IGF-1 LR3 Cooper Pharma - R\$ 2.900,00');return false;">💬</a></td></tr>
+                </tbody></table>
+                <p style="font-weight:700;color:#b8860b;margin:10px 0 8px;">💊 Orais</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Dianabolic (Diana) 50cmp/10mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Dianabolic 50cmp/10mg Cooper Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Winobolic (Stano) 50caps/10mg</td><td class="prod-price">R$ 200,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Winobolic Stano 50caps/10mg Cooper Pharma - R\$ 200,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxanbolic (Oxan) 50cmp/10mg</td><td class="prod-price">R$ 370,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxanbolic 50cmp/10mg Cooper Pharma - R\$ 370,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxybolic (Hemo) 50cmp/50mg</td><td class="prod-price">R$ 320,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxybolic Hemo 50cmp/50mg Cooper Pharma - R\$ 320,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Turbolic (Turinabol) 50cmp/10mg</td><td class="prod-price">R$ 300,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Turbolic 50cmp/10mg Cooper Pharma - R\$ 300,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Flubolic (Halotestin) 50caps/5mg</td><td class="prod-price">R$ 420,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Flubolic Halotestin 50caps/5mg Cooper Pharma - R\$ 420,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Provibolic (Proviron) 50cmp/25mg</td><td class="prod-price">R$ 320,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Provibolic Proviron 50cmp/25mg Cooper Pharma - R\$ 320,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Clenbolic (Clembuterol) 50cmp/40mcg</td><td class="prod-price">R$ 210,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Clenbolic Clembuterol 50cmp/40mcg Cooper Pharma - R\$ 210,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">T3Bolic (T3) 50cmp/25mcg</td><td class="prod-price">R$ 350,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('T3Bolic 50cmp/25mcg Cooper Pharma - R\$ 350,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">BT-Bolic (T3/T4) 50cmp 12,5/50mcg</td><td class="prod-price">R$ 350,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('BT-Bolic T3/T4 Cooper Pharma - R\$ 350,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA ALPHA PHARMA -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇮🇳 LINHA ALPHA PHARMA PREMIUM 🥇</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <p style="font-weight:700;color:#b8860b;margin-bottom:8px;">💉 Injetáveis</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Testobolin (Enantato) 250mg/10ml</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testobolin Enantato 250mg/10ml Alpha Pharma - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Induject-250 (Dura) 250mg/10ml</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Induject-250 Dura 250mg/10ml Alpha Pharma - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testocyp (Cipionato) 250mg/10ml</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testocyp Cipionato 250mg/10ml Alpha Pharma - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">TestoRapid (Propionato) 100mg/10ml</td><td class="prod-price">R$ 420,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('TestoRapid Propionato 100mg/10ml Alpha Pharma - R\$ 420,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testobase (Testo Aquosa) 100mg/10ml</td><td class="prod-price">R$ 450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testobase 100mg/10ml Alpha Pharma - R\$ 450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Nandrobolin (Deca) 250mg/10ml</td><td class="prod-price">R$ 600,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Nandrobolin Deca 250mg/10ml Alpha Pharma - R\$ 600,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Boldebolin (Boldenona) 250mg/10ml</td><td class="prod-price">R$ 570,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Boldebolin Boldenona 250mg/10ml Alpha Pharma - R\$ 570,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">TrenaRapid (Trembo Acetato) 100mg/10ml</td><td class="prod-price">R$ 880,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('TrenaRapid Trembo Acetato 100mg/10ml Alpha Pharma - R\$ 880,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trenbolin (Trembo Enantato) 250mg/10ml</td><td class="prod-price">R$ 1.400,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trenbolin Trembo Enantato 250mg/10ml Alpha Pharma - R\$ 1.400,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Parabolin (Trembo Hexa) 76,5mg/10ml</td><td class="prod-price">R$ 1.050,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Parabolin Trembo Hexa 76,5mg/10ml Alpha Pharma - R\$ 1.050,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Alphabolin (Primobolan) 100mg/10ml</td><td class="prod-price">R$ 1.200,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Alphabolin Primobolan 100mg/10ml Alpha Pharma - R\$ 1.200,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Rexogin (Stanozolol) 50mg/10ml</td><td class="prod-price">R$ 520,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Rexogin Stanozolol 50mg/10ml Alpha Pharma - R\$ 520,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Mastebolin (Masteron) 100mg/10ml</td><td class="prod-price">R$ 800,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Mastebolin Masteron 100mg/10ml Alpha Pharma - R\$ 800,00');return false;">💬</a></td></tr>
+                </tbody></table>
+                <p style="font-weight:700;color:#b8860b;margin:10px 0 8px;">💊 Orais</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Astralean (Clembuterol) 50cmp/40mcg</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Astralean Clembuterol Alpha Pharma - R\$ 240,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Alphabol (Dianabol) 50cmp/10mg</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Alphabol Dianabol Alpha Pharma - R\$ 240,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Rexobol (Stanozolol) 50cmp/10mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Rexobol Stanozolol Alpha Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxydrolone (Hemogenin) 50cmp/50mg</td><td class="prod-price">R$ 750,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxydrolone Hemogenin Alpha Pharma - R\$ 750,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxanabol (Oxandrolona) 50cmp/10mg</td><td class="prod-price">R$ 750,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxanabol Oxandrolona Alpha Pharma - R\$ 750,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Halobol (Halotestin) 50cmp/5mg</td><td class="prod-price">R$ 900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Halobol Halotestin Alpha Pharma - R\$ 900,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Turinabol 50cmp/10mg</td><td class="prod-price">R$ 600,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Turinabol Alpha Pharma - R\$ 600,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Provibol (Proviron) 50cmp/25mg</td><td class="prod-price">R$ 400,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Provibol Proviron Alpha Pharma - R\$ 400,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Mastoral (Masteron oral) 50cmp/10mg</td><td class="prod-price">R$ 750,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Mastoral Masteron oral Alpha Pharma - R\$ 750,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Thyro3 (T3) 30cmp/25mcg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Thyro3 T3 Alpha Pharma - R\$ 220,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA PHARMACOM -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇲🇩 LINHA PHARMACOM PREMIUM 🥇</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <p style="font-weight:700;color:#b8860b;margin-bottom:8px;">💉 Injetáveis</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Pharma Sust 250 (Dura) 250mg/10ml</td><td class="prod-price">R$ 450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Sust 250 Dura 250mg/10ml Pharmacom - R\$ 450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Sust 350 (Dura) 300mg/10ml</td><td class="prod-price">R$ 460,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Sust 350 Dura Pharmacom - R\$ 460,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Sust 500 (Dura) 500mg/10ml</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Sust 500 Dura Pharmacom - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Test E250 (Enantato) 250mg/10ml</td><td class="prod-price">R$ 370,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Test E250 Enantato Pharmacom - R\$ 370,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Test E300 (Enantato) 300mg/10ml</td><td class="prod-price">R$ 460,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Test E300 Pharmacom - R\$ 460,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Test E500 (Enantato) 500mg/10ml</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Test E500 Pharmacom - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Test C250 (Cipionato) 250mg/10ml</td><td class="prod-price">R$ 450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Test C250 Pharmacom - R\$ 450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Test P100 (Propionato) 100mg/10ml</td><td class="prod-price">R$ 340,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Test P100 Pharmacom - R\$ 340,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Test PH100 (Testo fenil) 100mg/10ml</td><td class="prod-price">R$ 400,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Test PH100 Pharmacom - R\$ 400,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Nan D300 (Deca) 300mg/10ml</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Nan D300 Deca Pharmacom - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Nan D600 (Deca) 600mg/10ml</td><td class="prod-price">R$ 780,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Nan D600 Deca Pharmacom - R\$ 780,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Nan PH100 (NPP) 100mg/10ml</td><td class="prod-price">R$ 450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Nan PH100 NPP Pharmacom - R\$ 450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Nolt 300 100mg/10ml</td><td class="prod-price">R$ 450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Nolt 300 Pharmacom - R\$ 450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Bold 300 (Boldenona) 300mg/10ml</td><td class="prod-price">R$ 500,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Bold 300 Pharmacom - R\$ 500,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Bold 500 (Boldenona) 500mg/10ml NOVIDADE</td><td class="prod-price">R$ 740,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Bold 500 Pharmacom - R\$ 740,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Tren A100 (Trembo Ace) 100mg/10ml</td><td class="prod-price">R$ 600,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Tren A100 Pharmacom - R\$ 600,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Tren E200 (Trembo Enan) 200mg/10ml</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Tren E200 Pharmacom - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Tren H100 (Trembo Hexa) 100mg/10ml</td><td class="prod-price">R$ 850,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Tren H100 Pharmacom - R\$ 850,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharmatropin (GH) 100ui</td><td class="prod-price">R$ 2.000,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharmatropin GH 100ui Pharmacom - R\$ 2.000,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Dro P100 (Masteron) 100mg/10ml</td><td class="prod-price">R$ 550,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Dro P100 Masteron Pharmacom - R\$ 550,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Prim 100 (Primo) 100mg/10ml</td><td class="prod-price">R$ 900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Prim 100 Pharmacom - R\$ 900,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Prim 200 (Primo) 200mg/10ml</td><td class="prod-price">R$ 1.450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Prim 200 Pharmacom - R\$ 1.450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Stan 50 (Stano) 50mg/10ml</td><td class="prod-price">R$ 180,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Stan 50 Pharmacom - R\$ 180,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Bol 100 (Diana Injet) 100mg/10ml</td><td class="prod-price">R$ 180,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Bol 100 Pharmacom - R\$ 180,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharmaoxy 50 (Hemo Injet) 50mg/10ml</td><td class="prod-price">R$ 350,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharmaoxy 50 Pharmacom - R\$ 350,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Mix 1 450mg/ml</td><td class="prod-price">R$ 550,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Mix 1 Pharmacom - R\$ 550,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Mix 2 250mg/10ml</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Mix 2 Pharmacom - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Mix 3 500mg/10ml</td><td class="prod-price">R$ 760,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Mix 3 Pharmacom - R\$ 760,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Mix 4 600mg/10ml</td><td class="prod-price">R$ 760,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Mix 4 Pharmacom - R\$ 760,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Mix 5 100mg/10ml</td><td class="prod-price">R$ 330,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Mix 5 Pharmacom - R\$ 330,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Mix 6 500mg/10ml</td><td class="prod-price">R$ 1.000,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Mix 6 Pharmacom - R\$ 1.000,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pharma Mix M300 300mg/10ml NOVIDADE</td><td class="prod-price">R$ 850,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharma Mix M300 Pharmacom - R\$ 850,00');return false;">💬</a></td></tr>
+                </tbody></table>
+                <p style="font-weight:700;color:#b8860b;margin:10px 0 8px;">💊 Orais</p>
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Stanos 100cmp/10mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stanos Pharmacom - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxandrolonos 100cmp/10mg</td><td class="prod-price">R$ 570,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxandrolonos Pharmacom - R\$ 570,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxymetos (Hemogenin) 25mg/100comp</td><td class="prod-price">R$ 670,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxymetos Pharmacom - R\$ 670,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Dianabolos 10mg/100cmp</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Dianabolos Pharmacom - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Turinabolos 100cmp/10mg</td><td class="prod-price">R$ 350,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Turinabolos Pharmacom - R\$ 350,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Halotestos 100cmp/10mg</td><td class="prod-price">R$ 1.000,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Halotestos Pharmacom - R\$ 1.000,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Meltos (Clembuterol) 100cmp/40mcg</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Meltos Pharmacom - R\$ 240,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA CANADA BIO LABS -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇨🇦 LINHA CANADA BIO LABS PREMIUM 🥇</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Sustanon 250 (Dura) 250mg/10ml</td><td class="prod-price">R$ 360,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Sustanon 250 Canada Bio Labs - R\$ 360,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Delatestryl (Enantato) 300mg/10ml</td><td class="prod-price">R$ 360,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Delatestryl Enantato Canada Bio Labs - R\$ 360,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Depotest 200 (Cipionato) 200mg/10ml</td><td class="prod-price">R$ 360,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Depotest 200 Canada Bio Labs - R\$ 360,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testopin 100 (Propionato) 100mg/10ml</td><td class="prod-price">R$ 240,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testopin 100 Canada Bio Labs - R\$ 240,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Decabolan 250 (Deca) 250mg/10ml</td><td class="prod-price">R$ 450,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Decabolan 250 Canada Bio Labs - R\$ 450,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Durabolin 100 (NPP) 100mg/10ml NOVIDADE</td><td class="prod-price">R$ 350,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Durabolin 100 NPP Canada Bio Labs - R\$ 350,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Equipoise 300 (Boldenona) 300mg/10ml</td><td class="prod-price">R$ 360,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Equipoise 300 Canada Bio Labs - R\$ 360,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron 100 (Drost Prop) 100mg/10ml</td><td class="prod-price">R$ 455,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron 100 Canada Bio Labs - R\$ 455,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Masteron 200 (Masteron Enantato) 200mg/10ml</td><td class="prod-price">R$ 700,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Masteron 200 Canada Bio Labs - R\$ 700,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Primobolan 100 (Primobolan) 200mg/10ml</td><td class="prod-price">R$ 780,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Primobolan 100 Canada Bio Labs - R\$ 780,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Finaplix 100 (Trembo Acetato) 100mg/10ml</td><td class="prod-price">R$ 520,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Finaplix 100 Canada Bio Labs - R\$ 520,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Parabol 200 (Trembo Enantato) 200mg/10ml</td><td class="prod-price">R$ 550,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Parabol 200 Canada Bio Labs - R\$ 550,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Parabolan 100 (Trembo Hexa) 100mg/10ml</td><td class="prod-price">R$ 650,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Parabolan 100 Canada Bio Labs - R\$ 650,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ment 50 (Trestolona Acetato) 50mg/10ml NOVIDADE</td><td class="prod-price">R$ 780,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ment 50 Trestolona Canada Bio Labs - R\$ 780,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Winstrol 50 (Stanozolol) 50mg/10ml</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Winstrol 50 Canada Bio Labs - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Androbase 100 (Testo Aquosa) 100mg/10ml NOVIDADE</td><td class="prod-price">R$ 260,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Androbase 100 Canada Bio Labs - R\$ 260,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Somatropin 191AA 15IU (GH) 75ui</td><td class="prod-price">R$ 1.900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Somatropin 191AA 75ui Canada Bio Labs - R\$ 1.900,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA IDN PHARMATECH -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🔥 LINHA IDN PHARMATECH</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Testofort (Enantato) 250mg/10ml</td><td class="prod-price">R$ 320,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testofort Enantato IDN Pharmatech - R\$ 320,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Sostenon (Dura) 250mg/10ml</td><td class="prod-price">R$ 330,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Sostenon Dura IDN Pharmatech - R\$ 330,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Cypiobol (Cipionato) 250mg/10ml</td><td class="prod-price">R$ 280,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Cypiobol IDN Pharmatech - R\$ 280,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Gonatestin (Propionato) 100mg/20ml</td><td class="prod-price">R$ 270,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Gonatestin IDN Pharmatech - R\$ 270,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Mastebol Rapid (Masteron) 100mg/10ml</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Mastebol Rapid IDN Pharmatech - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Decabol (Deca) 250mg/10ml</td><td class="prod-price">R$ 320,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Decabol IDN Pharmatech - R\$ 320,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Decabol Rapid (NPP) 100mg/10ml</td><td class="prod-price">R$ 300,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Decabol Rapid NPP IDN Pharmatech - R\$ 300,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Trenviden Rapid (Trembo Acetato) 100mg/10ml</td><td class="prod-price">R$ 2.990,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Trenviden Rapid IDN Pharmatech - R\$ 2.990,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxidrobol (Hemogenin) 50cp/50mg</td><td class="prod-price">R$ 150,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxidrobol IDN Pharmatech - R\$ 150,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Stanobolin Oral (Stanozolol) 50cp/25mg</td><td class="prod-price">R$ 150,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Stanobolin Oral IDN Pharmatech - R\$ 150,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Mesterolic (Proviron) 50cp/25mg</td><td class="prod-price">R$ 180,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Mesterolic Proviron IDN Pharmatech - R\$ 180,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- LINHA EMINENCE -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🔥 LINHA EMINENCE (Premium)</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Testomix (Durateston 250mg/10ml)</td><td class="prod-price">R$ 370,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testomix Durateston Eminence - R\$ 370,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">EnanPrime (Enantato 250mg/10ml)</td><td class="prod-price">R$ 367,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('EnanPrime Eminence - R\$ 367,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">DecaPrime (Deca 200mg/10ml)</td><td class="prod-price">R$ 370,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('DecaPrime Eminence - R\$ 370,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">DecaPrime-P (NPP 100mg/10ml)</td><td class="prod-price">R$ 360,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('DecaPrime-P NPP Eminence - R\$ 360,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">TrenoPrime (Trembo Acetato 100mg/10ml)</td><td class="prod-price">R$ 465,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('TrenoPrime Eminence - R\$ 465,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- FARMÁCIA / NACIONAIS -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇧🇷 FARMÁCIA / NACIONAIS</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Hemax Etritron 4.000ui (EPO)</td><td class="prod-price">R$ 160,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Hemax Etritron 4.000ui - R\$ 160,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Alprazolam 30comp/2mg</td><td class="prod-price">R$ 85,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Alprazolam 30comp/2mg - R\$ 85,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Durateston Aspen 250mg/1ml</td><td class="prod-price">R$ 90,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Durateston Aspen 250mg/1ml - R\$ 90,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Deca Durabolin Aspen 50mg/1ml</td><td class="prod-price">R$ 90,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Deca Durabolin Aspen 50mg/1ml - R\$ 90,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Fluoxetina 30comp/20mg</td><td class="prod-price">R$ 85,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Fluoxetina 30comp/20mg - R\$ 85,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Sibutramina 30cmp/15mg</td><td class="prod-price">R$ 95,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Sibutramina 30cmp/15mg - R\$ 95,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Anastrozol 30cmp/1mg</td><td class="prod-price">R$ 98,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anastrozol 30cmp/1mg - R\$ 98,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ritalina Genérica EMS 30cmp/10mg</td><td class="prod-price">R$ 90,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ritalina Genérica 30cmp/10mg - R\$ 90,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ritalina Genérica EMS 60cmp/10mg</td><td class="prod-price">R$ 160,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ritalina Genérica 60cmp/10mg - R\$ 160,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ritalina LA 10mg/30cmp</td><td class="prod-price">R$ 290,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ritalina LA 10mg/30cmp - R\$ 290,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ritalina Novartis 10mg/30comp</td><td class="prod-price">R$ 170,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ritalina Novartis 10mg/30comp - R\$ 170,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ritalina Norvartis 10mg/60cmp</td><td class="prod-price">R$ 280,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ritalina Novartis 10mg/60cmp - R\$ 280,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Rivotril 30comp/2mg</td><td class="prod-price">R$ 99,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Rivotril 30comp/2mg - R\$ 99,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Rivotril Gotas</td><td class="prod-price">R$ 99,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Rivotril Gotas - R\$ 99,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Clonazepam 2mg Medley 30cmp</td><td class="prod-price">R$ 70,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Clonazepam 2mg Medley - R\$ 70,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Clonazepam gotas Medley 20ml</td><td class="prod-price">R$ 70,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Clonazepam gotas Medley - R\$ 70,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Roacutan genérico 30cmp/20mg</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Roacutan genérico 30cmp/20mg - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Tadalafil 5mg/30cmp</td><td class="prod-price">R$ 55,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Tadalafil 5mg/30cmp - R\$ 55,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Venvanse 30mg/28cmp</td><td class="prod-price">R$ 670,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Venvanse 30mg/28cmp - R\$ 670,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Venvanse 50mg/28cmp</td><td class="prod-price">R$ 770,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Venvanse 50mg/28cmp - R\$ 770,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Venvanse 70mg/28cmp</td><td class="prod-price">R$ 799,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Venvanse 70mg/28cmp - R\$ 799,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Tamoxifeno 30cmp/20mg</td><td class="prod-price">R$ 85,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Tamoxifeno 30cmp/20mg - R\$ 85,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Indux (Clomifeno) 10cmp/50mg</td><td class="prod-price">R$ 95,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Indux Clomifeno 10cmp/50mg - R\$ 95,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Venvanse Genérico Eurofarma 30cmp/30mg</td><td class="prod-price">R$ 480,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Venvanse Genérico 30mg Eurofarma - R\$ 480,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Venvanse Genérico Eurofarma 30cmp/50mg</td><td class="prod-price">R$ 499,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Venvanse Genérico 50mg Eurofarma - R\$ 499,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Venvanse Genérico Eurofarma 30cmp/70mg</td><td class="prod-price">R$ 570,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Venvanse Genérico 70mg Eurofarma - R\$ 570,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- MANIPULADOS -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🇧🇷 MANIPULADOS</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Oxandrolona 100cáps/5mg</td><td class="prod-price">R$ 170,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxandrolona 100cáps/5mg Manipulado - R\$ 170,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Oxandrolona 120cáps/10mg</td><td class="prod-price">R$ 199,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Oxandrolona 120cáps/10mg Manipulado - R\$ 199,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Testosterona Gel Bioidêntica 10% 30ml</td><td class="prod-price">R$ 230,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Testosterona Gel Bioidêntica 10% 30ml - R\$ 230,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Citrato de Clomifeno 30cáps/50mg</td><td class="prod-price">R$ 83,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Citrato de Clomifeno 30cáps/50mg - R\$ 83,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Citrato de Tamoxifeno 30cáps/20mg</td><td class="prod-price">R$ 80,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Citrato de Tamoxifeno 30cáps/20mg - R\$ 80,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ioimbina 30cáps/10mg</td><td class="prod-price">R$ 120,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ioimbina 30cáps/10mg - R\$ 120,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Silimarina 30cáps/20mg</td><td class="prod-price">R$ 90,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Silimarina 30cáps/20mg - R\$ 90,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- GH -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🌎 GH - HORMÔNIO DO CRESCIMENTO 🥇</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Pharmatropin (Pharmacom) 100ui</td><td class="prod-price">R$ 2.900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pharmatropin Pharmacom 100ui - R\$ 2.900,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Landertropin (Landerlan) 100ui</td><td class="prod-price">R$ 2.500,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Landertropin Landerlan 100ui - R\$ 2.500,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">HGH Cooper Gold Edition 100ui</td><td class="prod-price">R$ 3.200,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('HGH Cooper Gold 100ui - R\$ 3.200,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Somatropin (Muscle Pharma) 50ui</td><td class="prod-price">R$ 1.000,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Somatropin Muscle Pharma 50ui - R\$ 1.000,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Somatropin 191AA 15IU (Canada Bio Labs) 75ui</td><td class="prod-price">R$ 1.900,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Somatropin Canada Bio Labs 75ui - R\$ 1.900,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Zptropin 80 (ZPHC) 80ui</td><td class="prod-price">R$ 1.990,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Zptropin 80 ZPHC 80ui - R\$ 1.990,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- VARIADOS -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>📦 LINHA VARIADOS</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">Brontel 20cmp/20mcg</td><td class="prod-price">R$ 25,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Brontel 20cmp/20mcg - R\$ 25,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Pramil 20cmp/50mg</td><td class="prod-price">R$ 30,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Pramil 20cmp/50mg - R\$ 30,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Femproporex EP 30cmp/25mg</td><td class="prod-price">R$ 200,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Femproporex EP 30cmp/25mg - R\$ 200,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Anfepramona EP 30cmp/75mg</td><td class="prod-price">R$ 200,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Anfepramona EP 30cmp/75mg - R\$ 200,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- SARMS DRAGON ELITE -->
+        <div class="brand-section">
+            <div class="brand-header" onclick="toggleSection(this)">
+                <h3>🐉 SARMS e PRÓ-HORMONAIS DRAGON ELITE</h3><span class="arrow">▼</span>
+            </div>
+            <div class="brand-body">
+                <table class="product-table"><tbody>
+                        <tr><td class="prod-name">DHEA 100caps/25mg</td><td class="prod-price">R$ 100,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('DHEA 100caps/25mg Dragon Elite - R\$ 100,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">DHEA 100caps/50mg</td><td class="prod-price">R$ 120,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('DHEA 100caps/50mg Dragon Elite - R\$ 120,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">DHEA 100caps/100mg</td><td class="prod-price">R$ 150,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('DHEA 100caps/100mg Dragon Elite - R\$ 150,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Melatonina 100caps/5mg</td><td class="prod-price">R$ 120,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Melatonina 100caps/5mg Dragon Elite - R\$ 120,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Snake Dragon 60caps/200mg</td><td class="prod-price">R$ 250,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Snake Dragon 60caps/200mg - R\$ 250,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ostarine 60caps/25mg</td><td class="prod-price">R$ 270,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ostarine 60caps/25mg Dragon Elite - R\$ 270,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Rad140 60caps/10mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Rad140 60caps/10mg Dragon Elite - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Femmatropin 60caps/50mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Femmatropin 60caps/50mg Dragon Elite - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Superdrol 60caps/15mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Superdrol 60caps/15mg Dragon Elite - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Halodrol 60caps/25mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Halodrol 60caps/25mg Dragon Elite - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Andarine 60caps/25mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Andarine 60caps/25mg Dragon Elite - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Cardarine 60caps/15mg</td><td class="prod-price">R$ 270,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Cardarine 60caps/15mg Dragon Elite - R\$ 270,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Aicar 50caps/50mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Aicar 50caps/50mg Dragon Elite - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Ligandrol 90caps/10mg</td><td class="prod-price">R$ 270,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Ligandrol 90caps/10mg Dragon Elite - R\$ 270,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Epistane 60caps/12mg</td><td class="prod-price">R$ 220,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Epistane 60caps/12mg Dragon Elite - R\$ 220,00');return false;">💬</a></td></tr>
+                        <tr><td class="prod-name">Mk-677 60caps/12,5mg</td><td class="prod-price">R$ 270,00</td><td class="prod-action"><a href="#" class="btn-whatsapp-sm" onclick="sendWhatsApp('Mk-677 60caps/12,5mg Dragon Elite - R\$ 270,00');return false;">💬</a></td></tr>
+                </tbody></table>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer style="text-align:center;padding:30px 20px;border-top:2px solid #f0e6c0;margin-top:20px;">
+            <p style="font-weight:700;color:#555;">DAVID REPRESENTANTE</p>
+            <a href="https://wa.me/5511944636972" target="_blank" rel="noopener" class="gold-pulse-mild" style="text-decoration:none;font-size:1.3rem;display:inline-block;padding:10px 20px;border:2px solid #c8a000;border-radius:30px;transition:all 0.3s;">
+                📲 11 94463-6972
+            </a>
+            <p style="margin-top:12px;color:#888;font-size:0.8rem;">CENTRAL LABS PREMIUM LTDA © 2024</p>
+        </footer>
+
+    </div>
+
+    <!-- FLOATING WHATSAPP -->
+    <a href="https://wa.me/5511944636972" target="_blank" rel="noopener" class="floating-whatsapp whatsapp-float" title="Falar com DAVID REPRESENTANTE">
+        <span class="tooltip">💬 Falar com David</span>
+        💬
+    </a>
+
+    <script>
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('open');
+        }
+
+        function sendWhatsApp(productText) {
+            const phone = '5511944636972';
+            const message = encodeURIComponent('Olá David! Tenho interesse no produto:\n\n' + productText +
+                '\n\nPoderia me passar mais informações?');
+            window.open('https://wa.me/' + phone + '?text=' + message, '_blank');
+        }
+
+        // Expand first section by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstSection = document.querySelector('.brand-section.open');
+            if (firstSection) {
+                firstSection.classList.add('open');
+            }
+        });
+    </script>
+</body>
+</html>
