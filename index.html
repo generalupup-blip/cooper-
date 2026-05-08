@@ -492,7 +492,7 @@
             'AM':120, 'AC':120, 'AP':120, 'RR':120, 'GO':80
         };
 
-        // Catálogo completo (368 produtos) - revisado e sem aspas problemáticas
+        // Catálogo completo (368 produtos)
         const produtosBase = [
             {id:1,nome:"GHK-Cu 100mg/3ml",preco:800,marca:"NEOPEPTIDES",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-Cu"},
             {id:2,nome:"SLU-PP-332 5mg/3ml",preco:600,marca:"NEOPEPTIDES",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=SLU"},
@@ -877,7 +877,7 @@
         const STORAGE_KEY_USUARIOS = 'cooper_usuarios';
         const STORAGE_KEY_PEDIDOS = 'pedidos_backup';
 
-        // ========== PERSISTÊNCIA DE USUÁRIOS ==========
+        // ========== PERSISTÊNCIA ==========
         function salvarUsuariosLocal() {
             localStorage.setItem(STORAGE_KEY_USUARIOS, JSON.stringify(usuarios));
         }
@@ -892,9 +892,11 @@
         async function salvarUsuarioFirestore(u) {
             try { await db.collection('usuarios').doc(String(u.id)).set(u); } catch(e) {}
         }
+
         async function atualizarUsuarioFirestore(u) {
             try { await db.collection('usuarios').doc(String(u.id)).update(u); } catch(e) {}
         }
+
         async function deletarUsuarioFirestore(id) {
             try { await db.collection('usuarios').doc(String(id)).delete(); } catch(e) {}
         }
@@ -914,7 +916,6 @@
             }
         }
 
-        // ========== PERSISTÊNCIA DE PEDIDOS (NOVA) ==========
         function salvarPedidosBackup() {
             localStorage.setItem(STORAGE_KEY_PEDIDOS, JSON.stringify(pedidos));
         }
@@ -924,13 +925,11 @@
             if (backup) {
                 try {
                     const backupPedidos = JSON.parse(backup);
-                    // mescla sem duplicar (pelo id)
                     backupPedidos.forEach(bp => {
                         if (!pedidos.find(p => p.id === bp.id)) {
                             pedidos.push(bp);
                         }
                     });
-                    // reordena por data decrescente
                     pedidos.sort((a,b) => new Date(b.data) - new Date(a.data));
                 } catch(e) {}
             }
@@ -938,16 +937,18 @@
 
         async function carregarDadosFirebase() {
             await carregarUsuariosFirestore();
+
             // Carrega pedidos do Firestore
             try {
                 const pSnap = await db.collection('pedidos_cooper').orderBy('data','desc').get();
                 pedidos = pSnap.docs.map(d => ({id: d.id, ...d.data()}));
             } catch(e) {}
+
             // Mescla com backup local
             carregarPedidosBackup();
-            // Salva novamente backup atualizado
             salvarPedidosBackup();
 
+            // Produtos
             try {
                 const prodSnap = await db.collection('produtos_cooper').get();
                 if (!prodSnap.empty) {
@@ -964,8 +965,13 @@
             } catch(e) {}
         }
 
-        async function salvarProdutoFirestore(prod) { try { await db.collection('produtos_cooper').doc(String(prod.id)).set(prod, { merge: true }); } catch(e) {} }
-        async function deletarProdutoFirestore(id) { try { await db.collection('produtos_cooper').doc(String(id)).delete(); } catch(e) {} }
+        async function salvarProdutoFirestore(prod) {
+            try { await db.collection('produtos_cooper').doc(String(prod.id)).set(prod, { merge: true }); } catch(e) {}
+        }
+
+        async function deletarProdutoFirestore(id) {
+            try { await db.collection('produtos_cooper').doc(String(id)).delete(); } catch(e) {}
+        }
 
         function salvarDadosLocais() {
             localStorage.setItem('carrinho_cooper', JSON.stringify(carrinho));
@@ -1100,19 +1106,18 @@
                 pedidos.unshift(novoPedido);
                 salvarPedidosBackup();
                 
-                // Tenta salvar no Firestore
+                // Salva no Firestore
                 try {
                     await db.collection('pedidos_cooper').doc(String(novoPedido.id)).set(novoPedido);
                 } catch(e) {
                     console.error('Erro ao salvar pedido no Firestore:', e);
-                    alert('⚠️ Pedido registrado localmente. O administrador pode demorar para vê-lo.');
                 }
                 
                 carrinho = []; 
                 salvarDadosLocais(); 
                 atualizarUI(); 
                 renderCarrinho();
-                
+                alert('✅ Pedido enviado com sucesso! Redirecionando para o WhatsApp.');
                 window.open(`https://wa.me/5511944636972?text=${encodeURIComponent(mensagem)}`, '_blank');
             }
         }
@@ -1335,7 +1340,7 @@
             reader.readAsDataURL(file);
         }
 
-        // ========== INICIALIZAÇÃO COM TRATAMENTO DE ERRO ==========
+        // ========== INICIALIZAÇÃO ==========
         async function init() {
             carrinho = JSON.parse(localStorage.getItem('carrinho_cooper')) || [];
             clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado_cooper')) || null;
@@ -1352,11 +1357,7 @@
             }
         }
 
-        window.addEventListener('load', () => {
-            init().catch(e => {
-                document.body.innerHTML = '<div style="color:white; padding:20px;">Erro ao iniciar: ' + e.message + '</div>';
-            });
-        });
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
