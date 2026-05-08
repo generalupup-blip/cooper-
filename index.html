@@ -8,320 +8,72 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
     <style>
         :root {
-            --bg: #0a0a0a; --surface: #111111; --surface2: #1a1a1a; --border: #2a2a2a;
-            --text: #f0f0f0; --text2: #cccccc; --accent: #d4af37; --accent2: #c8a000;
+            --bg: #ffffff; --surface: #f8f9fa; --surface2: #e9ecef; --border: #ced4da;
+            --text: #212529; --text2: #495057; --accent: #0d6efd; --accent2: #0b5ed7;
             --danger: #dc3545; --success: #198754; --info: #0dcaf0; --warning: #ffc107;
-            --radius: 10px; --shadow: 0 8px 30px rgba(212,175,55,0.1); --transition: 0.25s ease;
+            --radius: 10px; --shadow: 0 8px 30px rgba(0,0,0,0.1); --transition: 0.25s ease;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-            background: #050505;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Ctext x='15' y='35' font-family='Arial,sans-serif' font-size='15' font-weight='700' fill='%23d4af37' opacity='0.04'%3ECOOPER PHARMA LTD%3C/text%3E%3Ctext x='15' y='55' font-family='Arial,sans-serif' font-size='13' font-weight='600' fill='%23d4af37' opacity='0.03'%3EDAVID OFICIAL%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 300px 200px;
-            color: #e0e0e0;
-            min-height:100vh;
-            line-height:1.5;
-        }
-        header {
-            background:var(--surface);
-            border-bottom:1px solid var(--border);
-            padding:1rem 2rem;
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            flex-wrap:wrap;
-            gap:1rem;
-            position:sticky;
-            top:0;
-            z-index:100;
-            backdrop-filter:blur(12px);
-            box-shadow:0 2px 15px rgba(0,0,0,0.5);
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #FFD700;
-            animation: blink 1.5s infinite;
-            text-shadow: 0 0 10px rgba(255,215,0,0.5);
-        }
-        @keyframes blink {
-            0%   { opacity: 1; }
-            50%  { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
+        body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; line-height:1.5; }
+        header { background:var(--surface); border-bottom:1px solid var(--border); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); box-shadow:0 2px 15px rgba(0,0,0,0.05); }
+        .logo { font-size: 2rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; color: #FFD700; animation: blink 1.5s infinite; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        @keyframes blink { 0%{opacity:1} 50%{opacity:0.3} 100%{opacity:1} }
         nav { display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center; }
-        nav button {
-            background:var(--surface2);
-            border:1px solid var(--border);
-            color:var(--text);
-            padding:0.5rem 1.1rem;
-            border-radius:20px;
-            cursor:pointer;
-            font-size:0.85rem;
-            transition:var(--transition);
-            font-weight:500;
-            white-space:nowrap;
-        }
-        nav button:hover {
-            background: #2a2a1a;
-            border-color:var(--accent);
-            color:var(--accent);
-        }
-        .cart-badge {
-            background:var(--accent);
-            color:black;
-            border-radius:50%;
-            padding:0.15rem 0.45rem;
-            font-size:0.7rem;
-            font-weight:700;
-            margin-left:4px;
-        }
+        nav button { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.5rem 1.1rem; border-radius:20px; cursor:pointer; font-size:0.85rem; transition:var(--transition); font-weight:500; white-space:nowrap; }
+        nav button:hover { background:var(--border); border-color:var(--accent); color:#0b5ed7; }
+        .cart-badge { background:var(--accent); color:white; border-radius:50%; padding:0.15rem 0.45rem; font-size:0.7rem; font-weight:700; margin-left:4px; }
         main { max-width:1300px; margin:2rem auto; padding:0 1.5rem; }
         .section { display:none; animation:fadeIn 0.4s ease; }
         .section.active { display:block; }
         @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-        h2 {
-            font-size:1.8rem;
-            margin-bottom:1.5rem;
-            color:var(--accent);
-            border-bottom:2px solid var(--border);
-            padding-bottom:0.5rem;
-        }
+        h2 { font-size:1.8rem; margin-bottom:1.5rem; color:var(--text); border-bottom:2px solid var(--border); padding-bottom:0.5rem; }
         h3 { color:var(--text); margin-bottom:1rem; font-size:1.2rem; }
         .product-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:1.5rem; }
-        .product-card {
-            background:var(--surface);
-            border:1px solid var(--border);
-            border-radius:var(--radius);
-            padding:1.5rem;
-            text-align:center;
-            transition:var(--transition);
-            box-shadow:var(--shadow);
-            display:flex;
-            flex-direction:column;
-            gap:0.6rem;
-            color:var(--text);
-        }
-        .product-card:hover {
-            transform:translateY(-5px);
-            border-color:var(--accent);
-            box-shadow:0 16px 40px rgba(212,175,55,0.2);
-        }
-        .product-card img {
-            width:100%;
-            height:120px;
-            object-fit:contain;
-            border-radius:8px;
-            background:#1a1a1a;
-            padding:0.5rem;
-        }
-        .product-card .name {
-            font-weight:700;
-            font-size:0.9rem;
-            min-height:2.4rem;
-            color:#f0f0f0;
-        }
-        .product-card .price {
-            font-size:1.4rem;
-            font-weight:800;
-            color:var(--accent);
-        }
-        .product-card .brand-tag {
-            font-size:0.6rem;
-            background:#2a2a0a;
-            padding:0.2rem 0.6rem;
-            border-radius:12px;
-            display:inline-block;
-            color:var(--accent);
-            text-transform:uppercase;
-            letter-spacing:1px;
-            font-weight:600;
-            animation: blink 1.5s infinite;
-        }
-        .qty-input {
-            width:55px;
-            padding:0.4rem;
-            background:#1a1a1a;
-            border:1px solid var(--border);
-            color:var(--text);
-            border-radius:6px;
-            text-align:center;
-        }
-        .btn {
-            background:var(--accent);
-            color:black;
-            border:none;
-            padding:0.5rem 1.2rem;
-            border-radius:20px;
-            cursor:pointer;
-            font-weight:700;
-            font-size:0.85rem;
-            transition:var(--transition);
-        }
-        .btn:hover { background:#e0b800; }
-        .btn-danger { background:var(--danger); color:white; }
-        .btn-danger:hover { background:#bb2d3b; }
-        .btn-success { background:var(--success); color:white; }
-        .btn-success:hover { background:#157347; }
-        .btn-info { background:var(--info); color:#000; }
-        .btn-info:hover { background:#0aa2c0; }
-        .btn-outline {
-            background:transparent;
-            border:2px solid var(--accent);
-            color:var(--accent);
-            font-weight:600;
-        }
-        .btn-outline:hover { background:var(--accent); color:black; }
+        .product-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; text-align:center; transition:var(--transition); box-shadow:var(--shadow); display:flex; flex-direction:column; gap:0.6rem; color:var(--text); }
+        .product-card:hover { transform:translateY(-5px); border-color:var(--accent); box-shadow:0 16px 40px rgba(13,110,253,0.1); }
+        .product-card img { width:100%; height:120px; object-fit:contain; border-radius:8px; background:#f1f3f5; padding:0.5rem; }
+        .product-card .name { font-weight:700; font-size:0.95rem; min-height:2.4rem; color:#212529; }
+        .product-card .price { font-size:1.4rem; font-weight:800; color:var(--accent2); }
+        .product-card .brand-tag { font-size:0.65rem; background:#fff3cd; padding:0.2rem 0.6rem; border-radius:12px; display:inline-block; color:#856404; text-transform:uppercase; letter-spacing:1px; font-weight:600; }
+        .qty-input { width:55px; padding:0.4rem; background:white; border:1px solid var(--border); color:var(--text); border-radius:6px; text-align:center; }
+        .btn { background:var(--accent); color:white; border:none; padding:0.5rem 1.2rem; border-radius:20px; cursor:pointer; font-weight:700; font-size:0.85rem; transition:var(--transition); }
+        .btn:hover { background:#0b5ed7; }
+        .btn-danger { background:var(--danger); } .btn-danger:hover { background:#bb2d3b; }
+        .btn-success { background:var(--success); } .btn-success:hover { background:#157347; }
+        .btn-info { background:var(--info); color:#000; } .btn-info:hover { background:#0aa2c0; }
+        .btn-outline { background:transparent; border:2px solid var(--accent); color:var(--accent); font-weight:600; }
+        .btn-outline:hover { background:var(--accent); color:white; }
         .btn-sm { padding:0.3rem 0.8rem; font-size:0.75rem; }
         .form-group { margin-bottom:1rem; }
-        .form-group label {
-            display:block;
-            margin-bottom:0.3rem;
-            font-weight:600;
-            color:var(--text2);
-            font-size:0.8rem;
-        }
-        .form-group input, .form-group select {
-            width:100%;
-            padding:0.6rem 1rem;
-            background:#1a1a1a;
-            border:1px solid var(--border);
-            border-radius:6px;
-            color:var(--text);
-            font-size:1rem;
-            transition:var(--transition);
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline:none;
-            border-color:var(--accent);
-            box-shadow:0 0 0 3px rgba(212,175,55,0.15);
-        }
-        .card {
-            background:var(--surface);
-            border:1px solid var(--border);
-            border-radius:var(--radius);
-            padding:1.5rem;
-            margin-bottom:1.5rem;
-            box-shadow:var(--shadow);
-            color:var(--text);
-        }
+        .form-group label { display:block; margin-bottom:0.3rem; font-weight:600; color:var(--text2); font-size:0.8rem; }
+        .form-group input, .form-group select { width:100%; padding:0.6rem 1rem; background:white; border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:1rem; transition:var(--transition); }
+        .form-group input:focus, .form-group select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(13,110,253,0.15); }
+        .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem; box-shadow:var(--shadow); color:var(--text); }
         .whatsapp-link { color:#25d366; text-decoration:none; font-weight:700; }
         .whatsapp-link:hover { text-decoration:underline; }
-        .search-box {
-            width:100%;
-            padding:0.7rem 1.2rem;
-            background:#1a1a1a;
-            border:1px solid var(--border);
-            border-radius:25px;
-            color:var(--text);
-            font-size:1rem;
-            margin-bottom:1.5rem;
-            transition:var(--transition);
-        }
-        .search-box:focus {
-            outline:none;
-            border-color:var(--accent);
-            box-shadow:0 0 0 3px rgba(212,175,55,0.15);
-        }
-        .status-badge {
-            padding:0.2rem 0.7rem;
-            border-radius:20px;
-            font-weight:700;
-            font-size:0.7rem;
-            text-transform:uppercase;
-            letter-spacing:0.4px;
-        }
+        .search-box { width:100%; padding:0.7rem 1.2rem; background:white; border:1px solid var(--border); border-radius:25px; color:var(--text); font-size:1rem; margin-bottom:1.5rem; transition:var(--transition); }
+        .search-box:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(13,110,253,0.15); }
+        .status-badge { padding:0.2rem 0.7rem; border-radius:20px; font-weight:700; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.4px; }
         .status-pendente { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
         .status-finalizado { background:#d1e7dd; color:#0f5132; border:1px solid #198754; }
-        .toggle-brand {
-            background:var(--surface2);
-            border:1px solid var(--border);
-            color:var(--text);
-            padding:0.5rem 1.2rem;
-            border-radius:20px;
-            cursor:pointer;
-            font-weight:600;
-            font-size:0.8rem;
-            margin:0.2rem;
-            transition:var(--transition);
-            text-transform:uppercase;
-            letter-spacing:1px;
-        }
-        .toggle-brand.active {
-            background:var(--accent);
-            color:black;
-            border-color:var(--accent);
-        }
+        .toggle-brand { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.5rem 1.2rem; border-radius:20px; cursor:pointer; font-weight:600; font-size:0.8rem; margin:0.2rem; transition:var(--transition); text-transform:uppercase; letter-spacing:1px; }
+        .toggle-brand.active { background:var(--accent); color:white; border-color:var(--accent); }
         .brand-filters { display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:1.5rem; }
-        .image-preview {
-            width:100px;
-            height:100px;
-            object-fit:contain;
-            border:1px solid var(--border);
-            border-radius:8px;
-            background:#1a1a1a;
-        }
-        .client-card {
-            background:#111;
-            border:1px solid var(--border);
-            border-radius:var(--radius);
-            padding:1.2rem;
-            margin-bottom:1rem;
-            transition:var(--transition);
-            color:var(--text);
-        }
+        .image-preview { width:100px; height:100px; object-fit:contain; border:1px solid var(--border); border-radius:8px; background:#f1f3f5; }
+        .client-card { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:1.2rem; margin-bottom:1rem; transition:var(--transition); color:var(--text); }
         .client-card:hover { border-color:var(--accent); }
-        .modal-overlay {
-            position:fixed;
-            top:0; left:0; right:0; bottom:0;
-            background:rgba(0,0,0,0.7);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            z-index:200;
-            backdrop-filter:blur(4px);
-        }
-        .modal {
-            background:#111;
-            border:1px solid var(--border);
-            border-radius:var(--radius);
-            padding:2rem;
-            max-width:500px;
-            width:90%;
-            color:var(--text);
-        }
+        .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:200; backdrop-filter:blur(4px); }
+        .modal { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:2rem; max-width:500px; width:90%; }
         .empty-state { text-align:center; padding:3rem; color:var(--text2); }
         .hidden { display:none !important; }
         .flex-row { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; }
         .flex-between { justify-content:space-between; }
         .mt-2 { margin-top:1rem; } .mb-2 { margin-bottom:1rem; }
         .upload-group { display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap; }
-        .file-input {
-            padding:0.4rem;
-            background:#1a1a1a;
-            border:1px solid var(--border);
-            border-radius:6px;
-            color:var(--text);
-            font-size:0.8rem;
-            width:180px;
-        }
-        .alert-box {
-            background: #2a2a0a;
-            border: 1px solid #4a4a2a;
-            border-radius: var(--radius);
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            color: #e0c060;
-            font-size: 0.9rem;
-            white-space: pre-line;
-        }
-        .produto-editar-item { display:flex; flex-wrap:wrap; gap:0.8rem; align-items:center; padding:1rem; border:1px solid var(--border); border-radius:8px; margin-bottom:0.8rem; background:#111; }
-        .produto-editar-item input { padding:0.4rem 0.6rem; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; background:#1a1a1a; color:#f0f0f0; }
+        .file-input { padding:0.4rem; background:white; border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.8rem; width:180px; }
+        .alert-box { background: #fff3cd; border: 1px solid #ffc107; border-radius: var(--radius); padding: 1rem; margin-bottom: 1.5rem; color: #856404; font-size: 0.9rem; white-space: pre-line; }
+        .produto-editar-item { display:flex; flex-wrap:wrap; gap:0.8rem; align-items:center; padding:1rem; border:1px solid var(--border); border-radius:8px; margin-bottom:0.8rem; background:white; }
+        .produto-editar-item input { padding:0.4rem 0.6rem; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; }
         .produto-editar-item input.nome-prod { width:200px; }
         .produto-editar-item input.preco-prod { width:90px; }
         .produto-editar-item input.marca-prod { width:160px; }
@@ -349,6 +101,7 @@
         </nav>
     </header>
     <main>
+        <!-- CATÁLOGO -->
         <section id="catalogo" class="section active">
             <h2>🏪 Catálogo de Produtos</h2>
             <input type="text" class="search-box" placeholder="🔍 Buscar por nome..." id="searchInput" oninput="renderCatalogo()">
@@ -356,6 +109,7 @@
             <div id="catalogoContainer" class="product-grid"></div>
         </section>
 
+        <!-- CARRINHO -->
         <section id="carrinho" class="section">
             <h2>🛒 Seu Carrinho</h2>
             <div id="carrinhoContainer"></div>
@@ -365,13 +119,14 @@
                     <p><strong>Total de itens:</strong> <span id="resumoItens">0</span></p>
                     <p><strong>Subtotal:</strong> <span id="resumoSubtotal">R$ 0,00</span></p>
                     <p><strong>Frete:</strong> <span id="resumoFrete">R$ 0,00</span></p>
-                    <p><strong>Valor Total:</strong> <span id="resumoTotal" style="font-size:1.5rem;color:var(--accent);">R$ 0,00</span></p>
+                    <p><strong>Valor Total:</strong> <span id="resumoTotal" style="font-size:1.5rem;color:var(--accent2);">R$ 0,00</span></p>
                     <button class="btn" onclick="finalizarPedido()" id="btnFinalizar" disabled>✅ Finalizar Compra</button>
                     <p id="msgLoginNeeded" style="color:#dc3545;margin-top:0.5rem;">⚠️ Faça login para finalizar.</p>
                 </div>
             </div>
         </section>
 
+        <!-- LOGIN CLIENTE -->
         <section id="login" class="section">
             <h2>👤 Acesso do Cliente</h2>
             <div class="card" style="max-width:600px;margin:0 auto;">
@@ -379,14 +134,15 @@
                     <h3>Entrar</h3>
                     <div class="form-group"><label>CPF</label><input type="text" id="loginCpf" placeholder="000.000.000-00"></div>
                     <button class="btn" onclick="loginCliente()">Entrar</button>
-                    <p style="margin-top:1rem;">Não tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent);">Cadastre-se</a></p>
+                    <p style="margin-top:1rem;">Não tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent2);">Cadastre-se</a></p>
                 </div>
                 <div id="cadastroForm" class="hidden">
                     <h3>Cadastro</h3>
                     <div class="alert-box">
                         <strong>*COPIE, COLE E PREENCHA OS DADOS NA FRENTE*</strong><br>
                         <strong>OBS:</strong> <em>1° preencher o formulário corretamente. Não nos responsabilizamos por informações incorretas!!</em><br><br>
-                        <strong>🔴2° É OBRIGATÓRIO FAZER FOTO E VIDEO ABRINDO A CAIXA COM OS PRODUTOS. CHEGANDO ALGO ERRADO OU FALTANDO SÓ COM O VÍDEO PODERÁ SER RESSARCIDO!!</strong>
+                        <strong>🔴2° É OBRIGATÓRIO FAZER FOTO E VIDEO ABRINDO A CAIXA COM OS PRODUTOS. CHEGANDO ALGO ERRADO OU FALTANDO SÓ COM O VÍDEO PODERÁ SER RESSARCIDO!!</strong><br>
+                        ⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠
                     </div>
                     <div class="form-group"><label>NOME COMPLETO</label><input type="text" id="cadNome"></div>
                     <div class="form-group"><label>CPF</label><input type="text" id="cadCpf"></div>
@@ -395,11 +151,11 @@
                     <div class="form-group"><label>BAIRRO</label><input type="text" id="cadBairro"></div>
                     <div class="form-group"><label>COMPLEMENTO</label><input type="text" id="cadComplemento" placeholder="Apto, bloco, etc."></div>
                     <div class="form-group"><label>CIDADE</label><input type="text" id="cadCidade"></div>
-                    <div class="form-group"><label>ESTADO</label><select id="cadRegiao"><option value="">Selecione...</option><option value="SP">SP</option><option value="RJ">RJ</option><option value="MG">MG</option><option value="ES">ES</option><option value="DF">DF</option><option value="GO">GO</option><option value="RS">RS</option><option value="SC">SC</option><option value="PR">PR</option><option value="MT">MT</option><option value="MS">MS</option><option value="BA">BA</option><option value="CE">CE</option><option value="MA">MA</option><option value="PA">PA</option><option value="AC">AC</option><option value="AM">AM</option><option value="TO">TO</option><option value="RO">RO</option><option value="RR">RR</option><option value="AP">AP</option><option value="AL">AL</option><option value="PE">PE</option><option value="PB">PB</option><option value="PI">PI</option><option value="SE">SE</option><option value="RN">RN</option></select></div>
+                    <div class="form-group"><label>ESTADO</label><select id="cadRegiao"><option value="">Selecione...</option><option value="SP">SP</option><option value="RJ">RJ</option><option value="MG">MG</option><option value="ES">ES</option><option value="DF">DF</option><option value="GO">GO</option><option value="RS">RS</option><option value="SC">SC</option><option value="PR">PR</option><option value="MT">MT</option><option value="MS">MS</option><option value="BA">BA</option><option value="AL">AL</option><option value="CE">CE</option><option value="MA">MA</option><option value="PE">PE</option><option value="PB">PB</option><option value="PI">PI</option><option value="PA">PA</option><option value="AC">AC</option><option value="AM">AM</option><option value="TO">TO</option><option value="RO">RO</option><option value="RN">RN</option><option value="SE">SE</option><option value="RR">RR</option><option value="AP">AP</option></select></div>
                     <div class="form-group"><label>CEP</label><input type="text" id="cadCep" placeholder="00000-000"></div>
                     <div class="form-group"><label>WhatsApp (com DDD)</label><input type="text" id="cadContato" placeholder="11 94463-6972"></div>
                     <button class="btn" onclick="cadastrarCliente()">Cadastrar</button>
-                    <p style="margin-top:1rem;">Já tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent);">Entrar</a></p>
+                    <p style="margin-top:1rem;">Já tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent2);">Entrar</a></p>
                 </div>
             </div>
             <div class="card" style="max-width:500px;margin:1rem auto;background:var(--surface2);border-left:4px solid var(--accent);">
@@ -408,6 +164,7 @@
             </div>
         </section>
 
+        <!-- ADMIN DASHBOARD -->
         <section id="admin" class="section">
             <h2>📊 Painel Administrativo</h2>
             <div id="adminLoginForm" class="card" style="max-width:400px;margin:2rem auto;">
@@ -429,11 +186,13 @@
             </div>
         </section>
 
+        <!-- GERENCIAR CLIENTES -->
         <section id="gerenciarClientes" class="section">
             <h2>👥 Gerenciar Clientes</h2>
             <div id="clientesContainer"></div>
         </section>
 
+        <!-- GERENCIAR PRODUTOS -->
         <section id="gerenciarProdutos" class="section">
             <h2>📦 Gerenciar Catálogo de Produtos</h2>
             <div class="card mb-2">
@@ -449,6 +208,7 @@
             <div id="gerenciarContainer"></div>
         </section>
 
+        <!-- MODAL EDITAR CLIENTE -->
         <div id="modalEditarCliente" class="modal-overlay hidden">
             <div class="modal">
                 <h3>✏️ Editar Cliente</h3>
@@ -459,7 +219,7 @@
                 <div class="form-group"><label>Bairro</label><input type="text" id="editBairro"></div>
                 <div class="form-group"><label>Complemento</label><input type="text" id="editComplemento"></div>
                 <div class="form-group"><label>Cidade</label><input type="text" id="editCidade"></div>
-                <div class="form-group"><label>Estado</label><select id="editRegiao"><option value="">Selecione...</option><option value="SP">SP</option><option value="RJ">RJ</option><option value="MG">MG</option><option value="ES">ES</option><option value="DF">DF</option><option value="GO">GO</option><option value="RS">RS</option><option value="SC">SC</option><option value="PR">PR</option><option value="MT">MT</option><option value="MS">MS</option><option value="BA">BA</option><option value="CE">CE</option><option value="MA">MA</option><option value="PA">PA</option><option value="AC">AC</option><option value="AM">AM</option><option value="TO">TO</option><option value="RO">RO</option><option value="RR">RR</option><option value="AP">AP</option><option value="AL">AL</option><option value="PE">PE</option><option value="PB">PB</option><option value="PI">PI</option><option value="SE">SE</option><option value="RN">RN</option></select></div>
+                <div class="form-group"><label>Estado</label><select id="editRegiao"><option value="">Selecione...</option><option value="SP">SP</option><option value="RJ">RJ</option><option value="MG">MG</option><option value="ES">ES</option><option value="DF">DF</option><option value="GO">GO</option><option value="RS">RS</option><option value="SC">SC</option><option value="PR">PR</option><option value="MT">MT</option><option value="MS">MS</option><option value="BA">BA</option><option value="CE">CE</option><option value="MA">MA</option><option value="PA">PA</option><option value="AC">AC</option><option value="AM">AM</option><option value="TO">TO</option><option value="RO">RO</option><option value="RN">RN</option><option value="SE">SE</option><option value="PE">PE</option><option value="PB">PB</option><option value="PI">PI</option><option value="AL">AL</option><option value="RR">RR</option><option value="AP">AP</option></select></div>
                 <div class="form-group"><label>CEP</label><input type="text" id="editCep"></div>
                 <div class="form-group"><label>WhatsApp</label><input type="text" id="editContato"></div>
                 <input type="hidden" id="editClienteId">
@@ -470,768 +230,777 @@
             </div>
         </div>
     </main>
-
     <script>
-        // ========== CONFIGURAÇÃO FIREBASE ==========
+        // NOVO FIREBASE CONFIG - COOPER PHARMA
         const firebaseConfig = {
             apiKey: "AIzaSyA3opO53eiig8sJkVIHMFuYy5TZxOSFEbY",
             authDomain: "cooper-2c714.firebaseapp.com",
+            databaseURL: "https://cooper-2c714-default-rtdb.firebaseio.com",
             projectId: "cooper-2c714",
             storageBucket: "cooper-2c714.firebasestorage.app",
             messagingSenderId: "791406083313",
-            appId: "1:791406083313:web:f6772963085b6625abbd50"
+            appId: "1:791406083313:web:3444d1794af078b3abbd50"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
+        // FRETE COM PREÇO FIXO POR ESTADO (TABELA ATUALIZADA)
         const fretePorRegiao = {
-            'SP':50, 'RJ':60, 'MG':60, 'SC':60, 'RS':60, 'PR':60, 'ES':60,
-            'DF':65, 'CE':70, 'BA':70, 'AL':70, 'MA':70,
-            'MT':75, 'PE':75, 'PB':75, 'PI':75,
-            'PA':80, 'TO':80, 'MS':90, 'SE':100, 'RN':100, 'RO':100,
-            'AM':120, 'AC':120, 'AP':120, 'RR':120, 'GO':80
+            'SP': 50,
+            'RJ': 60, 'MG': 60, 'SC': 60, 'RS': 60, 'PR': 60, 'ES': 60,
+            'DF': 65,
+            'CE': 70, 'BA': 70, 'AL': 70, 'MA': 70,
+            'MT': 75, 'PE': 75, 'PB': 75, 'PI': 75,
+            'PA': 80, 'TO': 80,
+            'MS': 90,
+            'SE': 100, 'RN': 100, 'RO': 100,
+            'AM': 120
         };
 
-        // Catálogo completo (368 produtos)
+        // TABELA COMPLETA DE PRODUTOS
         const produtosBase = [
-            {id:1,nome:"GHK-Cu 100mg/3ml",preco:800,marca:"NEOPEPTIDES",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-Cu"},
-            {id:2,nome:"SLU-PP-332 5mg/3ml",preco:600,marca:"NEOPEPTIDES",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=SLU"},
-            {id:3,nome:"Tesamorelin 10mg/3ml",preco:750,marca:"NEOPEPTIDES",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Tesa"},
-            {id:4,nome:"GLOW 70mg/3ml",preco:800,marca:"NEOPEPTIDES",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=GLOW"},
-            {id:5,nome:"GHK-CU NOVAX 100MG/2ML",preco:750,marca:"NEOPEPTIDES",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=GHKNOV"},
-            {id:6,nome:"KLOW-4 - 80mg/2ml",preco:1200,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=KLOW4"},
-            {id:7,nome:"KPV - 10mg/2ml",preco:580,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=KPV"},
-            {id:8,nome:"Semax - 10mg/2ml",preco:580,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=Semax"},
-            {id:9,nome:"Selank - 10mg/2ml",preco:580,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=Selank"},
-            {id:10,nome:"Humanin - 10mg/2ml",preco:820,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=Humanin"},
-            {id:11,nome:"BPC-157 10mg/2ml",preco:650,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=BPC"},
-            {id:12,nome:"SS-31 50mg/2ml",preco:1140,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=SS31"},
-            {id:13,nome:"HGH FRAG 176-191 10mg/2ml",preco:770,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=FRAG"},
-            {id:14,nome:"5-Amino-1MQ 5mg/2ml",preco:485,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=5A1MQ"},
-            {id:15,nome:"IPAMORELIN 10mg/2ml",preco:590,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=IPA"},
-            {id:16,nome:"GLOW-3 70mg/2ml",preco:1130,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=GLOW3"},
-            {id:17,nome:"IGF-1 LR3 1000mcg/2ml",preco:820,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=IGF1"},
-            {id:18,nome:"TB-500 10mg/2ml",preco:700,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=TB500"},
-            {id:19,nome:"GHK-Cu 100mg/2ml",preco:700,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=GHK100"},
-            {id:20,nome:"SLU-PP-332 5mg/2ml",preco:670,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=SLU2"},
-            {id:21,nome:"AOD-9604 5mg/2ml",preco:580,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=AOD"},
-            {id:22,nome:"CJC-1295 (No DAC) 10mg/2ml",preco:675,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=CJC"},
-            {id:23,nome:"CJC-1295 (DAC) 5mg/2ml",preco:675,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=CJCDAC"},
-            {id:24,nome:"MOTS-c 10mg/2ml",preco:575,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=MOTS"},
-            {id:25,nome:"PT-141 10mg/2ml",preco:570,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=PT141"},
-            {id:26,nome:"TESAMORELIN 10mg/2ml",preco:830,marca:"NOVAX PHARMACEUTICA",img:"https://placehold.co/150x150/2a1a1e/d4af37?text=TESA10"},
-            {id:27,nome:"Retatrutide 60mg",preco:2950,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Reta60"},
-            {id:28,nome:"Retatrutide 30mg (caneta)",preco:2200,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Reta30"},
-            {id:29,nome:"Retatrutide 15mg",preco:900,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Reta15"},
-            {id:30,nome:"Tirzepatide 30mg (caneta)",preco:1600,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Tirz30"},
-            {id:31,nome:"Tirzepatide 15mg",preco:495,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Tirz15"},
-            {id:32,nome:"GH 16ui",preco:370,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=GH16"},
-            {id:33,nome:"Retatrutida 40mg Synedica",preco:2800,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Syn40"},
-            {id:34,nome:"TIZERPATIDA 60MG KING PHARMA",preco:1400,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=T60KP"},
-            {id:35,nome:"Mounjaro 15mg",preco:5000,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Moun"},
-            {id:36,nome:"Lipoless 60mg",preco:1700,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Lipo"},
-            {id:37,nome:"Tizerpatida (60mg)",preco:1800,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Tiz60"},
-            {id:38,nome:"Semaglutide Ozenpic 5mg ZPHC",preco:1000,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Ozen"},
-            {id:39,nome:"Prosoy retardador 30mg/6cmp",preco:125,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Prosoy"},
-            {id:40,nome:"NAD+ 1.000mg ZPHC",preco:865,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=NAD"},
-            {id:41,nome:"GLOW Pro Mix 60mg ZPHC",preco:2700,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=GLOWPro"},
-            {id:42,nome:"GHK-Cu Zphc 60mg",preco:1600,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=GHKZ"},
-            {id:43,nome:"Melanotan II Zphc 10mg",preco:700,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Mela"},
-            {id:44,nome:"HGH Frag 5mg Zphc",preco:1700,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=HGH5"},
-            {id:45,nome:"HGH Frag zphc 10mg",preco:2700,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=HGH10"},
-            {id:46,nome:"Ultra Rehab Mix Zphc",preco:1900,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Ultra"},
-            {id:47,nome:"TB500 20mg Zphc",preco:1950,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=TB20"},
-            {id:48,nome:"BPC-157 20mg Zphc",preco:1450,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=BPC20"},
-            {id:49,nome:"GH ZPTrop 90ui vial",preco:1900,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=GH90"},
-            {id:50,nome:"GH ZPTrop 72ui caneta",preco:1800,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=GH72"},
-            {id:51,nome:"Masteron 100mg/10ml Canadá Bio Labs",preco:500,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=MastC"},
-            {id:52,nome:"IGF-1 LR3 1,4mg caneta Spectrum",preco:2450,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=IGFSp"},
-            {id:53,nome:"Enantato 300mg spectrum",preco:380,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=EnSp"},
-            {id:54,nome:"IGF1-LR3 500mcg Muscle Pharma",preco:950,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=IGFMP"},
-            {id:55,nome:"RETATRUTIDA OXYGEN Retage 40mg Caneta",preco:1950,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Oxy"},
-            {id:56,nome:"Primobolan 200mg/ZPHC (ampola 2ml)",preco:1250,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=PrimoZ"},
-            {id:57,nome:"T.G Varejo",preco:1700,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=TG"},
-            {id:58,nome:"Masteron - pharmacom",preco:550,marca:"ZPHC LABS PREMIUM",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=MastP"},
-            {id:59,nome:"NPP 100mg/10ml NOVO",preco:190,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=NPP"},
-            {id:60,nome:"Enantato 250mg/10ml",preco:170,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=EnantB"},
-            {id:61,nome:"Sales de Testosterona (Durateston) 250mg/10ml",preco:175,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=DuraB"},
-            {id:62,nome:"Propionato 100mg/10ml",preco:165,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=PropB"},
-            {id:63,nome:"Cipionato 200mg/10ml",preco:170,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=CipB"},
-            {id:64,nome:"Decanoato de Nandrolona 200mg/10ml",preco:180,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=DecaB"},
-            {id:65,nome:"Boldenona 250mg/10ml",preco:180,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=BoldB"},
-            {id:66,nome:"Masteron Propionato 100mg/10ml",preco:190,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=MastB"},
-            {id:67,nome:"Trembo enantato novo 200mg",preco:205,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=TremE"},
-            {id:68,nome:"Trembolona Acetato 100mg/10ml",preco:195,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=TremA"},
-            {id:69,nome:"B-Blend (CutStack) 150mg/10ml NOVO",preco:200,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=Cut"},
-            {id:70,nome:"Primobolan 100mg/10ml NOVO",preco:400,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=PrimoB"},
-            {id:71,nome:"Stano OLEOSO NOVO 50mg/10ml",preco:170,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=StanoO"},
-            {id:72,nome:"Dianabol 100cmp/10mg",preco:125,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=DianaB"},
-            {id:73,nome:"Oxandrolona 50cmp/10mg",preco:275,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=OxanB"},
-            {id:74,nome:"Proviron 25cmcp/25mg",preco:140,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=ProvB"},
-            {id:75,nome:"Hemogenin 25cmp/50mg",preco:135,marca:"BRATVA",img:"https://placehold.co/150x150/1a1a1a/d4af37?text=HemoB"},
-            {id:76,nome:"Durateston 250mg/1ml",preco:35,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Dura1"},
-            {id:77,nome:"Testoland (Cipionato) 200mg/3amp",preco:95,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=TestoL"},
-            {id:78,nome:"Testenat (Enantato) 250mg/4ml",preco:107,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Teste"},
-            {id:79,nome:"Decaland 200mg/5ml",preco:107,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Deca"},
-            {id:80,nome:"Stanozolol 50mg/30ml",preco:205,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Stano30"},
-            {id:81,nome:"Stanozolol 50mg/15ml",preco:110,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Stano15"},
-            {id:82,nome:"Landertropin (GH) 100ui",preco:2450,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=GH100"},
-            {id:83,nome:"Drostenoland 50cmp/10mg",preco:240,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Drost"},
-            {id:84,nome:"Primobolan oral 30cmp/25mg",preco:500,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=PrimoO"},
-            {id:85,nome:"Oxitoland (Hemogenim) 20cmp/50mg",preco:135,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Oxi"},
-            {id:86,nome:"Dianabol 100cmp/10mg",preco:130,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Diana"},
-            {id:87,nome:"Stanozolol 100cmp/10mg",preco:110,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Stano"},
-            {id:88,nome:"Androlic (Proviron) 20cmp/25mg",preco:150,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Andro"},
-            {id:89,nome:"Oxandroland 100cmp/5mg",preco:330,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Oxan5"},
-            {id:90,nome:"Oxandroland 50cmp/10mg",preco:300,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Oxan10"},
-            {id:91,nome:"Melatonina 120caps/10mg",preco:95,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=Mela"},
-            {id:92,nome:"DHEA 90caps/50mg",preco:160,marca:"LANDERLAN",img:"https://placehold.co/150x150/1a1a2e/d4af37?text=DHEA"},
-            {id:93,nome:"Testenat (Enantato) 250mg/10ml",preco:230,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=EnantG"},
-            {id:94,nome:"Durateston 250mg/10ml",preco:230,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=DuraG"},
-            {id:95,nome:"Deca 200mg/10ml",preco:230,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=DecaG"},
-            {id:96,nome:"Testoland (Cipionato) 100mg/10ml",preco:190,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=CipG"},
-            {id:97,nome:"Propionato 100mg/10ml",preco:169,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=PropG"},
-            {id:98,nome:"Fenilpropionato (NPP) 100mg/10ml",preco:230,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=NPPG"},
-            {id:99,nome:"Boldenona 250mg/10ml",preco:230,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=BoldG"},
-            {id:100,nome:"Masteron 100mg/10ml",preco:235,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=MastG"},
-            {id:101,nome:"Primobolan 100mg/10ml",preco:480,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=PrimoG"},
-            {id:102,nome:"Trembo Enantato 200mg/10ml",preco:240,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=TremEG"},
-            {id:103,nome:"Trembo Acetato 100mg/10ml",preco:280,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=TremAG"},
-            {id:104,nome:"Tritrembo 200mg/10ml",preco:399,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=TriG"},
-            {id:105,nome:"Trembo Hexa 51mg/10ml",preco:290,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=HexaG"},
-            {id:106,nome:"Clembuterol 50 comp/40mcg",preco:180,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=Clemb"},
-            {id:107,nome:"HCG 5000 UI",preco:500,marca:"LANDERLAN GOLD",img:"https://placehold.co/150x150/1e2a1e/d4af37?text=HCG"},
-            {id:108,nome:"Testoviron (Enantato) 250mg/10ml",preco:185,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=Testov"},
-            {id:109,nome:"Sustan (Durateston) 250mg/10ml",preco:185,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=Sustan"},
-            {id:110,nome:"Testex (Cipionato) 250mg/10ml",preco:185,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=Testex"},
-            {id:111,nome:"Propiobolic (Propionato) 200mg/10ml",preco:165,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=PropKP"},
-            {id:112,nome:"Deca Durabolin 300mg/10ml",preco:190,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=DecaKP"},
-            {id:113,nome:"Masteron 100mg/10ml",preco:195,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=MastKP"},
-            {id:114,nome:"Masteron Slow 100mg/10ml",preco:230,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=MastS"},
-            {id:115,nome:"Parabolan (Trembo Ace) 100mg/10ml",preco:199,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=ParaA"},
-            {id:116,nome:"Finaplix (Trembo Enan) 100mg/10ml",preco:199,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=Fina"},
-            {id:117,nome:"Parabolin Blend 200mg/10ml",preco:295,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=ParaBlend"},
-            {id:118,nome:"Boldabolic (Boldenona) 300mg/10ml",preco:195,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=BoldKP"},
-            {id:119,nome:"CutStack 150mg/10ml",preco:195,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=CutKP"},
-            {id:120,nome:"Estanozolol 15 50mg/15ml",preco:100,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=St15"},
-            {id:121,nome:"Estanozolol 30 50mg/30ml",preco:185,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=St30"},
-            {id:122,nome:"Primobolan 100mg/10ml",preco:410,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=PrimoKP"},
-            {id:123,nome:"Anadrol (Hemogenin) 50cmp/50mg",preco:195,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=Anadr"},
-            {id:124,nome:"Anavar (Oxandrolona) 50cmp/10mg",preco:230,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=Anav"},
-            {id:125,nome:"Oxandrolone 50cmp/20mg",preco:320,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=Ox20"},
-            {id:126,nome:"Dianabol 100cmp/10mg",preco:110,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=DianaKP"},
-            {id:127,nome:"Masteron-New oral 50cmp/10mg",preco:230,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=MastO"},
-            {id:128,nome:"Estanozolol 100cmp/10mg",preco:110,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=StanoKP"},
-            {id:129,nome:"Turinabol 50cmp/10mg",preco:199,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=TuriKP"},
-            {id:130,nome:"Halotestin 30comp/10mg",preco:400,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=HaloKP"},
-            {id:131,nome:"Proviron 20cmp/25mg",preco:135,marca:"KING PHARMA",img:"https://placehold.co/150x150/2a1a1a/d4af37?text=ProvKP"},
-            {id:132,nome:"Testosteone Mix (Dura) 250mg/10ml",preco:390,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=MixZ"},
-            {id:133,nome:"Testosterone Enanthate 250mg/10ml",preco:370,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=EnZ"},
-            {id:134,nome:"Testosterone Cypionate 200mg/10ml",preco:290,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=CipZ"},
-            {id:135,nome:"Testosterone Propionate 100mg/10ml",preco:229,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=PropZ"},
-            {id:136,nome:"DHB 75mg/10ml",preco:650,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=DHB"},
-            {id:137,nome:"Nandrolone Mix 300mg/10ml",preco:600,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=NanM"},
-            {id:138,nome:"Nandrolone Decanoate (Deca) 250mg/10ml",preco:450,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=DecaZ"},
-            {id:139,nome:"Nandrolone Phenylpropionate (NPP) 100mg/10ml",preco:350,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=NPPZ"},
-            {id:140,nome:"Drostanolone Propionate (Masteron) 100mg/10ml",preco:550,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=MastZ"},
-            {id:141,nome:"Drostanolone Enanthate 200mg/10ml",preco:700,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=MastEZ"},
-            {id:142,nome:"Trembolone Acetate 100mg/10ml",preco:530,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=TremAZ"},
-            {id:143,nome:"Trembolone Enanthate 200mg/10ml",preco:550,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=TremEZ"},
-            {id:144,nome:"Trestolone Acetato 50mg/10ml",preco:750,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=TrestA"},
-            {id:145,nome:"Trestolone Enanthate 50mg/10ml",preco:800,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=TrestE"},
-            {id:146,nome:"Boldenone Undecylenate 250mg/10ml",preco:240,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=BoldZ"},
-            {id:147,nome:"Methenolone Enanthate (Primo) 100mg/10ml",preco:750,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=PrimoZ2"},
-            {id:148,nome:"Zptropin 80 (HGH) 80ui",preco:1830,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=Zptrop"},
-            {id:149,nome:"HP-hCG 5.000ui",preco:380,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=hCGZ"},
-            {id:150,nome:"Methandienone (Diana) 100cmp/10mg",preco:220,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=DianaZ"},
-            {id:151,nome:"Stanozolol 100cmp/10mg",preco:220,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=StanoZ"},
-            {id:152,nome:"Oxymetholone (Hemogenin) 100cmp/25mg",preco:480,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=HemoZ"},
-            {id:153,nome:"Clenbuterol 100cmp/50mcg",preco:260,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=ClenZ"},
-            {id:154,nome:"Turinabol 100cmp/10mg",preco:420,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=TuriZ"},
-            {id:155,nome:"Oxandrolone 100cmp/10mg",preco:440,marca:"ZPHC PREMIUM",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=OxanZ"},
-            {id:156,nome:"Sustan (Dura) 250mg/1ml",preco:29,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=SusMP"},
-            {id:157,nome:"Sustan XT (Dura) 250mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=SusXT"},
-            {id:158,nome:"Testoviron 250 (Enan) 250mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=TestoMP"},
-            {id:159,nome:"Testex 250 (Cipio) 250mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=TexMP"},
-            {id:160,nome:"Testoviron 100 (Prop) 100mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=PropMP"},
-            {id:161,nome:"Deca Durabolin XT 300mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=DecaMP"},
-            {id:162,nome:"Dynabolon (NPP) 100mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=NPPMP"},
-            {id:163,nome:"Boldebol 200mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=BoldMP"},
-            {id:164,nome:"Parabolan (Trembo Acetato) 100mg/10ml",preco:240,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=ParaMP"},
-            {id:165,nome:"Parabolan L.A (Trembo Enantato) 200mg/10ml",preco:240,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=ParaLA"},
-            {id:166,nome:"Parabolin Blend (Tritrembo) 200mg/10ml",preco:350,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=ParaBl"},
-            {id:167,nome:"Masteron 100mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=MastMP"},
-            {id:168,nome:"Primobolan 100mg/10ml",preco:380,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=PrimoMP"},
-            {id:169,nome:"Stanozolol 50mg/30ml",preco:180,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=St30MP"},
-            {id:170,nome:"D-Bol (Diana Injet.) 50mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=DBol"},
-            {id:171,nome:"Anadrol Inject (Hemo Injet.) 50mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=AnaInj"},
-            {id:172,nome:"Cut Stack XT 200mg/10ml",preco:220,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=CutMP"},
-            {id:173,nome:"HCG-Rx² 5.000ui",preco:250,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=HCGMP"},
-            {id:174,nome:"HGH Fragment 5 vials x 2mg",preco:950,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=HGHFr"},
-            {id:175,nome:"HGH Somatropin 50ui",preco:950,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=GH50"},
-            {id:176,nome:"Turinabol 60cmp/25mg",preco:230,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=TuriMP"},
-            {id:177,nome:"Anavar5 100caps/5mg",preco:260,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=Ana5"},
-            {id:178,nome:"Anavar10 50caps/10mg",preco:260,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=Ana10"},
-            {id:179,nome:"Anavar25 50caps/25mg",preco:390,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=Ana25"},
-            {id:180,nome:"Halotestin 30cmp/10mg",preco:370,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=HaloMP"},
-            {id:181,nome:"Dianabol 50cmp/25mg",preco:130,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=DianaMP"},
-            {id:182,nome:"Stano Tablet 100cmp/10mg",preco:130,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=StanoMP"},
-            {id:183,nome:"Anadrol 25 (Hemogenin) 50cmp/25mg",preco:160,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=Ana25MP"},
-            {id:184,nome:"T3 Cytomel 50cmp/100mcg",preco:170,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=T3MP"},
-            {id:185,nome:"Aromazin XT (Anastrozol) 30cmp/10mg",preco:160,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=AroMP"},
-            {id:186,nome:"Proviron 40cmp/25mg",preco:170,marca:"MUSCLE PHARMA",img:"https://placehold.co/150x150/1e1e2a/d4af37?text=ProvMP"},
-            {id:187,nome:"Probolic (Prop) 100mg/10ml",preco:340,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=PropCP"},
-            {id:188,nome:"Enanbolic (Enan) 250mg/10ml",preco:390,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=EnanCP"},
-            {id:189,nome:"Susobolic (Dura) 250mg/10ml",preco:440,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=SusCP"},
-            {id:190,nome:"Cypiobolic (Cipio) 250mg/10ml",preco:380,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=CypCP"},
-            {id:191,nome:"Bolbolic (Bold) 250mg/10ml",preco:580,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=BoldCP"},
-            {id:192,nome:"Decabolic (Deca) 250mg/10ml",preco:480,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=DecaCP"},
-            {id:193,nome:"Nanbolic-PH (NPP) 100mg/10ml",preco:480,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=NPPCP"},
-            {id:194,nome:"Masterbolic (Master) 100mg/10ml",preco:550,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=MastCP"},
-            {id:195,nome:"Masteronbolic 200mg/10ml",preco:650,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=MastECP"},
-            {id:196,nome:"Primobolic (Primo) 100mg/10ml",preco:870,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=PrimoCP"},
-            {id:197,nome:"Trenanbolic (Tren Enan) 200mg/5ml",preco:550,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=TrenECP"},
-            {id:198,nome:"Trenbolic (Tren ACE) 100mg/5ml",preco:350,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=TrenACP"},
-            {id:199,nome:"T6bolic (Tren Hexa) 76.5mg/5ml",preco:420,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=T6CP"},
-            {id:200,nome:"Winobolic (Estano) 50mg/10ml",preco:300,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=WinoCP"},
-            {id:201,nome:"Cotropin (HCG) 5000ui",preco:430,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=HCGCP"},
-            {id:202,nome:"HGH-Frag 176-191 (10 vials x 2000mcg)",preco:2999,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=FragCP"},
-            {id:203,nome:"HGH Somatropin 100ui",preco:3300,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=GH100CP"},
-            {id:204,nome:"IGF-1 LR3 (10 vials x 100mcg)",preco:2900,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=IGFCP"},
-            {id:205,nome:"Dianabolic (Diana) 50cmp/10mg",preco:220,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=DianaCP"},
-            {id:206,nome:"Winobolic (Stano) 50caps/10mg",preco:200,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=StanoCP"},
-            {id:207,nome:"Oxanbolic (Oxan) 50cmp/10mg",preco:370,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=OxanCP"},
-            {id:208,nome:"Oxybolic (Hemo) 50cmp/50mg",preco:320,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=HemoCP"},
-            {id:209,nome:"Turbolic (Turinabol) 50cmp/10mg",preco:300,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=TuriCP"},
-            {id:210,nome:"Flubolic (Halotestin) 50caps/5mg",preco:420,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=HaloCP"},
-            {id:211,nome:"Provibolic (Proviron) 50cmp/25mg",preco:320,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=ProvCP"},
-            {id:212,nome:"Clenbolic (Clembuterol) 50cmp/40mcg",preco:210,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=ClenCP"},
-            {id:213,nome:"T3Bolic (T3) 50cmp/25mcg",preco:350,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=T3CP"},
-            {id:214,nome:"BT-Bolic (T3/T4) 50cmp 12,5/50mcg",preco:350,marca:"COOPER PHARMA PREMIUM",img:"https://placehold.co/150x150/2a2a1a/d4af37?text=BTCP"},
-            {id:215,nome:"Testobolin (Enantato) 250mg/10ml",preco:480,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=TestoAP"},
-            {id:216,nome:"Induject-250 (Dura) 250mg/10ml",preco:480,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=InduAP"},
-            {id:217,nome:"Testocyp (Cipionato) 250mg/10ml",preco:480,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=CypAP"},
-            {id:218,nome:"TestoRapid (Propionato) 100mg/10ml",preco:420,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=PropAP"},
-            {id:219,nome:"Testobase (Testo Aquosa) 100mg/10ml",preco:450,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=BaseAP"},
-            {id:220,nome:"Nandrobolin (Deca) 250mg/10ml",preco:600,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=DecaAP"},
-            {id:221,nome:"Boldebolin (Boldenona) 250mg/10ml",preco:570,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=BoldAP"},
-            {id:222,nome:"TrenaRapid (Trembo Acetato) 100mg/10ml",preco:880,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=TrenAAP"},
-            {id:223,nome:"Trenbolin (Trembo Enantato) 250mg/10ml",preco:1400,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=TrenEAP"},
-            {id:224,nome:"Parabolin (Trembo Hexa) 76,5mg/10ml",preco:1050,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=ParaAP"},
-            {id:225,nome:"Alphabolin (Primobolan) 100mg/10ml",preco:1200,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=PrimoAP"},
-            {id:226,nome:"Rexogin (Stanozolol) 50mg/10ml",preco:520,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=StanoAP"},
-            {id:227,nome:"Mastebolin (Masteron) 100mg/10ml",preco:800,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=MastAP"},
-            {id:228,nome:"Astralean (Clembuterol) 50cmp/40mcg",preco:240,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=ClenAP"},
-            {id:229,nome:"Alphabol (Dianabol) 50cmp/10mg",preco:240,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=DianaAP"},
-            {id:230,nome:"Rexobol (Stanozolol) 50cmp/10mg",preco:220,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=StanoOAP"},
-            {id:231,nome:"Oxydrolone (Hemogenin) 50cmp/50mg",preco:750,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=HemoAP"},
-            {id:232,nome:"Oxanabol (Oxandrolona) 50cmp/10mg",preco:750,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=OxanAP"},
-            {id:233,nome:"Halobol (Halotestin) 50cmp/5mg",preco:900,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=HaloAP"},
-            {id:234,nome:"Turinabol 50cmp/10mg",preco:600,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=TuriAP"},
-            {id:235,nome:"Provibol (Proviron) 50cmp/25mg",preco:400,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=ProvAP"},
-            {id:236,nome:"Mastoral (Masteron oral) 50cmp/10mg",preco:750,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=MastOAP"},
-            {id:237,nome:"Thyro3 (T3) 30cmp/25mcg",preco:220,marca:"ALPHA PHARMA PREMIUM",img:"https://placehold.co/150x150/1a2a2a/d4af37?text=T3AP"},
-            {id:238,nome:"Pharma Sust 250 (Dura) 250mg/10ml",preco:450,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=SustPh"},
-            {id:239,nome:"Pharma Sust 350 (Dura) 300mg/10ml",preco:460,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Sust350"},
-            {id:240,nome:"Pharma Sust 500 (Dura) 500mg/10ml",preco:700,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Sust500"},
-            {id:241,nome:"Pharma Test E250 (Enantato) 250mg/10ml",preco:370,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TestEPh"},
-            {id:242,nome:"Pharma Test E300 (Enantato) 300mg/10ml",preco:460,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TestE300"},
-            {id:243,nome:"Pharma Test E500 (Enantato) 500mg/10ml",preco:700,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TestE500"},
-            {id:244,nome:"Pharma Test C250 (Cipionato) 250mg/10ml",preco:450,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TestCPh"},
-            {id:245,nome:"Pharma Test P100 (Propionato) 100mg/10ml",preco:340,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TestPPh"},
-            {id:246,nome:"Pharma Test PH100 100mg/10ml",preco:400,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TestPh"},
-            {id:247,nome:"Pharma Nan D300 (Deca) 300mg/10ml",preco:480,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=DecaPh"},
-            {id:248,nome:"Pharma Nan D600 (Deca) 600mg/10ml",preco:780,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Deca600"},
-            {id:249,nome:"Pharma Nan PH100 (NPP) 100mg/10ml",preco:450,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=NPPPh"},
-            {id:250,nome:"Pharma Nolt 300 100mg/10ml",preco:450,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Nolt"},
-            {id:251,nome:"Pharma Bold 300 (Boldenona) 300mg/10ml",preco:500,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=BoldPh"},
-            {id:252,nome:"Pharma Bold 500 (Boldenona) 500mg/10ml",preco:740,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Bold500"},
-            {id:253,nome:"Pharma Tren A100 (Trembo Ace) 100mg/10ml",preco:600,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TrenAPh"},
-            {id:254,nome:"Pharma Tren E200 (Trembo Enan) 200mg/10ml",preco:700,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TrenEPh"},
-            {id:255,nome:"Pharma Tren H100 (Trembo Hexa) 100mg/10ml",preco:850,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TrenHPh"},
-            {id:256,nome:"Pharmatropin (GH) 100ui",preco:2000,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=GHPh"},
-            {id:257,nome:"Pharma Dro P100 (Masteron) 100mg/10ml",preco:550,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=MastPh"},
-            {id:258,nome:"Pharma Prim 100 (Primo) 100mg/10ml",preco:900,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=PrimoPh"},
-            {id:259,nome:"Pharma Prim 200 (Primo) 200mg/10ml",preco:1450,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Primo200"},
-            {id:260,nome:"Pharma Stan 50 (Stano) 50mg/10ml",preco:180,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=StanoPh"},
-            {id:261,nome:"Pharma Bol 100 (Diana Injet) 100mg/10ml",preco:180,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=DianaIPh"},
-            {id:262,nome:"Pharmaoxy 50 (Hemo Injet) 50mg/10ml",preco:350,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=HemoIPh"},
-            {id:263,nome:"Pharma Mix 1 450mg/ml",preco:550,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Mix1"},
-            {id:264,nome:"Pharma Mix 2 250mg/10ml",preco:700,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Mix2"},
-            {id:265,nome:"Pharma Mix 3 500mg/10ml",preco:760,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Mix3"},
-            {id:266,nome:"Pharma Mix 4 600mg/10ml",preco:760,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Mix4"},
-            {id:267,nome:"Pharma Mix 5 100mg/10ml",preco:330,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Mix5"},
-            {id:268,nome:"Pharma Mix 6 500mg/10ml",preco:1000,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Mix6"},
-            {id:269,nome:"Pharma Mix M300 300mg/10ml",preco:850,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=MixM"},
-            {id:270,nome:"Stanos 100cmp/10mg",preco:220,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=StanosPh"},
-            {id:271,nome:"Oxandrolonos 100cmp/10mg",preco:570,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=OxanPh"},
-            {id:272,nome:"Oxymetos (Hemogenin) 25mg/100comp",preco:670,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=OxyPh"},
-            {id:273,nome:"Dianabolos 10mg/100cmp",preco:220,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=DianaPh"},
-            {id:274,nome:"Turinabolos 100cmp/10mg",preco:350,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=TuriPh"},
-            {id:275,nome:"Halotestos 100cmp/10mg",preco:1000,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=HaloPh"},
-            {id:276,nome:"Meltos (Clembuterol) 100cmp/40mcg",preco:240,marca:"PHARMACOM PREMIUM",img:"https://placehold.co/150x150/2a1e1e/d4af37?text=Meltos"},
-            {id:277,nome:"Sustanon 250 (Dura) 250mg/10ml",preco:360,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=SusCA"},
-            {id:278,nome:"Delatestryl (Enantato) 300mg/10ml",preco:360,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=DelCA"},
-            {id:279,nome:"Depotest 200 (Cipionato) 200mg/10ml",preco:360,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=DepoCA"},
-            {id:280,nome:"Testopin 100 (Propionato) 100mg/10ml",preco:240,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=TestoCA"},
-            {id:281,nome:"Decabolan 250 (Deca) 250mg/10ml",preco:450,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=DecaCA"},
-            {id:282,nome:"Durabolin 100 (NPP) 100mg/10ml",preco:350,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=NPPCA"},
-            {id:283,nome:"Equipoise 300 (Boldenona) 300mg/10ml",preco:360,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=EquiCA"},
-            {id:284,nome:"Masteron 100 (Drost Prop) 100mg/10ml",preco:455,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=MastCA"},
-            {id:285,nome:"Masteron 200 (Masteron Enantato) 200mg/10ml",preco:700,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=MastECA"},
-            {id:286,nome:"Primobolan 100 200mg/10ml",preco:780,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=PrimoCA"},
-            {id:287,nome:"Finaplix 100 (Trembo Acetato) 100mg/10ml",preco:520,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=FinaCA"},
-            {id:288,nome:"Parabol 200 (Trembo Enantato) 200mg/10ml",preco:550,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=ParaCA"},
-            {id:289,nome:"Parabolan 100 (Trembo Hexa) 100mg/10ml",preco:650,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=ParaHCA"},
-            {id:290,nome:"Ment 50 (Trestolona Acetato) 50mg/10ml",preco:780,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=MentCA"},
-            {id:291,nome:"Winstrol 50 (Stanozolol) 50mg/10ml",preco:220,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=WinsCA"},
-            {id:292,nome:"Androbase 100 (Testo Aquosa) 100mg/10ml",preco:260,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=AndroCA"},
-            {id:293,nome:"Somatropin 191AA 15IU (GH) 75ui",preco:1900,marca:"CANADA BIO LABS",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=GHCA"},
-            {id:294,nome:"Hemax Etritron 4.000ui (EPO)",preco:160,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=EPO"},
-            {id:295,nome:"Alprazolam 30comp/2mg",preco:85,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Alpra"},
-            {id:296,nome:"Durateston Aspen 250mg/1ml",preco:90,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=DuraAsp"},
-            {id:297,nome:"Deca Durabolin Aspen 50mg/1ml",preco:90,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=DecaAsp"},
-            {id:298,nome:"Fluoxetina 30comp/20mg",preco:85,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Flux"},
-            {id:299,nome:"Sibutramina 30cmp/15mg",preco:95,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Sibu"},
-            {id:300,nome:"Anastrozol 30cmp/1mg",preco:98,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Anast"},
-            {id:301,nome:"Ritalina Genérica EMS 30cmp/10mg",preco:90,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Rita30"},
-            {id:302,nome:"Ritalina Genérica EMS 60cmp/10mg",preco:160,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Rita60"},
-            {id:303,nome:"Ritalina LA 10mg/30cmp",preco:290,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=RitaLA"},
-            {id:304,nome:"Ritalina Novartis 10mg/30comp",preco:170,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=RitaNov30"},
-            {id:305,nome:"Ritalina Norvartis 10mg/60cmp",preco:280,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=RitaNov60"},
-            {id:306,nome:"Rivotril 30comp/2mg",preco:99,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Rivo"},
-            {id:307,nome:"Rivotril Gotas",preco:99,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=RivoG"},
-            {id:308,nome:"Clonazepam 2mg Medley 30cmp",preco:70,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Clon"},
-            {id:309,nome:"Clonazepam gotas Medley 20ml",preco:70,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=ClonG"},
-            {id:310,nome:"Roacutan genérico 30cmp/20mg",preco:230,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Roac"},
-            {id:311,nome:"Tadalafil 5mg/30cmp",preco:55,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Tada"},
-            {id:312,nome:"Venvanse 30mg/28cmp",preco:670,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Ven30"},
-            {id:313,nome:"Venvanse 50mg/28cmp",preco:770,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Ven50"},
-            {id:314,nome:"Venvanse 70mg/28cmp",preco:799,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Ven70"},
-            {id:315,nome:"Tamoxifeno 30cmp/20mg",preco:85,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Tamo"},
-            {id:316,nome:"Indux (Clomifeno) 10cmp/50mg",preco:95,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=Indux"},
-            {id:317,nome:"Venvanse Genérico Eurofarma 30cmp/30mg",preco:480,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=VenG30"},
-            {id:318,nome:"Venvanse Genérico Eurofarma 30cmp/50mg",preco:499,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=VenG50"},
-            {id:319,nome:"Venvanse Genérico Eurofarma 30cmp/70mg",preco:570,marca:"FARMÁCIA / NACIONAIS",img:"https://placehold.co/150x150/1e2a2a/d4af37?text=VenG70"},
-            {id:320,nome:"Oxandrolona 100cáps/5mg",preco:170,marca:"MANIPULADOS",img:"https://placehold.co/150x150/2a2a2a/d4af37?text=Manip5"},
-            {id:321,nome:"Oxandrolona 120cáps/10mg",preco:199,marca:"MANIPULADOS",img:"https://placehold.co/150x150/2a2a2a/d4af37?text=Manip10"},
-            {id:322,nome:"Testosterona Gel 10% 30ml",preco:230,marca:"MANIPULADOS",img:"https://placehold.co/150x150/2a2a2a/d4af37?text=Gel"},
-            {id:323,nome:"Citrato de Clomifeno 30cáps/50mg",preco:83,marca:"MANIPULADOS",img:"https://placehold.co/150x150/2a2a2a/d4af37?text=Clom"},
-            {id:324,nome:"Citrato de Tamoxifeno 30cáps/20mg",preco:80,marca:"MANIPULADOS",img:"https://placehold.co/150x150/2a2a2a/d4af37?text=TamoxM"},
-            {id:325,nome:"Ioimbina 30cáps/10mg",preco:120,marca:"MANIPULADOS",img:"https://placehold.co/150x150/2a2a2a/d4af37?text=Ioim"},
-            {id:326,nome:"Silimarina 30cáps/20mg",preco:90,marca:"MANIPULADOS",img:"https://placehold.co/150x150/2a2a2a/d4af37?text=Sili"},
-            {id:327,nome:"Pharmatropin (Pharmacom) 100ui",preco:2900,marca:"GH",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=GH1"},
-            {id:328,nome:"Landertropin (Landerlan) 100ui",preco:2500,marca:"GH",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=GH2"},
-            {id:329,nome:"HGH Cooper Gold Edition 100ui",preco:3200,marca:"GH",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=GH3"},
-            {id:330,nome:"Somatropin (Muscle Pharma) 50ui",preco:1000,marca:"GH",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=GH4"},
-            {id:331,nome:"Somatropin 191AA 15IU 75ui",preco:1900,marca:"GH",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=GH5"},
-            {id:332,nome:"Zptropin 80 (zphcd) 80ui",preco:1990,marca:"GH",img:"https://placehold.co/150x150/1e1e1e/d4af37?text=GH6"},
-            {id:333,nome:"Brontel 20cmp/20mcg",preco:25,marca:"VARIADOS",img:"https://placehold.co/150x150/2e2e2e/d4af37?text=Bron"},
-            {id:334,nome:"Pramil 20cmp/50mg",preco:30,marca:"VARIADOS",img:"https://placehold.co/150x150/2e2e2e/d4af37?text=Pram"},
-            {id:335,nome:"Femproporex EP 30cmp/25mg",preco:200,marca:"VARIADOS",img:"https://placehold.co/150x150/2e2e2e/d4af37?text=Fem"},
-            {id:336,nome:"Anfepramona EP 30cmp/75mg",preco:200,marca:"VARIADOS",img:"https://placehold.co/150x150/2e2e2e/d4af37?text=Anfe"},
-            {id:337,nome:"DHEA 100caps/25mg",preco:100,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=DHEA25"},
-            {id:338,nome:"DHEA 100caps/50mg",preco:120,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=DHEA50"},
-            {id:339,nome:"DHEA 100caps/100mg",preco:150,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=DHEA100"},
-            {id:340,nome:"Melatonina 100caps/5mg",preco:120,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=MelaD"},
-            {id:341,nome:"Snake Dragon 60caps/200mg",preco:250,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Snake"},
-            {id:342,nome:"Ostarine 60caps/25mg",preco:270,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Osta"},
-            {id:343,nome:"Rad140 60caps/10mg",preco:220,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Rad"},
-            {id:344,nome:"Femmatropin 60caps/50mg",preco:220,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Femm"},
-            {id:345,nome:"Superdrol 60caps/15mg",preco:220,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Super"},
-            {id:346,nome:"Halodrol 60caps/25mg",preco:220,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=HaloD"},
-            {id:347,nome:"Andarine 60caps/25mg",preco:220,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Anda"},
-            {id:348,nome:"Cardarine 60caps/15mg",preco:270,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Card"},
-            {id:349,nome:"Aicar 50caps/50mg",preco:220,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Aicar"},
-            {id:350,nome:"Ligandrol 90caps/10mg",preco:270,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Lig"},
-            {id:351,nome:"Epistane 60caps/12mg",preco:220,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Epi"},
-            {id:352,nome:"Mk-677 60caps/12,5mg",preco:270,marca:"DRAGON ELITE",img:"https://placehold.co/150x150/1e1e2e/d4af37?text=Mk"},
-            {id:353,nome:"Testofort (Enantato) 250mg/10ml",preco:320,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=TestoIDN"},
-            {id:354,nome:"Sostenon (Dura) 250mg/10ml",preco:330,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=SostIDN"},
-            {id:355,nome:"Cypiobol (Cipionato) 250mg/10ml",preco:280,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=CypIDN"},
-            {id:356,nome:"Gonatestin (Propionato) 100mg/20ml",preco:270,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=GonaIDN"},
-            {id:357,nome:"Mastebol Rapid (Masteron) 100mg/10ml",preco:480,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=MastIDN"},
-            {id:358,nome:"Decabol (Deca) 250mg/10ml",preco:320,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=DecaIDN"},
-            {id:359,nome:"Decabol Rapid (NPP) 100mg/10ml",preco:300,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=NPPIDN"},
-            {id:360,nome:"Trenviden Rapid (Trembo Acetato) 100mg/10ml",preco:2990,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=TrenIDN"},
-            {id:361,nome:"Oxidrobol (Hemogenin) 50cp/50mg",preco:150,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=OxiIDN"},
-            {id:362,nome:"Stanobolin Oral (Stanozolol) 50cp/25mg",preco:150,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=StanoIDN"},
-            {id:363,nome:"Mesterolic (Proviron) 50cp/25mg",preco:180,marca:"IDN PHARMATECH",img:"https://placehold.co/150x150/2e1e1e/d4af37?text=ProvIDN"},
-            {id:364,nome:"Testomix (Durateston 250mg/10ml)",preco:370,marca:"EMINENCE",img:"https://placehold.co/150x150/3a2a1a/d4af37?text=TestoEm"},
-            {id:365,nome:"EnanPrime (Enantato 250mg/10ml)",preco:367,marca:"EMINENCE",img:"https://placehold.co/150x150/3a2a1a/d4af37?text=EnanEm"},
-            {id:366,nome:"DecaPrime (Deca 200mg/10ml)",preco:370,marca:"EMINENCE",img:"https://placehold.co/150x150/3a2a1a/d4af37?text=DecaEm"},
-            {id:367,nome:"DecaPrime-P (NPP 100mg/10ml)",preco:360,marca:"EMINENCE",img:"https://placehold.co/150x150/3a2a1a/d4af37?text=NPPEm"},
-            {id:368,nome:"TrenoPrime (Trembo Acetato 100mg/10ml)",preco:465,marca:"EMINENCE",img:"https://placehold.co/150x150/3a2a1a/d4af37?text=TrenoEm"}
+            // NEOPEPTIDES
+            {id:1,nome:'GHK-Cu 100mg/3ml',preco:800,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-Cu'},
+            {id:2,nome:'SLU-PP-332 5mg/3ml',preco:600,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=SLU-PP'},
+            {id:3,nome:'Tesamorelin 10mg/3ml',preco:750,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=Tesa'},
+            {id:4,nome:'GLOW 70mg/3ml',preco:800,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=GLOW'},
+            {id:5,nome:'GHK-CU NOVAX 100MG/2ML',preco:750,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-NOV'},
+
+            // NOVAX PHARMACEUTICA
+            {id:6,nome:'KLOW-4 - 80mg/2ml',preco:1200,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=KLOW-4'},
+            {id:7,nome:'KPV - 10mg/2ml',preco:580,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=KPV'},
+            {id:8,nome:'Semax -10mg/2ml',preco:580,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Semax'},
+            {id:9,nome:'Selank -10mg/2ml',preco:580,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Selank'},
+            {id:10,nome:'Humanin -10mg/2ml',preco:820,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Humanin'},
+            {id:11,nome:'BPC-157 10mg/2ml',preco:650,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=BPC-157'},
+            {id:12,nome:'SS-31 50mg/2ml',preco:1140,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=SS-31'},
+            {id:13,nome:'HGH FRAG 176-191 10mg/2ml',preco:770,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=HGH-FRAG'},
+            {id:14,nome:'5-Amino-1MQ 5mg/2ml',preco:485,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=5-Amino'},
+            {id:15,nome:'IPAMORELIN 10mg/2ml',preco:590,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Ipa'},
+            {id:16,nome:'GLOW-3 70mg/2ml',preco:1130,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=GLOW-3'},
+            {id:17,nome:'IGF-1 LR3 1000mcg/2ml',preco:820,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=IGF1'},
+            {id:18,nome:'TB-500 10mg/2ml',preco:700,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=TB-500'},
+            {id:19,nome:'GHK-Cu 100mg/2ml',preco:700,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=GHK-100'},
+            {id:20,nome:'SLU-PP-332 5mg/2ml',preco:670,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=SLU-5'},
+            {id:21,nome:'AOD-9604 5mg/2ml',preco:580,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=AOD'},
+            {id:22,nome:'CJC-1295 (No DAC) 10mg/2ml',preco:675,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=CJC-NoDAC'},
+            {id:23,nome:'CJC-1295 (DAC) 5mg/2ml',preco:675,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=CJC-DAC'},
+            {id:24,nome:'MOTS-c 10mg/2ml',preco:575,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=MOTS-c'},
+            {id:25,nome:'PT-141 10mg/2ml',preco:570,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=PT-141'},
+            {id:26,nome:'TESAMORELIN 10mg/2ml',preco:830,marca:'NOVAX PHARMACEUTICA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=TESAM'},
+
+            // ZPHC LABS PREMIUM
+            {id:27,nome:'Retatrutide 60mg',preco:2950,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=RET60'},
+            {id:28,nome:'Retatrutide 30mg (caneta)',preco:2200,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=RET30'},
+            {id:29,nome:'Retatrutide 15mg',preco:900,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=RET15'},
+            {id:30,nome:'Tirzepatide 30mg (caneta)',preco:1600,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TIR30'},
+            {id:31,nome:'Tirzepatide 15mg',preco:495,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TIR15'},
+            {id:32,nome:'GH 16ui',preco:370,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=GH16'},
+            {id:33,nome:'Retatrutida 40mg Synedica',preco:2800,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=RET40'},
+            {id:34,nome:'TIZERPATIDA 60MG KING PHARMA',preco:1400,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TIZ60'},
+            {id:35,nome:'Mounjaro 15mg',preco:5000,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=Moun'},
+            {id:36,nome:'Lipoless 60mg',preco:1700,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=Lipo'},
+            {id:37,nome:'Tizerpatida (60mg)',preco:1800,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=Tiz60'},
+            {id:38,nome:'Semaglutide "Ozenpic" 5mg',preco:1000,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=Sema'},
+            {id:39,nome:'Prosoy retardador 30mg/6cmp',preco:125,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=Prosoy'},
+            {id:40,nome:'NAD+ 1.000mg',preco:865,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=NAD'},
+            {id:41,nome:'GLOW Pro Mix 60mg',preco:2700,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=GLOW-Pro'},
+            {id:42,nome:'GHK-Cu Zphc 60mg',preco:1600,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=GHK-Z'},
+            {id:43,nome:'Melanotan II Zphc 10mg',preco:700,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=Melano'},
+            {id:44,nome:'HGH Frag 5mg Zphc',preco:1700,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=HGH5'},
+            {id:45,nome:'HGH Frag zphc 10mg',preco:2700,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=HGH10'},
+            {id:46,nome:'Ultra Rehab Mix Zphc',preco:1900,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=Ultra'},
+            {id:47,nome:'TB500 20mg Zphc',preco:1950,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TB20'},
+            {id:48,nome:'BPC-157 20mg Zphc',preco:1450,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=BPC20'},
+            {id:49,nome:'GH ZPTrop 90ui vial',preco:1900,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=ZPT90'},
+            {id:50,nome:'GH ZPTrop 72ui caneta',preco:1800,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=ZPT72'},
+
+            // CANADA BIO LABS
+            {id:51,nome:'Masteron 100mg/10ml',preco:500,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=MastCan'},
+
+            // SPECTRUM PHARMA
+            {id:52,nome:'IGF-1 LR3 1,4mg caneta',preco:2450,marca:'SPECTRUM PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=IGF1-S'},
+            {id:53,nome:'Enantato 300mg spectrum',preco:380,marca:'SPECTRUM PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=EnanSpec'},
+
+            // MUSCLE PHARMA
+            {id:54,nome:'IGF1-LR3 500mcg Muscle Pharma',preco:950,marca:'MUSCLE PHARMA',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=IGF-MP'},
+
+            // ZPHC INJETÁVEIS
+            {id:55,nome:'Primobolan 200mg/ZPHC',preco:1250,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=PrimoZ'},
+            {id:56,nome:'T.G',preco:1700,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TG'},
+
+            // PHARMACOM
+            {id:57,nome:'Masteron - pharmacom',preco:550,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a1e/d4af37?text=MastPha'},
+
+            // LINHA BRATVA INJETÁVEIS
+            {id:58,nome:'NPP 100mg/10ml',preco:190,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=NPP'},
+            {id:59,nome:'Enantato 250mg/10ml',preco:170,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=EnanB'},
+            {id:60,nome:'Sales de Testosterona 250mg/10ml',preco:175,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=DuraB'},
+            {id:61,nome:'Propionato 100mg/10ml',preco:165,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=PropB'},
+            {id:62,nome:'Cipionato 200mg/10ml',preco:170,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=CipB'},
+            {id:63,nome:'Decanoato de Nandrolona 200mg/10ml',preco:180,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=DecaB'},
+            {id:64,nome:'Boldenona 250mg/10ml',preco:180,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=BoldB'},
+            {id:65,nome:'Masteron Propionato 100mg/10ml',preco:190,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=MastB'},
+            {id:66,nome:'Trembo enantato 200mg/10ml',preco:205,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=TremE'},
+            {id:67,nome:'Trembolona Acetato 100mg/10ml',preco:195,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=TremA'},
+            {id:68,nome:'B-Blend (CutStack) 150mg/10ml',preco:200,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=BBlend'},
+            {id:69,nome:'Primobolan 100mg/10ml',preco:400,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=PrimoB'},
+            {id:70,nome:'Stano OLEOSO 50mg/10ml',preco:170,marca:'BRATVA INJETÁVEL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=StanoB'},
+
+            // BRATVA ORAIS
+            {id:71,nome:'Dianabol 100cmp/10mg',preco:125,marca:'BRATVA ORAL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=DianaB'},
+            {id:72,nome:'Oxandrolona 50cmp/10mg',preco:275,marca:'BRATVA ORAL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=OxanB'},
+            {id:73,nome:'Proviron 25cmcp/25mg',preco:140,marca:'BRATVA ORAL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=ProvB'},
+            {id:74,nome:'Hemogenin 25cmp/50mg',preco:135,marca:'BRATVA ORAL',img:'https://placehold.co/150x150/1a1a1a/d4af37?text=HemoB'},
+
+            // LINHA LANDERLAN INJETÁVEL
+            {id:75,nome:'Durateston 250mg/1ml',preco:35,marca:'LANDERLAN INJETÁVEL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=DuraL'},
+            {id:76,nome:'Testoland (Cipionato) 200mg/3amp',preco:95,marca:'LANDERLAN INJETÁVEL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=TestoLa'},
+            {id:77,nome:'Testenat (Enantato) 250mg/4ml',preco:107,marca:'LANDERLAN INJETÁVEL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Testenat'},
+            {id:78,nome:'Decaland 200mg/5ml',preco:107,marca:'LANDERLAN INJETÁVEL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=DecaL'},
+            {id:79,nome:'Stanozolol 50mg/30ml',preco:205,marca:'LANDERLAN INJETÁVEL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Stano30'},
+            {id:80,nome:'Stanozolol 50mg/15ml',preco:110,marca:'LANDERLAN INJETÁVEL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Stano15'},
+            {id:81,nome:'Landertropin (GH) 100ui',preco:2450,marca:'LANDERLAN INJETÁVEL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=GH-Lan'},
+
+            // LANDERLAN ORAIS
+            {id:82,nome:'Drostenoland 50cmp/10mg',preco:240,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Drost'},
+            {id:83,nome:'Primobolan oral 30cmp/25mg',preco:500,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=PrimoO'},
+            {id:84,nome:'Oxitoland 20cmp/50mg',preco:135,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Oxi'},
+            {id:85,nome:'Dianabol 100cmp/10mg',preco:130,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=DianaL'},
+            {id:86,nome:'Stanozolol 100cmp/10mg',preco:110,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=StanoL'},
+            {id:87,nome:'Androlic (Proviron) 20cmp/25mg',preco:150,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Andro'},
+            {id:88,nome:'Oxandroland 100cmp/5mg',preco:330,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Oxan5L'},
+            {id:89,nome:'Oxandroland 50cmp/10mg',preco:300,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Oxan10L'},
+            {id:90,nome:'Melatonina 120caps/10mg',preco:95,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=Melat'},
+            {id:91,nome:'DHEA 90caps/50mg',preco:160,marca:'LANDERLAN ORAL',img:'https://placehold.co/150x150/2a1a1e/d4af37?text=DHEA'},
+
+            // LINHA LANDERLAN GOLD
+            {id:92,nome:'Testenat (Enantato) 250mg/10ml',preco:230,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=EnanGold'},
+            {id:93,nome:'Durateston 250mg/10ml',preco:230,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=DuraGold'},
+            {id:94,nome:'Deca 200mg/10ml',preco:230,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=DecaGold'},
+            {id:95,nome:'Testoland (Cipionato) 100mg/10ml',preco:190,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=CipGold'},
+            {id:96,nome:'Propionato 100mg/10ml',preco:169,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=PropGold'},
+            {id:97,nome:'Fenilpropionato (NPP) 100mg/10ml',preco:230,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=NPPGold'},
+            {id:98,nome:'Boldenona 250mg/10ml',preco:230,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=BoldGold'},
+            {id:99,nome:'Masteron 100mg/10ml',preco:235,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=MastGold'},
+            {id:100,nome:'Primobolan 100mg/10ml',preco:480,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=PrimoGold'},
+            {id:101,nome:'Trembo Enantato 200mg/10ml',preco:240,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=TremEGold'},
+            {id:102,nome:'Trembo Acetato 100mg/10ml',preco:280,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=TremAGold'},
+            {id:103,nome:'Tritrembo 200mg/10ml',preco:399,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=TriTrem'},
+            {id:104,nome:'Trembo Hexa 51mg/10ml',preco:290,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=TremHGold'},
+            {id:105,nome:'Clembuterol 50 comp/40mcg',preco:180,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=ClembGold'},
+            {id:106,nome:'HCG 5000 UI',preco:500,marca:'LANDERLAN GOLD',img:'https://placehold.co/150x150/1e2a1e/d4af37?text=HCGGold'},
+
+            // LINHA KING PHARMA INJETÁVEL
+            {id:107,nome:'Testoviron (Enantato) 250mg/10ml',preco:185,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Testov'},
+            {id:108,nome:'Sustan (Durateston) 250mg/10ml',preco:185,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Sustan'},
+            {id:109,nome:'Testex (Cipionato) 250mg/10ml',preco:185,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Testex'},
+            {id:110,nome:'Propiobolic (Propionato) 200mg/10ml',preco:165,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Prop'},
+            {id:111,nome:'Deca Durabolin 300mg/10ml',preco:190,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Deca'},
+            {id:112,nome:'Masteron 100mg/10ml',preco:195,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Mast'},
+            {id:113,nome:'Masteron Slow 100mg/10ml',preco:230,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=MastSlow'},
+            {id:114,nome:'Parabolan (Trembo Ace) 100mg/10ml',preco:199,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=ParaA'},
+            {id:115,nome:'Finaplix (Trembo Enan) 100mg/10ml',preco:199,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Fina'},
+            {id:116,nome:'Parabolin Blend 200mg/10ml',preco:295,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Blend'},
+            {id:117,nome:'Boldabolic (Boldenona) 300mg/10ml',preco:195,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Bold'},
+            {id:118,nome:'CutStack 150mg/10ml',preco:195,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Cut'},
+            {id:119,nome:'Estanozolol 15 50mg/15ml',preco:100,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Stano15'},
+            {id:120,nome:'Estanozolol 30 50mg/30ml',preco:185,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Stano30'},
+            {id:121,nome:'Primobolan 100mg/10ml',preco:410,marca:'KING PHARMA INJETÁVEL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Primo'},
+
+            // KING PHARMA ORAIS
+            {id:122,nome:'Anadrol 50cmp/50mg',preco:195,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Anadrol'},
+            {id:123,nome:'Anavar 50cmp/10mg',preco:230,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Anavar'},
+            {id:124,nome:'Oxandrolone 50cmp/20mg',preco:320,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Oxan20'},
+            {id:125,nome:'Dianabol 100cmp/10mg',preco:110,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Diana'},
+            {id:126,nome:'Masteron-New 50cmp/10mg',preco:230,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=MastO'},
+            {id:127,nome:'Estanozolol 100cmp/10mg',preco:110,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=StanoO'},
+            {id:128,nome:'Turinabol 50cmp/10mg',preco:199,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Turi'},
+            {id:129,nome:'Halotestin 30comp/10mg',preco:400,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Halo'},
+            {id:130,nome:'Proviron 20cmp/25mg',preco:135,marca:'KING PHARMA ORAL',img:'https://placehold.co/150x150/2a2a1a/d4af37?text=Prov'},
+
+            // LINHA ZPHC INJETÁVEIS PREMIUM
+            {id:131,nome:'Testosteone Mix (Dura) 250mg/10ml',preco:390,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=DuraZ'},
+            {id:132,nome:'Testosterone Enanthate 250mg/10ml',preco:370,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=EnanZ'},
+            {id:133,nome:'Testosterone Cypionate 200mg/10ml',preco:290,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=CipZ'},
+            {id:134,nome:'Testosterone Propionate 100mg/10ml',preco:229,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=PropZ'},
+            {id:135,nome:'DHB 75mg/10ml',preco:650,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=DHB'},
+            {id:136,nome:'Nandrolone Mix 300mg/10ml',preco:600,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=NanMix'},
+            {id:137,nome:'Nandrolone Decanoate 250mg/10ml',preco:450,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=DecaZ'},
+            {id:138,nome:'Nandrolone Phenylpropionate 100mg/10ml',preco:350,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=NPPZ'},
+            {id:139,nome:'Drostanolone Propionate 100mg/10ml',preco:550,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=MastZ'},
+            {id:140,nome:'Drostanolone Enanthate 200mg/10ml',preco:700,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=MastEZ'},
+            {id:141,nome:'Trembolone Acetate 100mg/10ml',preco:530,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TremAZ'},
+            {id:142,nome:'Trembolone Enanthate 200mg/10ml',preco:550,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TremEZ'},
+            {id:143,nome:'Trestolone Acetato 50mg/10ml',preco:750,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TreA'},
+            {id:144,nome:'Trestolone Enanthate 50mg/10ml',preco:800,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TreE'},
+            {id:145,nome:'Boldenone Undecylenate 250mg/10ml',preco:240,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=BoldZ'},
+            {id:146,nome:'Methenolone Enanthate 100mg/10ml',preco:750,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=PrimoZ'},
+            {id:147,nome:'Zptropin 80 (HGH) 80ui',preco:1830,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=ZPT80'},
+            {id:148,nome:'HP-hCG 5000ui',preco:380,marca:'ZPHC INJETÁVEL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=HCGZ'},
+
+            // ZPHC ORAIS
+            {id:149,nome:'Methandienone 100cmp/10mg',preco:220,marca:'ZPHC ORAL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=DianaZ'},
+            {id:150,nome:'Stanozolol 100cmp/10mg',preco:220,marca:'ZPHC ORAL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=StanoZ'},
+            {id:151,nome:'Oxymetholone 100cmp/25mg',preco:480,marca:'ZPHC ORAL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=HemoZ'},
+            {id:152,nome:'Clenbuterol 100cmp/50mcg',preco:260,marca:'ZPHC ORAL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=ClenZ'},
+            {id:153,nome:'Turinabol 100cmp/10mg',preco:420,marca:'ZPHC ORAL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=TuriZ'},
+            {id:154,nome:'Oxandrolone 100cmp/10mg',preco:440,marca:'ZPHC ORAL',img:'https://placehold.co/150x150/1a2a1e/d4af37?text=OxanZ'},
+
+            // LINHA MUSCLE PHARMA INJETÁVEL
+            {id:155,nome:'Sustan (Dura) 250mg/1ml',preco:29,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Sust1'},
+            {id:156,nome:'Sustan XT (Dura) 250mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=SustXT'},
+            {id:157,nome:'Testoviron 250 (Enan) 250mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=TestovMP'},
+            {id:158,nome:'Testex 250 (Cipio) 250mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=TestexMP'},
+            {id:159,nome:'Testoviron 100 (Prop) 100mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=PropMP'},
+            {id:160,nome:'Deca Durabolin XT 300mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=DecaMP'},
+            {id:161,nome:'Dynabolon (NPP) 100mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=NPPMP'},
+            {id:162,nome:'Boldebol 200mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=BoldMP'},
+            {id:163,nome:'Parabolan (Trembo Ace) 100mg/10ml',preco:240,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=TremAMP'},
+            {id:164,nome:'Parabolan L.A (Trembo Enan) 200mg/10ml',preco:240,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=TremEMP'},
+            {id:165,nome:'Parabolin Blend 200mg/10ml',preco:350,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=TriMP'},
+            {id:166,nome:'Masteron 100mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=MastMP'},
+            {id:167,nome:'Primobolan 100mg/10ml',preco:380,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=PrimoMP'},
+            {id:168,nome:'Stanozolol 50mg/30ml',preco:180,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=StanoMP'},
+            {id:169,nome:'D-Bol (Diana Injet.) 50mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=DBolMP'},
+            {id:170,nome:'Anadrol Inject 50mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=AnadMP'},
+            {id:171,nome:'Cut Stack XT 200mg/10ml',preco:220,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=CutMP'},
+            {id:172,nome:'HCG-Rx² 5.000ui',preco:250,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=HCGMP'},
+            {id:173,nome:'HGH Fragment 5 vials x 2mg',preco:950,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=HGHMP'},
+            {id:174,nome:'HGH Somatropin 50ui',preco:950,marca:'MUSCLE PHARMA INJETÁVEL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=SomMP'},
+
+            // MUSCLE PHARMA ORAIS
+            {id:175,nome:'Turinabol 60cmp/25mg',preco:230,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=TuriMP'},
+            {id:176,nome:'Anavar5 100caps/5mg',preco:260,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Anav5'},
+            {id:177,nome:'Anavar10 50caps/10mg',preco:260,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Anav10'},
+            {id:178,nome:'Anavar25 50caps/25mg',preco:390,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Anav25'},
+            {id:179,nome:'Halotestin 30cmp/10mg',preco:370,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=HaloMP'},
+            {id:180,nome:'Dianabol 50cmp/25mg',preco:130,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=DianaMP'},
+            {id:181,nome:'Stano Tablet 100cmp/10mg',preco:130,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=StanoT'},
+            {id:182,nome:'Anadrol 25 50cmp/25mg',preco:160,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Anad25'},
+            {id:183,nome:'T3 Cytomel 50cmp/100mcg',preco:170,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=T3'},
+            {id:184,nome:'Aromazin XT 30cmp/10mg',preco:160,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=Arom'},
+            {id:185,nome:'Proviron 40cmp/25mg',preco:170,marca:'MUSCLE PHARMA ORAL',img:'https://placehold.co/150x150/1e1e2a/d4af37?text=ProvMP'},
+
+            // LINHA COOPER PHARMA
+            {id:186,nome:'Probolic (Prop) 100mg/10ml',preco:340,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=PropC'},
+            {id:187,nome:'Enanbolic (Enan) 250mg/10ml',preco:390,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=EnanC'},
+            {id:188,nome:'Susobolic (Dura) 250mg/10ml',preco:440,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=DuraC'},
+            {id:189,nome:'Cypiobolic (Cipio) 250mg/10ml',preco:380,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=CipC'},
+            {id:190,nome:'Bolbolic (Bold) 250mg/10ml',preco:580,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=BoldC'},
+            {id:191,nome:'Decabolic (Deca) 250mg/10ml',preco:480,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=DecaC'},
+            {id:192,nome:'Nanbolic-PH (NPP) 100mg/10ml',preco:480,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=NPPC'},
+            {id:193,nome:'Masterbolic (Master) 100mg/10ml',preco:550,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=MastC'},
+            {id:194,nome:'Masteronbolic 200mg/10ml',preco:650,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=MastEC'},
+            {id:195,nome:'Primobolic (Primo) 100mg/10ml',preco:870,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=PrimoC'},
+            {id:196,nome:'Trenanbolic (Tren Enan) 200mg/5ml',preco:550,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=TrenEC'},
+            {id:197,nome:'Trenbolic (Tren ACE) 100mg/5ml',preco:350,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=TrenAC'},
+            {id:198,nome:'T6bolic (Tren Hexa) 76.5mg/5ml',preco:420,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=HexaC'},
+            {id:199,nome:'Winobolic (Estano) 50mg/10ml',preco:300,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=WinC'},
+            {id:200,nome:'Cotropin (HCG) 5000ui',preco:430,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=HCGC'},
+            {id:201,nome:'HGH-Frag 176-191 (10 vials)',preco:2999,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=FragC'},
+            {id:202,nome:'HGH Somatropin 100ui',preco:3300,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=GH-C'},
+            {id:203,nome:'IGF-1 LR3 (10 vials x 100mcg)',preco:2900,marca:'COOPER PHARMA',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=IGF1C'},
+
+            // COOPER PHARMA ORAIS
+            {id:204,nome:'Dianabolic (Diana) 50cmp/10mg',preco:220,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=DianaC'},
+            {id:205,nome:'Winobolic (Stano) 50caps/10mg',preco:200,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=WinO'},
+            {id:206,nome:'Oxanbolic (Oxan) 50cmp/10mg',preco:370,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=OxanC'},
+            {id:207,nome:'Oxybolic (Hemo) 50cmp/50mg',preco:320,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=HemoC'},
+            {id:208,nome:'Turbolic (Turinabol) 50cmp/10mg',preco:300,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=TuriC'},
+            {id:209,nome:'Flubolic (Halotestin) 50caps/5mg',preco:420,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=HaloC'},
+            {id:210,nome:'Provibolic (Proviron) 50cmp/25mg',preco:320,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=ProvC'},
+            {id:211,nome:'Clenbolic (Clembuterol) 50cmp/40mcg',preco:210,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=ClenC'},
+            {id:212,nome:'T3Bolic (T3) 50cmp/25mcg',preco:350,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=T3C'},
+            {id:213,nome:'BT-Bolic (T3/T4) 50cmp',preco:350,marca:'COOPER PHARMA ORAL',img:'https://placehold.co/150x150/2a1e1e/d4af37?text=BTC'},
+
+            // LINHA ALPHA PHARMA
+            {id:214,nome:'Testobolin (Enantato) 250mg/10ml',preco:480,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=Testob'},
+            {id:215,nome:'Induject-250 (Dura) 250mg/10ml',preco:480,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=Indu'},
+            {id:216,nome:'Testocyp (Cipionato) 250mg/10ml',preco:480,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=TestoC'},
+            {id:217,nome:'TestoRapid (Propionato) 100mg/10ml',preco:420,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=Rapid'},
+            {id:218,nome:'Testobase (Testo Aquosa) 100mg/10ml',preco:450,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=Base'},
+            {id:219,nome:'Nandrobolin (Deca) 250mg/10ml',preco:600,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=Nand'},
+            {id:220,nome:'Boldebolin (Boldenona) 250mg/10ml',preco:570,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=BoldA'},
+            {id:221,nome:'TrenaRapid (Trembo Ace) 100mg/10ml',preco:880,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=TrenaA'},
+            {id:222,nome:'Trenbolin (Trembo Enan) 250mg/10ml',preco:1400,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=TrenE'},
+            {id:223,nome:'Parabolin (Trembo Hexa) 76.5mg/10ml',preco:1050,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=ParaH'},
+            {id:224,nome:'Alphabolin (Primobolan) 100mg/10ml',preco:1200,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=PrimoA'},
+            {id:225,nome:'Rexogin (Stanozolol) 50mg/10ml',preco:520,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=Rex'},
+            {id:226,nome:'Mastebolin (Masteron) 100mg/10ml',preco:800,marca:'ALPHA PHARMA',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=MastA'},
+
+            // ALPHA PHARMA ORAIS
+            {id:227,nome:'Astralean (Clembuterol) 50cmp/40mcg',preco:240,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=Ast'},
+            {id:228,nome:'Alphabol (Dianabol) 50cmp/10mg',preco:240,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=AlphD'},
+            {id:229,nome:'Rexobol (Stanozolol) 50cmp/10mg',preco:220,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=RexO'},
+            {id:230,nome:'Oxydrolone (Hemogenin) 50cmp/50mg',preco:750,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=OxyA'},
+            {id:231,nome:'Oxanabol (Oxandrolona) 50cmp/10mg',preco:750,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=OxaA'},
+            {id:232,nome:'Halobol (Halotestin) 50cmp/5mg',preco:900,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=HaloA'},
+            {id:233,nome:'Turinabol 50cmp/10mg',preco:600,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=TuriA'},
+            {id:234,nome:'Provibol (Proviron) 50cmp/25mg',preco:400,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=ProvA'},
+            {id:235,nome:'Mastoral (Masteron oral) 50cmp/10mg',preco:750,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=MastoA'},
+            {id:236,nome:'Thyro3 (T3) 30cmp/25mcg',preco:220,marca:'ALPHA PHARMA ORAL',img:'https://placehold.co/150x150/1a2e2a/d4af37?text=Thyr'},
+
+            // LINHA PHARMACOM
+            {id:237,nome:'Pharma Sust 250 (Dura) 250mg/10ml',preco:450,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Sust250'},
+            {id:238,nome:'Pharma Sust 350 300mg/10ml',preco:460,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Sust350'},
+            {id:239,nome:'Pharma Sust 500 500mg/10ml',preco:700,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Sust500'},
+            {id:240,nome:'Pharma Test E250 (Enan) 250mg/10ml',preco:370,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TestE250'},
+            {id:241,nome:'Pharma Test E300 (Enan) 300mg/10ml',preco:460,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TestE300'},
+            {id:242,nome:'Pharma Test E500 (Enan) 500mg/10ml',preco:700,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TestE500'},
+            {id:243,nome:'Pharma Test C250 (Cipio) 250mg/10ml',preco:450,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TestC250'},
+            {id:244,nome:'Pharma Test P100 (Prop) 100mg/10ml',preco:340,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TestP100'},
+            {id:245,nome:'Pharma Test PH100 100mg/10ml',preco:400,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TestPH'},
+            {id:246,nome:'Pharma Nan D300 (Deca) 300mg/10ml',preco:480,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=NanD300'},
+            {id:247,nome:'Pharma Nan D600 (Deca) 600mg/10ml',preco:780,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=NanD600'},
+            {id:248,nome:'Pharma Nan PH100 (NPP) 100mg/10ml',preco:450,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=NanPH'},
+            {id:249,nome:'Pharma Nolt 300 100mg/10ml',preco:450,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Nolt'},
+            {id:250,nome:'Pharma Bold 300 300mg/10ml',preco:500,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Bold300'},
+            {id:251,nome:'Pharma Bold 500 500mg/10ml',preco:740,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Bold500'},
+            {id:252,nome:'Pharma Tren A100 100mg/10ml',preco:600,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TrenA100'},
+            {id:253,nome:'Pharma Tren E200 200mg/10ml',preco:700,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TrenE200'},
+            {id:254,nome:'Pharma Tren H100 100mg/10ml',preco:850,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TrenH100'},
+            {id:255,nome:'Pharmatropin (GH) 100ui',preco:2000,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=GH100'},
+            {id:256,nome:'Pharma Dro P100 100mg/10ml',preco:550,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=DroP100'},
+            {id:257,nome:'Pharma Prim 100 100mg/10ml',preco:900,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Prim100'},
+            {id:258,nome:'Pharma Prim 200 200mg/10ml',preco:1450,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Prim200'},
+            {id:259,nome:'Pharma Stan 50 50mg/10ml',preco:180,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Stan50'},
+            {id:260,nome:'Pharma Bol 100 100mg/10ml',preco:180,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Bol100'},
+            {id:261,nome:'Pharmaoxy 50 50mg/10ml',preco:350,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Oxy50'},
+            {id:262,nome:'Pharma Mix 1 450mg/ml',preco:550,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Mix1'},
+            {id:263,nome:'Pharma Mix 2 250mg/10ml',preco:700,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Mix2'},
+            {id:264,nome:'Pharma Mix 3 500mg/10ml',preco:760,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Mix3'},
+            {id:265,nome:'Pharma Mix 4 600mg/10ml',preco:760,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Mix4'},
+            {id:266,nome:'Pharma Mix 5 100mg/10ml',preco:330,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Mix5'},
+            {id:267,nome:'Pharma Mix 6 500mg/10ml',preco:1000,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Mix6'},
+            {id:268,nome:'Pharma Mix M300 300mg/10ml',preco:850,marca:'PHARMACOM',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=MixM300'},
+
+            // PHARMACOM ORAIS
+            {id:269,nome:'Stanos 100cmp/10mg',preco:220,marca:'PHARMACOM ORAL',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Stanos'},
+            {id:270,nome:'Oxandrolonos 100cmp/10mg',preco:570,marca:'PHARMACOM ORAL',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=OxanP'},
+            {id:271,nome:'Oxymetos 25mg/100comp',preco:670,marca:'PHARMACOM ORAL',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=OxyP'},
+            {id:272,nome:'Dianabolos 10mg/100cmp',preco:220,marca:'PHARMACOM ORAL',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=DianaP'},
+            {id:273,nome:'Turinabolos 100cmp/10mg',preco:350,marca:'PHARMACOM ORAL',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=TuriP'},
+            {id:274,nome:'Halotestos 100cmp/10mg',preco:1000,marca:'PHARMACOM ORAL',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=HaloP'},
+            {id:275,nome:'Meltos 100cmp/40mcg',preco:240,marca:'PHARMACOM ORAL',img:'https://placehold.co/150x150/2a2a2e/d4af37?text=Meltos'},
+
+            // LINHA CANADA BIO LABS (completa)
+            {id:276,nome:'Sustanon 250 (Dura) 250mg/10ml',preco:360,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=SustCan'},
+            {id:277,nome:'Delatestryl (Enantato) 300mg/10ml',preco:360,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=Dela'},
+            {id:278,nome:'Depotest 200 (Cipionato) 200mg/10ml',preco:360,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=Depo'},
+            {id:279,nome:'Testopin 100 (Propionato) 100mg/10ml',preco:240,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=TestoP'},
+            {id:280,nome:'Decabolan 250 (Deca) 250mg/10ml',preco:450,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=DecaCan'},
+            {id:281,nome:'Durabolin 100 (NPP) 100mg/10ml',preco:350,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=NPPCan'},
+            {id:282,nome:'Equipoise 300 (Boldenona) 300mg/10ml',preco:360,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=Equi'},
+            {id:283,nome:'Masteron 100 (Drost Prop) 100mg/10ml',preco:455,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=MastCan2'},
+            {id:284,nome:'Masteron 200 (Enantato) 200mg/10ml',preco:700,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=MastECan'},
+            {id:285,nome:'Primobolan 100 200mg/10ml',preco:780,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=PrimoCan'},
+            {id:286,nome:'Finaplix 100 (Trembo Ace) 100mg/10ml',preco:520,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=FinaCan'},
+            {id:287,nome:'Parabol 200 (Trembo Enan) 200mg/10ml',preco:550,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=ParabCan'},
+            {id:288,nome:'Parabolan 100 (Trembo Hexa) 100mg/10ml',preco:650,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=ParaHexa'},
+            {id:289,nome:'Ment 50 (Trestolona Ace) 50mg/10ml',preco:780,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=Ment'},
+            {id:290,nome:'Winstrol 50 (Stanozolol) 50mg/10ml',preco:220,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=WinCan'},
+            {id:291,nome:'Androbase 100 100mg/10ml',preco:260,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=AndroBase'},
+            {id:292,nome:'Somatropin 191AA 15IU (GH) 75ui',preco:1900,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/1e2a2a/d4af37?text=SomCan'},
+
+            // LINHA IDN PHARMATECH
+            {id:293,nome:'Testofort (Enantato) 250mg/10ml',preco:320,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=TestoFort'},
+            {id:294,nome:'Sostenon (Dura) 250mg/10ml',preco:330,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=Sost'},
+            {id:295,nome:'Cypiobol (Cipionato) 250mg/10ml',preco:280,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=Cyp'},
+            {id:296,nome:'Gonatestin (Propionato) 100mg/20ml',preco:270,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=Gona'},
+            {id:297,nome:'Mastebol Rapid (Masteron) 100mg/10ml',preco:480,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=MastR'},
+            {id:298,nome:'Decabol (Deca) 250mg/10ml',preco:320,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=Decabol'},
+            {id:299,nome:'Decabol Rapid (NPP) 100mg/10ml',preco:300,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=DecaR'},
+            {id:300,nome:'Trenviden Rapid (Trembo Ace) 100mg/10ml',preco:2990,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=Trenv'},
+
+            // IDN PHARMATECH ORAIS
+            {id:301,nome:'Oxidrobol (Hemogenin) 50cp/50mg',preco:150,marca:'IDN PHARMATECH ORAL',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=Oxidro'},
+            {id:302,nome:'Stanobolin Oral 50cp/25mg',preco:150,marca:'IDN PHARMATECH ORAL',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=StanoIDN'},
+            {id:303,nome:'Mesterolic (Proviron) 50cp/25mg',preco:180,marca:'IDN PHARMATECH ORAL',img:'https://placehold.co/150x150/2a2e2e/d4af37?text=Mest'},
+
+            // LINHA EMINENCE
+            {id:304,nome:'Testomix (Durateston) 250mg/10ml',preco:370,marca:'EMINENCE',img:'https://placehold.co/150x150/2e2e2a/d4af37?text=Testomix'},
+            {id:305,nome:'EnanPrime (Enantato) 250mg/10ml',preco:367,marca:'EMINENCE',img:'https://placehold.co/150x150/2e2e2a/d4af37?text=EnanPrime'},
+            {id:306,nome:'DecaPrime (Deca) 200mg/10ml',preco:370,marca:'EMINENCE',img:'https://placehold.co/150x150/2e2e2a/d4af37?text=DecaPrime'},
+            {id:307,nome:'DecaPrime-P (NPP) 100mg/10ml',preco:360,marca:'EMINENCE',img:'https://placehold.co/150x150/2e2e2a/d4af37?text=NPPPrime'},
+            {id:308,nome:'TrenoPrime (Trembo Ace) 100mg/10ml',preco:465,marca:'EMINENCE',img:'https://placehold.co/150x150/2e2e2a/d4af37?text=TrenoPrime'},
+
+            // FARMÁCIA / NACIONAIS
+            {id:309,nome:'Hemax Etritron 4.000ui (EPO)',preco:160,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=EPO'},
+            {id:310,nome:'Alprazolam 30comp/2mg',preco:85,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Alpra'},
+            {id:311,nome:'Durateston Aspen 250mg/1ml',preco:90,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=DuraAsp'},
+            {id:312,nome:'Deca Durabolin Aspen 50mg/1ml',preco:90,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=DecaAsp'},
+            {id:313,nome:'Fluoxetina 30comp/20mg',preco:85,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Flux'},
+            {id:314,nome:'Sibutramina 30cmp/15mg',preco:95,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Sibut'},
+            {id:315,nome:'Anastrozol 30cmp/1mg',preco:98,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Anast'},
+            {id:316,nome:'Ritalina Genérica EMS 30cmp/10mg',preco:90,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Rit30'},
+            {id:317,nome:'Ritalina Genérica EMS 60cmp/10mg',preco:160,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Rit60'},
+            {id:318,nome:'Ritalina LA 10mg/30cmp',preco:290,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=RitLA'},
+            {id:319,nome:'Ritalina Novartis 10mg/30comp',preco:170,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=RitNov30'},
+            {id:320,nome:'Ritalina Novartis 10mg/60cmp',preco:280,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=RitNov60'},
+            {id:321,nome:'Rivotril 30comp/2mg',preco:99,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Riv'},
+            {id:322,nome:'Rivotril Gotas',preco:99,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=RivGotas'},
+            {id:323,nome:'Clonazepam 2mg Medley 30cmp',preco:70,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Clon30'},
+            {id:324,nome:'Clonazepam gotas Medley 20ml',preco:70,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=ClonGotas'},
+            {id:325,nome:'Roacutan genérico 30cmp/20mg',preco:230,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=RoacGen'},
+            {id:326,nome:'Tadalafil 5mg/30cmp',preco:55,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Tada'},
+            {id:327,nome:'Venvanse 30mg/28cmp',preco:670,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Ven30'},
+            {id:328,nome:'Venvanse 50mg/28cmp',preco:770,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Ven50'},
+            {id:329,nome:'Venvanse 70mg/28cmp',preco:799,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Ven70'},
+            {id:330,nome:'Tamoxifeno 30cmp/20mg',preco:85,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Tamox'},
+            {id:331,nome:'Indux (Clomifeno) 10cmp/50mg',preco:95,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=Indux'},
+            {id:332,nome:'Venvanse Genérico Eurofarma 30cmp/30mg',preco:480,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=VenGen30'},
+            {id:333,nome:'Venvanse Genérico Eurofarma 30cmp/50mg',preco:499,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=VenGen50'},
+            {id:334,nome:'Venvanse Genérico Eurofarma 30cmp/70mg',preco:570,marca:'FARMÁCIA',img:'https://placehold.co/150x150/1e2e2a/d4af37?text=VenGen70'},
+
+            // MANIPULADOS
+            {id:335,nome:'Oxandrolona 100cáps/5mg',preco:170,marca:'MANIPULADOS',img:'https://placehold.co/150x150/2e1e1e/d4af37?text=Oxan5'},
+            {id:336,nome:'Oxandrolona 120cáps/10mg',preco:199,marca:'MANIPULADOS',img:'https://placehold.co/150x150/2e1e1e/d4af37?text=Oxan10'},
+            {id:337,nome:'Testosterona Gel Bioidêntica 10% 30ml',preco:230,marca:'MANIPULADOS',img:'https://placehold.co/150x150/2e1e1e/d4af37?text=TestoGel'},
+            {id:338,nome:'Citrato de Clomifeno 30cáps/50mg',preco:83,marca:'MANIPULADOS',img:'https://placehold.co/150x150/2e1e1e/d4af37?text=Clomi'},
+            {id:339,nome:'Citrato de Tamoxifeno 30cáps/20mg',preco:80,marca:'MANIPULADOS',img:'https://placehold.co/150x150/2e1e1e/d4af37?text=TamoxM'},
+            {id:340,nome:'Ioimbina 30cáps/10mg',preco:120,marca:'MANIPULADOS',img:'https://placehold.co/150x150/2e1e1e/d4af37?text=Ioimb'},
+            {id:341,nome:'Silimarina 30cáps/20mg',preco:90,marca:'MANIPULADOS',img:'https://placehold.co/150x150/2e1e1e/d4af37?text=Silim'},
+
+            // GH - HORMÔNIO DO CRESCIMENTO
+            {id:342,nome:'Pharmatropin (Pharmacom) 100ui',preco:2900,marca:'GH HORMÔNIO',img:'https://placehold.co/150x150/1e2e1e/d4af37?text=GH-Pharm'},
+            {id:343,nome:'Landertropin (Landerlan) 100ui',preco:2500,marca:'GH HORMÔNIO',img:'https://placehold.co/150x150/1e2e1e/d4af37?text=GH-Lan'},
+            {id:344,nome:'HGH Cooper Gold Edition 100ui',preco:3200,marca:'GH HORMÔNIO',img:'https://placehold.co/150x150/1e2e1e/d4af37?text=GH-Coop'},
+            {id:345,nome:'Somatropin (Muscle Pharma) 50ui',preco:1000,marca:'GH HORMÔNIO',img:'https://placehold.co/150x150/1e2e1e/d4af37?text=GH-MP'},
+            {id:346,nome:'Somatropin 191AA 15IU (Canada) 75ui',preco:1900,marca:'GH HORMÔNIO',img:'https://placehold.co/150x150/1e2e1e/d4af37?text=GH-Can'},
+            {id:347,nome:'Zptropin 80 (ZPHC) 80ui',preco:1990,marca:'GH HORMÔNIO',img:'https://placehold.co/150x150/1e2e1e/d4af37?text=GH-ZPHC'},
+
+            // VARIADOS
+            {id:348,nome:'Brontel 20cmp/20mcg',preco:25,marca:'VARIADOS',img:'https://placehold.co/150x150/2e2e1e/d4af37?text=Brontel'},
+            {id:349,nome:'Pramil 20cmp/50mg',preco:30,marca:'VARIADOS',img:'https://placehold.co/150x150/2e2e1e/d4af37?text=Pramil'},
+            {id:350,nome:'Femproporex EP 30cmp/25mg',preco:200,marca:'VARIADOS',img:'https://placehold.co/150x150/2e2e1e/d4af37?text=Fempr'},
+            {id:351,nome:'Anfepramona EP 30cmp/75mg',preco:200,marca:'VARIADOS',img:'https://placehold.co/150x150/2e2e1e/d4af37?text=Anfep'},
+
+            // SARMs e PRÓ-HORMONAIS DRAGON ELITE
+            {id:352,nome:'DHEA 100caps/25mg',preco:100,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=DHEA25'},
+            {id:353,nome:'DHEA 100caps/50mg',preco:120,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=DHEA50'},
+            {id:354,nome:'DHEA 100caps/100mg',preco:150,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=DHEA100'},
+            {id:355,nome:'Melatonina 100caps/5mg',preco:120,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Melat'},
+            {id:356,nome:'Snake Dragon 60caps/200mg',preco:250,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Snake'},
+            {id:357,nome:'Ostarine 60caps/25mg',preco:270,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Osta'},
+            {id:358,nome:'Rad140 60caps/10mg',preco:220,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Rad'},
+            {id:359,nome:'Femmatropin 60caps/50mg',preco:220,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Femm'},
+            {id:360,nome:'Superdrol 60caps/15mg',preco:220,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Super'},
+            {id:361,nome:'Halodrol 60caps/25mg',preco:220,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=HaloD'},
+            {id:362,nome:'Andarine 60caps/25mg',preco:220,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Anda'},
+            {id:363,nome:'Cardarine 60caps/15mg',preco:270,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Carda'},
+            {id:364,nome:'Aicar 50caps/50mg',preco:220,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Aicar'},
+            {id:365,nome:'Ligandrol 90caps/10mg',preco:270,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Liga'},
+            {id:366,nome:'Epistane 60caps/12mg',preco:220,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=Epis'},
+            {id:367,nome:'Mk-677 60caps/12,5mg',preco:270,marca:'DRAGON ELITE',img:'https://placehold.co/150x150/2e1e2a/d4af37?text=MK677'}
         ];
 
-        let produtos = JSON.parse(JSON.stringify(produtosBase));
-        let carrinho = [];
-        let usuarios = [];
-        let pedidos = [];
-        let clienteLogado = null;
-        let adminLogado = false;
-        let filtroMarca = 'TODAS';
-        let filtroAdminStatus = 'todos';
-        let clienteEditandoId = null;
+        let produtos = [];
+        let carrinho=[],usuarios=[],pedidos=[],clienteLogado=null,adminLogado=false,filtroMarca='TODAS',filtroAdminStatus='todos',clienteEditandoId=null;
 
-        const STORAGE_KEY_USUARIOS = 'cooper_usuarios';
-        const STORAGE_KEY_PEDIDOS = 'pedidos_backup';
-
-        // ========== PERSISTÊNCIA ==========
-        function salvarUsuariosLocal() {
-            localStorage.setItem(STORAGE_KEY_USUARIOS, JSON.stringify(usuarios));
-        }
-
-        function carregarUsuariosLocal() {
-            const dados = localStorage.getItem(STORAGE_KEY_USUARIOS);
-            if (dados) {
-                try { usuarios = JSON.parse(dados); } catch(e) { usuarios = []; }
-            }
-        }
-
-        async function salvarUsuarioFirestore(u) {
-            try { await db.collection('usuarios').doc(String(u.id)).set(u); } catch(e) {}
-        }
-
-        async function atualizarUsuarioFirestore(u) {
-            try { await db.collection('usuarios').doc(String(u.id)).update(u); } catch(e) {}
-        }
-
-        async function deletarUsuarioFirestore(id) {
-            try { await db.collection('usuarios').doc(String(id)).delete(); } catch(e) {}
-        }
-
-        async function carregarUsuariosFirestore() {
-            try {
-                const snap = await db.collection('usuarios').get();
-                if (!snap.empty) {
-                    usuarios = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                    salvarUsuariosLocal();
-                } else {
-                    carregarUsuariosLocal();
-                }
-            } catch(e) {
-                console.warn('Firestore offline.');
-                carregarUsuariosLocal();
-            }
-        }
-
-        function salvarPedidosBackup() {
-            localStorage.setItem(STORAGE_KEY_PEDIDOS, JSON.stringify(pedidos));
-        }
-
-        function carregarPedidosBackup() {
-            const backup = localStorage.getItem(STORAGE_KEY_PEDIDOS);
-            if (backup) {
-                try {
-                    const backupPedidos = JSON.parse(backup);
-                    backupPedidos.forEach(bp => {
-                        if (!pedidos.find(p => p.id === bp.id)) {
-                            pedidos.push(bp);
-                        }
+        async function carregarDados(){
+            try{
+                const uSnap=await db.collection('usuarios').get();
+                usuarios=uSnap.docs.map(d=>{return{id:d.id,...d.data()};});
+                const pSnap=await db.collection('pedidos').orderBy('data','desc').get();
+                pedidos=pSnap.docs.map(d=>{return{id:d.id,...d.data()};});
+                const prodSnap=await db.collection('produtos').get();
+                const firestoreProds = prodSnap.docs.map(d => d.data());
+                if(firestoreProds.length === 0){
+                    produtos = JSON.parse(JSON.stringify(produtosBase));
+                    const batch = db.batch();
+                    produtos.forEach(p => {
+                        const ref = db.collection('produtos').doc(String(p.id));
+                        batch.set(ref, {
+                            id: p.id,
+                            nome: p.nome,
+                            preco: p.preco,
+                            marca: p.marca,
+                            img: p.img,
+                            obs: p.obs || ''
+                        });
                     });
-                    pedidos.sort((a,b) => new Date(b.data) - new Date(a.data));
-                } catch(e) {}
-            }
-        }
-
-        async function carregarDadosFirebase() {
-            await carregarUsuariosFirestore();
-
-            // Carrega pedidos do Firestore
-            try {
-                const pSnap = await db.collection('pedidos_cooper').orderBy('data','desc').get();
-                pedidos = pSnap.docs.map(d => ({id: d.id, ...d.data()}));
-            } catch(e) {}
-
-            // Mescla com backup local
-            carregarPedidosBackup();
-            salvarPedidosBackup();
-
-            // Produtos
-            try {
-                const prodSnap = await db.collection('produtos_cooper').get();
-                if (!prodSnap.empty) {
-                    const firestoreProds = prodSnap.docs.map(d => d.data());
+                    await batch.commit();
+                } else {
                     const mapBase = {};
                     produtosBase.forEach(p => mapBase[p.id] = p);
                     firestoreProds.forEach(fp => {
-                        if (mapBase[fp.id]) {
-                            mapBase[fp.id] = { ...mapBase[fp.id], ...fp, preco: parseFloat(fp.preco) || 0 };
-                        }
+                        mapBase[fp.id] = { ...mapBase[fp.id], ...fp, preco: parseFloat(fp.preco) || 0 };
                     });
                     produtos = Object.values(mapBase).sort((a,b) => a.id - b.id);
                 }
-            } catch(e) {}
+            }catch(e){console.error(e); produtos = JSON.parse(JSON.stringify(produtosBase));}
         }
 
-        async function salvarProdutoFirestore(prod) {
-            try { await db.collection('produtos_cooper').doc(String(prod.id)).set(prod, { merge: true }); } catch(e) {}
+        async function salvarProdutoFirestore(prod){
+            try {
+                await db.collection('produtos').doc(String(prod.id)).set({
+                    id: prod.id,
+                    nome: prod.nome,
+                    preco: prod.preco,
+                    marca: prod.marca,
+                    img: prod.img || '',
+                    obs: prod.obs || ''
+                }, { merge: true });
+            } catch(e) { console.error(e); }
         }
 
-        async function deletarProdutoFirestore(id) {
-            try { await db.collection('produtos_cooper').doc(String(id)).delete(); } catch(e) {}
+        async function deletarProdutoFirestore(id){
+            try { await db.collection('produtos').doc(String(id)).delete(); } catch(e) { console.error(e); }
         }
 
-        function salvarDadosLocais() {
-            localStorage.setItem('carrinho_cooper', JSON.stringify(carrinho));
-            sessionStorage.setItem('clienteLogado_cooper', JSON.stringify(clienteLogado));
-            sessionStorage.setItem('adminLogado_cooper', JSON.stringify(adminLogado));
+        function salvarDadosLocais(){
+            localStorage.setItem('carrinho',JSON.stringify(carrinho));
+            sessionStorage.setItem('clienteLogado',JSON.stringify(clienteLogado));
+            sessionStorage.setItem('adminLogado',JSON.stringify(adminLogado));
         }
 
-        function atualizarUI() {
-            document.getElementById('cart-count').textContent = carrinho.reduce((s,i) => s + i.qtd, 0);
-            const bf = document.getElementById('btnFinalizar');
-            const ml = document.getElementById('msgLoginNeeded');
-            if (clienteLogado) { bf.disabled = false; ml.style.display = 'none'; }
-            else { bf.disabled = true; ml.style.display = 'block'; }
-            document.getElementById('nav-admin').style.display = adminLogado ? 'inline-block' : 'none';
-            document.getElementById('nav-clientes').style.display = adminLogado ? 'inline-block' : 'none';
-            document.getElementById('nav-gerenciar').style.display = adminLogado ? 'inline-block' : 'none';
-            document.getElementById('nav-logout').style.display = (clienteLogado || adminLogado) ? 'inline-block' : 'none';
-            document.getElementById('nav-login').style.display = (clienteLogado || adminLogado) ? 'none' : 'inline-block';
+        function atualizarUI(){
+            document.getElementById('cart-count').textContent=carrinho.reduce((s,i)=>s+i.qtd,0);
+            const bf=document.getElementById('btnFinalizar');
+            const ml=document.getElementById('msgLoginNeeded');
+            if(clienteLogado){bf.disabled=false;ml.style.display='none';} else{bf.disabled=true;ml.style.display='block';}
+            document.getElementById('nav-admin').style.display=adminLogado?'inline-block':'none';
+            document.getElementById('nav-clientes').style.display=adminLogado?'inline-block':'none';
+            document.getElementById('nav-gerenciar').style.display=adminLogado?'inline-block':'none';
+            document.getElementById('nav-logout').style.display=(clienteLogado||adminLogado)?'inline-block':'none';
+            document.getElementById('nav-login').style.display=(clienteLogado||adminLogado)?'none':'inline-block';
         }
 
-        function showSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        function showSection(id){
+            document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if (id === 'catalogo') { renderBrandFilters(); renderCatalogo(); }
-            else if (id === 'carrinho') renderCarrinho();
-            else if (id === 'admin') renderAdmin();
-            else if (id === 'gerenciarClientes') { if (!adminLogado) { alert('Acesso restrito.'); return; } renderGerenciarClientes(); }
-            else if (id === 'gerenciarProdutos') { if (!adminLogado) { alert('Acesso restrito.'); return; } renderGerenciarProdutos(); }
+            if(id==='catalogo')renderCatalogo();
+            if(id==='carrinho')renderCarrinho();
+            if(id==='admin')renderAdmin();
+            if(id==='gerenciarClientes'){if(!adminLogado){alert('Acesso restrito.');showSection('login');return;}renderGerenciarClientes();}
+            if(id==='gerenciarProdutos'){if(!adminLogado){alert('Acesso restrito.');showSection('login');return;}renderGerenciarProdutos();}
             atualizarUI();
         }
 
-        function logout() {
-            clienteLogado = null; adminLogado = false;
-            salvarDadosLocais();
-            showSection('catalogo');
-            atualizarUI();
+        function logout(){clienteLogado=null;adminLogado=false;salvarDadosLocais();showSection('catalogo');atualizarUI();}
+
+        function renderBrandFilters(){
+            const marcas=[...new Set(produtos.map(p=>p.marca))];
+            document.getElementById('brandFilters').innerHTML='<button class="toggle-brand '+(filtroMarca==='TODAS'?'active':'')+'" onclick="setFiltroMarca(\'TODAS\')">TODAS</button>'+marcas.map(m=>'<button class="toggle-brand '+(filtroMarca===m?'active':'')+'" onclick="setFiltroMarca(\''+m.replace(/'/g,"\\'")+'\')">'+m+'</button>').join('');
         }
 
-        function renderBrandFilters() {
-            const marcas = [...new Set(produtos.map(p => p.marca))].sort();
-            let html = '<button class="toggle-brand ' + (filtroMarca === 'TODAS' ? 'active' : '') + '" onclick="setFiltroMarca(\'TODAS\')">TODAS</button>';
-            html += marcas.map(m => '<button class="toggle-brand ' + (filtroMarca === m ? 'active' : '') + '" onclick="setFiltroMarca(\'' + m.replace(/'/g, "\\'") + '\')">' + m + '</button>').join('');
-            document.getElementById('brandFilters').innerHTML = html;
-        }
+        function setFiltroMarca(m){filtroMarca=m;renderBrandFilters();renderCatalogo();}
 
-        function setFiltroMarca(m) { filtroMarca = m; renderBrandFilters(); renderCatalogo(); }
-
-        function renderCatalogo() {
-            const c = document.getElementById('catalogoContainer');
-            const s = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            let f = produtos.filter(p => (filtroMarca === 'TODAS' || p.marca === filtroMarca) && p.nome.toLowerCase().includes(s));
-            if (!f.length) { c.innerHTML = '<div class="empty-state">📦 Nenhum produto encontrado.</div>'; return; }
-            c.innerHTML = f.map(p => {
-                const pr = p.preco > 0 ? 'R$ ' + p.preco.toFixed(2) : (p.obs || 'Consulte');
-                return `<div class="product-card"><img src="${p.img}" alt="${p.nome}" onerror="this.src='https://placehold.co/150x150/1a1a1a/d4af37?text=Sem'"><span class="brand-tag">${p.marca}</span><span class="name">${p.nome}</span><span class="price">${pr}</span><div style="display:flex;gap:0.5rem;justify-content:center;align-items:center;margin-top:auto;"><input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}"><button class="btn" onclick="adicionarAoCarrinho(${p.id})">🛒</button></div></div>`;
+        function renderCatalogo(){
+            const c=document.getElementById('catalogoContainer');
+            const s=(document.getElementById('searchInput')?.value||'').toLowerCase();
+            let f=produtos.filter(p=>(filtroMarca==='TODAS'||p.marca===filtroMarca) && p.nome.toLowerCase().includes(s));
+            if(!f.length){c.innerHTML='<div class="empty-state">📦 Nenhum produto encontrado.</div>';return;}
+            c.innerHTML=f.map(p=>{
+                const pr='R$ '+p.preco.toFixed(2);
+                return `<div class="product-card"><img src="${p.img}" alt="${p.nome}" onerror="this.src='https://placehold.co/150x150/ffffff/0d6efd?text=Sem'"><span class="brand-tag">${p.marca}</span><span class="name">${p.nome}</span><span class="price">${pr}</span><div style="display:flex;gap:0.5rem;justify-content:center;align-items:center;margin-top:auto;"><input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}"><button class="btn" onclick="adicionarAoCarrinho(${p.id})">🛒</button></div></div>`;
             }).join('');
         }
 
-        function adicionarAoCarrinho(pid) {
-            const q = parseInt(document.getElementById('qty-' + pid)?.value) || 1;
-            const p = produtos.find(x => x.id === pid);
-            if (!p) return;
-            const e = carrinho.find(i => i.prodId === pid);
-            if (e) e.qtd += q; else carrinho.push({ prodId: pid, qtd: q, preco: p.preco, nome: p.nome, marca: p.marca });
-            salvarDadosLocais(); atualizarUI(); alert(p.nome + ' adicionado!');
+        function adicionarAoCarrinho(pid){
+            const q=parseInt(document.getElementById('qty-'+pid)?.value)||1;
+            const p=produtos.find(x=>x.id===pid); if(!p)return;
+            const e=carrinho.find(i=>i.prodId===pid);
+            if(e)e.qtd+=q; else carrinho.push({prodId:pid,qtd:q,preco:p.preco,nome:p.nome,marca:p.marca});
+            salvarDadosLocais();atualizarUI();alert(p.nome+' adicionado!');
         }
 
-        function calcularTotaisCarrinho() {
-            const sub = carrinho.reduce((s, i) => s + i.preco * i.qtd, 0);
-            let frete = 0;
-            if (clienteLogado && clienteLogado.regiao && fretePorRegiao[clienteLogado.regiao]) frete = fretePorRegiao[clienteLogado.regiao];
-            return { subtotal: sub, frete: frete, total: sub + frete };
+        function calcularTotaisCarrinho(){
+            const sub=carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
+            let frete=0;
+            if(clienteLogado&&clienteLogado.regiao&&fretePorRegiao[clienteLogado.regiao])frete=fretePorRegiao[clienteLogado.regiao];
+            return{subtotal:sub,frete:frete,total:sub+frete};
         }
 
-        function renderCarrinho() {
-            const c = document.getElementById('carrinhoContainer');
-            const r = document.getElementById('carrinhoResumo');
-            if (!carrinho.length) { c.innerHTML = '<div class="empty-state"><p>🛒 Carrinho vazio.</p></div>'; r.classList.add('hidden'); return; }
+        function renderCarrinho(){
+            const c=document.getElementById('carrinhoContainer');
+            const r=document.getElementById('carrinhoResumo');
+            if(!carrinho.length){c.innerHTML='<div class="empty-state"><p>🛒 Carrinho vazio.</p></div>';r.classList.add('hidden');return;}
             r.classList.remove('hidden');
-            c.innerHTML = carrinho.map((item, i) => {
-                const sub = item.preco * item.qtd;
-                return '<div class="card flex-row flex-between"><div><strong>' + item.nome + '</strong> ' + item.marca + '<br>R$ ' + item.preco.toFixed(2) + ' x ' + item.qtd + ' = R$ ' + sub.toFixed(2) + '</div><div><input type="number" min="1" value="' + item.qtd + '" class="qty-input" onchange="alterarQtdCarrinho(' + i + ', this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(' + i + ')">🗑️</button></div></div>';
+            c.innerHTML=carrinho.map((item,i)=>{
+                const sub=item.preco*item.qtd;
+                const mt=item.marca?' ('+item.marca+')':'';
+                return '<div class="card flex-row flex-between"><div><strong>'+item.nome+'</strong>'+mt+'<br>R$ '+item.preco.toFixed(2)+' x '+item.qtd+' = R$ '+sub.toFixed(2)+'</div><div><input type="number" min="1" value="'+item.qtd+'" class="qty-input" onchange="alterarQtdCarrinho('+i+', this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho('+i+')">🗑️</button></div></div>';
             }).join('');
-            const t = calcularTotaisCarrinho();
-            document.getElementById('resumoItens').textContent = carrinho.reduce((s, i) => s + i.qtd, 0);
-            document.getElementById('resumoSubtotal').textContent = 'R$ ' + t.subtotal.toFixed(2);
-            document.getElementById('resumoFrete').textContent = t.frete > 0 ? 'R$ ' + t.frete.toFixed(2) : (clienteLogado ? 'R$ 0,00' : 'Faça login');
-            document.getElementById('resumoTotal').textContent = 'R$ ' + t.total.toFixed(2);
+            const t=calcularTotaisCarrinho();
+            document.getElementById('resumoItens').textContent=carrinho.reduce((s,i)=>s+i.qtd,0);
+            document.getElementById('resumoSubtotal').textContent='R$ '+t.subtotal.toFixed(2);
+            document.getElementById('resumoFrete').textContent=t.frete>0?'R$ '+t.frete.toFixed(2):(clienteLogado?'R$ 0,00':'Faça login');
+            document.getElementById('resumoTotal').textContent='R$ '+t.total.toFixed(2);
         }
 
-        function alterarQtdCarrinho(i, v) { carrinho[i].qtd = Math.max(1, parseInt(v) || 1); salvarDadosLocais(); renderCarrinho(); atualizarUI(); }
-        function removerDoCarrinho(i) { carrinho.splice(i, 1); salvarDadosLocais(); renderCarrinho(); atualizarUI(); }
+        function alterarQtdCarrinho(i,v){carrinho[i].qtd=Math.max(1,parseInt(v)||1);salvarDadosLocais();renderCarrinho();atualizarUI();}
+        function removerDoCarrinho(i){carrinho.splice(i,1);salvarDadosLocais();renderCarrinho();atualizarUI();}
 
-        // ========== FINALIZAR PEDIDO (CORRIGIDO) ==========
-        async function finalizarPedido() {
-            if (!clienteLogado) return alert('Faça login.');
-            if (!carrinho.length) return alert('Carrinho vazio.');
-            
+        function finalizarPedido(){
+            if(!clienteLogado) return alert('Faça login.');
+            if(!carrinho.length) return alert('Carrinho vazio.');
             const t = calcularTotaisCarrinho();
             const num = Date.now().toString().slice(-8);
             const enderecoCompleto = `${clienteLogado.rua || ''}, ${clienteLogado.numero || ''} - ${clienteLogado.bairro || ''}, ${clienteLogado.cidade || ''} - ${clienteLogado.regiao || ''}, CEP: ${clienteLogado.cep || ''}${clienteLogado.complemento ? ' (' + clienteLogado.complemento + ')' : ''}`;
-            
-            let itensMsg = ''; 
-            carrinho.forEach(item => { 
-                itensMsg += `➡️ ${item.qtd}x ${item.nome} (${item.marca}) - R$ ${(item.preco * item.qtd).toFixed(2)}\n`; 
-            });
-            let detalhesMsg = `Subtotal: R$ ${t.subtotal.toFixed(2)}\n`; 
-            if (t.frete > 0) detalhesMsg += `Frete: R$ ${t.frete.toFixed(2)}\n`; 
+            let itensMsg = '';
+            carrinho.forEach(item => { itensMsg += `➡️ ${item.qtd}x ${item.nome}${item.marca ? ` (${item.marca})` : ''} - R$ ${(item.preco*item.qtd).toFixed(2)}\n`; });
+            let detalhesMsg = `Subtotal: R$ ${t.subtotal.toFixed(2)}\n`;
+            if(t.frete > 0) detalhesMsg += `Frete: R$ ${t.frete.toFixed(2)}\n`;
             detalhesMsg += `💰 TOTAL: R$ ${t.total.toFixed(2)}`;
-            
-            const mensagem = `🛒 *NOVO PEDIDO #${num}*\n\n👤 *Cliente:* ${clienteLogado.nome}\n📄 *CPF:* ${clienteLogado.cpf}\n📍 *Endereço:* ${enderecoCompleto}\n📞 *Contato:* ${clienteLogado.contato}\n\n📋 *ITENS:*\n${itensMsg}\n${detalhesMsg}\n\n💳 *PIX:* Fortpharma137@gmail.com\n✅ *Confirmar pagamento para envio.*`;
-            
-            if (confirm('Confirma o pedido?\n\nTotal: R$ ' + t.total.toFixed(2))) {
-                const novoPedido = { 
-                    id: Date.now(), 
-                    numero: num, 
-                    clienteId: clienteLogado.id, 
-                    clienteNome: clienteLogado.nome,
-                    clienteContato: clienteLogado.contato, 
-                    clienteEndereco: enderecoCompleto,
+            const mensagem = `🛒 *NOVO PEDIDO #${num}*\n\n` +
+                `👤 *Cliente:* ${clienteLogado.nome}\n` +
+                `📄 *CPF:* ${clienteLogado.cpf}\n` +
+                `📍 *Endereço:* ${enderecoCompleto}\n` +
+                `📞 *Contato:* ${clienteLogado.contato}\n\n` +
+                `📋 *ITENS DO PEDIDO:*\n${itensMsg}\n` +
+                `${detalhesMsg}\n\n` +
+                `💳 *PIX:* Fortpharma137@gmail.com\n` +
+                `✅ *Confirmar pagamento para envio.*`;
+            if(confirm('Confirma o pedido?\n\nTotal: R$ '+t.total.toFixed(2))){
+                const novoPedido = {
+                    id: Date.now(), numero: num,
+                    clienteId: clienteLogado.id, clienteNome: clienteLogado.nome,
+                    clienteContato: clienteLogado.contato, clienteEndereco: enderecoCompleto,
                     clienteCpf: clienteLogado.cpf,
                     itens: carrinho.map(i => ({...i})),
-                    subtotal: t.subtotal, 
-                    frete: t.frete, 
-                    seguro: 0,
-                    total: t.total, 
-                    status: 'pendente', 
-                    data: new Date().toISOString() 
+                    subtotal: t.subtotal, frete: t.frete,
+                    total: t.total,
+                    status: 'pendente',
+                    data: new Date().toISOString()
                 };
-                
-                // Adiciona imediatamente à lista local
                 pedidos.unshift(novoPedido);
-                salvarPedidosBackup();
-                
-                // Salva no Firestore
-                try {
-                    await db.collection('pedidos_cooper').doc(String(novoPedido.id)).set(novoPedido);
-                } catch(e) {
-                    console.error('Erro ao salvar pedido no Firestore:', e);
-                }
-                
-                carrinho = []; 
-                salvarDadosLocais(); 
-                atualizarUI(); 
-                renderCarrinho();
-                alert('✅ Pedido enviado com sucesso! Redirecionando para o WhatsApp.');
+                db.collection('pedidos').doc(String(novoPedido.id)).set(novoPedido).catch(e=>console.error(e));
+                carrinho=[];
+                salvarDadosLocais(); atualizarUI(); renderCarrinho();
                 window.open(`https://wa.me/5511944636972?text=${encodeURIComponent(mensagem)}`, '_blank');
             }
         }
 
-        // ========== CLIENTES ==========
-        function toggleCadastro() { document.getElementById('loginForm').classList.toggle('hidden'); document.getElementById('cadastroForm').classList.toggle('hidden'); }
+        async function salvarUsuario(u){try{await db.collection('usuarios').doc(String(u.id)).set(u);}catch(e){console.error(e);}}
+        async function atualizarUsuario(u){try{await db.collection('usuarios').doc(String(u.id)).update(u);}catch(e){console.error(e);}}
+        async function deletarUsuario(id){try{await db.collection('usuarios').doc(String(id)).delete();}catch(e){console.error(e);}}
 
-        function loginCliente() {
-            const cpf = document.getElementById('loginCpf').value.replace(/\D/g, '');
-            if (!cpf) return alert('Digite o CPF.');
-            const u = usuarios.find(u => u.cpf === cpf);
-            if (!u) return alert('CPF não cadastrado.');
-            clienteLogado = u; adminLogado = false; salvarDadosLocais(); atualizarUI(); showSection('catalogo'); alert('Bem-vindo(a), ' + u.nome + '!');
+        function toggleCadastro(){document.getElementById('loginForm').classList.toggle('hidden');document.getElementById('cadastroForm').classList.toggle('hidden');}
+        function loginCliente(){
+            const cpf=document.getElementById('loginCpf').value.replace(/\D/g,'');
+            const u=usuarios.find(u=>u.cpf===cpf);
+            if(!u)return alert('CPF não cadastrado.');
+            clienteLogado=u;adminLogado=false;salvarDadosLocais();atualizarUI();showSection('catalogo');
         }
 
-        function cadastrarCliente() {
-            const n = document.getElementById('cadNome').value.trim();
-            const c = document.getElementById('cadCpf').value.replace(/\D/g,'');
-            const rua = document.getElementById('cadRua').value.trim();
-            const num = document.getElementById('cadNumero').value.trim();
-            const bairro = document.getElementById('cadBairro').value.trim();
-            const complemento = document.getElementById('cadComplemento').value.trim();
-            const cidade = document.getElementById('cadCidade').value.trim();
-            const regiao = document.getElementById('cadRegiao').value;
-            const cep = document.getElementById('cadCep').value.trim();
-            const t = document.getElementById('cadContato').value.trim();
-            if (!n || !c || !rua || !num || !bairro || !cidade || !regiao || !t) return alert('Preencha todos os campos obrigatórios.');
-            if (usuarios.find(u => u.cpf === c)) return alert('CPF já cadastrado.');
-            const novo = { id: Date.now(), nome: n, cpf: c, rua, numero: num, bairro, complemento, cidade, regiao, cep, contato: t, endereco: `${rua}, ${num} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}${complemento ? ' (' + complemento + ')' : ''}` };
-            usuarios.push(novo);
-            salvarUsuariosLocal();
-            salvarUsuarioFirestore(novo);
-            clienteLogado = novo; adminLogado = false; salvarDadosLocais(); atualizarUI(); showSection('catalogo'); alert('Cadastro realizado com sucesso!');
+        function cadastrarCliente(){
+            const n=document.getElementById('cadNome').value.trim();
+            const c=document.getElementById('cadCpf').value.replace(/\D/g,'');
+            const rua=document.getElementById('cadRua').value.trim();
+            const num=document.getElementById('cadNumero').value.trim();
+            const bairro=document.getElementById('cadBairro').value.trim();
+            const complemento=document.getElementById('cadComplemento').value.trim();
+            const cidade=document.getElementById('cadCidade').value.trim();
+            const regiao=document.getElementById('cadRegiao').value;
+            const cep=document.getElementById('cadCep').value.trim();
+            const t=document.getElementById('cadContato').value.trim();
+            if(!n||!c||!rua||!num||!bairro||!cidade||!regiao||!t) return alert('Preencha todos os campos obrigatórios.');
+            if(usuarios.find(u=>u.cpf===c))return alert('CPF já cadastrado.');
+            const novo={
+                id:Date.now(), nome:n, cpf:c,
+                rua, numero:num, bairro, complemento, cidade, regiao, cep,
+                contato:t,
+                endereco: `${rua}, ${num} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}${complemento ? ' (' + complemento + ')' : ''}`
+            };
+            usuarios.push(novo);salvarUsuario(novo);
+            clienteLogado=novo;adminLogado=false;salvarDadosLocais();atualizarUI();showSection('catalogo');alert('Cadastro realizado!');
         }
 
-        // ========== ADMIN ==========
-        function showAdminLogin() { showSection('admin'); }
-        function loginAdmin() {
-            if (document.getElementById('adminUser').value.trim() === 'BOMBADAVID' && document.getElementById('adminPass').value.trim() === '20362881') {
-                adminLogado = true; clienteLogado = null; salvarDadosLocais(); atualizarUI();
-                document.getElementById('adminLoginForm').style.display = 'none'; document.getElementById('adminContent').classList.remove('hidden'); renderAdmin();
-            } else alert('Credenciais inválidas.');
+        function showAdminLogin(){showSection('admin');}
+        function loginAdmin(){
+            if(document.getElementById('adminUser').value.trim()==='BOMBADAVID' && document.getElementById('adminPass').value.trim()==='20362881'){
+                adminLogado=true;clienteLogado=null;salvarDadosLocais();atualizarUI();
+                document.getElementById('adminLoginForm').style.display='none';
+                document.getElementById('adminContent').classList.remove('hidden');renderAdmin();
+            }else alert('Credenciais inválidas.');
         }
-        function renderAdmin() { if (!adminLogado) return; document.getElementById('adminLoginForm').style.display = 'none'; document.getElementById('adminContent').classList.remove('hidden'); renderAdminPedidos(); }
-        function filtrarPedidos(s) { filtroAdminStatus = s; renderAdminPedidos(); }
-        function renderAdminPedidos() {
-            const c = document.getElementById('adminPedidosContainer');
-            let f = pedidos; if (filtroAdminStatus === 'pendente') f = pedidos.filter(p => p.status === 'pendente'); if (filtroAdminStatus === 'finalizado') f = pedidos.filter(p => p.status === 'finalizado');
-            if (!f.length) { c.innerHTML = '<div class="empty-state">📭 Nenhum pedido.</div>'; return; }
-            c.innerHTML = f.map(p => {
-                const itens = p.itens.map(i => i.qtd + 'x ' + i.nome).join(', ');
-                return '<div class="card"><div class="flex-row flex-between"><div><strong>#' + p.numero + '</strong> <span class="status-badge ' + (p.status === 'pendente' ? 'status-pendente' : 'status-finalizado') + '">' + p.status + '</span></div><div>' + (p.status === 'pendente' ? '<button class="btn btn-success btn-sm" onclick="marcarFinalizado(' + p.id + ')">✔️ Finalizar</button>' : '') + ' <button class="btn btn-danger btn-sm" onclick="apagarPedido(' + p.id + ')">🗑️</button></div></div><p>👤 ' + p.clienteNome + ' | 📞 <a class="whatsapp-link" href="https://wa.me/55' + p.clienteContato.replace(/\D/g, '') + '" target="_blank">' + p.clienteContato + '</a></p><p>📍 ' + p.clienteEndereco + '</p><p>🛍️ ' + itens + '</p><p>💰 <strong>Total: R$ ' + p.total.toFixed(2) + '</strong></p></div>';
+
+        function renderAdmin(){if(!adminLogado)return;document.getElementById('adminLoginForm').style.display='none';document.getElementById('adminContent').classList.remove('hidden');renderAdminPedidos();}
+        function filtrarPedidos(s){filtroAdminStatus=s;renderAdminPedidos();}
+
+        function renderAdminPedidos(){
+            const c=document.getElementById('adminPedidosContainer');
+            let f=pedidos;
+            if(filtroAdminStatus==='pendente')f=pedidos.filter(p=>p.status==='pendente');
+            if(filtroAdminStatus==='finalizado')f=pedidos.filter(p=>p.status==='finalizado');
+            if(!f.length){c.innerHTML='<div class="empty-state">📭 Nenhum pedido.</div>';return;}
+            c.innerHTML=f.map(p=>{
+                const itens=p.itens.map(i=>i.qtd+'x '+i.nome+(i.marca?' ('+i.marca+')':'')).join(', ');
+                const det=[];
+                if(p.subtotal)det.push('Subtotal: R$ '+p.subtotal.toFixed(2));
+                if(p.frete>0)det.push('Frete: R$ '+p.frete.toFixed(2));
+                return '<div class="card"><div class="flex-row flex-between"><div><strong>#'+p.numero+'</strong> <span class="status-badge '+(p.status==='pendente'?'status-pendente':'status-finalizado')+'">'+p.status+'</span></div><div>'+(p.status==='pendente'?'<button class="btn btn-success btn-sm" onclick="marcarFinalizado('+p.id+')">✔️ Finalizar</button>':'')+' <button class="btn btn-danger btn-sm" onclick="apagarPedido('+p.id+')">🗑️</button></div></div><p>👤 '+p.clienteNome+' | 📞 <a class="whatsapp-link" href="https://wa.me/55'+p.clienteContato.replace(/\D/g,'')+'" target="_blank">'+p.clienteContato+'</a></p><p>📍 '+p.clienteEndereco+'</p><p>🛍️ '+itens+'</p>'+(det.length?'<p>📋 '+det.join(' | ')+'</p>':'')+'<p>💰 <strong>Total: R$ '+p.total.toFixed(2)+'</strong></p></div>';
             }).join('');
         }
-        function marcarFinalizado(id) { const p = pedidos.find(x => x.id === id); if (p) { p.status = 'finalizado'; try { db.collection('pedidos_cooper').doc(String(id)).update({ status: 'finalizado' }); } catch(e) {} salvarPedidosBackup(); renderAdminPedidos(); } }
-        async function apagarPedido(id) { if (confirm('Apagar pedido?')) { pedidos = pedidos.filter(x => x.id !== id); try { await db.collection('pedidos_cooper').doc(String(id)).delete(); } catch(e) {} salvarPedidosBackup(); renderAdminPedidos(); } }
 
-        function renderGerenciarClientes() {
-            if (!adminLogado) return;
-            const c = document.getElementById('clientesContainer');
-            if (!usuarios.length) { c.innerHTML = '<div class="empty-state">👥 Nenhum cliente.</div>'; return; }
+        function marcarFinalizado(id){const p=pedidos.find(x=>x.id===id);if(p){p.status='finalizado';db.collection('pedidos').doc(String(id)).update({status:'finalizado'}).catch(e=>console.error(e));renderAdminPedidos();}}
+        async function apagarPedido(id){if(confirm('Apagar pedido?')){pedidos=pedidos.filter(x=>x.id!==id);await db.collection('pedidos').doc(String(id)).delete().catch(e=>console.error(e));renderAdminPedidos();}}
+
+        function renderGerenciarClientes(){
+            if(!adminLogado)return;
+            const c=document.getElementById('clientesContainer');
+            if(!usuarios.length){c.innerHTML='<div class="empty-state">👥 Nenhum cliente.</div>';return;}
             const searchVal = document.getElementById('searchClientes')?.value || '';
-            const filtrados = usuarios.filter(u => { const s = searchVal.toLowerCase(); return u.nome.toLowerCase().includes(s) || u.cpf.includes(s) || u.contato.includes(s); });
-            c.innerHTML = '<div class="mb-2"><input type="text" class="search-box" placeholder="🔍 Buscar cliente..." oninput="renderGerenciarClientes()" id="searchClientes" value="' + searchVal + '"></div>' + filtrados.map(u => {
-                const end = u.endereco || `${u.rua || ''}, ${u.numero || ''} - ${u.bairro || ''}, ${u.cidade || ''} - ${u.regiao || ''}, CEP: ${u.cep || ''}${u.complemento ? ' (' + u.complemento + ')' : ''}`;
+            const filtrados = usuarios.filter(u=> {
+                const s = searchVal.toLowerCase();
+                return u.nome.toLowerCase().includes(s)||u.cpf.includes(s)||u.contato.includes(s);
+            });
+            c.innerHTML='<div class="mb-2"><input type="text" class="search-box" placeholder="🔍 Buscar cliente..." oninput="renderGerenciarClientes()" id="searchClientes" value="'+searchVal+'"></div>'+
+                filtrados.map(u=>{
+                const end=u.endereco||`${u.rua||''}, ${u.numero||''} - ${u.bairro||''}, ${u.cidade||''} - ${u.regiao||''}, CEP: ${u.cep||''}${u.complemento?' ('+u.complemento+')':''}`;
                 return `<div class="client-card flex-row flex-between"><div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📞 ${u.contato}</small><br><small>📍 ${end}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️ Editar</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️ Excluir</button></div></div>`;
             }).join('');
         }
 
-        async function excluirCliente(id) {
-            if (!confirm('Excluir cliente?')) return;
-            const i = usuarios.findIndex(u => u.id === id);
-            if (i !== -1) {
-                usuarios.splice(i, 1);
-                salvarUsuariosLocal();
-                await deletarUsuarioFirestore(id);
-                if (clienteLogado && clienteLogado.id === id) logout();
-                renderGerenciarClientes(); alert('Cliente excluído.');
-            }
+        async function excluirCliente(id){
+            if(!confirm('Excluir cliente?'))return;
+            const i=usuarios.findIndex(u=>u.id===id);
+            if(i!==-1){usuarios.splice(i,1);await deletarUsuario(id);if(clienteLogado&&clienteLogado.id===id)logout();renderGerenciarClientes();alert('Cliente excluído!');}
         }
 
-        function abrirModalEditarCliente(id) {
-            const u = usuarios.find(x => x.id === id); if (!u) return; clienteEditandoId = id;
-            document.getElementById('editNome').value = u.nome || ''; document.getElementById('editCpf').value = u.cpf || '';
-            document.getElementById('editRua').value = u.rua || ''; document.getElementById('editNumero').value = u.numero || '';
-            document.getElementById('editBairro').value = u.bairro || ''; document.getElementById('editComplemento').value = u.complemento || '';
-            document.getElementById('editCidade').value = u.cidade || ''; document.getElementById('editRegiao').value = u.regiao || '';
-            document.getElementById('editCep').value = u.cep || ''; document.getElementById('editContato').value = u.contato || '';
-            document.getElementById('editClienteId').value = id;
+        function abrirModalEditarCliente(id){
+            const u=usuarios.find(x=>x.id===id);if(!u)return;clienteEditandoId=id;
+            document.getElementById('editNome').value=u.nome||'';
+            document.getElementById('editCpf').value=u.cpf||'';
+            document.getElementById('editRua').value=u.rua||'';
+            document.getElementById('editNumero').value=u.numero||'';
+            document.getElementById('editBairro').value=u.bairro||'';
+            document.getElementById('editComplemento').value=u.complemento||'';
+            document.getElementById('editCidade').value=u.cidade||'';
+            document.getElementById('editRegiao').value=u.regiao||'';
+            document.getElementById('editCep').value=u.cep||'';
+            document.getElementById('editContato').value=u.contato||'';
+            document.getElementById('editClienteId').value=id;
             document.getElementById('modalEditarCliente').classList.remove('hidden');
         }
-        function fecharModal() { document.getElementById('modalEditarCliente').classList.add('hidden'); clienteEditandoId = null; }
+        function fecharModal(){document.getElementById('modalEditarCliente').classList.add('hidden');clienteEditandoId=null;}
 
-        async function salvarEdicaoCliente() {
-            const id = parseInt(document.getElementById('editClienteId').value);
-            const u = usuarios.find(x => x.id === id); if (!u) return;
-            u.nome = document.getElementById('editNome').value.trim(); u.rua = document.getElementById('editRua').value.trim();
-            u.numero = document.getElementById('editNumero').value.trim(); u.bairro = document.getElementById('editBairro').value.trim();
-            u.complemento = document.getElementById('editComplemento').value.trim(); u.cidade = document.getElementById('editCidade').value.trim();
-            u.regiao = document.getElementById('editRegiao').value; u.cep = document.getElementById('editCep').value.trim();
-            u.contato = document.getElementById('editContato').value.trim();
-            u.endereco = `${u.rua}, ${u.numero} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}${u.complemento ? ' (' + u.complemento + ')' : ''}`;
-            salvarUsuariosLocal(); await atualizarUsuarioFirestore(u);
-            if (clienteLogado && clienteLogado.id === id) { clienteLogado = u; salvarDadosLocais(); }
-            fecharModal(); renderGerenciarClientes(); alert('Dados atualizados!');
+        async function salvarEdicaoCliente(){
+            const id=parseInt(document.getElementById('editClienteId').value);
+            const u=usuarios.find(x=>x.id===id);if(!u)return;
+            u.nome=document.getElementById('editNome').value.trim();
+            u.rua=document.getElementById('editRua').value.trim();
+            u.numero=document.getElementById('editNumero').value.trim();
+            u.bairro=document.getElementById('editBairro').value.trim();
+            u.complemento=document.getElementById('editComplemento').value.trim();
+            u.cidade=document.getElementById('editCidade').value.trim();
+            u.regiao=document.getElementById('editRegiao').value;
+            u.cep=document.getElementById('editCep').value.trim();
+            u.contato=document.getElementById('editContato').value.trim();
+            u.endereco=`${u.rua}, ${u.numero} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}${u.complemento?' ('+u.complemento+')':''}`;
+            await atualizarUsuario(u);
+            if(clienteLogado&&clienteLogado.id===id){clienteLogado=u;salvarDadosLocais();}
+            fecharModal();renderGerenciarClientes();alert('Dados atualizados!');
         }
 
-        // ========== PRODUTOS (ADMIN) ==========
-        function renderGerenciarProdutos() {
-            if (!adminLogado) return;
+        function renderGerenciarProdutos(){
+            if(!adminLogado)return;
             const container = document.getElementById('gerenciarContainer');
             container.innerHTML = produtos.map(p => `
                 <div class="produto-editar-item">
-                    <img src="${p.img}" class="image-preview" onerror="this.src='https://placehold.co/100x100/1a1a1a/d4af37?text=Sem'">
+                    <img src="${p.img}" class="image-preview" onerror="this.src='https://placehold.co/100x100/ffffff/0d6efd?text=Sem'">
                     <input type="text" class="nome-prod" value="${p.nome.replace(/"/g,'&quot;')}" id="nome-${p.id}" placeholder="Nome">
                     <input type="number" class="preco-prod" value="${p.preco}" step="0.01" min="0" id="preco-${p.id}" placeholder="Preço">
                     <input type="text" class="marca-prod" value="${p.marca.replace(/"/g,'&quot;')}" id="marca-${p.id}" placeholder="Marca">
@@ -1245,47 +1014,86 @@
             `).join('');
         }
 
-        async function salvarEdicaoProduto(id) {
+        async function salvarEdicaoProduto(id){
             const produto = produtos.find(p => p.id === id);
-            if (!produto) return;
-            const novoNome = document.getElementById('nome-' + id).value.trim();
-            const novoPreco = parseFloat(document.getElementById('preco-' + id).value) || 0;
-            const novaMarca = document.getElementById('marca-' + id).value.trim();
-            if (!novoNome) { alert('Nome não pode ficar vazio.'); return; }
-            produto.nome = novoNome; produto.preco = novoPreco; produto.marca = novaMarca;
-            carrinho.forEach(item => { if (item.prodId === id) { item.nome = novoNome; item.marca = novaMarca; item.preco = novoPreco; } });
+            if(!produto) return;
+            const nomeEl = document.getElementById('nome-'+id);
+            const precoEl = document.getElementById('preco-'+id);
+            const marcaEl = document.getElementById('marca-'+id);
+            if(!nomeEl || !precoEl || !marcaEl) return;
+            const novoNome = nomeEl.value.trim();
+            const novoPreco = parseFloat(precoEl.value) || 0;
+            const novaMarca = marcaEl.value.trim();
+            if(!novoNome) { alert('Nome não pode ficar vazio.'); return; }
+            produto.nome = novoNome;
+            produto.preco = novoPreco;
+            produto.marca = novaMarca;
+            carrinho.forEach(item => {
+                if(item.prodId === id) {
+                    item.nome = novoNome;
+                    item.marca = novaMarca;
+                    item.preco = novoPreco;
+                }
+            });
             await salvarProdutoFirestore(produto);
-            salvarDadosLocais(); renderGerenciarProdutos(); renderCatalogo(); renderBrandFilters();
-            alert('Produto atualizado!');
+            salvarDadosLocais();
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandFilters();
+            alert('Produto atualizado com sucesso!');
         }
 
-        async function excluirProduto(id) {
-            if (!confirm('Excluir este produto?')) return;
-            produtos = produtos.filter(p => p.id !== id);
+        async function excluirProduto(id){
+            if(!confirm('Tem certeza que deseja excluir este produto?')) return;
+            const index = produtos.findIndex(p => p.id === id);
+            if(index === -1) return;
+            produtos.splice(index, 1);
             carrinho = carrinho.filter(i => i.prodId !== id);
             await deletarProdutoFirestore(id);
-            salvarDadosLocais(); renderGerenciarProdutos(); renderCatalogo(); renderBrandFilters(); atualizarUI();
+            salvarDadosLocais();
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandFilters();
+            atualizarUI();
             alert('Produto excluído!');
         }
 
-        async function adicionarNovoProduto() {
-            if (!adminLogado) return;
-            const nome = document.getElementById('novoProdNome').value.trim();
-            const preco = parseFloat(document.getElementById('novoProdPreco').value) || 0;
-            const marca = document.getElementById('novoProdMarca').value.trim();
-            if (!nome) { alert('Informe o nome.'); return; }
-            const novoId = Date.now();
-            const novoProduto = { id: novoId, nome, preco, marca: marca || 'GERAL', img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=' + encodeURIComponent(nome.substring(0,10)), obs: '' };
+        async function adicionarNovoProduto(){
+            if(!adminLogado) return;
+            const nomeEl = document.getElementById('novoProdNome');
+            const precoEl = document.getElementById('novoProdPreco');
+            const marcaEl = document.getElementById('novoProdMarca');
             const imgEl = document.getElementById('novoProdImg');
-            if (imgEl.files && imgEl.files[0]) {
-                try { novoProduto.img = await fileToBase64Resized(imgEl.files[0], 500, 500); } catch(e) {}
+            const nome = nomeEl.value.trim();
+            const preco = parseFloat(precoEl.value) || 0;
+            const marca = marcaEl.value.trim();
+            if(!nome) { alert('Informe o nome do produto.'); return; }
+            const novoId = Date.now();
+            const novoProduto = {
+                id: novoId,
+                nome: nome,
+                preco: preco,
+                marca: marca || 'GERAL',
+                img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=' + encodeURIComponent(nome.substring(0,10)),
+                obs: ''
+            };
+            if(imgEl.files && imgEl.files[0]){
+                const file = imgEl.files[0];
+                try {
+                    const base64 = await fileToBase64Resized(file, 500, 500);
+                    novoProduto.img = base64;
+                } catch(e) { console.error(e); }
             }
             produtos.push(novoProduto);
             await salvarProdutoFirestore(novoProduto);
-            document.getElementById('novoProdNome').value = ''; document.getElementById('novoProdPreco').value = ''; document.getElementById('novoProdMarca').value = '';
-            if (imgEl) imgEl.value = '';
-            renderGerenciarProdutos(); renderCatalogo(); renderBrandFilters();
-            alert('Produto adicionado!');
+            nomeEl.value = '';
+            precoEl.value = '';
+            marcaEl.value = '';
+            imgEl.value = '';
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandFilters();
+            alert('Produto adicionado com sucesso!');
         }
 
         function fileToBase64Resized(file, maxWidth, maxHeight) {
@@ -1295,11 +1103,12 @@
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        let w = img.width, h = img.height;
-                        if (w > h) { if (w > maxWidth) { h *= maxWidth / w; w = maxWidth; } }
-                        else { if (h > maxHeight) { w *= maxHeight / h; h = maxHeight; } }
-                        canvas.width = w; canvas.height = h;
-                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                        let width = img.width, height = img.height;
+                        if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; } }
+                        else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } }
+                        canvas.width = width; canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
                         resolve(canvas.toDataURL('image/jpeg', 0.8));
                     };
                     img.onerror = reject;
@@ -1312,52 +1121,53 @@
 
         function uploadImagemProduto(produtoId, fileInput, btn) {
             const file = fileInput.files[0];
-            if (!file) { alert('Selecione uma imagem.'); return; }
-            btn.disabled = true; btn.textContent = '⏳...';
+            if (!file) { alert('Selecione uma imagem primeiro.'); return; }
+            btn.disabled = true;
+            btn.textContent = '⏳...';
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const max = 500;
-                    let w = img.width, h = img.height;
-                    if (w > h) { if (w > max) { h *= max / w; w = max; } }
-                    else { if (h > max) { w *= max / h; h = max; } }
-                    canvas.width = w; canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    const maxWidth = 500, maxHeight = 500;
+                    let width = img.width, height = img.height;
+                    if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; } }
+                    else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } }
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
                     const base64 = canvas.toDataURL('image/jpeg', 0.8);
                     const produto = produtos.find(p => p.id === produtoId);
                     if (produto) produto.img = base64;
                     salvarProdutoFirestore(produto).then(() => {
                         renderGerenciarProdutos(); renderCatalogo();
                         alert('✅ Imagem atualizada!');
-                    }).catch(() => {}).finally(() => { btn.disabled = false; btn.textContent = '📤 Imagem'; fileInput.value = ''; });
+                    }).catch(error => {
+                        alert('❌ Falha ao salvar: ' + error.message);
+                    }).finally(() => {
+                        btn.disabled = false; btn.textContent = '📤 Imagem'; fileInput.value = '';
+                    });
                 };
-                img.onerror = () => { btn.disabled = false; btn.textContent = '📤 Imagem'; };
+                img.onerror = function() { alert('❌ Erro ao carregar imagem.'); btn.disabled = false; btn.textContent = '📤 Imagem'; };
                 img.src = e.target.result;
             };
-            reader.onerror = () => { btn.disabled = false; btn.textContent = '📤 Imagem'; };
+            reader.onerror = function() { alert('❌ Erro ao ler o arquivo.'); btn.disabled = false; btn.textContent = '📤 Imagem'; };
             reader.readAsDataURL(file);
         }
 
-        // ========== INICIALIZAÇÃO ==========
-        async function init() {
-            carrinho = JSON.parse(localStorage.getItem('carrinho_cooper')) || [];
-            clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado_cooper')) || null;
-            adminLogado = JSON.parse(sessionStorage.getItem('adminLogado_cooper')) || false;
-            await carregarDadosFirebase();
-            if (!produtos || produtos.length === 0) produtos = JSON.parse(JSON.stringify(produtosBase));
-            renderBrandFilters();
-            renderCatalogo();
-            atualizarUI();
-            if (adminLogado) {
-                document.getElementById('nav-admin').style.display = 'inline-block';
-                document.getElementById('nav-clientes').style.display = 'inline-block';
-                document.getElementById('nav-gerenciar').style.display = 'inline-block';
+        async function init(){
+            carrinho=JSON.parse(localStorage.getItem('carrinho'))||[];
+            clienteLogado=JSON.parse(sessionStorage.getItem('clienteLogado'))||null;
+            adminLogado=JSON.parse(sessionStorage.getItem('adminLogado'))||false;
+            await carregarDados();
+            renderBrandFilters();renderCatalogo();atualizarUI();
+            if(adminLogado){
+                document.getElementById('nav-admin').style.display='inline-block';
+                document.getElementById('nav-clientes').style.display='inline-block';
+                document.getElementById('nav-gerenciar').style.display='inline-block';
             }
         }
-
-        window.addEventListener('load', init);
+        init();
     </script>
 </body>
-</html> 
+</html>
