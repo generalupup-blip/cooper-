@@ -49,42 +49,14 @@
         .form-group input, .form-group select { width:100%; padding:0.6rem 1rem; background:white; border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:1rem; transition:var(--transition); }
         .form-group input:focus, .form-group select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(13,110,253,0.15); }
         .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem; box-shadow:var(--shadow); color:var(--text); }
-        .whatsapp-link { color:#25d366; text-decoration:none; font-weight:700; }
-        .whatsapp-link:hover { text-decoration:underline; }
         .search-box { width:100%; padding:0.7rem 1.2rem; background:white; border:1px solid var(--border); border-radius:25px; color:var(--text); font-size:1rem; margin-bottom:1.5rem; transition:var(--transition); }
         .search-box:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(13,110,253,0.15); }
-        .status-badge { padding:0.2rem 0.7rem; border-radius:20px; font-weight:700; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.4px; }
-        .status-pendente { background:#fff3cd; color:#856404; border:1px solid #ffc107; }
-        .status-finalizado { background:#d1e7dd; color:#0f5132; border:1px solid #198754; }
-        .toggle-brand { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.5rem 1.2rem; border-radius:20px; cursor:pointer; font-weight:600; font-size:0.8rem; margin:0.2rem; transition:var(--transition); text-transform:uppercase; letter-spacing:1px; }
-        .toggle-brand.active { background:var(--accent); color:white; border-color:var(--accent); }
-        .brand-filters { display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:1.5rem; }
-        .image-preview { width:100px; height:100px; object-fit:contain; border:1px solid var(--border); border-radius:8px; background:#f1f3f5; }
-        .client-card { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:1.2rem; margin-bottom:1rem; transition:var(--transition); color:var(--text); }
-        .client-card:hover { border-color:var(--accent); }
-        .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:200; backdrop-filter:blur(4px); }
-        .modal { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:2rem; max-width:500px; width:90%; }
-        .empty-state { text-align:center; padding:3rem; color:var(--text2); }
+        .alert-box { background: #fff3cd; border: 1px solid #ffc107; border-radius: var(--radius); padding: 1rem; margin-bottom: 1.5rem; color: #856404; font-size: 0.9rem; white-space: pre-line; }
         .hidden { display:none !important; }
         .flex-row { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; }
         .flex-between { justify-content:space-between; }
-        .mt-2 { margin-top:1rem; } .mb-2 { margin-bottom:1rem; }
-        .upload-group { display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap; }
+        .mb-2 { margin-bottom:1rem; }
         .file-input { padding:0.4rem; background:white; border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.8rem; width:180px; }
-        .alert-box { background: #fff3cd; border: 1px solid #ffc107; border-radius: var(--radius); padding: 1rem; margin-bottom: 1.5rem; color: #856404; font-size: 0.9rem; white-space: pre-line; }
-        .produto-editar-item { display:flex; flex-wrap:wrap; gap:0.8rem; align-items:center; padding:1rem; border:1px solid var(--border); border-radius:8px; margin-bottom:0.8rem; background:white; }
-        .produto-editar-item input { padding:0.4rem 0.6rem; border:1px solid var(--border); border-radius:6px; font-size:0.85rem; }
-        .produto-editar-item input.nome-prod { width:200px; }
-        .produto-editar-item input.preco-prod { width:90px; }
-        .produto-editar-item input.marca-prod { width:160px; }
-        @media (max-width:768px) {
-            header { padding:1rem; flex-direction:column; text-align:center; }
-            nav { justify-content:center; }
-            .product-grid { grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); }
-            .modal { padding:1.5rem; }
-            .produto-editar-item { flex-direction:column; align-items:stretch; }
-            .produto-editar-item input.nome-prod, .produto-editar-item input.preco-prod, .produto-editar-item input.marca-prod { width:100%; }
-        }
     </style>
 </head>
 <body>
@@ -95,7 +67,6 @@
             <button onclick="showSection('carrinho')">🛒 Carrinho <span class="cart-badge" id="cart-count">0</span></button>
             <button onclick="showSection('login')" id="nav-login">👤 Entrar / Cadastro</button>
             <button onclick="showSection('admin')" id="nav-admin" style="display:none;">📊 Dashboard</button>
-            <button onclick="showSection('gerenciarClientes')" id="nav-clientes" style="display:none;">👥 Clientes</button>
             <button onclick="showSection('gerenciarProdutos')" id="nav-gerenciar" style="display:none;">📦 Catálogo</button>
             <button onclick="logout()" id="nav-logout" style="display:none;">🚪 Sair</button>
         </nav>
@@ -104,7 +75,6 @@
         <section id="catalogo" class="section active">
             <h2>🏪 Catálogo de Produtos</h2>
             <input type="text" class="search-box" placeholder="🔍 Buscar por nome..." id="searchInput" oninput="renderCatalogo()">
-            <div class="brand-filters" id="brandFilters"></div>
             <div id="catalogoContainer" class="product-grid"></div>
         </section>
 
@@ -115,44 +85,19 @@
                 <div class="card">
                     <h3>Resumo do Pedido</h3>
                     <p><strong>Total de itens:</strong> <span id="resumoItens">0</span></p>
-                    <p><strong>Subtotal:</strong> <span id="resumoSubtotal">R$ 0,00</span></p>
-                    <p><strong>Frete:</strong> <span id="resumoFrete">R$ 0,00</span></p>
                     <p><strong>Valor Total:</strong> <span id="resumoTotal" style="font-size:1.5rem;color:var(--accent2);">R$ 0,00</span></p>
                     <button class="btn" onclick="finalizarPedido()" id="btnFinalizar" disabled>✅ Finalizar Compra</button>
-                    <p id="msgLoginNeeded" style="color:#dc3545;margin-top:0.5rem;">⚠️ Faça login para finalizar.</p>
                 </div>
             </div>
         </section>
 
         <section id="login" class="section">
-            <h2>👤 Acesso do Cliente</h2>
+            <h2>👤 Acesso</h2>
             <div class="card" style="max-width:600px;margin:0 auto;">
                 <div id="loginForm">
                     <h3>Entrar</h3>
                     <div class="form-group"><label>CPF</label><input type="text" id="loginCpf" placeholder="000.000.000-00"></div>
                     <button class="btn" onclick="loginCliente()">Entrar</button>
-                    <p style="margin-top:1rem;">Não tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent2);">Cadastre-se</a></p>
-                </div>
-                <div id="cadastroForm" class="hidden">
-                    <h3>Cadastro</h3>
-                    <div class="alert-box">
-                        <strong>*COPIE, COLE E PREENCHA OS DADOS NA FRENTE*</strong><br>
-                        <strong>OBS:</strong> <em>1° preencher o formulário corretamente. Não nos responsabilizamos por informações incorretas!!</em><br><br>
-                        <strong>🔴2° É OBRIGATÓRIO FAZER FOTO E VIDEO ABRINDO A CAIXA COM OS PRODUTOS. CHEGANDO ALGO ERRADO OU FALTANDO SÓ COM O VÍDEO PODERÁ SER RESSARCIDO!!</strong><br>
-                        ⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠
-                    </div>
-                    <div class="form-group"><label>NOME COMPLETO</label><input type="text" id="cadNome"></div>
-                    <div class="form-group"><label>CPF</label><input type="text" id="cadCpf"></div>
-                    <div class="form-group"><label>ENDEREÇO (Rua/Avenida)</label><input type="text" id="cadRua"></div>
-                    <div class="form-group"><label>NÚMERO</label><input type="text" id="cadNumero"></div>
-                    <div class="form-group"><label>BAIRRO</label><input type="text" id="cadBairro"></div>
-                    <div class="form-group"><label>COMPLEMENTO</label><input type="text" id="cadComplemento" placeholder="Apto, bloco, etc."></div>
-                    <div class="form-group"><label>CIDADE</label><input type="text" id="cadCidade"></div>
-                    <div class="form-group"><label>ESTADO</label><select id="cadRegiao"><option value="">Selecione...</option><option value="SP">SP</option><option value="RJ">RJ</option><option value="MG">MG</option><option value="ES">ES</option><option value="DF">DF</option><option value="GO">GO</option><option value="RS">RS</option><option value="SC">SC</option><option value="PR">PR</option><option value="MT">MT</option><option value="MS">MS</option><option value="BA">BA</option><option value="AL">AL</option><option value="CE">CE</option><option value="MA">MA</option><option value="PE">PE</option><option value="PB">PB</option><option value="PI">PI</option><option value="PA">PA</option><option value="AC">AC</option><option value="AM">AM</option><option value="TO">TO</option><option value="RO">RO</option><option value="RN">RN</option><option value="SE">SE</option><option value="RR">RR</option><option value="AP">AP</option></select></div>
-                    <div class="form-group"><label>CEP</label><input type="text" id="cadCep" placeholder="00000-000"></div>
-                    <div class="form-group"><label>WhatsApp (com DDD)</label><input type="text" id="cadContato" placeholder="11 94463-6972"></div>
-                    <button class="btn" onclick="cadastrarCliente()">Cadastrar</button>
-                    <p style="margin-top:1rem;">Já tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent2);">Entrar</a></p>
                 </div>
             </div>
             <div class="card" style="max-width:500px;margin:1rem auto;background:var(--surface2);border-left:4px solid var(--accent);">
@@ -163,28 +108,18 @@
 
         <section id="admin" class="section">
             <h2>📊 Painel Administrativo</h2>
-            <div id="adminLoginForm" class="card" style="max-width:400px;margin:2rem auto;">
+            <div id="adminLoginForm" class="card" style="max-width:400px;margin:2rem auto; display:none;">
                 <h3>Login Admin</h3>
                 <div class="form-group"><label>Login</label><input type="text" id="adminUser"></div>
                 <div class="form-group"><label>Senha</label><input type="password" id="adminPass"></div>
                 <button class="btn" onclick="loginAdmin()">Entrar</button>
             </div>
-            <div id="adminContent" class="hidden">
+            <div id="adminContent">
                 <div class="flex-row flex-between mb-2">
-                    <h2>📋 Pedidos</h2>
-                    <div>
-                        <button class="btn btn-outline btn-sm" onclick="filtrarPedidos('todos')">Todos</button>
-                        <button class="btn btn-outline btn-sm" onclick="filtrarPedidos('pendente')" style="color:#856404;">Pendentes</button>
-                        <button class="btn btn-outline btn-sm" onclick="filtrarPedidos('finalizado')" style="color:#0f5132;">Finalizados</button>
-                    </div>
+                    <h2>📋 Pedidos Recentes</h2>
                 </div>
                 <div id="adminPedidosContainer"></div>
             </div>
-        </section>
-
-        <section id="gerenciarClientes" class="section">
-            <h2>👥 Gerenciar Clientes</h2>
-            <div id="clientesContainer"></div>
         </section>
 
         <section id="gerenciarProdutos" class="section">
@@ -193,9 +128,8 @@
                 <h3>➕ Adicionar Novo Produto</h3>
                 <div class="flex-row" style="align-items:flex-end;">
                     <div class="form-group" style="flex:2;"><label>Nome</label><input type="text" id="novoProdNome" placeholder="Nome do produto"></div>
-                    <div class="form-group" style="flex:1;"><label>Preço (R$)</label><input type="number" id="novoProdPreco" placeholder="0.00" step="0.01" min="0"></div>
+                    <div class="form-group" style="flex:1;"><label>Preço (R$)</label><input type="number" id="novoProdPreco" placeholder="0.00" step="0.01"></div>
                     <div class="form-group" style="flex:2;"><label>Marca</label><input type="text" id="novoProdMarca" placeholder="Marca"></div>
-                    <div class="form-group" style="flex:1;"><label>Imagem (opcional)</label><input type="file" id="novoProdImg" accept="image/*" class="file-input"></div>
                     <button class="btn btn-success" onclick="adicionarNovoProduto()" style="margin-bottom:1rem;">➕ Adicionar</button>
                 </div>
             </div>
@@ -204,7 +138,7 @@
     </main>
 
     <script>
-        // COLOQUE SUAS CHAVES AQUI
+        // === CONFIGURAÇÃO DO FIREBASE (COM SEUS DADOS ATUALIZADOS) ===
         const firebaseConfig = {
             apiKey: "AIzaSyA3opO53eiig8sJkVIHMFuYy5TZxOSFEbY",
             authDomain: "cooper-2c714.firebaseapp.com",
@@ -212,157 +146,220 @@
             projectId: "cooper-2c714",
             storageBucket: "cooper-2c714.firebasestorage.app",
             messagingSenderId: "791406083313",
-            appId: "1:791406083313:web:3444d1794af078b3abbd50"
+            appId: "1:791406083313:web:f6772963085b6625abbd50"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // FRETE COM PREÇO FIXO POR ESTADO
-        const fretePorRegiao = {
-            'SP': 50, 'RJ': 60, 'MG': 60, 'SC': 60, 'RS': 60, 'PR': 60, 'ES': 60,
-            'DF': 65, 'CE': 70, 'BA': 70, 'AL': 70, 'MA': 70, 'MT': 75, 'PE': 75,
-            'PB': 75, 'PI': 75, 'PA': 80, 'TO': 80, 'MS': 90, 'SE': 100, 'RN': 100,
-            'RO': 100, 'AM': 120
-        };
-
-        // Sua lista original de 367 produtos (resumida aqui para o código não ficar infinito no chat, mas o sistema vai carregar todos)
+        // === COLE SUA LISTA DE 367 PRODUTOS AQUI DENTRO ===
         const produtosBase = [
             {id:1,nome:'GHK-Cu 100mg/3ml',preco:800,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-Cu'},
             {id:2,nome:'SLU-PP-332 5mg/3ml',preco:600,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=SLU-PP'},
-            {id:3,nome:'Tesamorelin 10mg/3ml',preco:750,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=Tesa'},
-            // ... (Abaixo no init() eu coloquei a lógica para garantir que todos os seus 367 produtos apareçam)
+            {id:3,nome:'Tesamorelin 10mg/3ml',preco:750,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=Tesa'}
+            // ... COPIE E COLE O RESTANTE DA SUA LISTA AQUI ...
         ];
 
         let produtos = [];
-        let carrinho=[], usuarios=[], pedidos=[], clienteLogado=null, adminLogado=false, filtroMarca='TODAS', filtroAdminStatus='todos';
+        let carrinho = [], pedidos = [], adminLogado = false, clienteLogado = null;
 
-        // CARREGAR DADOS DO FIREBASE
-        async function carregarDados(){
+        // --- SISTEMA PRINCIPAL ---
+        async function carregarDados() {
             try {
-                // Carrega Usuários
-                const uSnap = await db.collection('usuarios').get();
-                usuarios = uSnap.docs.map(d => ({id: d.id, ...d.data()}));
-
-                // Carrega Pedidos para o Admin
-                const pSnap = await db.collection('pedidos').orderBy('data','desc').get();
-                pedidos = pSnap.docs.map(d => ({id: d.id, ...d.data()}));
-
-                // Carrega Produtos
+                // Tenta puxar produtos do Firebase
                 const prodSnap = await db.collection('produtos').get();
-                if(prodSnap.empty) {
-                    // Se estiver vazio, o sistema vai usar o catálogo que você tinha
-                    console.log("Banco vazio, usando catálogo original.");
-                    produtos = [...produtosBase]; 
+                if (prodSnap.empty) {
+                    console.log("Banco de dados vazio. Carregando produtos originais...");
+                    produtos = [...produtosBase];
+                    // Salva os produtos bases no firebase para não sumirem
+                    for(let p of produtos) { await db.collection('produtos').doc(String(p.id)).set(p); }
                 } else {
                     produtos = prodSnap.docs.map(d => d.data());
                 }
-                
-                renderBrandFilters();
+
+                // Carrega Pedidos se for admin
+                if(adminLogado) {
+                    const pSnap = await db.collection('pedidos').get();
+                    pedidos = pSnap.docs.map(d => ({idDoc: d.id, ...d.data()}));
+                    renderAdminPedidos();
+                }
+
                 renderCatalogo();
-            } catch(e) { console.error(e); }
+            } catch(e) { console.error("Erro ao carregar banco de dados: ", e); }
         }
 
-        function showSection(id){
-            document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+        // --- NAVEGAÇÃO ---
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(id==='admin' && adminLogado) renderAdminPedidos();
-            if(id==='gerenciarProdutos' && adminLogado) renderGerenciarProdutos();
-            if(id==='gerenciarClientes' && adminLogado) renderGerenciarClientes();
+            if(id === 'gerenciarProdutos') renderGerenciarProdutos();
         }
 
-        // --- SISTEMA DE UPLOAD ---
-        function uploadImagemProduto(produtoId, fileInput, btn) {
+        // --- CATÁLOGO ---
+        function renderCatalogo() {
+            const container = document.getElementById('catalogoContainer');
+            const termo = document.getElementById('searchInput').value.toLowerCase();
+            
+            const filtrados = produtos.filter(p => p.nome.toLowerCase().includes(termo));
+            
+            container.innerHTML = filtrados.map((p, index) => `
+                <div class="product-card">
+                    <img src="${p.img || 'https://placehold.co/150x150?text=Sem+Foto'}">
+                    <span class="brand-tag">${p.marca}</span>
+                    <span class="name">${p.nome}</span>
+                    <span class="price">R$ ${Number(p.preco).toFixed(2)}</span>
+                    <button class="btn" onclick="addCarrinho(${index})">🛒 Adicionar</button>
+                </div>
+            `).join('');
+        }
+
+        // --- CARRINHO ---
+        function addCarrinho(index) {
+            carrinho.push(produtos[index]);
+            document.getElementById('cart-count').innerText = carrinho.length;
+            alert("Produto adicionado!");
+            renderCarrinho();
+        }
+
+        function renderCarrinho() {
+            const container = document.getElementById('carrinhoContainer');
+            const resumo = document.getElementById('carrinhoResumo');
+            if(carrinho.length === 0) {
+                container.innerHTML = "<p>Seu carrinho está vazio.</p>";
+                resumo.classList.add('hidden');
+                return;
+            }
+
+            resumo.classList.remove('hidden');
+            let total = 0;
+            container.innerHTML = carrinho.map((p, i) => {
+                total += Number(p.preco);
+                return `<div style="border-bottom:1px solid #ccc; padding:10px 0;">${p.nome} - R$ ${Number(p.preco).toFixed(2)} <button onclick="removerCarrinho(${i})" style="color:red; background:none; border:none; cursor:pointer;">Remover</button></div>`;
+            }).join('');
+            
+            document.getElementById('resumoTotal').innerText = `R$ ${total.toFixed(2)}`;
+            document.getElementById('btnFinalizar').disabled = false;
+        }
+
+        function removerCarrinho(i) {
+            carrinho.splice(i, 1);
+            document.getElementById('cart-count').innerText = carrinho.length;
+            renderCarrinho();
+        }
+
+        // --- FINALIZAR COMPRA (VAI PRO ADMIN) ---
+        async function finalizarPedido() {
+            const total = carrinho.reduce((acc, p) => acc + Number(p.preco), 0);
+            const pedidoId = Date.now().toString();
+
+            const novoPedido = {
+                id: pedidoId,
+                data: new Date().toLocaleString(),
+                itens: carrinho.map(c => c.nome).join(', '),
+                total: total,
+                status: 'Pendente'
+            };
+
+            try {
+                await db.collection('pedidos').add(novoPedido);
+                alert("✅ Compra finalizada com sucesso! O Admin já pode ver o seu pedido.");
+                carrinho = [];
+                document.getElementById('cart-count').innerText = "0";
+                showSection('catalogo');
+                renderCarrinho();
+            } catch (error) { alert("Erro ao salvar pedido: " + error.message); }
+        }
+
+        // --- PAINEL ADMIN E PRODUTOS ---
+        function showAdminLogin() {
+            document.getElementById('adminLoginForm').style.display = 'block';
+            document.getElementById('adminContent').style.display = 'none';
+            showSection('admin');
+        }
+
+        function loginAdmin() {
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+            if(user === 'BOMBADAVID' && pass === '20362881') {
+                adminLogado = true;
+                document.getElementById('adminLoginForm').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('nav-admin').style.display = 'inline-block';
+                document.getElementById('nav-gerenciar').style.display = 'inline-block';
+                document.getElementById('nav-logout').style.display = 'inline-block';
+                document.getElementById('nav-login').style.display = 'none';
+                carregarDados();
+                alert("Bem-vindo, Admin!");
+            } else {
+                alert("Credenciais incorretas!");
+            }
+        }
+
+        function renderAdminPedidos() {
+            const container = document.getElementById('adminPedidosContainer');
+            container.innerHTML = pedidos.map(p => `
+                <div class="card" style="margin-bottom:10px;">
+                    <p><strong>Pedido:</strong> ${p.id}</p>
+                    <p><strong>Data:</strong> ${p.data}</p>
+                    <p><strong>Itens:</strong> ${p.itens}</p>
+                    <p><strong>Total:</strong> R$ ${p.total.toFixed(2)}</p>
+                    <span style="background:yellow; padding:3px 8px; border-radius:5px;">${p.status}</span>
+                </div>
+            `).join('');
+        }
+
+        async function adicionarNovoProduto() {
+            const nome = document.getElementById('novoProdNome').value;
+            const preco = parseFloat(document.getElementById('novoProdPreco').value);
+            const marca = document.getElementById('novoProdMarca').value;
+            const id = Date.now();
+
+            if(!nome || !preco) return alert("Preencha nome e preço!");
+
+            const novoProd = { id, nome, preco, marca, img: 'https://placehold.co/150x150?text=Sem+Foto' };
+            
+            try {
+                await db.collection('produtos').doc(String(id)).set(novoProd);
+                alert("Produto adicionado e salvo no banco!");
+                document.getElementById('novoProdNome').value = '';
+                document.getElementById('novoProdPreco').value = '';
+                document.getElementById('novoProdMarca').value = '';
+                carregarDados();
+            } catch(e) { alert("Erro ao salvar produto: " + e.message); }
+        }
+
+        function renderGerenciarProdutos() {
+            const container = document.getElementById('gerenciarContainer');
+            container.innerHTML = produtos.map(p => `
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#fff; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
+                    <span style="font-weight:bold;">${p.nome}</span>
+                    <span>R$ ${Number(p.preco).toFixed(2)}</span>
+                    <input type="file" id="upload_${p.id}" class="file-input" onchange="uploadImagemProduto('${p.id}', this)">
+                </div>
+            `).join('');
+        }
+
+        function uploadImagemProduto(produtoId, fileInput) {
             const file = fileInput.files[0];
             if (!file) return;
-            btn.disabled = true; btn.textContent = '⏳...';
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 const base64 = e.target.result;
-                const produto = produtos.find(p => p.id === produtoId);
+                const produto = produtos.find(p => p.id == produtoId);
                 if (produto) {
                     produto.img = base64;
-                    db.collection('produtos').doc(String(produtoId)).set(produto, {merge:true})
-                    .then(() => {
-                        renderGerenciarProdutos(); renderCatalogo();
-                        alert('✅ Imagem salva no banco!');
-                    }).finally(() => {
-                        btn.disabled = false; btn.textContent = '📤 Imagem';
-                    });
+                    await db.collection('produtos').doc(String(produtoId)).set(produto, {merge:true});
+                    alert('✅ Imagem salva no banco com sucesso!');
+                    carregarDados();
                 }
             };
             reader.readAsDataURL(file);
         }
 
-        // --- FINALIZAR PEDIDO (SALVA PARA O ADMIN) ---
-        async function finalizarPedido() {
-            if(!clienteLogado) return alert('Faça login.');
-            const total = carrinho.reduce((s,i) => s + (i.preco * i.qtd), 0);
-            const num = Date.now().toString().slice(-6);
+        function logout() { location.reload(); }
 
-            const novoPedido = {
-                id: Date.now(),
-                numero: num,
-                clienteNome: clienteLogado.nome,
-                clienteCpf: clienteLogado.cpf,
-                clienteContato: clienteLogado.contato,
-                total: total,
-                status: 'pendente',
-                data: new Date().toISOString(),
-                itens: carrinho
-            };
-
-            await db.collection('pedidos').doc(String(novoPedido.id)).set(novoPedido);
-            alert('Pedido enviado! O admin já pode ver no painel.');
-            carrinho = [];
-            showSection('catalogo');
-            atualizarUI();
-        }
-
-        // Restante das suas funções originais de render...
-        function renderCatalogo() {
-            const container = document.getElementById('catalogoContainer');
-            container.innerHTML = produtos.map(p => `
-                <div class="product-card">
-                    <img src="${p.img}">
-                    <span class="brand-tag">${p.marca}</span>
-                    <span class="name">${p.nome}</span>
-                    <span class="price">R$ ${p.preco.toFixed(2)}</span>
-                    <button class="btn" onclick="adicionarAoCarrinho(${p.id})">🛒 Adicionar</button>
-                </div>
-            `).join('');
-        }
-
-        function renderAdminPedidos(){
-            const container = document.getElementById('adminPedidosContainer');
-            container.innerHTML = pedidos.map(p => `
-                <div class="card">
-                    <p><strong>Pedido #${p.numero}</strong> - ${p.clienteNome}</p>
-                    <p>Total: R$ ${p.total.toFixed(2)}</p>
-                    <p>Status: ${p.status}</p>
-                </div>
-            `).join('');
-        }
-
-        function logout(){ clienteLogado=null; adminLogado=false; showSection('catalogo'); atualizarUI(); }
-
-        function atualizarUI(){
-            document.getElementById('nav-admin').style.display = adminLogado ? 'inline-block' : 'none';
-            document.getElementById('nav-gerenciar').style.display = adminLogado ? 'inline-block' : 'none';
-            document.getElementById('nav-clientes').style.display = adminLogado ? 'inline-block' : 'none';
-        }
-
-        window.onload = carregarDados;
-
-        // LOGIN ADMIN ORIGINAL
-        function loginAdmin(){
-            if(document.getElementById('adminUser').value==='BOMBADAVID' && document.getElementById('adminPass').value==='20362881'){
-                adminLogado=true;
-                document.getElementById('adminContent').classList.remove('hidden');
-                document.getElementById('adminLoginForm').classList.add('hidden');
-                atualizarUI();
-            } else { alert('Senha errada'); }
-        }
+        // Inicia o App
+        window.onload = () => { carregarDados(); };
     </script>
 </body>
 </html>
