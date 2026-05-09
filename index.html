@@ -1,572 +1,334 @@
+# Sistema E-commerce HTML + Firebase (Modelo Seguro)
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COOPER PHARMA DAVID OFICIAL</title>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <style>
-        :root {
-            --bg: #ffffff; --surface: #f8f9fa; --surface2: #e9ecef; --border: #ced4da;
-            --text: #212529; --text2: #495057; --accent: #0d6efd; --accent2: #0b5ed7;
-            --danger: #dc3545; --success: #198754; --info: #0dcaf0; --warning: #ffc107;
-            --radius: 10px; --shadow: 0 8px 30px rgba(0,0,0,0.1); --transition: 0.25s ease;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; line-height:1.5; }
-        header { background:var(--surface); border-bottom:1px solid var(--border); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); box-shadow:0 2px 15px rgba(0,0,0,0.05); }
-        .logo { font-size: 1.8rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; color: #FFD700; animation: blink 1.5s infinite; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-        @keyframes blink { 0%{opacity:1} 50%{opacity:0.3} 100%{opacity:1} }
-        nav { display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center; }
-        nav button { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.5rem 1.1rem; border-radius:20px; cursor:pointer; font-size:0.85rem; transition:var(--transition); font-weight:500; white-space:nowrap; }
-        nav button:hover { background:var(--border); border-color:var(--accent); color:#0b5ed7; }
-        .cart-badge { background:var(--accent); color:white; border-radius:50%; padding:0.15rem 0.45rem; font-size:0.7rem; font-weight:700; margin-left:4px; }
-        main { max-width:1300px; margin:2rem auto; padding:0 1.5rem; }
-        .section { display:none; animation:fadeIn 0.4s ease; }
-        .section.active { display:block; }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-        h2 { font-size:1.8rem; margin-bottom:1.5rem; color:var(--text); border-bottom:2px solid var(--border); padding-bottom:0.5rem; }
-        h3 { color:var(--text); margin-bottom:1rem; font-size:1.2rem; }
-        
-        .brand-filters { display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:1rem; margin-bottom:1.5rem; }
-        .brand-filters button { background:white; border:1px solid var(--border); padding:0.5rem 1rem; border-radius:25px; cursor:pointer; white-space:nowrap; font-weight:600; transition:0.2s; }
-        .brand-filters button.active, .brand-filters button:hover { background:var(--accent); color:white; border-color:var(--accent); }
-        .brand-filters::-webkit-scrollbar { height: 6px; }
-        .brand-filters::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
-
-        .product-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:1.5rem; }
-        .product-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; text-align:center; transition:var(--transition); box-shadow:var(--shadow); display:flex; flex-direction:column; gap:0.6rem; color:var(--text); }
-        .product-card:hover { transform:translateY(-5px); border-color:var(--accent); box-shadow:0 16px 40px rgba(13,110,253,0.1); }
-        .product-card img { width:100%; height:120px; object-fit:contain; border-radius:8px; background:#f1f3f5; padding:0.5rem; }
-        .product-card .name { font-weight:700; font-size:0.95rem; min-height:2.4rem; color:#212529; }
-        .product-card .price { font-size:1.4rem; font-weight:800; color:var(--accent2); }
-        .product-card .brand-tag { font-size:0.65rem; background:#fff3cd; padding:0.2rem 0.6rem; border-radius:12px; display:inline-block; color:#856404; text-transform:uppercase; font-weight:600; }
-        
-        .btn { background:var(--accent); color:white; border:none; padding:0.5rem 1.2rem; border-radius:20px; cursor:pointer; font-weight:700; font-size:0.85rem; transition:var(--transition); }
-        .btn:hover { background:#0b5ed7; }
-        .btn-danger { background:var(--danger); } .btn-danger:hover { background:#bb2d3b; }
-        .btn-success { background:var(--success); } .btn-success:hover { background:#157347; }
-        .btn-warning { background:var(--warning); color:#000; } .btn-warning:hover { background:#d39e00; }
-        .btn-outline { background:transparent; border:2px solid var(--accent); color:var(--accent); font-weight:600; }
-        .btn-outline:hover { background:var(--accent); color:white; }
-        
-        .form-group { margin-bottom:1rem; }
-        .form-group label { display:block; margin-bottom:0.3rem; font-weight:600; color:var(--text2); font-size:0.8rem; }
-        .form-group input, .form-group select { width:100%; padding:0.6rem 1rem; background:white; border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:1rem; transition:var(--transition); }
-        
-        .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem; box-shadow:var(--shadow); }
-        .search-box { width:100%; padding:0.7rem 1.2rem; border:1px solid var(--border); border-radius:25px; margin-bottom:1rem; }
-        .flex-row { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; }
-        .flex-between { justify-content:space-between; }
-        .user-info-bar { background:#d1e7dd; padding:10px; border-radius:8px; color:#0f5132; margin-bottom:15px; font-weight:bold; display:none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Loja</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<style>
+body{
+font-family:Arial;
+background:#f5f5f5;
+margin:0;
+padding:0;
+}
+header{
+background:#111;
+color:#fff;
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+button{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+.btn{
+background:#007bff;
+color:white;
+}
+.card{
+background:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+}
+.product img{
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:8px;
+}
+input,select{
+width:100%;
+padding:10px;
+margin-bottom:10px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+.section{
+display:none;
+padding:20px;
+}
+.active{
+display:block;
+}
+</style>
 </head>
 <body>
-    <header>
-        <div class="logo" onclick="showSection('catalogo')">COOPER PHARMA DAVID</div>
-        <nav>
-            <button onclick="showSection('catalogo')">🏪 Catálogo</button>
-            <button onclick="showSection('carrinho')">🛒 Carrinho <span class="cart-badge" id="cart-count">0</span></button>
-            <button onclick="showSection('login')" id="nav-login">👤 Entrar/Cadastro</button>
-            <button onclick="showSection('admin')" id="nav-admin" style="display:none;">📊 Pedidos</button>
-            <button onclick="showSection('clientes')" id="nav-clientes" style="display:none;">👥 Clientes</button>
-            <button onclick="showSection('gerenciarProdutos')" id="nav-gerenciar" style="display:none;">📦 Estoque</button>
-            <button onclick="logout()" id="nav-logout" style="display:none;">🚪 Sair</button>
-        </nav>
-    </header>
-    <main>
-        <div id="userInfoBar" class="user-info-bar"></div>
 
-        <section id="catalogo" class="section active">
-            <h2>🏪 Catálogo de Produtos</h2>
-            <input type="text" class="search-box" placeholder="🔍 Buscar produto..." id="searchInput" oninput="renderCatalogo()">
-            <div class="brand-filters" id="brandFiltersContainer"></div>
-            <div id="catalogoContainer" class="product-grid"></div>
-        </section>
+<header>
+<h2>MINHA LOJA</h2>
+<div>
+<button onclick="showSection('catalogo')">Catálogo</button>
+<button onclick="showSection('carrinho')">Carrinho (<span id="cartCount">0</span>)</button>
+<button onclick="showSection('login')" id="btnLogin">Login</button>
+<button onclick="showSection('admin')" id="btnAdmin" style="display:none;">Admin</button>
+<button onclick="logout()" id="btnLogout" style="display:none;">Sair</button>
+</div>
+</header>
 
-        <section id="carrinho" class="section">
-            <h2>🛒 Seu Carrinho</h2>
-            <div id="carrinhoContainer"></div>
-            <div id="carrinhoResumo" class="card" style="display:none; margin-top:20px;">
-                <h3>Resumo do Pedido</h3>
-                <p><strong>Subtotal:</strong> R$ <span id="resumoSubtotal">0,00</span></p>
-                <p><strong>Frete (<span id="resumoRegiao">Calcule no Login</span>):</strong> R$ <span id="resumoFrete">0,00</span></p>
-                <h2 style="color:var(--accent2); margin-top:10px;">Total: R$ <span id="resumoTotal">0,00</span></h2>
-                <button class="btn btn-success" onclick="finalizarPedido()" id="btnFinalizar" style="width:100%; padding:15px; font-size:1.1rem; margin-top:10px;">✅ Finalizar Compra</button>
-            </div>
-        </section>
+<section id="catalogo" class="section active">
+<h2>Produtos</h2>
+<div id="produtos" class="grid"></div>
+</section>
 
-        <section id="login" class="section">
-            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:2rem;">
-                <div class="card">
-                    <h2>👤 Já sou Cliente</h2>
-                    <div class="form-group"><label>CPF</label><input type="text" id="loginCpf" placeholder="Apenas números"></div>
-                    <button class="btn" onclick="loginCliente()">Entrar</button>
-                    <hr style="margin:20px 0; border:1px solid #eee;">
-                    <p style="font-size:0.8rem; color:gray;">Acesso Administrativo:</p>
-                    <button class="btn btn-outline" style="width:100%;" onclick="showAdminLogin()">Entrar como Admin</button>
-                </div>
+<section id="carrinho" class="section">
+<h2>Carrinho</h2>
+<div id="listaCarrinho"></div>
+<h3>Total: R$ <span id="totalCarrinho">0.00</span></h3>
+</section>
 
-                <div class="card">
-                    <h2>📝 Novo Cadastro</h2>
-                    <div class="form-group"><label>Nome Completo</label><input type="text" id="cadNome"></div>
-                    <div class="form-group"><label>CPF</label><input type="text" id="cadCpf" placeholder="Apenas números"></div>
-                    <div class="form-group"><label>CEP</label><input type="text" id="cadCep"></div>
-                    <div class="form-group"><label>Endereço Completo</label><input type="text" id="cadEnd"></div>
-                    <div class="form-group"><label>Bairro</label><input type="text" id="cadBairro"></div>
-                    <div class="form-group">
-                        <label>Região para cálculo de Frete</label>
-                        <select id="cadRegiao">
-                            <option value="">Selecione sua região</option>
-                            <option value="Sudeste">Sudeste</option>
-                            <option value="Sul">Sul</option>
-                            <option value="Centro-Oeste">Centro-Oeste</option>
-                            <option value="Nordeste">Nordeste</option>
-                            <option value="Norte">Norte</option>
-                            <option value="Motoboy">Motoboy Local</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-success" onclick="cadastrarCliente()">Salvar Cadastro</button>
-                </div>
-            </div>
-        </section>
+<section id="login" class="section">
+<div class="card">
+<h2>Cliente</h2>
+<input type="text" id="cpfLogin" placeholder="CPF">
+<button class="btn" onclick="loginCliente()">Entrar</button>
+</div>
 
-        <section id="admin" class="section">
-            <div id="adminLoginForm" class="card" style="max-width:400px; margin:0 auto; display:none;">
-                <h3>Login Admin</h3>
-                <div class="form-group"><label>Usuário</label><input type="text" id="adminUser"></div>
-                <div class="form-group"><label>Senha</label><input type="password" id="adminPass"></div>
-                <button class="btn" onclick="fazerLoginAdmin()">Entrar no Painel</button>
-            </div>
-            <div id="adminContent" style="display:none;">
-                <h2>📦 Pedidos Recebidos</h2>
-                <div id="adminPedidosContainer"></div>
-            </div>
-        </section>
+<div class="card">
+<h2>Cadastro</h2>
+<input type="text" id="nomeCadastro" placeholder="Nome">
+<input type="text" id="cpfCadastro" placeholder="CPF">
+<select id="regiaoCadastro">
+<option value="Sudeste">Sudeste</option>
+<option value="Sul">Sul</option>
+<option value="Nordeste">Nordeste</option>
+<option value="Norte">Norte</option>
+</select>
+<button class="btn" onclick="cadastrarCliente()">Cadastrar</button>
+</div>
 
-        <section id="clientes" class="section">
-            <h2>👥 Clientes Cadastrados</h2>
-            <div id="adminClientesContainer" class="product-grid"></div>
-        </section>
+<div class="card">
+<h2>Admin</h2>
+<input type="text" id="adminUser" placeholder="Usuário">
+<input type="password" id="adminPass" placeholder="Senha">
+<button class="btn" onclick="fazerLoginAdmin()">Entrar Admin</button>
+</div>
+</section>
 
-        <section id="gerenciarProdutos" class="section">
-            <h2>📦 Gerenciar Catálogo</h2>
-            <div class="card">
-                <h3>➕ Novo Produto</h3>
-                <div class="flex-row" style="align-items:flex-end;">
-                    <div class="form-group" style="flex:2;"><label>Nome</label><input type="text" id="novoNome"></div>
-                    <div class="form-group" style="flex:1;"><label>Preço</label><input type="number" id="novoPreco"></div>
-                    <div class="form-group" style="flex:2;"><label>Marca</label><input type="text" id="novoMarca"></div>
-                    <button class="btn btn-success" onclick="addProduto()" style="margin-bottom:1rem;">Adicionar</button>
-                </div>
-            </div>
-            <input type="text" class="search-box" placeholder="🔍 Buscar para editar..." id="searchEdit" oninput="renderGerenciarProdutos()">
-            <div id="gerenciarContainer"></div>
-        </section>
-    </main>
+<section id="admin" class="section">
+<h2>Painel Admin</h2>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyA3opO53eiig8sJkVIHMFuYy5TZxOSFEbY",
-            authDomain: "cooper-2c714.firebaseapp.com",
-            databaseURL: "https://cooper-2c714-default-rtdb.firebaseio.com",
-            projectId: "cooper-2c714",
-            storageBucket: "cooper-2c714.firebasestorage.app",
-            messagingSenderId: "791406083313",
-            appId: "1:791406083313:web:f6772963085b6625abbd50"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+<div class="card">
+<h3>Novo Produto</h3>
+<input type="text" id="novoNome" placeholder="Nome produto">
+<input type="number" id="novoPreco" placeholder="Preço">
+<input type="text" id="novoMarca" placeholder="Marca">
+<input type="text" id="novoImg" placeholder="URL imagem">
+<button class="btn" onclick="addProduto()">Adicionar</button>
+</div>
 
-        const tabelaFrete = {
-            "Sudeste": 35.00, "Sul": 45.00, "Centro-Oeste": 55.00, "Nordeste": 65.00, "Norte": 80.00, "Motoboy": 20.00
-        };
+<div id="adminProdutos"></div>
 
-        const produtosIniciais = [
-            // NEOPEPTIDES
-            {nome:'GHK-Cu 100mg/3ml', preco:800, marca:'NEOPEPTIDES'},
-            {nome:'SLU-PP-332 5mg/3ml', preco:600, marca:'NEOPEPTIDES'},
-            {nome:'Tesamorelin 10mg/3ml', preco:750, marca:'NEOPEPTIDES'},
-            {nome:'GLOW 70mg/3ml', preco:800, marca:'NEOPEPTIDES'},
-            {nome:'GHK-CU NOVAX 100MG/2ML', preco:750, marca:'NOVAX'},
-            // NOVAX PHARMACEUTICA
-            {nome:'KLOW-4 80mg/2ml', preco:1200, marca:'NOVAX'},
-            {nome:'KPV 10mg/2ml', preco:580, marca:'NOVAX'},
-            {nome:'Semax 10mg/2ml', preco:580, marca:'NOVAX'},
-            {nome:'Selank 10mg/2ml', preco:580, marca:'NOVAX'},
-            {nome:'Humanin 10mg/2ml', preco:820, marca:'NOVAX'},
-            {nome:'BPC-157 10mg/2ml', preco:650, marca:'NOVAX'},
-            {nome:'SS-31 50mg/2ml', preco:1140, marca:'NOVAX'},
-            {nome:'HGH FRAG 176-191 10mg/2ml', preco:770, marca:'NOVAX'},
-            {nome:'5-Amino-1MQ 5mg/2ml', preco:485, marca:'NOVAX'},
-            {nome:'IPAMORELIN 10mg/2ml', preco:590, marca:'NOVAX'},
-            {nome:'GLOW-3 70mg/2ml', preco:1130, marca:'NOVAX'},
-            {nome:'IGF-1 LR3 1000mcg/2ml', preco:820, marca:'NOVAX'},
-            {nome:'TB-500 10mg/2ml', preco:700, marca:'NOVAX'},
-            {nome:'GHK-Cu 100mg/2ml', preco:700, marca:'NOVAX'},
-            {nome:'SLU-PP-332 5mg/2ml', preco:670, marca:'NOVAX'},
-            {nome:'AOD-9604 5mg/2ml', preco:580, marca:'NOVAX'},
-            {nome:'CJC-1295 (No DAC) 10mg/2ml', preco:675, marca:'NOVAX'},
-            {nome:'CJC-1295 (DAC) 5mg/2ml', preco:675, marca:'NOVAX'},
-            {nome:'MOTS-c 10mg/2ml', preco:575, marca:'NOVAX'},
-            {nome:'PT-141 10mg/2ml', preco:570, marca:'NOVAX'},
-            {nome:'TESAMORELIN 10mg/2ml', preco:830, marca:'NOVAX'},
-            // ZPHC PREMIUM
-            {nome:'Retatrutide 60mg', preco:2950, marca:'ZPHC'},
-            {nome:'Retatrutide 30mg (caneta)', preco:2200, marca:'ZPHC'},
-            {nome:'Retatrutide 15mg', preco:900, marca:'ZPHC'},
-            {nome:'Tirzepatide 30mg (caneta)', preco:1600, marca:'ZPHC'},
-            {nome:'Tirzepatide 15mg', preco:495, marca:'ZPHC'},
-            {nome:'GH 16ui', preco:370, marca:'ZPHC'},
-            {nome:'Retatrutida 40mg Synedica', preco:2800, marca:'ZPHC'},
-            {nome:'Semaglutide Ozenpic 5mg', preco:1000, marca:'ZPHC'},
-            {nome:'NAD+ 1000mg', preco:865, marca:'ZPHC'},
-            {nome:'GLOW Pro Mix 60mg', preco:2700, marca:'ZPHC'},
-            {nome:'GHK-Cu Zphc 60mg', preco:1600, marca:'ZPHC'},
-            {nome:'Melanotan II Zphc 10mg', preco:700, marca:'ZPHC'},
-            {nome:'HGH Frag 5mg Zphc', preco:1700, marca:'ZPHC'},
-            {nome:'HGH Frag zphc 10mg', preco:2700, marca:'ZPHC'},
-            {nome:'Ultra Rehab Mix (10mg BPC + 10mg TB500)', preco:1900, marca:'ZPHC'},
-            {nome:'TB500 20mg Zphc', preco:1950, marca:'ZPHC'},
-            {nome:'BPC-157 20mg Zphc', preco:1450, marca:'ZPHC'},
-            {nome:'GH ZPTrop 90ui vial', preco:1900, marca:'ZPHC'},
-            {nome:'GH ZPTrop 72ui caneta', preco:1800, marca:'ZPHC'},
-            {nome:'Primobolan 200mg/ZPHC', preco:1250, marca:'ZPHC'},
-            // KING PHARMA
-            {nome:'TIZERPATIDA 60MG KING PHARMA', preco:1400, marca:'KING PHARMA'},
-            {nome:'Testoviron (Enantato) 250mg/10ml', preco:185, marca:'KING PHARMA'},
-            {nome:'Sustan (Durateston) 250mg/10ml', preco:185, marca:'KING PHARMA'},
-            {nome:'Testex (Cipionato) 250mg/10ml', preco:185, marca:'KING PHARMA'},
-            {nome:'Propiobolic (Propionato) 200mg/10ml', preco:165, marca:'KING PHARMA'},
-            {nome:'Deca Durabolin 300mg/10ml', preco:190, marca:'KING PHARMA'},
-            {nome:'Masteron 100mg/10ml', preco:195, marca:'KING PHARMA'},
-            {nome:'Masteron Slow 100mg/10ml', preco:230, marca:'KING PHARMA'},
-            {nome:'Parabolan (Trembo Ace) 100mg/10ml', preco:199, marca:'KING PHARMA'},
-            {nome:'Finaplix (Trembo Enan) 100mg/10ml', preco:199, marca:'KING PHARMA'},
-            {nome:'Parabolin Blend 200mg/10ml', preco:295, marca:'KING PHARMA'},
-            {nome:'Boldabolic (Boldenona) 300mg/10ml', preco:195, marca:'KING PHARMA'},
-            {nome:'CutStack 150mg/10ml', preco:195, marca:'KING PHARMA'},
-            {nome:'Estanozolol 15 50mg/15ml', preco:100, marca:'KING PHARMA'},
-            {nome:'Estanozolol 30 50mg/30ml', preco:185, marca:'KING PHARMA'},
-            {nome:'Primobolan 100mg/10ml', preco:410, marca:'KING PHARMA'},
-            {nome:'Anadrol (Hemogenin) 50cmp', preco:195, marca:'KING PHARMA'},
-            {nome:'Anavar (Oxandrolona) 10mg', preco:230, marca:'KING PHARMA'},
-            {nome:'Oxandrolone 20mg', preco:320, marca:'KING PHARMA'},
-            {nome:'Dianabol 100cmp/10mg', preco:110, marca:'KING PHARMA'},
-            {nome:'Turinabol 50cmp/10mg', preco:199, marca:'KING PHARMA'},
-            {nome:'Halotestin 30comp/10mg', preco:400, marca:'KING PHARMA'},
-            {nome:'Proviron 20cmp/25mg', preco:135, marca:'KING PHARMA'},
-            // BRATVA
-            {nome:'NPP 100mg/10ml Bratva', preco:190, marca:'BRATVA'},
-            {nome:'Enantato 250mg/10ml Bratva', preco:170, marca:'BRATVA'},
-            {nome:'Durateston 250mg/10ml Bratva', preco:175, marca:'BRATVA'},
-            {nome:'Propionato 100mg/10ml Bratva', preco:165, marca:'BRATVA'},
-            {nome:'Cipionato 200mg/10ml Bratva', preco:170, marca:'BRATVA'},
-            {nome:'Decanoato 200mg/10ml Bratva', preco:180, marca:'BRATVA'},
-            {nome:'Boldenona 250mg/10ml Bratva', preco:180, marca:'BRATVA'},
-            {nome:'Masteron 100mg/10ml Bratva', preco:190, marca:'BRATVA'},
-            {nome:'Trembo enantato 200mg Bratva', preco:205, marca:'BRATVA'},
-            {nome:'Trembolona Acetato 100mg Bratva', preco:195, marca:'BRATVA'},
-            {nome:'B-Blend (CutStack) Bratva', preco:200, marca:'BRATVA'},
-            {nome:'Primobolan 100mg/10ml Bratva', preco:400, marca:'BRATVA'},
-            {nome:'Stano OLEOSO 50mg/10ml Bratva', preco:170, marca:'BRATVA'},
-            {nome:'Dianabol 100cmp Bratva', preco:125, marca:'BRATVA'},
-            {nome:'Oxandrolona 50cmp Bratva', preco:275, marca:'BRATVA'},
-            {nome:'Proviron 25cmcp Bratva', preco:140, marca:'BRATVA'},
-            {nome:'Hemogenin 25cmp Bratva', preco:135, marca:'BRATVA'},
-            // LANDERLAN
-            {nome:'Durateston 250mg/1ml Lander', preco:35, marca:'LANDERLAN'},
-            {nome:'Testoland 200mg/3amp Lander', preco:95, marca:'LANDERLAN'},
-            {nome:'Testenat 250mg/4ml Lander', preco:107, marca:'LANDERLAN'},
-            {nome:'Decaland 200mg/5ml Lander', preco:107, marca:'LANDERLAN'},
-            {nome:'Stanozolol 50mg/30ml Lander', preco:205, marca:'LANDERLAN'},
-            {nome:'Landertropin (GH) 100ui', preco:2450, marca:'LANDERLAN'},
-            {nome:'Oxandroland 100cmp/5mg', preco:330, marca:'LANDERLAN'},
-            {nome:'Oxandroland 50cmp/10mg', preco:300, marca:'LANDERLAN'},
-            {nome:'DHEA 90caps/50mg Lander', preco:160, marca:'LANDERLAN'},
-            // LANDERLAN GOLD
-            {nome:'Testenat 250mg/10ml GOLD', preco:230, marca:'LANDERLAN GOLD'},
-            {nome:'Durateston 250mg/10ml GOLD', preco:230, marca:'LANDERLAN GOLD'},
-            {nome:'Deca 200mg/10ml GOLD', preco:230, marca:'LANDERLAN GOLD'},
-            {nome:'Masteron 100mg/10ml GOLD', preco:235, marca:'LANDERLAN GOLD'},
-            {nome:'Primobolan 100mg/10ml GOLD', preco:480, marca:'LANDERLAN GOLD'},
-            {nome:'Trembo Enantato 200mg GOLD', preco:240, marca:'LANDERLAN GOLD'},
-            {nome:'Trembo Acetato 100mg GOLD', preco:280, marca:'LANDERLAN GOLD'},
-            {nome:'Clembuterol 50 comp GOLD', preco:180, marca:'LANDERLAN GOLD'},
-            // MUSCLE PHARMA
-            {nome:'Sustan XT (Dura) 250mg/10ml', preco:220, marca:'MUSCLE PHARMA'},
-            {nome:'Testoviron 250 (Enan) 10ml', preco:220, marca:'MUSCLE PHARMA'},
-            {nome:'Deca Durabolin XT 300mg/10ml', preco:220, marca:'MUSCLE PHARMA'},
-            {nome:'Parabolan (Trembo Ace) 10ml', preco:240, marca:'MUSCLE PHARMA'},
-            {nome:'Primobolan 100mg/10ml Muscle', preco:380, marca:'MUSCLE PHARMA'},
-            {nome:'Anavar10 50caps Muscle', preco:260, marca:'MUSCLE PHARMA'},
-            {nome:'Proviron 40cmp Muscle', preco:170, marca:'MUSCLE PHARMA'},
-            // COOPER PHARMA
-            {nome:'Enanbolic (Enan) 250mg/10ml', preco:390, marca:'COOPER PHARMA'},
-            {nome:'Susobolic (Dura) 250mg/10ml', preco:440, marca:'COOPER PHARMA'},
-            {nome:'Decabolic (Deca) 250mg/10ml', preco:480, marca:'COOPER PHARMA'},
-            {nome:'Masterbolic (Master) 100mg/10ml', preco:550, marca:'COOPER PHARMA'},
-            {nome:'Primobolic (Primo) 100mg/10ml', preco:870, marca:'COOPER PHARMA'},
-            {nome:'HGH Somatropin 100ui Cooper', preco:3300, marca:'COOPER PHARMA'},
-            // ALPHA PHARMA
-            {nome:'Testobolin (Enantato) Alpha', preco:480, marca:'ALPHA PHARMA'},
-            {nome:'Induject-250 (Dura) Alpha', preco:480, marca:'ALPHA PHARMA'},
-            {nome:'Nandrobolin (Deca) Alpha', preco:600, marca:'ALPHA PHARMA'},
-            {nome:'Trenbolin (Trembo Enan) Alpha', preco:1400, marca:'ALPHA PHARMA'},
-            {nome:'Alphabolin (Primo) Alpha', preco:1200, marca:'ALPHA PHARMA'},
-            // PHARMACOM
-            {nome:'Pharma Sust 250 (Dura) 10ml', preco:450, marca:'PHARMACOM'},
-            {nome:'Pharma Test E250 (Enan) 10ml', preco:370, marca:'PHARMACOM'},
-            {nome:'Pharma Nan D300 (Deca) 10ml', preco:480, marca:'PHARMACOM'},
-            {nome:'Pharma Tren A100 (Ace) 10ml', preco:600, marca:'PHARMACOM'},
-            {nome:'Pharma Prim 100 (Primo) 10ml', preco:900, marca:'PHARMACOM'},
-            // CANADA BIO LABS
-            {nome:'Sustanon 250 (Dura) Canada', preco:360, marca:'CANADA BIO LABS'},
-            {nome:'Delatestryl (Enan) Canada', preco:360, marca:'CANADA BIO LABS'},
-            {nome:'Decabolan 250 (Deca) Canada', preco:450, marca:'CANADA BIO LABS'},
-            {nome:'Masteron 100 Canada', preco:455, marca:'CANADA BIO LABS'},
-            {nome:'Somatropin 75ui Canada', preco:1900, marca:'CANADA BIO LABS'},
-            // IDN PHARMATECH
-            {nome:'Testofort (Enantato) IDN', preco:320, marca:'IDN PHARMATECH'},
-            {nome:'Sostenon (Dura) IDN', preco:330, marca:'IDN PHARMATECH'},
-            {nome:'Decabol (Deca) IDN', preco:320, marca:'IDN PHARMATECH'},
-            {nome:'Trenviden Rapid IDN', preco:2990, marca:'IDN PHARMATECH'},
-            // EMINENCE
-            {nome:'Testomix Eminence 10ml', preco:370, marca:'EMINENCE'},
-            {nome:'EnanPrime Eminence 10ml', preco:367, marca:'EMINENCE'},
-            {nome:'DecaPrime Eminence 10ml', preco:370, marca:'EMINENCE'},
-            {nome:'TrenoPrime Eminence 10ml', preco:465, marca:'EMINENCE'},
-            // FARMÁCIA / NACIONAIS
-            {nome:'Durateston Aspen 1ml', preco:90, marca:'FARMACIA'},
-            {nome:'Venvanse 70mg 28cmp', preco:799, marca:'FARMACIA'},
-            {nome:'Ritalina Novartis 30comp', preco:170, marca:'FARMACIA'},
-            {nome:'Roacutan genérico 30cmp', preco:230, marca:'FARMACIA'},
-            {nome:'Alprazolam 30comp/2mg', preco:85, marca:'FARMACIA'},
-            // MANIPULADOS
-            {nome:'Oxandrolona 120cáps/10mg', preco:199, marca:'MANIPULADOS'},
-            {nome:'Testosterona Gel 10% 30ml', preco:230, marca:'MANIPULADOS'},
-            {nome:'Ioimbina 30cáps/10mg', preco:120, marca:'MANIPULADOS'},
-            // DRAGON ELITE
-            {nome:'Snake Dragon 60caps', preco:250, marca:'DRAGON ELITE'},
-            {nome:'Ostarine 60caps Dragon', preco:270, marca:'DRAGON ELITE'},
-            {nome:'Rad140 60caps Dragon', preco:220, marca:'DRAGON ELITE'},
-            {nome:'Cardarine 60caps Dragon', preco:270, marca:'DRAGON ELITE'},
-            {nome:'Mk-677 60caps Dragon', preco:270, marca:'DRAGON ELITE'}
-        ];
+<h2>Clientes</h2>
+<div id="clientes"></div>
+</section>
 
-        let produtos = [], carrinho = [], pedidos = [], clientes = [];
-        let clienteLogado = null;
-        let adminLogado = false;
-        let marcaAtual = "TODAS";
+<script>
+const firebaseConfig = {
+apiKey: "SUA_API_KEY",
+authDomain: "SEU_AUTH_DOMAIN",
+projectId: "SEU_PROJECT_ID"
+};
 
-        async function carregarDados() {
-            try {
-                const prodSnap = await db.collection('produtos').get();
-                if (prodSnap.empty) {
-                    produtos = produtosIniciais.map((p, i) => ({ id: Date.now()+i, ...p, img:'https://placehold.co/150x150?text='+p.marca }));
-                    produtos.forEach(async p => await db.collection('produtos').doc(String(p.id)).set(p));
-                } else {
-                    produtos = prodSnap.docs.map(d => d.data());
-                }
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-                if(adminLogado) {
-                    const pSnap = await db.collection('pedidos').get();
-                    pedidos = pSnap.docs.map(d => ({idDoc: d.id, ...d.data()}));
-                    const cSnap = await db.collection('clientes').get();
-                    clientes = cSnap.docs.map(d => ({idDoc: d.id, ...d.data()}));
-                    renderAdminPedidos();
-                    renderAdminClientes();
-                }
+let produtos = [];
+let carrinho = [];
+let clientes = [];
+let clienteLogado = null;
+let adminLogado = false;
 
-                renderBrandFilters();
-                renderCatalogo();
-                atualizarUI();
-            } catch(e) { console.log(e); }
-        }
+function showSection(id){
+document.querySelectorAll('.section').forEach(sec=>sec.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
 
-        function showSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(id === 'gerenciarProdutos') renderGerenciarProdutos();
-        }
+async function carregarProdutos(){
+const snap = await db.collection('produtos').get();
+produtos = snap.docs.map(doc=>doc.data());
+renderProdutos();
+renderAdminProdutos();
+}
 
-        function atualizarUI() {
-            if(clienteLogado) {
-                document.getElementById('nav-login').style.display = 'none';
-                document.getElementById('nav-logout').style.display = 'inline-block';
-                const bar = document.getElementById('userInfoBar');
-                bar.style.display = 'block';
-                bar.innerText = `👤 Olá, ${clienteLogado.nome} | Região: ${clienteLogado.regiao} | Frete Aplicado: R$ ${tabelaFrete[clienteLogado.regiao].toFixed(2)}`;
-            }
-        }
+function renderProdutos(){
+const div = document.getElementById('produtos');
 
-        function renderBrandFilters() {
-            const marcas = ["TODAS", ...new Set(produtos.map(p => p.marca))];
-            document.getElementById('brandFiltersContainer').innerHTML = marcas.map(m => 
-                `<button class="${m === marcaAtual ? 'active' : ''}" onclick="filtrarMarca('${m}')">${m}</button>`
-            ).join('');
-        }
+div.innerHTML = produtos.map(p=>`
+<div class="card product">
+<img src="${p.img}">
+<h3>${p.nome}</h3>
+<p>${p.marca}</p>
+<h2>R$ ${Number(p.preco).toFixed(2)}</h2>
+<button class="btn" onclick="addCarrinho(${p.id})">Adicionar</button>
+</div>
+`).join('');
+}
 
-        function filtrarMarca(marca) {
-            marcaAtual = marca;
-            renderBrandFilters();
-            renderCatalogo();
-        }
+function addCarrinho(id){
+const prod = produtos.find(p=>p.id===id);
+carrinho.push(prod);
+renderCarrinho();
+}
 
-        function renderCatalogo() {
-            const termo = document.getElementById('searchInput').value.toLowerCase();
-            const grid = document.getElementById('catalogoContainer');
-            const filtrados = produtos.filter(p => {
-                const matchNome = p.nome.toLowerCase().includes(termo);
-                const matchMarca = marcaAtual === "TODAS" || p.marca === marcaAtual;
-                return matchNome && matchMarca;
-            });
-            grid.innerHTML = filtrados.map(p => `
-                <div class="product-card">
-                    <img src="${p.img}">
-                    <span class="brand-tag">${p.marca}</span>
-                    <span class="name">${p.nome}</span>
-                    <span class="price">R$ ${Number(p.preco).toFixed(2)}</span>
-                    <button class="btn" onclick="addCarrinho(${p.id})">🛒 Adicionar</button>
-                </div>
-            `).join('');
-        }
+function renderCarrinho(){
+const div = document.getElementById('listaCarrinho');
+let total = 0;
 
-        function addCarrinho(id) {
-            const prod = produtos.find(p => p.id === id);
-            carrinho.push(prod);
-            document.getElementById('cart-count').innerText = carrinho.length;
-            renderCarrinho();
-            alert(`✅ ${prod.nome} adicionado!`);
-        }
+div.innerHTML = carrinho.map((p,i)=>{
+total += Number(p.preco);
+return `
+<div class="card">
+${p.nome} - R$ ${p.preco}
+<button onclick="removerCarrinho(${i})">Remover</button>
+</div>
+`;
+}).join('');
 
-        function renderCarrinho() {
-            const container = document.getElementById('carrinhoContainer');
-            const resumo = document.getElementById('carrinhoResumo');
-            if(carrinho.length === 0) {
-                container.innerHTML = "<p>Carrinho vazio.</p>";
-                resumo.style.display = 'none';
-                return;
-            }
-            resumo.style.display = 'block';
-            let subtotal = 0;
-            container.innerHTML = carrinho.map((p, i) => {
-                subtotal += Number(p.preco);
-                return `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #ccc;">
-                    <span>${p.nome}</span>
-                    <span>R$ ${p.preco.toFixed(2)} <button onclick="removerCarrinho(${i})" style="color:red; background:none; border:none; cursor:pointer;">❌</button></span>
-                </div>`;
-            }).join('');
-            let frete = (clienteLogado && tabelaFrete[clienteLogado.regiao]) ? tabelaFrete[clienteLogado.regiao] : 0;
-            document.getElementById('resumoRegiao').innerText = clienteLogado ? clienteLogado.regiao : "Faça Login";
-            document.getElementById('resumoSubtotal').innerText = subtotal.toFixed(2);
-            document.getElementById('resumoFrete').innerText = frete.toFixed(2);
-            document.getElementById('resumoTotal').innerText = (subtotal + frete).toFixed(2);
-        }
+document.getElementById('totalCarrinho').innerText = total.toFixed(2);
+document.getElementById('cartCount').innerText = carrinho.length;
+}
 
-        function removerCarrinho(i) {
-            carrinho.splice(i, 1);
-            document.getElementById('cart-count').innerText = carrinho.length;
-            renderCarrinho();
-        }
+function removerCarrinho(i){
+carrinho.splice(i,1);
+renderCarrinho();
+}
 
-        async function finalizarPedido() {
-            if(!clienteLogado) return alert("❌ Faça login antes de finalizar!");
-            const subtotal = carrinho.reduce((acc, p) => acc + Number(p.preco), 0);
-            const frete = tabelaFrete[clienteLogado.regiao] || 0;
-            const pedido = {
-                data: new Date().toLocaleString(),
-                cliente: clienteLogado.nome,
-                cpf: clienteLogado.cpf,
-                endereco: `${clienteLogado.endereco}, ${clienteLogado.bairro}`,
-                itens: carrinho.map(c => c.nome).join(', '),
-                total: subtotal + frete,
-                status: 'Pendente'
-            };
-            await db.collection('pedidos').add(pedido);
-            alert("✅ Pedido realizado!");
-            carrinho = [];
-            document.getElementById('cart-count').innerText = "0";
-            renderCarrinho();
-            showSection('catalogo');
-        }
+async function cadastrarCliente(){
+const cliente = {
+nome: document.getElementById('nomeCadastro').value,
+cpf: document.getElementById('cpfCadastro').value,
+regiao: document.getElementById('regiaoCadastro').value
+};
 
-        async function cadastrarCliente() {
-            const nome = document.getElementById('cadNome').value;
-            const cpf = document.getElementById('cadCpf').value;
-            const regiao = document.getElementById('cadRegiao').value;
-            if(!nome || !cpf || !regiao) return alert("Preencha os campos!");
-            const novoCli = { nome, cpf, cep: document.getElementById('cadCep').value, endereco: document.getElementById('cadEnd').value, bairro: document.getElementById('cadBairro').value, regiao };
-            await db.collection('clientes').doc(cpf).set(novoCli);
-            clienteLogado = novoCli;
-            atualizarUI();
-            renderCarrinho();
-            showSection('catalogo');
-        }
+await db.collection('clientes').doc(cliente.cpf).set(cliente);
+alert('Cliente cadastrado');
+}
 
-        async function loginCliente() {
-            const cpf = document.getElementById('loginCpf').value;
-            const doc = await db.collection('clientes').doc(cpf).get();
-            if(doc.exists) {
-                clienteLogado = doc.data();
-                atualizarUI();
-                renderCarrinho();
-                showSection('catalogo');
-            } else alert("❌ CPF não encontrado.");
-        }
+async function loginCliente(){
+const cpf = document.getElementById('cpfLogin').value;
+const doc = await db.collection('clientes').doc(cpf).get();
 
-        function logout() { location.reload(); }
+if(doc.exists){
+clienteLogado = doc.data();
+alert('Login realizado');
+showSection('catalogo');
+}else{
+alert('CPF não encontrado');
+}
+}
 
-        function showAdminLogin() { document.getElementById('adminLoginForm').style.display = 'block'; showSection('admin'); }
+function fazerLoginAdmin(){
+const usuario = document.getElementById('adminUser').value;
+const senha = document.getElementById('adminPass').value;
 
-        function fazerLoginAdmin() {
-            if(document.getElementById('adminUser').value === 'BOMBADAVID' && document.getElementById('adminPass').value === '20362881') {
-                adminLogado = true;
-                document.getElementById('adminLoginForm').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('nav-admin', 'nav-clientes', 'nav-gerenciar').forEach(id => document.getElementById(id).style.display = 'inline-block');
-                carregarDados();
-            } else alert("❌ Dados incorretos");
-        }
+if(usuario === 'admin' && senha === '123456'){
+adminLogado = true;
 
-        function renderAdminPedidos() {
-            document.getElementById('adminPedidosContainer').innerHTML = pedidos.map(p => `
-                <div class="card">
-                    <p><strong>Data:</strong> ${p.data} | <strong>Cliente:</strong> ${p.cliente}</p>
-                    <p><strong>Itens:</strong> ${p.itens}</p>
-                    <p><strong>Total:</strong> R$ ${p.total.toFixed(2)}</p>
-                </div>
-            `).join('');
-        }
+alert('Admin logado');
 
-        function renderAdminClientes() {
-            document.getElementById('adminClientesContainer').innerHTML = clientes.map(c => `
-                <div class="card"><p><strong>${c.nome}</strong> (${c.regiao})</p><p>CPF: ${c.cpf}</p></div>
-            `).join('');
-        }
+document.getElementById('btnAdmin').style.display = 'inline-block';
+document.getElementById('btnLogout').style.display = 'inline-block';
+document.getElementById('btnLogin').style.display = 'none';
 
-        async function addProduto() {
-            const p = { id: Date.now(), nome: document.getElementById('novoNome').value, preco: parseFloat(document.getElementById('novoPreco').value), marca: document.getElementById('novoMarca').value, img:'https://placehold.co/150x150' };
-            await db.collection('produtos').doc(String(p.id)).set(p);
-            carregarDados();
-        }
+showSection('admin');
 
-        function renderGerenciarProdutos() {
-            document.getElementById('gerenciarContainer').innerHTML = produtos.map(p => `
-                <div style="background:white; padding:10px; margin-bottom:5px; border:1px solid #ccc; display:flex; justify-content:space-between;">
-                    <span>${p.nome} - R$ ${p.preco.toFixed(2)}</span>
-                    <button onclick="excluirProduto(${p.id})">🗑️</button>
-                </div>
-            `).join('');
-        }
+carregarClientes();
+}else{
+alert('Dados inválidos');
+}
+}
 
-        async function excluirProduto(id) {
-            await db.collection('produtos').doc(String(id)).delete();
-            carregarDados();
-        }
+async function addProduto(){
+const produto = {
+id: Date.now(),
+nome: document.getElementById('novoNome').value,
+preco: parseFloat(document.getElementById('novoPreco').value),
+marca: document.getElementById('novoMarca').value,
+img: document.getElementById('novoImg').value
+};
 
-        window.onload = () => carregarDados();
-    </script>
+await db.collection('produtos').doc(String(produto.id)).set(produto);
+
+alert('Produto adicionado');
+
+carregarProdutos();
+}
+
+function renderAdminProdutos(){
+const div = document.getElementById('adminProdutos');
+
+if(!div) return;
+
+div.innerHTML = produtos.map(p=>`
+<div class="card">
+<input type="text" id="nome-${p.id}" value="${p.nome}">
+<input type="number" id="preco-${p.id}" value="${p.preco}">
+<input type="text" id="marca-${p.id}" value="${p.marca}">
+<input type="text" id="img-${p.id}" value="${p.img}">
+
+<button class="btn" onclick="salvarProduto(${p.id})">Salvar</button>
+<button onclick="excluirProduto(${p.id})">Excluir</button>
+</div>
+`).join('');
+}
+
+async function salvarProduto(id){
+const produto = {
+id,
+nome: document.getElementById(`nome-${id}`).value,
+preco: parseFloat(document.getElementById(`preco-${id}`).value),
+marca: document.getElementById(`marca-${id}`).value,
+img: document.getElementById(`img-${id}`).value
+};
+
+await db.collection('produtos').doc(String(id)).set(produto);
+alert('Produto atualizado');
+carregarProdutos();
+}
+
+async function excluirProduto(id){
+await db.collection('produtos').doc(String(id)).delete();
+alert('Produto removido');
+carregarProdutos();
+}
+
+async function carregarClientes(){
+const snap = await db.collection('clientes').get();
+clientes = snap.docs.map(doc=>doc.data());
+
+const div = document.getElementById('clientes');
+
+div.innerHTML = clientes.map(c=>`
+<div class="card">
+${c.nome}<br>
+CPF: ${c.cpf}<br>
+${c.regiao}
+</div>
+`).join('');
+}
+
+function logout(){
+location.reload();
+}
+
+carregarProdutos();
+</script>
+
 </body>
 </html>
+```
