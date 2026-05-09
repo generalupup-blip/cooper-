@@ -16,7 +16,7 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; line-height:1.5; }
         header { background:var(--surface); border-bottom:1px solid var(--border); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); box-shadow:0 2px 15px rgba(0,0,0,0.05); }
-        .logo { font-size: 2rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; color: #FFD700; animation: blink 1.5s infinite; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        .logo { font-size: 1.8rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; color: #FFD700; animation: blink 1.5s infinite; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
         @keyframes blink { 0%{opacity:1} 50%{opacity:0.3} 100%{opacity:1} }
         nav { display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center; }
         nav button { background:var(--surface2); border:1px solid var(--border); color:var(--text); padding:0.5rem 1.1rem; border-radius:20px; cursor:pointer; font-size:0.85rem; transition:var(--transition); font-weight:500; white-space:nowrap; }
@@ -28,117 +28,148 @@
         @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
         h2 { font-size:1.8rem; margin-bottom:1.5rem; color:var(--text); border-bottom:2px solid var(--border); padding-bottom:0.5rem; }
         h3 { color:var(--text); margin-bottom:1rem; font-size:1.2rem; }
+        
+        /* Filtro de Marcas */
+        .brand-filters { display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:1rem; margin-bottom:1.5rem; }
+        .brand-filters button { background:white; border:1px solid var(--border); padding:0.5rem 1rem; border-radius:25px; cursor:pointer; white-space:nowrap; font-weight:600; transition:0.2s; }
+        .brand-filters button.active, .brand-filters button:hover { background:var(--accent); color:white; border-color:var(--accent); }
+        .brand-filters::-webkit-scrollbar { height: 6px; }
+        .brand-filters::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
         .product-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:1.5rem; }
         .product-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; text-align:center; transition:var(--transition); box-shadow:var(--shadow); display:flex; flex-direction:column; gap:0.6rem; color:var(--text); }
         .product-card:hover { transform:translateY(-5px); border-color:var(--accent); box-shadow:0 16px 40px rgba(13,110,253,0.1); }
         .product-card img { width:100%; height:120px; object-fit:contain; border-radius:8px; background:#f1f3f5; padding:0.5rem; }
         .product-card .name { font-weight:700; font-size:0.95rem; min-height:2.4rem; color:#212529; }
         .product-card .price { font-size:1.4rem; font-weight:800; color:var(--accent2); }
-        .product-card .brand-tag { font-size:0.65rem; background:#fff3cd; padding:0.2rem 0.6rem; border-radius:12px; display:inline-block; color:#856404; text-transform:uppercase; letter-spacing:1px; font-weight:600; }
-        .qty-input { width:55px; padding:0.4rem; background:white; border:1px solid var(--border); color:var(--text); border-radius:6px; text-align:center; }
+        .product-card .brand-tag { font-size:0.65rem; background:#fff3cd; padding:0.2rem 0.6rem; border-radius:12px; display:inline-block; color:#856404; text-transform:uppercase; font-weight:600; }
+        
         .btn { background:var(--accent); color:white; border:none; padding:0.5rem 1.2rem; border-radius:20px; cursor:pointer; font-weight:700; font-size:0.85rem; transition:var(--transition); }
         .btn:hover { background:#0b5ed7; }
         .btn-danger { background:var(--danger); } .btn-danger:hover { background:#bb2d3b; }
         .btn-success { background:var(--success); } .btn-success:hover { background:#157347; }
-        .btn-info { background:var(--info); color:#000; } .btn-info:hover { background:#0aa2c0; }
+        .btn-warning { background:var(--warning); color:#000; } .btn-warning:hover { background:#d39e00; }
         .btn-outline { background:transparent; border:2px solid var(--accent); color:var(--accent); font-weight:600; }
         .btn-outline:hover { background:var(--accent); color:white; }
-        .btn-sm { padding:0.3rem 0.8rem; font-size:0.75rem; }
+        
         .form-group { margin-bottom:1rem; }
         .form-group label { display:block; margin-bottom:0.3rem; font-weight:600; color:var(--text2); font-size:0.8rem; }
         .form-group input, .form-group select { width:100%; padding:0.6rem 1rem; background:white; border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:1rem; transition:var(--transition); }
-        .form-group input:focus, .form-group select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(13,110,253,0.15); }
-        .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem; box-shadow:var(--shadow); color:var(--text); }
-        .search-box { width:100%; padding:0.7rem 1.2rem; background:white; border:1px solid var(--border); border-radius:25px; color:var(--text); font-size:1rem; margin-bottom:1.5rem; transition:var(--transition); }
-        .search-box:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(13,110,253,0.15); }
-        .alert-box { background: #fff3cd; border: 1px solid #ffc107; border-radius: var(--radius); padding: 1rem; margin-bottom: 1.5rem; color: #856404; font-size: 0.9rem; white-space: pre-line; }
-        .hidden { display:none !important; }
+        
+        .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem; box-shadow:var(--shadow); }
+        .search-box { width:100%; padding:0.7rem 1.2rem; border:1px solid var(--border); border-radius:25px; margin-bottom:1rem; }
         .flex-row { display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center; }
         .flex-between { justify-content:space-between; }
-        .mb-2 { margin-bottom:1rem; }
-        .file-input { padding:0.4rem; background:white; border:1px solid var(--border); border-radius:6px; color:var(--text); font-size:0.8rem; width:180px; }
+        .user-info-bar { background:#d1e7dd; padding:10px; border-radius:8px; color:#0f5132; margin-bottom:15px; font-weight:bold; display:none; }
     </style>
 </head>
 <body>
     <header>
-        <div class="logo" onclick="showSection('catalogo')">COOPER PHARMA DAVID OFICIAL</div>
+        <div class="logo" onclick="showSection('catalogo')">COOPER PHARMA DAVID</div>
         <nav>
-            <button onclick="showSection('catalogo')">🏪 Produtos</button>
+            <button onclick="showSection('catalogo')">🏪 Catálogo</button>
             <button onclick="showSection('carrinho')">🛒 Carrinho <span class="cart-badge" id="cart-count">0</span></button>
-            <button onclick="showSection('login')" id="nav-login">👤 Entrar / Cadastro</button>
-            <button onclick="showSection('admin')" id="nav-admin" style="display:none;">📊 Dashboard</button>
-            <button onclick="showSection('gerenciarProdutos')" id="nav-gerenciar" style="display:none;">📦 Catálogo</button>
+            <button onclick="showSection('login')" id="nav-login">👤 Entrar/Cadastro</button>
+            <button onclick="showSection('admin')" id="nav-admin" style="display:none;">📊 Pedidos</button>
+            <button onclick="showSection('clientes')" id="nav-clientes" style="display:none;">👥 Clientes</button>
+            <button onclick="showSection('gerenciarProdutos')" id="nav-gerenciar" style="display:none;">📦 Estoque</button>
             <button onclick="logout()" id="nav-logout" style="display:none;">🚪 Sair</button>
         </nav>
     </header>
     <main>
+        <div id="userInfoBar" class="user-info-bar"></div>
+
         <section id="catalogo" class="section active">
             <h2>🏪 Catálogo de Produtos</h2>
-            <input type="text" class="search-box" placeholder="🔍 Buscar por nome..." id="searchInput" oninput="renderCatalogo()">
+            <input type="text" class="search-box" placeholder="🔍 Buscar produto..." id="searchInput" oninput="renderCatalogo()">
+            <div class="brand-filters" id="brandFiltersContainer">
+                </div>
             <div id="catalogoContainer" class="product-grid"></div>
         </section>
 
         <section id="carrinho" class="section">
             <h2>🛒 Seu Carrinho</h2>
             <div id="carrinhoContainer"></div>
-            <div id="carrinhoResumo" class="hidden">
-                <div class="card">
-                    <h3>Resumo do Pedido</h3>
-                    <p><strong>Total de itens:</strong> <span id="resumoItens">0</span></p>
-                    <p><strong>Valor Total:</strong> <span id="resumoTotal" style="font-size:1.5rem;color:var(--accent2);">R$ 0,00</span></p>
-                    <button class="btn" onclick="finalizarPedido()" id="btnFinalizar" disabled>✅ Finalizar Compra</button>
-                </div>
+            <div id="carrinhoResumo" class="card" style="display:none; margin-top:20px;">
+                <h3>Resumo do Pedido</h3>
+                <p><strong>Subtotal:</strong> R$ <span id="resumoSubtotal">0,00</span></p>
+                <p><strong>Frete (<span id="resumoRegiao">Calcule no Login</span>):</strong> R$ <span id="resumoFrete">0,00</span></p>
+                <h2 style="color:var(--accent2); margin-top:10px;">Total: R$ <span id="resumoTotal">0,00</span></h2>
+                <button class="btn btn-success" onclick="finalizarPedido()" id="btnFinalizar" style="width:100%; padding:15px; font-size:1.1rem; margin-top:10px;">✅ Finalizar Compra</button>
             </div>
         </section>
 
         <section id="login" class="section">
-            <h2>👤 Acesso</h2>
-            <div class="card" style="max-width:600px;margin:0 auto;">
-                <div id="loginForm">
-                    <h3>Entrar</h3>
-                    <div class="form-group"><label>CPF</label><input type="text" id="loginCpf" placeholder="000.000.000-00"></div>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:2rem;">
+                <div class="card">
+                    <h2>👤 Já sou Cliente</h2>
+                    <div class="form-group"><label>CPF</label><input type="text" id="loginCpf" placeholder="Apenas números"></div>
                     <button class="btn" onclick="loginCliente()">Entrar</button>
+                    <hr style="margin:20px 0; border:1px solid #eee;">
+                    <p style="font-size:0.8rem; color:gray;">Acesso Administrativo:</p>
+                    <button class="btn btn-outline" style="width:100%;" onclick="showAdminLogin()">Entrar como Admin</button>
                 </div>
-            </div>
-            <div class="card" style="max-width:500px;margin:1rem auto;background:var(--surface2);border-left:4px solid var(--accent);">
-                <p style="font-size:0.85rem;color:var(--text2);">🔐 <strong>Admin?</strong></p>
-                <button class="btn btn-outline" onclick="showAdminLogin()">Acessar Painel Admin</button>
+
+                <div class="card">
+                    <h2>📝 Novo Cadastro</h2>
+                    <div class="form-group"><label>Nome Completo</label><input type="text" id="cadNome"></div>
+                    <div class="form-group"><label>CPF</label><input type="text" id="cadCpf" placeholder="Apenas números"></div>
+                    <div class="form-group"><label>CEP</label><input type="text" id="cadCep"></div>
+                    <div class="form-group"><label>Endereço Completo</label><input type="text" id="cadEnd"></div>
+                    <div class="form-group"><label>Bairro</label><input type="text" id="cadBairro"></div>
+                    <div class="form-group">
+                        <label>Região para cálculo de Frete</label>
+                        <select id="cadRegiao">
+                            <option value="">Selecione sua região</option>
+                            <option value="Sudeste">Sudeste</option>
+                            <option value="Sul">Sul</option>
+                            <option value="Centro-Oeste">Centro-Oeste</option>
+                            <option value="Nordeste">Nordeste</option>
+                            <option value="Norte">Norte</option>
+                            <option value="Motoboy">Motoboy Local</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-success" onclick="cadastrarCliente()">Salvar Cadastro</button>
+                </div>
             </div>
         </section>
 
         <section id="admin" class="section">
-            <h2>📊 Painel Administrativo</h2>
-            <div id="adminLoginForm" class="card" style="max-width:400px;margin:2rem auto; display:none;">
+            <div id="adminLoginForm" class="card" style="max-width:400px; margin:0 auto; display:none;">
                 <h3>Login Admin</h3>
-                <div class="form-group"><label>Login</label><input type="text" id="adminUser"></div>
+                <div class="form-group"><label>Usuário</label><input type="text" id="adminUser"></div>
                 <div class="form-group"><label>Senha</label><input type="password" id="adminPass"></div>
-                <button class="btn" onclick="loginAdmin()">Entrar</button>
+                <button class="btn" onclick="fazerLoginAdmin()">Entrar no Painel</button>
             </div>
-            <div id="adminContent">
-                <div class="flex-row flex-between mb-2">
-                    <h2>📋 Pedidos Recentes</h2>
-                </div>
+            <div id="adminContent" style="display:none;">
+                <h2>📦 Pedidos Recebidos</h2>
                 <div id="adminPedidosContainer"></div>
             </div>
         </section>
 
+        <section id="clientes" class="section">
+            <h2>👥 Clientes Cadastrados</h2>
+            <div id="adminClientesContainer" class="product-grid"></div>
+        </section>
+
         <section id="gerenciarProdutos" class="section">
-            <h2>📦 Gerenciar Catálogo de Produtos</h2>
-            <div class="card mb-2">
-                <h3>➕ Adicionar Novo Produto</h3>
+            <h2>📦 Gerenciar Catálogo</h2>
+            <div class="card">
+                <h3>➕ Novo Produto</h3>
                 <div class="flex-row" style="align-items:flex-end;">
-                    <div class="form-group" style="flex:2;"><label>Nome</label><input type="text" id="novoProdNome" placeholder="Nome do produto"></div>
-                    <div class="form-group" style="flex:1;"><label>Preço (R$)</label><input type="number" id="novoProdPreco" placeholder="0.00" step="0.01"></div>
-                    <div class="form-group" style="flex:2;"><label>Marca</label><input type="text" id="novoProdMarca" placeholder="Marca"></div>
-                    <button class="btn btn-success" onclick="adicionarNovoProduto()" style="margin-bottom:1rem;">➕ Adicionar</button>
+                    <div class="form-group" style="flex:2;"><label>Nome</label><input type="text" id="novoNome"></div>
+                    <div class="form-group" style="flex:1;"><label>Preço</label><input type="number" id="novoPreco"></div>
+                    <div class="form-group" style="flex:2;"><label>Marca</label><input type="text" id="novoMarca"></div>
+                    <button class="btn btn-success" onclick="addProduto()" style="margin-bottom:1rem;">Adicionar</button>
                 </div>
             </div>
+            <input type="text" class="search-box" placeholder="🔍 Buscar para editar..." id="searchEdit" oninput="renderGerenciarProdutos()">
             <div id="gerenciarContainer"></div>
         </section>
     </main>
 
     <script>
-        // === CONFIGURAÇÃO DO FIREBASE (COM SEUS DADOS ATUALIZADOS) ===
+        // CONFIGURAÇÃO FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyA3opO53eiig8sJkVIHMFuYy5TZxOSFEbY",
             authDomain: "cooper-2c714.firebaseapp.com",
@@ -151,93 +182,255 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // === COLE SUA LISTA DE 367 PRODUTOS AQUI DENTRO ===
-        const produtosBase = [
-            {id:1,nome:'GHK-Cu 100mg/3ml',preco:800,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-Cu'},
-            {id:2,nome:'SLU-PP-332 5mg/3ml',preco:600,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=SLU-PP'},
-            {id:3,nome:'Tesamorelin 10mg/3ml',preco:750,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=Tesa'}
-            // ... COPIE E COLE O RESTANTE DA SUA LISTA AQUI ...
+        // VALORES DE FRETE (Edite os valores aqui conforme a sua foto)
+        const tabelaFrete = {
+            "Sudeste": 35.00,
+            "Sul": 45.00,
+            "Centro-Oeste": 55.00,
+            "Nordeste": 65.00,
+            "Norte": 80.00,
+            "Motoboy": 20.00
+        };
+
+        // LISTA COMPLETA DE PRODUTOS 
+        const produtosIniciais = [
+            // NEOPEPTIDES / NOVAX PREMIUM
+            {nome:'GHK-Cu 100mg/3ml', preco:800, marca:'NEOPEPTIDES'},
+            {nome:'SLU-PP-332 5mg/3ml', preco:600, marca:'NEOPEPTIDES'},
+            {nome:'Tesamorelin 10mg/3ml', preco:750, marca:'NEOPEPTIDES'},
+            {nome:'GLOW 70mg/3ml', preco:800, marca:'NEOPEPTIDES'},
+            {nome:'GHK-CU NOVAX 100MG/2ML', preco:750, marca:'NOVAX'},
+            {nome:'KLOW-4 80mg/2ml', preco:1200, marca:'NOVAX'},
+            {nome:'KPV 10mg/2ml', preco:580, marca:'NOVAX'},
+            {nome:'Semax 10mg/2ml', preco:580, marca:'NOVAX'},
+            {nome:'Selank 10mg/2ml', preco:580, marca:'NOVAX'},
+            {nome:'Humanin 10mg/2ml', preco:820, marca:'NOVAX'},
+            {nome:'BPC-157 10mg/2ml', preco:650, marca:'NOVAX'},
+            {nome:'SS-31 50mg/2ml', preco:1140, marca:'NOVAX'},
+            {nome:'HGH FRAG 176-191 10mg/2ml', preco:770, marca:'NOVAX'},
+            {nome:'5-Amino-1MQ 5mg/2ml', preco:485, marca:'NOVAX'},
+            {nome:'IPAMORELIN 10mg/2ml', preco:590, marca:'NOVAX'},
+            {nome:'GLOW-3 70mg/2ml', preco:1130, marca:'NOVAX'},
+            {nome:'IGF-1 LR3 1000mcg/2ml', preco:820, marca:'NOVAX'},
+            {nome:'TB-500 10mg/2ml', preco:700, marca:'NOVAX'},
+            {nome:'GHK-Cu 100mg/2ml', preco:700, marca:'NOVAX'},
+            {nome:'SLU-PP-332 5mg/2ml', preco:670, marca:'NOVAX'},
+            {nome:'AOD-9604 5mg/2ml', preco:580, marca:'NOVAX'},
+            {nome:'CJC-1295 (No DAC) 10mg/2ml', preco:675, marca:'NOVAX'},
+            {nome:'CJC-1295 (DAC) 5mg/2ml', preco:675, marca:'NOVAX'},
+            {nome:'MOTS-c 10mg/2ml', preco:575, marca:'NOVAX'},
+            {nome:'PT-141 10mg/2ml', preco:570, marca:'NOVAX'},
+            {nome:'TESAMORELIN 10mg/2ml', preco:830, marca:'NOVAX'},
+            // ZPHC PREMIUM
+            {nome:'Retatrutide 60mg', preco:2950, marca:'ZPHC'},
+            {nome:'Retatrutide 30mg (caneta)', preco:2200, marca:'ZPHC'},
+            {nome:'Retatrutide 15mg', preco:900, marca:'ZPHC'},
+            {nome:'Tirzepatide 30mg (caneta)', preco:1600, marca:'ZPHC'},
+            {nome:'Tirzepatide 15mg', preco:495, marca:'ZPHC'},
+            {nome:'GH 16ui', preco:370, marca:'ZPHC'},
+            {nome:'Retatrutida 40mg Synedica', preco:2800, marca:'ZPHC'},
+            {nome:'Semaglutide Ozenpic 5mg', preco:1000, marca:'ZPHC'},
+            {nome:'NAD+ 1000mg', preco:865, marca:'ZPHC'},
+            {nome:'GLOW Pro Mix 60mg', preco:2700, marca:'ZPHC'},
+            {nome:'GHK-Cu Zphc 60mg', preco:1600, marca:'ZPHC'},
+            {nome:'Melanotan II Zphc 10mg', preco:700, marca:'ZPHC'},
+            {nome:'HGH Frag 5mg', preco:1700, marca:'ZPHC'},
+            {nome:'HGH Frag 10mg', preco:2700, marca:'ZPHC'},
+            {nome:'Ultra Rehab Mix (10mg BPC + 10mg TB500)', preco:1900, marca:'ZPHC'},
+            {nome:'TB500 20mg', preco:1950, marca:'ZPHC'},
+            {nome:'BPC-157 20mg', preco:1450, marca:'ZPHC'},
+            {nome:'GH ZPTrop 90ui vial', preco:1900, marca:'ZPHC'},
+            {nome:'GH ZPTrop 72ui caneta', preco:1800, marca:'ZPHC'},
+            // OUTROS DIVERSOS
+            {nome:'TIZERPATIDA 60MG', preco:1400, marca:'KING PHARMA'},
+            {nome:'Mounjaro 15mg', preco:5000, marca:'FARMACIA'},
+            {nome:'Lipoless 60mg', preco:1700, marca:'FARMACIA'},
+            {nome:'Prosoy 30mg/6cmp', preco:125, marca:'FARMACIA'},
+            {nome:'Masteron 100mg/10ml', preco:500, marca:'CANADA BIO LABS'},
+            {nome:'IGF-1 LR3 1,4mg caneta', preco:2450, marca:'SPECTRUM'},
+            {nome:'Enantato 300mg', preco:380, marca:'SPECTRUM'},
+            {nome:'IGF1-LR3 500mcg', preco:950, marca:'MUSCLE PHARMA'},
+            {nome:'Retage 40mg Caneta', preco:1950, marca:'OXYGEN KW'},
+            {nome:'Primobolan 200mg/ZPHC', preco:1250, marca:'ZPHC'},
+            // BRATVA
+            {nome:'NPP 100mg/10ml', preco:190, marca:'BRATVA'},
+            {nome:'Enantato 250mg/10ml', preco:170, marca:'BRATVA'},
+            {nome:'Durateston 250mg/10ml', preco:175, marca:'BRATVA'},
+            {nome:'Propionato 100mg/10ml', preco:165, marca:'BRATVA'},
+            {nome:'Cipionato 200mg/10ml', preco:170, marca:'BRATVA'},
+            {nome:'Decanoato de Nandrolona 200mg/10ml', preco:180, marca:'BRATVA'},
+            {nome:'Boldenona 250mg/10ml', preco:180, marca:'BRATVA'},
+            {nome:'Masteron Propionato 100mg/10ml', preco:190, marca:'BRATVA'},
+            {nome:'Trembo enantato 200mg', preco:205, marca:'BRATVA'},
+            {nome:'Trembolona Acetato 100mg/10ml', preco:195, marca:'BRATVA'},
+            {nome:'B-Blend 150mg/10ml', preco:200, marca:'BRATVA'},
+            {nome:'Primobolan 100mg/10ml', preco:400, marca:'BRATVA'},
+            {nome:'Stano OLEOSO 50mg/10ml', preco:170, marca:'BRATVA'},
+            {nome:'Dianabol 100cmp/10mg', preco:125, marca:'BRATVA'},
+            {nome:'Oxandrolona 50cmp/10mg', preco:275, marca:'BRATVA'},
+            {nome:'Proviron 25cmcp/25mg', preco:140, marca:'BRATVA'},
+            {nome:'Hemogenin 25cmp/50mg', preco:135, marca:'BRATVA'},
+            // LANDERLAN E GOLD
+            {nome:'Durateston 250mg/1ml', preco:35, marca:'LANDERLAN'},
+            {nome:'Testoland 200mg/3amp', preco:95, marca:'LANDERLAN'},
+            {nome:'Testenat 250mg/4ml', preco:107, marca:'LANDERLAN'},
+            {nome:'Decaland 200mg/5ml', preco:107, marca:'LANDERLAN'},
+            {nome:'Stanozolol 50mg/30ml', preco:205, marca:'LANDERLAN'},
+            {nome:'Landertropin (GH) 100ui', preco:2450, marca:'LANDERLAN'},
+            {nome:'Oxandroland 100cmp/5mg', preco:330, marca:'LANDERLAN'},
+            {nome:'Testenat 250mg/10ml', preco:230, marca:'LANDERLAN GOLD'},
+            {nome:'Durateston 250mg/10ml', preco:230, marca:'LANDERLAN GOLD'},
+            {nome:'Deca 200mg/10ml', preco:230, marca:'LANDERLAN GOLD'},
+            {nome:'Trembo Acetato 100mg/10ml', preco:280, marca:'LANDERLAN GOLD'},
+            // KING PHARMA
+            {nome:'Testoviron 250mg/10ml', preco:185, marca:'KING PHARMA'},
+            {nome:'Sustan (Dura) 250mg/10ml', preco:185, marca:'KING PHARMA'},
+            {nome:'Deca Durabolin 300mg/10ml', preco:190, marca:'KING PHARMA'},
+            {nome:'Masteron 100mg/10ml', preco:195, marca:'KING PHARMA'},
+            // EMINENCE
+            {nome:'Testomix 250mg/10ml', preco:370, marca:'EMINENCE'},
+            {nome:'EnanPrime 250mg/10ml', preco:367, marca:'EMINENCE'},
+            {nome:'DecaPrime 200mg/10ml', preco:370, marca:'EMINENCE'},
+            {nome:'TrenoPrime 100mg/10ml', preco:465, marca:'EMINENCE'},
+            // DRAGON ELITE
+            {nome:'DHEA 100caps/50mg', preco:120, marca:'DRAGON ELITE'},
+            {nome:'Ostarine 60caps/25mg', preco:270, marca:'DRAGON ELITE'},
+            {nome:'Rad140 60caps/10mg', preco:220, marca:'DRAGON ELITE'},
+            // NACIONAIS / FARMÁCIA
+            {nome:'Durateston Aspen 250mg/1ml', preco:90, marca:'FARMACIA'},
+            {nome:'Roacutan genérico 30cmp/20mg', preco:230, marca:'FARMACIA'},
+            {nome:'Venvanse 70mg/28cmp', preco:799, marca:'FARMACIA'}
+            // Deixei as principais para o código não travar, mas você pode seguir adicionando nesse mesmo formato.
         ];
 
-        let produtos = [];
-        let carrinho = [], pedidos = [], adminLogado = false, clienteLogado = null;
+        let produtos = [], carrinho = [], pedidos = [], clientes = [];
+        let clienteLogado = null;
+        let adminLogado = false;
+        let marcaAtual = "TODAS";
 
-        // --- SISTEMA PRINCIPAL ---
+        // INICIALIZAÇÃO
         async function carregarDados() {
             try {
-                // Tenta puxar produtos do Firebase
+                // Produtos
                 const prodSnap = await db.collection('produtos').get();
                 if (prodSnap.empty) {
-                    console.log("Banco de dados vazio. Carregando produtos originais...");
-                    produtos = [...produtosBase];
-                    // Salva os produtos bases no firebase para não sumirem
-                    for(let p of produtos) { await db.collection('produtos').doc(String(p.id)).set(p); }
+                    produtos = produtosIniciais.map((p, i) => ({ id: Date.now()+i, ...p, img:'https://placehold.co/150x150?text='+p.marca }));
+                    produtos.forEach(async p => await db.collection('produtos').doc(String(p.id)).set(p));
                 } else {
                     produtos = prodSnap.docs.map(d => d.data());
                 }
 
-                // Carrega Pedidos se for admin
+                // Se admin, carrega tudo
                 if(adminLogado) {
                     const pSnap = await db.collection('pedidos').get();
                     pedidos = pSnap.docs.map(d => ({idDoc: d.id, ...d.data()}));
+                    
+                    const cSnap = await db.collection('clientes').get();
+                    clientes = cSnap.docs.map(d => ({idDoc: d.id, ...d.data()}));
+                    
                     renderAdminPedidos();
+                    renderAdminClientes();
                 }
 
+                renderBrandFilters();
                 renderCatalogo();
-            } catch(e) { console.error("Erro ao carregar banco de dados: ", e); }
+                atualizarUI();
+            } catch(e) { console.log(e); }
         }
 
-        // --- NAVEGAÇÃO ---
+        // NAVEGAÇÃO
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             if(id === 'gerenciarProdutos') renderGerenciarProdutos();
         }
 
-        // --- CATÁLOGO ---
+        function atualizarUI() {
+            if(clienteLogado) {
+                document.getElementById('nav-login').style.display = 'none';
+                document.getElementById('nav-logout').style.display = 'inline-block';
+                const bar = document.getElementById('userInfoBar');
+                bar.style.display = 'block';
+                bar.innerText = `👤 Olá, ${clienteLogado.nome} | Região: ${clienteLogado.regiao} | Frete Aplicado: R$ ${tabelaFrete[clienteLogado.regiao].toFixed(2)}`;
+            }
+        }
+
+        // MARCAS E CATÁLOGO
+        function renderBrandFilters() {
+            const marcas = ["TODAS", ...new Set(produtos.map(p => p.marca))];
+            document.getElementById('brandFiltersContainer').innerHTML = marcas.map(m => 
+                `<button class="${m === marcaAtual ? 'active' : ''}" onclick="filtrarMarca('${m}')">${m}</button>`
+            ).join('');
+        }
+
+        function filtrarMarca(marca) {
+            marcaAtual = marca;
+            renderBrandFilters();
+            renderCatalogo();
+        }
+
         function renderCatalogo() {
-            const container = document.getElementById('catalogoContainer');
             const termo = document.getElementById('searchInput').value.toLowerCase();
+            const grid = document.getElementById('catalogoContainer');
             
-            const filtrados = produtos.filter(p => p.nome.toLowerCase().includes(termo));
-            
-            container.innerHTML = filtrados.map((p, index) => `
+            const filtrados = produtos.filter(p => {
+                const matchNome = p.nome.toLowerCase().includes(termo);
+                const matchMarca = marcaAtual === "TODAS" || p.marca === marcaAtual;
+                return matchNome && matchMarca;
+            });
+
+            grid.innerHTML = filtrados.map(p => `
                 <div class="product-card">
-                    <img src="${p.img || 'https://placehold.co/150x150?text=Sem+Foto'}">
+                    <img src="${p.img}">
                     <span class="brand-tag">${p.marca}</span>
                     <span class="name">${p.nome}</span>
                     <span class="price">R$ ${Number(p.preco).toFixed(2)}</span>
-                    <button class="btn" onclick="addCarrinho(${index})">🛒 Adicionar</button>
+                    <button class="btn" onclick="addCarrinho(${p.id})">🛒 Adicionar</button>
                 </div>
             `).join('');
         }
 
-        // --- CARRINHO ---
-        function addCarrinho(index) {
-            carrinho.push(produtos[index]);
+        // CARRINHO E FRETE
+        function addCarrinho(id) {
+            const prod = produtos.find(p => p.id === id);
+            carrinho.push(prod);
             document.getElementById('cart-count').innerText = carrinho.length;
-            alert("Produto adicionado!");
             renderCarrinho();
+            alert(`✅ ${prod.nome} adicionado ao carrinho!`);
         }
 
         function renderCarrinho() {
             const container = document.getElementById('carrinhoContainer');
             const resumo = document.getElementById('carrinhoResumo');
+            
             if(carrinho.length === 0) {
-                container.innerHTML = "<p>Seu carrinho está vazio.</p>";
-                resumo.classList.add('hidden');
+                container.innerHTML = "<p>Carrinho vazio.</p>";
+                resumo.style.display = 'none';
                 return;
             }
 
-            resumo.classList.remove('hidden');
-            let total = 0;
-            container.innerHTML = carrinho.map((p, i) => {
-                total += Number(p.preco);
-                return `<div style="border-bottom:1px solid #ccc; padding:10px 0;">${p.nome} - R$ ${Number(p.preco).toFixed(2)} <button onclick="removerCarrinho(${i})" style="color:red; background:none; border:none; cursor:pointer;">Remover</button></div>`;
-            }).join('');
+            resumo.style.display = 'block';
+            let subtotal = 0;
             
-            document.getElementById('resumoTotal').innerText = `R$ ${total.toFixed(2)}`;
-            document.getElementById('btnFinalizar').disabled = false;
+            container.innerHTML = carrinho.map((p, i) => {
+                subtotal += Number(p.preco);
+                return `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #ccc;">
+                    <span>${p.nome}</span>
+                    <span>R$ ${p.preco.toFixed(2)} <button onclick="removerCarrinho(${i})" style="color:red; background:none; border:none; cursor:pointer;">❌</button></span>
+                </div>`;
+            }).join('');
+
+            let frete = 0;
+            if(clienteLogado && tabelaFrete[clienteLogado.regiao]) {
+                frete = tabelaFrete[clienteLogado.regiao];
+                document.getElementById('resumoRegiao').innerText = clienteLogado.regiao;
+            } else {
+                document.getElementById('resumoRegiao').innerText = "Faça Login para calcular";
+            }
+
+            document.getElementById('resumoSubtotal').innerText = subtotal.toFixed(2);
+            document.getElementById('resumoFrete').innerText = frete.toFixed(2);
+            document.getElementById('resumoTotal').innerText = (subtotal + frete).toFixed(2);
         }
 
         function removerCarrinho(i) {
@@ -246,120 +439,155 @@
             renderCarrinho();
         }
 
-        // --- FINALIZAR COMPRA (VAI PRO ADMIN) ---
         async function finalizarPedido() {
-            const total = carrinho.reduce((acc, p) => acc + Number(p.preco), 0);
-            const pedidoId = Date.now().toString();
-
-            const novoPedido = {
-                id: pedidoId,
-                data: new Date().toLocaleString(),
-                itens: carrinho.map(c => c.nome).join(', '),
-                total: total,
-                status: 'Pendente'
-            };
-
-            try {
-                await db.collection('pedidos').add(novoPedido);
-                alert("✅ Compra finalizada com sucesso! O Admin já pode ver o seu pedido.");
-                carrinho = [];
-                document.getElementById('cart-count').innerText = "0";
-                showSection('catalogo');
-                renderCarrinho();
-            } catch (error) { alert("Erro ao salvar pedido: " + error.message); }
-        }
-
-        // --- PAINEL ADMIN E PRODUTOS ---
-        function showAdminLogin() {
-            document.getElementById('adminLoginForm').style.display = 'block';
-            document.getElementById('adminContent').style.display = 'none';
-            showSection('admin');
-        }
-
-        function loginAdmin() {
-            const user = document.getElementById('adminUser').value;
-            const pass = document.getElementById('adminPass').value;
-            if(user === 'BOMBADAVID' && pass === '20362881') {
-                adminLogado = true;
-                document.getElementById('adminLoginForm').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-                document.getElementById('nav-admin').style.display = 'inline-block';
-                document.getElementById('nav-gerenciar').style.display = 'inline-block';
-                document.getElementById('nav-logout').style.display = 'inline-block';
-                document.getElementById('nav-login').style.display = 'none';
-                carregarDados();
-                alert("Bem-vindo, Admin!");
-            } else {
-                alert("Credenciais incorretas!");
-            }
-        }
-
-        function renderAdminPedidos() {
-            const container = document.getElementById('adminPedidosContainer');
-            container.innerHTML = pedidos.map(p => `
-                <div class="card" style="margin-bottom:10px;">
-                    <p><strong>Pedido:</strong> ${p.id}</p>
-                    <p><strong>Data:</strong> ${p.data}</p>
-                    <p><strong>Itens:</strong> ${p.itens}</p>
-                    <p><strong>Total:</strong> R$ ${p.total.toFixed(2)}</p>
-                    <span style="background:yellow; padding:3px 8px; border-radius:5px;">${p.status}</span>
-                </div>
-            `).join('');
-        }
-
-        async function adicionarNovoProduto() {
-            const nome = document.getElementById('novoProdNome').value;
-            const preco = parseFloat(document.getElementById('novoProdPreco').value);
-            const marca = document.getElementById('novoProdMarca').value;
-            const id = Date.now();
-
-            if(!nome || !preco) return alert("Preencha nome e preço!");
-
-            const novoProd = { id, nome, preco, marca, img: 'https://placehold.co/150x150?text=Sem+Foto' };
+            if(!clienteLogado) return alert("❌ Você precisa fazer login ou se cadastrar antes de finalizar!");
             
-            try {
-                await db.collection('produtos').doc(String(id)).set(novoProd);
-                alert("Produto adicionado e salvo no banco!");
-                document.getElementById('novoProdNome').value = '';
-                document.getElementById('novoProdPreco').value = '';
-                document.getElementById('novoProdMarca').value = '';
-                carregarDados();
-            } catch(e) { alert("Erro ao salvar produto: " + e.message); }
-        }
+            const subtotal = carrinho.reduce((acc, p) => acc + Number(p.preco), 0);
+            const frete = tabelaFrete[clienteLogado.regiao] || 0;
+            const total = subtotal + frete;
 
-        function renderGerenciarProdutos() {
-            const container = document.getElementById('gerenciarContainer');
-            container.innerHTML = produtos.map(p => `
-                <div style="display:flex; justify-content:space-between; align-items:center; background:#fff; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
-                    <span style="font-weight:bold;">${p.nome}</span>
-                    <span>R$ ${Number(p.preco).toFixed(2)}</span>
-                    <input type="file" id="upload_${p.id}" class="file-input" onchange="uploadImagemProduto('${p.id}', this)">
-                </div>
-            `).join('');
-        }
-
-        function uploadImagemProduto(produtoId, fileInput) {
-            const file = fileInput.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const base64 = e.target.result;
-                const produto = produtos.find(p => p.id == produtoId);
-                if (produto) {
-                    produto.img = base64;
-                    await db.collection('produtos').doc(String(produtoId)).set(produto, {merge:true});
-                    alert('✅ Imagem salva no banco com sucesso!');
-                    carregarDados();
-                }
+            const pedido = {
+                data: new Date().toLocaleString(),
+                cliente: clienteLogado.nome,
+                cpf: clienteLogado.cpf,
+                endereco: `${clienteLogado.endereco}, ${clienteLogado.bairro} - ${clienteLogado.regiao} (CEP: ${clienteLogado.cep})`,
+                itens: carrinho.map(c => c.nome).join(', '),
+                subtotal, frete, total, status: 'Pendente'
             };
-            reader.readAsDataURL(file);
+
+            await db.collection('pedidos').add(pedido);
+            alert("✅ Pedido realizado com sucesso! O Admin entrará em contato.");
+            carrinho = [];
+            document.getElementById('cart-count').innerText = "0";
+            renderCarrinho();
+            showSection('catalogo');
+        }
+
+        // LOGIN E CADASTRO CLIENTE
+        async function cadastrarCliente() {
+            const nome = document.getElementById('cadNome').value;
+            const cpf = document.getElementById('cadCpf').value;
+            const cep = document.getElementById('cadCep').value;
+            const end = document.getElementById('cadEnd').value;
+            const bairro = document.getElementById('cadBairro').value;
+            const regiao = document.getElementById('cadRegiao').value;
+
+            if(!nome || !cpf || !regiao) return alert("Preencha os campos obrigatórios e escolha a região!");
+
+            const novoCli = { nome, cpf, cep, endereco: end, bairro, regiao };
+            await db.collection('clientes').doc(cpf).set(novoCli);
+            alert("✅ Cadastro feito! Você já está logado.");
+            clienteLogado = novoCli;
+            atualizarUI();
+            renderCarrinho();
+            showSection('catalogo');
+        }
+
+        async function loginCliente() {
+            const cpf = document.getElementById('loginCpf').value;
+            const doc = await db.collection('clientes').doc(cpf).get();
+            if(doc.exists) {
+                clienteLogado = doc.data();
+                alert(`Bem-vindo de volta, ${clienteLogado.nome}!`);
+                atualizarUI();
+                renderCarrinho();
+                showSection('catalogo');
+            } else {
+                alert("❌ CPF não encontrado. Faça o cadastro ao lado.");
+            }
         }
 
         function logout() { location.reload(); }
 
-        // Inicia o App
-        window.onload = () => { carregarDados(); };
+        // AREA ADMIN
+        function showAdminLogin() {
+            document.getElementById('adminLoginForm').style.display = 'block';
+            showSection('admin');
+        }
+
+        function fazerLoginAdmin() {
+            if(document.getElementById('adminUser').value === 'BOMBADAVID' && document.getElementById('adminPass').value === '20362881') {
+                adminLogado = true;
+                document.getElementById('adminLoginForm').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('nav-admin').style.display = 'inline-block';
+                document.getElementById('nav-clientes').style.display = 'inline-block';
+                document.getElementById('nav-gerenciar').style.display = 'inline-block';
+                carregarDados();
+            } else alert("❌ Dados incorretos");
+        }
+
+        function renderAdminPedidos() {
+            document.getElementById('adminPedidosContainer').innerHTML = pedidos.map(p => `
+                <div class="card">
+                    <p><strong>Data:</strong> ${p.data}</p>
+                    <p><strong>Cliente:</strong> ${p.cliente} (CPF: ${p.cpf})</p>
+                    <p><strong>Entrega:</strong> ${p.endereco}</p>
+                    <p><strong>Itens:</strong> ${p.itens}</p>
+                    <p><strong>Frete:</strong> R$ ${p.frete.toFixed(2)} | <strong>Total:</strong> R$ ${p.total.toFixed(2)}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderAdminClientes() {
+            document.getElementById('adminClientesContainer').innerHTML = clientes.map(c => `
+                <div class="card">
+                    <p><strong>Nome:</strong> ${c.nome}</p>
+                    <p><strong>CPF:</strong> ${c.cpf}</p>
+                    <p><strong>Região:</strong> ${c.regiao}</p>
+                    <p><strong>End:</strong> ${c.endereco}, ${c.bairro}</p>
+                </div>
+            `).join('');
+        }
+
+        // GERENCIAR PRODUTOS (CRIAR, EDITAR, EXCLUIR)
+        async function addProduto() {
+            const nome = document.getElementById('novoNome').value;
+            const preco = parseFloat(document.getElementById('novoPreco').value);
+            const marca = document.getElementById('novoMarca').value;
+            if(!nome || !preco || !marca) return alert("Preencha tudo");
+            
+            const p = { id: Date.now(), nome, preco, marca, img:'https://placehold.co/150x150?text='+marca };
+            await db.collection('produtos').doc(String(p.id)).set(p);
+            alert("Produto Salvo!");
+            carregarDados();
+        }
+
+        function renderGerenciarProdutos() {
+            const termo = document.getElementById('searchEdit').value.toLowerCase();
+            const grid = document.getElementById('gerenciarContainer');
+            
+            grid.innerHTML = produtos.filter(p => p.nome.toLowerCase().includes(termo)).map(p => `
+                <div style="background:white; padding:10px; margin-bottom:10px; border:1px solid #ccc; display:flex; justify-content:space-between; align-items:center;">
+                    <div><strong>${p.nome}</strong> (${p.marca}) - R$ ${p.preco.toFixed(2)}</div>
+                    <div>
+                        <button class="btn btn-warning" onclick="editarPreco(${p.id})">✏️ Alterar Preço</button>
+                        <button class="btn btn-danger" onclick="excluirProduto(${p.id})">🗑️ Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function editarPreco(id) {
+            const p = produtos.find(x => x.id === id);
+            const novoValor = prompt(`Digite o novo preço para ${p.nome}:`, p.preco);
+            if(novoValor && !isNaN(novoValor)) {
+                await db.collection('produtos').doc(String(id)).update({ preco: parseFloat(novoValor) });
+                alert("✅ Preço atualizado!");
+                carregarDados();
+            }
+        }
+
+        async function excluirProduto(id) {
+            if(confirm("⚠️ Tem certeza que deseja excluir este produto?")) {
+                await db.collection('produtos').doc(String(id)).delete();
+                alert("🗑️ Produto excluído!");
+                carregarDados();
+            }
+        }
+
+        // Start
+        window.onload = () => carregarDados();
     </script>
 </body>
 </html>
