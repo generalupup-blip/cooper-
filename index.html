@@ -109,7 +109,6 @@
             <div class="brand-filters" id="brandFilters"></div>
             <div id="catalogoContainer" class="product-grid"></div>
         </section>
-
         <!-- CARRINHO -->
         <section id="carrinho" class="section">
             <h2>🛒 Seu Carrinho</h2>
@@ -128,7 +127,6 @@
                 </div>
             </div>
         </section>
-
         <!-- LOGIN CLIENTE -->
         <section id="login" class="section">
             <h2>👤 Acesso do Cliente</h2>
@@ -166,7 +164,6 @@
                 <button class="btn btn-outline" onclick="showAdminLogin()">Acessar Painel Admin</button>
             </div>
         </section>
-
         <!-- ADMIN DASHBOARD -->
         <section id="admin" class="section">
             <h2>📊 Painel Administrativo</h2>
@@ -188,13 +185,11 @@
                 <div id="adminPedidosContainer"></div>
             </div>
         </section>
-
         <!-- GERENCIAR CLIENTES -->
         <section id="gerenciarClientes" class="section">
             <h2>👥 Gerenciar Clientes</h2>
             <div id="clientesContainer"></div>
         </section>
-
         <!-- GERENCIAR PRODUTOS (CATÁLOGO ADMIN) -->
         <section id="gerenciarProdutos" class="section">
             <h2>📦 Gerenciar Catálogo de Produtos</h2>
@@ -210,7 +205,6 @@
             </div>
             <div id="gerenciarContainer"></div>
         </section>
-
         <!-- MODAL EDITAR CLIENTE -->
         <div id="modalEditarCliente" class="modal-overlay hidden">
             <div class="modal">
@@ -247,7 +241,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // ===== FRETE POR REGIÃO (ATUALIZADO) =====
+        // ===== FRETE POR REGIÃO =====
         const fretePorRegiao = {
             'SP': 50,
             'RJ': 60, 'MG': 60, 'SC': 60, 'RS': 60, 'PR': 60, 'ES': 60,
@@ -260,14 +254,13 @@
             'AM': 120
         };
 
-        // ===== BASE DE PRODUTOS (TODOS OS ITENS FORNECIDOS) =====
+        // ===== BASE DE PRODUTOS =====
         const produtosBase = [
             {id:1,nome:'GHK-Cu 100mg/3ml',preco:800,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-Cu'},
             {id:2,nome:'SLU-PP-332 5mg/3ml',preco:600,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=SLU'},
             {id:3,nome:'Tesamorelin 10mg/3ml',preco:750,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=Tesa'},
             {id:4,nome:'GLOW 70mg/3ml',preco:800,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=GLOW'},
             {id:5,nome:'GHK-CU NOVAX 100MG/2ML',preco:750,marca:'NEOPEPTIDES',img:'https://placehold.co/150x150/1a1a2e/d4af37?text=GHKCU'},
-
             {id:6,nome:'KLOW-4 80mg/2ml',preco:1200,marca:'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA 🇬🇧',img:'https://placehold.co/150x150/2a1a2e/d4af37?text=KLOW'},
             {id:7,nome:'KPV 10mg/2ml',preco:580,marca:'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA 🇬🇧',img:'https://placehold.co/150x150/2a1a2e/d4af37?text=KPV'},
             {id:8,nome:'Semax 10mg/2ml',preco:580,marca:'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA 🇬🇧',img:'https://placehold.co/150x150/2a1a2e/d4af37?text=Semax'},
@@ -289,7 +282,6 @@
             {id:24,nome:'MOTS-c 10mg/2ml',preco:575,marca:'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA 🇬🇧',img:'https://placehold.co/150x150/2a1a2e/d4af37?text=MOTS'},
             {id:25,nome:'PT-141 10mg/2ml',preco:570,marca:'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA 🇬🇧',img:'https://placehold.co/150x150/2a1a2e/d4af37?text=PT141'},
             {id:26,nome:'TESAMORELIN 10mg/2ml',preco:830,marca:'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA 🇬🇧',img:'https://placehold.co/150x150/2a1a2e/d4af37?text=TESAP'},
-
             {id:27,nome:'Retatrutide 60mg',preco:2950,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/3a2a1e/d4af37?text=Reta60'},
             {id:28,nome:'Retatrutide 30mg (caneta)',preco:2200,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/3a2a1e/d4af37?text=Reta30C'},
             {id:29,nome:'Retatrutide 15mg',preco:900,marca:'ZPHC LABS PREMIUM',img:'https://placehold.co/150x150/3a2a1e/d4af37?text=Reta15'},
@@ -335,12 +327,10 @@
             {id:69,nome:'Clenbuterol 100cmp/50mcg',preco:260,marca:'LINHA ZPHC 🇨🇳 PREMIUM🥇',img:'https://placehold.co/150x150/3a2a1e/d4af37?text=Clen'},
             {id:70,nome:'Turinabol 100cmp/10mg',preco:420,marca:'LINHA ZPHC 🇨🇳 PREMIUM🥇',img:'https://placehold.co/150x150/3a2a1e/d4af37?text=Turi'},
             {id:71,nome:'Oxandrolona 100cmp/10mg',preco:440,marca:'LINHA ZPHC 🇨🇳 PREMIUM🥇',img:'https://placehold.co/150x150/3a2a1e/d4af37?text=Oxan'},
-
             {id:72,nome:'Enantato 300mg',preco:380,marca:'SPECTRUM PHARMA',img:'https://placehold.co/150x150/4a3a2e/d4af37?text=Enan300S'},
             {id:73,nome:'IGF-1 LR3 1,4mg caneta',preco:2450,marca:'SPECTRUM PHARMA',img:'https://placehold.co/150x150/4a3a2e/d4af37?text=IGF1can'},
             {id:74,nome:'Masteron 100mg/10ml',preco:500,marca:'CANADA BIO LABS',img:'https://placehold.co/150x150/5a3a2e/d4af37?text=MastCan'},
             {id:75,nome:'IGF1-LR3 500mcg',preco:950,marca:'MUSCLE PHARMA',img:'https://placehold.co/150x150/6a3a2e/d4af37?text=IGF1MP'},
-
             {id:76,nome:'NPP 100mg/10ml',preco:190,marca:'LINHA BRATVA 🇵🇾',img:'https://placehold.co/150x150/7a3a2e/d4af37?text=NPPBr'},
             {id:77,nome:'Enantato 250mg/10ml',preco:170,marca:'LINHA BRATVA 🇵🇾',img:'https://placehold.co/150x150/7a3a2e/d4af37?text=EnanBr'},
             {id:78,nome:'Durateston 250mg/10ml',preco:175,marca:'LINHA BRATVA 🇵🇾',img:'https://placehold.co/150x150/7a3a2e/d4af37?text=DuraBr'},
@@ -358,7 +348,6 @@
             {id:90,nome:'Oxandrolona 50cmp/10mg',preco:275,marca:'LINHA BRATVA 🇵🇾',img:'https://placehold.co/150x150/7a3a2e/d4af37?text=OxanBr'},
             {id:91,nome:'Proviron 25cmcp/25mg',preco:140,marca:'LINHA BRATVA 🇵🇾',img:'https://placehold.co/150x150/7a3a2e/d4af37?text=ProvBr'},
             {id:92,nome:'Hemogenin 25cmp/50mg',preco:135,marca:'LINHA BRATVA 🇵🇾',img:'https://placehold.co/150x150/7a3a2e/d4af37?text=HemoBr'},
-
             {id:93,nome:'Durateston 250mg/1ml',preco:35,marca:'LINHA LANDERLAN 🇵🇾',img:'https://placehold.co/150x150/8a3a2e/d4af37?text=DuraL'},
             {id:94,nome:'Testoland (Cipionato) 200mg/3amp',preco:95,marca:'LINHA LANDERLAN 🇵🇾',img:'https://placehold.co/150x150/8a3a2e/d4af37?text=TestoL'},
             {id:95,nome:'Testenat (Enantato) 250mg/4ml',preco:107,marca:'LINHA LANDERLAN 🇵🇾',img:'https://placehold.co/150x150/8a3a2e/d4af37?text=TestenatL'},
@@ -376,7 +365,6 @@
             {id:107,nome:'Oxandroland 50cmp/10mg',preco:300,marca:'LINHA LANDERLAN 🇵🇾',img:'https://placehold.co/150x150/8a3a2e/d4af37?text=Oxan10L'},
             {id:108,nome:'Melatonina 120caps/10mg',preco:95,marca:'LINHA LANDERLAN 🇵🇾',img:'https://placehold.co/150x150/8a3a2e/d4af37?text=MelL'},
             {id:109,nome:'DHEA 90caps/50mg',preco:160,marca:'LINHA LANDERLAN 🇵🇾',img:'https://placehold.co/150x150/8a3a2e/d4af37?text=DHEAL'},
-
             {id:110,nome:'Testenat 250mg/10ml',preco:230,marca:'LINHA LANDERLAN GOLD 🇵🇾',img:'https://placehold.co/150x150/9a3a2e/d4af37?text=TestenatG'},
             {id:111,nome:'Durateston 250mg/10ml',preco:230,marca:'LINHA LANDERLAN GOLD 🇵🇾',img:'https://placehold.co/150x150/9a3a2e/d4af37?text=DuraG'},
             {id:112,nome:'Deca 200mg/10ml',preco:230,marca:'LINHA LANDERLAN GOLD 🇵🇾',img:'https://placehold.co/150x150/9a3a2e/d4af37?text=DecaG'},
@@ -392,7 +380,6 @@
             {id:122,nome:'Trembo Hexa 51mg/10ml',preco:290,marca:'LINHA LANDERLAN GOLD 🇵🇾',img:'https://placehold.co/150x150/9a3a2e/d4af37?text=TremHG'},
             {id:123,nome:'Clembuterol 50comp/40mcg',preco:180,marca:'LINHA LANDERLAN GOLD 🇵🇾',img:'https://placehold.co/150x150/9a3a2e/d4af37?text=ClenG'},
             {id:124,nome:'HCG 5000 UI',preco:500,marca:'LINHA LANDERLAN GOLD 🇵🇾',img:'https://placehold.co/150x150/9a3a2e/d4af37?text=HCG G'},
-
             {id:125,nome:'Testoviron 250mg/10ml',preco:185,marca:'KING PHARMA 🇲🇽',img:'https://placehold.co/150x150/10a3a2e/d4af37?text=TestovK'},
             {id:126,nome:'Sustan 250mg/10ml',preco:185,marca:'KING PHARMA 🇲🇽',img:'https://placehold.co/150x150/10a3a2e/d4af37?text=SustK'},
             {id:127,nome:'Testex 250mg/10ml',preco:185,marca:'KING PHARMA 🇲🇽',img:'https://placehold.co/150x150/10a3a2e/d4af37?text=TestexK'},
@@ -417,7 +404,6 @@
             {id:146,nome:'Turinabol 50cmp/10mg',preco:199,marca:'KING PHARMA 🇲🇽',img:'https://placehold.co/150x150/10a3a2e/d4af37?text=TuriK'},
             {id:147,nome:'Halotestin 30comp/10mg',preco:400,marca:'KING PHARMA 🇲🇽',img:'https://placehold.co/150x150/10a3a2e/d4af37?text=HaloK'},
             {id:148,nome:'Proviron 20cmp/25mg',preco:135,marca:'KING PHARMA 🇲🇽',img:'https://placehold.co/150x150/10a3a2e/d4af37?text=ProvK'},
-
             {id:149,nome:'Sustan 250mg/1ml',preco:29,marca:'LINHA MUSCLE PHARMA 🐍 🇮🇳',img:'https://placehold.co/150x150/11a3a2e/d4af37?text=Sust1MP'},
             {id:150,nome:'Sustan XT 250mg/10ml',preco:220,marca:'LINHA MUSCLE PHARMA 🐍 🇮🇳',img:'https://placehold.co/150x150/11a3a2e/d4af37?text=SustXTMP'},
             {id:151,nome:'Testoviron 250 250mg/10ml',preco:220,marca:'LINHA MUSCLE PHARMA 🐍 🇮🇳',img:'https://placehold.co/150x150/11a3a2e/d4af37?text=Testo250MP'},
@@ -449,7 +435,6 @@
             {id:177,nome:'T3 Cytomel 50cmp/100mcg',preco:170,marca:'LINHA MUSCLE PHARMA 🐍 🇮🇳',img:'https://placehold.co/150x150/11a3a2e/d4af37?text=T3MP'},
             {id:178,nome:'Anastrozol 30cmp/10mg',preco:160,marca:'LINHA MUSCLE PHARMA 🐍 🇮🇳',img:'https://placehold.co/150x150/11a3a2e/d4af37?text=AnastMP'},
             {id:179,nome:'Proviron 40cmp/25mg',preco:170,marca:'LINHA MUSCLE PHARMA 🐍 🇮🇳',img:'https://placehold.co/150x150/11a3a2e/d4af37?text=ProvMP'},
-
             {id:180,nome:'Probolic 100mg/10ml',preco:340,marca:'LINHA COOPER PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/12a3a2e/d4af37?text=ProboCP'},
             {id:181,nome:'Enanbolic 250mg/10ml',preco:390,marca:'LINHA COOPER PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/12a3a2e/d4af37?text=EnanCP'},
             {id:182,nome:'Susobolic 250mg/10ml',preco:440,marca:'LINHA COOPER PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/12a3a2e/d4af37?text=SusoCP'},
@@ -478,7 +463,6 @@
             {id:205,nome:'Clenbolic 50cmp/40mcg',preco:210,marca:'LINHA COOPER PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/12a3a2e/d4af37?text=ClenCP'},
             {id:206,nome:'T3Bolic 50cmp/25mcg',preco:350,marca:'LINHA COOPER PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/12a3a2e/d4af37?text=T3CP'},
             {id:207,nome:'BT-Bolic (T3/T4) 50cmp',preco:350,marca:'LINHA COOPER PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/12a3a2e/d4af37?text=BTCP'},
-
             {id:208,nome:'Testobolin 250mg/10ml',preco:480,marca:'LINHA ALPHA PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/13a3a2e/d4af37?text=Testob'},
             {id:209,nome:'Induject-250 250mg/10ml',preco:480,marca:'LINHA ALPHA PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/13a3a2e/d4af37?text=Indu'},
             {id:210,nome:'Testocyp 250mg/10ml',preco:480,marca:'LINHA ALPHA PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/13a3a2e/d4af37?text=TestoC'},
@@ -502,7 +486,6 @@
             {id:228,nome:'Provibol 50cmp/25mg',preco:400,marca:'LINHA ALPHA PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/13a3a2e/d4af37?text=ProvA'},
             {id:229,nome:'Mastoral 50cmp/10mg',preco:750,marca:'LINHA ALPHA PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/13a3a2e/d4af37?text=MastOA'},
             {id:230,nome:'Thyro3 30cmp/25mcg',preco:220,marca:'LINHA ALPHA PHARMA 🇮🇳 PREMIUM🥇',img:'https://placehold.co/150x150/13a3a2e/d4af37?text=T3A'},
-
             {id:231,nome:'Pharma Sust 250 250mg/10ml',preco:450,marca:'LINHA PHARMACOM 🇲🇩 PREMIUM🥇',img:'https://placehold.co/150x150/14a3a2e/d4af37?text=Sust250P'},
             {id:232,nome:'Pharma Sust 350 300mg/10ml',preco:460,marca:'LINHA PHARMACOM 🇲🇩 PREMIUM🥇',img:'https://placehold.co/150x150/14a3a2e/d4af37?text=Sust350P'},
             {id:233,nome:'Pharma Sust 500 500mg/10ml',preco:700,marca:'LINHA PHARMACOM 🇲🇩 PREMIUM🥇',img:'https://placehold.co/150x150/14a3a2e/d4af37?text=Sust500P'},
@@ -542,7 +525,6 @@
             {id:267,nome:'Turinabolos 100cmp/10mg',preco:350,marca:'LINHA PHARMACOM 🇲🇩 PREMIUM🥇',img:'https://placehold.co/150x150/14a3a2e/d4af37?text=TuriOP'},
             {id:268,nome:'Halotestos 100cmp/10mg',preco:1000,marca:'LINHA PHARMACOM 🇲🇩 PREMIUM🥇',img:'https://placehold.co/150x150/14a3a2e/d4af37?text=HaloOP'},
             {id:269,nome:'Meltos 100cmp/40mcg',preco:240,marca:'LINHA PHARMACOM 🇲🇩 PREMIUM🥇',img:'https://placehold.co/150x150/14a3a2e/d4af37?text=ClenOP'},
-
             {id:270,nome:'Sustanon 250 250mg/10ml',preco:360,marca:'LINHA CANADA BIO LABS 🇨🇦 PREMIUM🥇',img:'https://placehold.co/150x150/15a3a2e/d4af37?text=Sust250C'},
             {id:271,nome:'Delatestryl 300mg/10ml',preco:360,marca:'LINHA CANADA BIO LABS 🇨🇦 PREMIUM🥇',img:'https://placehold.co/150x150/15a3a2e/d4af37?text=DelatC'},
             {id:272,nome:'Depotest 200 200mg/10ml',preco:360,marca:'LINHA CANADA BIO LABS 🇨🇦 PREMIUM🥇',img:'https://placehold.co/150x150/15a3a2e/d4af37?text=DepoC'},
@@ -560,7 +542,6 @@
             {id:284,nome:'Winstrol 50 50mg/10ml',preco:220,marca:'LINHA CANADA BIO LABS 🇨🇦 PREMIUM🥇',img:'https://placehold.co/150x150/15a3a2e/d4af37?text=WinC'},
             {id:285,nome:'Androbase 100 100mg/10ml',preco:260,marca:'LINHA CANADA BIO LABS 🇨🇦 PREMIUM🥇',img:'https://placehold.co/150x150/15a3a2e/d4af37?text=AndroC'},
             {id:286,nome:'Somatropin 191AA 15IU 75ui',preco:1900,marca:'LINHA CANADA BIO LABS 🇨🇦 PREMIUM🥇',img:'https://placehold.co/150x150/15a3a2e/d4af37?text=GH C'},
-
             {id:287,nome:'Testofort 250mg/10ml',preco:320,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/16a3a2e/d4af37?text=TestoI'},
             {id:288,nome:'Sostenon 250mg/10ml',preco:330,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/16a3a2e/d4af37?text=SostI'},
             {id:289,nome:'Cypiobol 250mg/10ml',preco:280,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/16a3a2e/d4af37?text=CypI'},
@@ -572,13 +553,11 @@
             {id:295,nome:'Oxidrobol 50cp/50mg',preco:150,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/16a3a2e/d4af37?text=HemoI'},
             {id:296,nome:'Stanobolin Oral 50cp/25mg',preco:150,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/16a3a2e/d4af37?text=StanoI'},
             {id:297,nome:'Mesterolic 50cp/25mg',preco:180,marca:'IDN PHARMATECH',img:'https://placehold.co/150x150/16a3a2e/d4af37?text=ProvI'},
-
             {id:298,nome:'Testomix 250mg/10ml',preco:370,marca:'EMINENCE (Premium)',img:'https://placehold.co/150x150/17a3a2e/d4af37?text=TestoE'},
             {id:299,nome:'EnanPrime 250mg/10ml',preco:367,marca:'EMINENCE (Premium)',img:'https://placehold.co/150x150/17a3a2e/d4af37?text=EnanE'},
             {id:300,nome:'DecaPrime 200mg/10ml',preco:370,marca:'EMINENCE (Premium)',img:'https://placehold.co/150x150/17a3a2e/d4af37?text=DecaE'},
             {id:301,nome:'DecaPrime-P 100mg/10ml',preco:360,marca:'EMINENCE (Premium)',img:'https://placehold.co/150x150/17a3a2e/d4af37?text=NPP E'},
             {id:302,nome:'TrenoPrime 100mg/10ml',preco:465,marca:'EMINENCE (Premium)',img:'https://placehold.co/150x150/17a3a2e/d4af37?text=TrenA E'},
-
             {id:303,nome:'Hemax Etritron 4.000ui',preco:160,marca:'FARMÁCIA / NACIONAIS 🇧🇷',img:'https://placehold.co/150x150/18a3a2e/d4af37?text=Hemax'},
             {id:304,nome:'Alprazolam 30comp 2mg',preco:85,marca:'FARMÁCIA / NACIONAIS 🇧🇷',img:'https://placehold.co/150x150/18a3a2e/d4af37?text=Alpra'},
             {id:305,nome:'Durateston Aspen 250mg/1ml',preco:90,marca:'FARMÁCIA / NACIONAIS 🇧🇷',img:'https://placehold.co/150x150/18a3a2e/d4af37?text=DuraAsp'},
@@ -606,7 +585,6 @@
             {id:327,nome:'Venvanse Genérico Eurofarma 30cmp/50mg',preco:499,marca:'FARMÁCIA / NACIONAIS 🇧🇷',img:'https://placehold.co/150x150/18a3a2e/d4af37?text=VenGen50'},
             {id:328,nome:'Venvanse Genérico Eurofarma 30cmp/70mg',preco:570,marca:'FARMÁCIA / NACIONAIS 🇧🇷',img:'https://placehold.co/150x150/18a3a2e/d4af37?text=VenGen70'},
             {id:329,nome:'Prosoy 30mg/6cmp',preco:125,marca:'FARMÁCIA / NACIONAIS 🇧🇷',img:'https://placehold.co/150x150/18a3a2e/d4af37?text=Prosoy'},
-
             {id:330,nome:'Oxandrolona 100caps 5mg',preco:170,marca:'MANIPULADOS 🇧🇷',img:'https://placehold.co/150x150/19a3a2e/d4af37?text=Oxan5M'},
             {id:331,nome:'Oxandrolona 120caps 10mg',preco:199,marca:'MANIPULADOS 🇧🇷',img:'https://placehold.co/150x150/19a3a2e/d4af37?text=Oxan10M'},
             {id:332,nome:'Testosterona Gel 10% 30ml',preco:230,marca:'MANIPULADOS 🇧🇷',img:'https://placehold.co/150x150/19a3a2e/d4af37?text=TestoGelM'},
@@ -614,14 +592,12 @@
             {id:334,nome:'Citrato de Tamoxifeno 30caps/20mg',preco:80,marca:'MANIPULADOS 🇧🇷',img:'https://placehold.co/150x150/19a3a2e/d4af37?text=TamoxM'},
             {id:335,nome:'Ioimbina 30caps/10mg',preco:120,marca:'MANIPULADOS 🇧🇷',img:'https://placehold.co/150x150/19a3a2e/d4af37?text=IoimM'},
             {id:336,nome:'Silimarina 30caps/20mg',preco:90,marca:'MANIPULADOS 🇧🇷',img:'https://placehold.co/150x150/19a3a2e/d4af37?text=SilimM'},
-
             {id:337,nome:'Pharmatropin (Pharmacom) 100ui',preco:2900,marca:'GH - HORMÔNIO DO CRESCIMENTO 🥇',img:'https://placehold.co/150x150/20a3a2e/d4af37?text=PharmaGH'},
             {id:338,nome:'Landertropin 100ui',preco:2500,marca:'GH - HORMÔNIO DO CRESCIMENTO 🥇',img:'https://placehold.co/150x150/20a3a2e/d4af37?text=LandGH'},
             {id:339,nome:'HGH Cooper Gold Edition 100ui',preco:3200,marca:'GH - HORMÔNIO DO CRESCIMENTO 🥇',img:'https://placehold.co/150x150/20a3a2e/d4af37?text=CooperGH'},
             {id:340,nome:'Somatropin (Muscle Pharma) 50ui',preco:1000,marca:'GH - HORMÔNIO DO CRESCIMENTO 🥇',img:'https://placehold.co/150x150/20a3a2e/d4af37?text=SomaMPGH'},
             {id:341,nome:'Somatropin 191AA 15IU 75ui',preco:1900,marca:'GH - HORMÔNIO DO CRESCIMENTO 🥇',img:'https://placehold.co/150x150/20a3a2e/d4af37?text=SomaCanaGH'},
             {id:342,nome:'Zptropin 80 80ui',preco:1990,marca:'GH - HORMÔNIO DO CRESCIMENTO 🥇',img:'https://placehold.co/150x150/20a3a2e/d4af37?text=ZPT80GH'},
-
             {id:343,nome:'Brontel 20cmp/20mcg',preco:25,marca:'VARIADOS',img:'https://placehold.co/150x150/21a3a2e/d4af37?text=Brontel'},
             {id:344,nome:'Pramil 20cmp/50mg',preco:30,marca:'VARIADOS',img:'https://placehold.co/150x150/21a3a2e/d4af37?text=Pramil'},
             {id:345,nome:'Femproporex EP 30cmp/25mg',preco:200,marca:'VARIADOS',img:'https://placehold.co/150x150/21a3a2e/d4af37?text=Fempro'},
@@ -629,7 +605,6 @@
             {id:347,nome:'Mounjaro 15mg',preco:5000,marca:'VARIADOS',img:'https://placehold.co/150x150/21a3a2e/d4af37?text=Moun'},
             {id:348,nome:'Tizerpatida 60mg',preco:1800,marca:'VARIADOS',img:'https://placehold.co/150x150/21a3a2e/d4af37?text=Tiz60'},
             {id:349,nome:'T.G',preco:1700,marca:'VARIADOS',img:'https://placehold.co/150x150/21a3a2e/d4af37?text=TG'},
-
             {id:350,nome:'DHEA 100caps/25mg',preco:100,marca:'DRAGON ELITE 🐉',img:'https://placehold.co/150x150/22a3a2e/d4af37?text=DHEA25D'},
             {id:351,nome:'DHEA 100caps/50mg',preco:120,marca:'DRAGON ELITE 🐉',img:'https://placehold.co/150x150/22a3a2e/d4af37?text=DHEA50D'},
             {id:352,nome:'DHEA 100caps/100mg',preco:150,marca:'DRAGON ELITE 🐉',img:'https://placehold.co/150x150/22a3a2e/d4af37?text=DHEA100D'},
@@ -811,8 +786,7 @@
                 `📞 *Contato:* ${clienteLogado.contato}\n\n` +
                 `📋 *ITENS DO PEDIDO:*\n${itensMsg}\n` +
                 `${detalhesMsg}\n\n` +
-                `💳 *PIX:* Fortpharma137@gmail.com\n` +
-                `✅ *Confirmar pagamento para envio.*`;
+                `✅ *Aguardando confirmação.*`;
             if(confirm('Confirma o pedido?\n\nTotal: R$ '+t.total.toFixed(2))){
                 const novoPedido = {
                     id: Date.now(), numero: num,
@@ -829,7 +803,7 @@
                 db.collection('pedidos').doc(String(novoPedido.id)).set(novoPedido).catch(e=>console.error(e));
                 carrinho=[]; seguroAtivo=false;
                 salvarDadosLocais(); atualizarUI(); renderCarrinho();
-                window.open(`https://wa.me/5593991381813?text=${encodeURIComponent(mensagem)}`, '_blank');
+                window.open(`https://wa.me/5511944636972?text=${encodeURIComponent(mensagem)}`, '_blank');
             }
         }
 
