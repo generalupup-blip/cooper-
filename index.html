@@ -768,26 +768,27 @@
             if(!carrinho.length) return alert('Carrinho vazio.');
             const t = calcularTotaisCarrinho();
             const num = Date.now().toString().slice(-8);
-            const referencia = clienteLogado.referencia ? ` - Ref: ${clienteLogado.referencia}` : '';
-            const enderecoCompleto = `${clienteLogado.rua || ''}, ${clienteLogado.numero || ''}${referencia} - ${clienteLogado.bairro || ''}, ${clienteLogado.cidade || ''} - ${clienteLogado.regiao || ''}, CEP: ${clienteLogado.cep || ''}${clienteLogado.complemento ? ' (' + clienteLogado.complemento + ')' : ''}`;
+            const enderecoFormatado = `Endereço: ${clienteLogado.rua || ''}\nNúmero: ${clienteLogado.numero || ''}${clienteLogado.referencia ? '\nRef: ' + clienteLogado.referencia : ''}\nBairro: ${clienteLogado.bairro || ''}\nCidade: ${clienteLogado.cidade || ''}\nEstado: ${clienteLogado.regiao || ''}\nCEP: ${clienteLogado.cep || ''}`;
             let itensMsg = '';
-            carrinho.forEach(item => { itensMsg += `➡️ ${item.qtd}x ${item.nome}${item.marca ? ` (${item.marca})` : ''} - R$ ${(item.preco*item.qtd).toFixed(2)}\n`; });
+            carrinho.forEach(item => { itensMsg += `${item.qtd}x ${item.nome}${item.marca ? ` (${item.marca})` : ''} - R$ ${(item.preco*item.qtd).toFixed(2)}\n`; });
             let detalhesMsg = `Subtotal: R$ ${t.subtotal.toFixed(2)}\n`;
             if(t.frete > 0) detalhesMsg += `Frete: R$ ${t.frete.toFixed(2)}\n`;
-            detalhesMsg += `💰 TOTAL: R$ ${t.total.toFixed(2)}`;
-            const mensagem = `🛒 *NOVO PEDIDO #${num}*\n\n` +
-                `👤 *Cliente:* ${clienteLogado.nome}\n` +
-                `📄 *CPF:* ${clienteLogado.cpf}\n` +
-                `📍 *Endereço:* ${enderecoCompleto}\n` +
-                `📞 *Contato:* ${clienteLogado.contato}\n\n` +
-                `📋 *ITENS DO PEDIDO:*\n${itensMsg}\n` +
+            detalhesMsg += `TOTAL: R$ ${t.total.toFixed(2)}`;
+            const mensagem = `ATENÇÃO*🚨👇🏼\n` +
+                `O ENDEREÇO NÃO PODE CONTER DIVERGÊNCIAS, SE O ENTREGADOR NÃO FOR ATENDIDO OU MERCADORIA VOLTAR PARA O REMENTE, A MERCADORIA E PERDIDA SEM DEVOLUÇÃO AO DINHEIRO É ENVIOS NOVAMENTE.\n\n` +
+                `NOVO PEDIDO #${num}\n\n` +
+                `Cliente: ${clienteLogado.nome}\n` +
+                `Cpf: ${clienteLogado.cpf}\n` +
+                `${enderecoFormatado}\n` +
+                `Contato: ${clienteLogado.contato}\n\n` +
+                `ITENS DO PEDIDO:\n${itensMsg}\n` +
                 `${detalhesMsg}\n\n` +
-                `✅ *Aguardando confirmação.*`;
+                `Aguardando confirmação.`;
             if(confirm('Confirma o pedido?\n\nTotal: R$ '+t.total.toFixed(2))){
                 const novoPedido = {
                     id: Date.now(), numero: num,
                     clienteId: clienteLogado.id, clienteNome: clienteLogado.nome,
-                    clienteContato: clienteLogado.contato, clienteEndereco: enderecoCompleto,
+                    clienteContato: clienteLogado.contato, clienteEndereco: `${clienteLogado.rua}, ${clienteLogado.numero}${clienteLogado.referencia ? ' - Ref: ' + clienteLogado.referencia : ''} - ${clienteLogado.bairro}, ${clienteLogado.cidade} - ${clienteLogado.regiao}, CEP: ${clienteLogado.cep}`,
                     clienteCpf: clienteLogado.cpf,
                     itens: carrinho.map(i => ({...i})),
                     subtotal: t.subtotal, frete: t.frete,
@@ -940,7 +941,7 @@
             optNova.value = '__nova__';
             optNova.textContent = '➕ Nova Marca...';
             select.appendChild(optNova);
-            toggleNovaMarcaInput(); // ajusta visibilidade conforme seleção inicial
+            toggleNovaMarcaInput();
         }
 
         function toggleNovaMarcaInput(){
