@@ -194,7 +194,13 @@
                 <div class="flex-row" style="align-items:flex-end;">
                     <div class="form-group" style="flex:2;"><label>Nome</label><input type="text" id="novoProdNome" placeholder="Nome do produto"></div>
                     <div class="form-group" style="flex:1;"><label>Preço (R$)</label><input type="number" id="novoProdPreco" placeholder="0.00" step="0.01" min="0"></div>
-                    <div class="form-group" style="flex:2;"><label>Marca</label><input type="text" id="novoProdMarca" placeholder="Marca"></div>
+                    <div class="form-group" style="flex:2;">
+                        <label>Marca</label>
+                        <select id="novoProdMarcaSelect" onchange="toggleNovaMarcaInput()">
+                            <option value="">Selecione a marca...</option>
+                        </select>
+                        <input type="text" id="novoProdMarcaNovo" class="hidden" placeholder="Digite a nova marca" style="margin-top:0.3rem;">
+                    </div>
                     <div class="form-group" style="flex:1;"><label>Imagem (opcional)</label><input type="file" id="novoProdImg" accept="image/*" class="file-input"></div>
                     <button class="btn btn-success" onclick="adicionarNovoProduto()" style="margin-bottom:1rem;">➕ Adicionar</button>
                 </div>
@@ -698,7 +704,7 @@
             if(id==='carrinho')renderCarrinho();
             if(id==='admin')renderAdmin();
             if(id==='gerenciarClientes'){if(!adminLogado){alert('Acesso restrito.');showSection('login');return;}renderGerenciarClientes();}
-            if(id==='gerenciarProdutos'){if(!adminLogado){alert('Acesso restrito.');showSection('login');return;}renderGerenciarProdutos();}
+            if(id==='gerenciarProdutos'){if(!adminLogado){alert('Acesso restrito.');showSection('login');return;}atualizarMarcaSelect();renderGerenciarProdutos();}
             atualizarUI();
         }
 
@@ -919,6 +925,36 @@
             fecharModal();renderGerenciarClientes();alert('Dados atualizados!');
         }
 
+        function atualizarMarcaSelect(){
+            const select = document.getElementById('novoProdMarcaSelect');
+            if(!select) return;
+            const marcas = [...new Set(produtos.map(p => p.marca))];
+            select.innerHTML = '<option value="">Selecione a marca...</option>';
+            marcas.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                select.appendChild(opt);
+            });
+            const optNova = document.createElement('option');
+            optNova.value = '__nova__';
+            optNova.textContent = '➕ Nova Marca...';
+            select.appendChild(optNova);
+            toggleNovaMarcaInput(); // ajusta visibilidade conforme seleção inicial
+        }
+
+        function toggleNovaMarcaInput(){
+            const select = document.getElementById('novoProdMarcaSelect');
+            const inputNovo = document.getElementById('novoProdMarcaNovo');
+            if(select.value === '__nova__'){
+                inputNovo.classList.remove('hidden');
+                inputNovo.focus();
+            } else {
+                inputNovo.classList.add('hidden');
+                inputNovo.value = '';
+            }
+        }
+
         function renderGerenciarProdutos(){
             if(!adminLogado)return;
             const container = document.getElementById('gerenciarContainer');
@@ -964,6 +1000,7 @@
             renderGerenciarProdutos();
             renderCatalogo();
             renderBrandFilters();
+            atualizarMarcaSelect();
             alert('Produto atualizado com sucesso!');
         }
 
@@ -978,6 +1015,7 @@
             renderGerenciarProdutos();
             renderCatalogo();
             renderBrandFilters();
+            atualizarMarcaSelect();
             atualizarUI();
             alert('Produto excluído!');
         }
@@ -986,18 +1024,26 @@
             if(!adminLogado) return;
             const nomeEl = document.getElementById('novoProdNome');
             const precoEl = document.getElementById('novoProdPreco');
-            const marcaEl = document.getElementById('novoProdMarca');
+            const selectMarca = document.getElementById('novoProdMarcaSelect');
+            const inputNovaMarca = document.getElementById('novoProdMarcaNovo');
             const imgEl = document.getElementById('novoProdImg');
+
             const nome = nomeEl.value.trim();
             const preco = parseFloat(precoEl.value) || 0;
-            const marca = marcaEl.value.trim();
+            let marcaFinal = selectMarca.value;
+            if(marcaFinal === '__nova__'){
+                marcaFinal = inputNovaMarca.value.trim();
+                if(!marcaFinal) { alert('Digite o nome da nova marca.'); return; }
+            }
+            if(!marcaFinal) { alert('Selecione ou digite uma marca.'); return; }
             if(!nome) { alert('Informe o nome do produto.'); return; }
+
             const novoId = Date.now();
             const novoProduto = {
                 id: novoId,
                 nome: nome,
                 preco: preco,
-                marca: marca || 'GERAL',
+                marca: marcaFinal,
                 img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=' + encodeURIComponent(nome.substring(0,10)),
                 obs: ''
             };
@@ -1012,8 +1058,11 @@
             await salvarProdutoFirestore(novoProduto);
             nomeEl.value = '';
             precoEl.value = '';
-            marcaEl.value = '';
+            selectMarca.value = '';
+            inputNovaMarca.value = '';
+            inputNovaMarca.classList.add('hidden');
             imgEl.value = '';
+            atualizarMarcaSelect();
             renderGerenciarProdutos();
             renderCatalogo();
             renderBrandFilters();
