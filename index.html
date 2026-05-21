@@ -44,7 +44,6 @@
             position: relative;
         }
 
-        /* ===== CANVAS DE FUNDO (DNA) ===== */
         #dnaCanvas {
             position: fixed;
             top: 0;
@@ -56,7 +55,6 @@
             opacity: 0.65;
         }
 
-        /* Conteúdo acima do canvas */
         header,
         main,
         #toastContainer,
@@ -66,7 +64,6 @@
             z-index: 1;
         }
 
-        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -78,7 +75,6 @@
             border-radius: 4px;
         }
 
-        /* ===== HEADER ===== */
         header {
             background: rgba(10, 15, 20, 0.85);
             backdrop-filter: blur(20px);
@@ -453,12 +449,32 @@
             background: var(--surface);
         }
 
+        /* Barra de marcas com rolagem horizontal */
         .brand-filters {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 0.4rem;
             margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.6rem;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--surface2);
         }
+
+        .brand-filters::-webkit-scrollbar {
+            height: 6px;
+        }
+        .brand-filters::-webkit-scrollbar-track {
+            background: var(--surface2);
+            border-radius: 3px;
+        }
+        .brand-filters::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
         .toggle-brand {
             background: var(--surface2);
             border: 1px solid var(--border);
@@ -471,6 +487,8 @@
             transition: var(--transition);
             text-transform: uppercase;
             letter-spacing: 0.8px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .toggle-brand.active,
         .toggle-brand:hover {
@@ -775,7 +793,6 @@
     </style>
 </head>
 <body>
-    <!-- Canvas do DNA / Moléculas -->
     <canvas id="dnaCanvas"></canvas>
 
     <div id="loadingOverlay" style="position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;">
@@ -1348,7 +1365,7 @@
             let time = 0;
             const particles = [];
             const NUM_PARTICLES = 60;
-            const DNA_LENGTH = 1.8; // fator do comprimento da hélice em relação à altura
+            const DNA_LENGTH = 1.8;
 
             function resize() {
                 width = canvas.width = window.innerWidth;
@@ -1359,7 +1376,6 @@
             window.addEventListener('resize', resize);
             resize();
 
-            // Partículas flutuantes (moléculas)
             class Molecule {
                 constructor() {
                     this.reset();
@@ -1372,7 +1388,7 @@
                     this.speedY = (Math.random() - 0.5) * 0.3;
                     this.alpha = 0.4 + Math.random() * 0.6;
                     this.pulse = Math.random() * Math.PI * 2;
-                    this.cluster = Math.floor(Math.random() * 3) + 1; // 1 a 3 átomos
+                    this.cluster = Math.floor(Math.random() * 3) + 1;
                 }
                 update() {
                     this.pulse += 0.02;
@@ -1390,7 +1406,6 @@
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
-                    // Desenhar átomos adicionais em cluster
                     if (this.cluster > 1) {
                         for (let i = 1; i < this.cluster; i++) {
                             const angle = (i / this.cluster) * Math.PI * 2 + this.pulse * 0.5;
@@ -1401,7 +1416,6 @@
                             ctx.beginPath();
                             ctx.arc(cx, cy, this.size * 0.7, 0, Math.PI * 2);
                             ctx.fill();
-                            // linha de conexão
                             ctx.strokeStyle = `rgba(0, 180, 216, ${alpha * 0.25})`;
                             ctx.lineWidth = 0.5;
                             ctx.beginPath();
@@ -1418,15 +1432,14 @@
             }
 
             function drawDNAHelix(t) {
-                const amplitude = 40; // largura da hélice
-                const frequency = 0.012; // frequência das ondas
+                const amplitude = 40;
+                const frequency = 0.012;
                 const totalHeight = height * DNA_LENGTH;
                 const startY = centerY - totalHeight / 2;
                 const endY = centerY + totalHeight / 2;
-                const steps = 180; // pontos ao longo da hélice
-                const rotation = t * 0.0004; // rotação lenta
+                const steps = 180;
+                const rotation = t * 0.0004;
 
-                // Desenhar as duas fitas
                 for (let strand = 0; strand < 2; strand++) {
                     const phase = strand === 0 ? 0 : Math.PI;
                     ctx.strokeStyle = strand === 0 ? 'rgba(0, 180, 216, 0.7)' : 'rgba(72, 202, 228, 0.6)';
@@ -1435,8 +1448,7 @@
                     for (let i = 0; i <= steps; i++) {
                         const progress = i / steps;
                         const y = startY + progress * totalHeight;
-                        const waveOffset = Math.sin(progress * totalHeight * frequency + t * 0.001 + phase + rotation) *
-                            amplitude;
+                        const waveOffset = Math.sin(progress * totalHeight * frequency + t * 0.001 + phase + rotation) * amplitude;
                         const x = centerX + waveOffset;
                         if (i === 0) ctx.moveTo(x, y);
                         else ctx.lineTo(x, y);
@@ -1444,7 +1456,6 @@
                     ctx.stroke();
                 }
 
-                // Desenhar as "barras" (pares de bases) e esferas
                 for (let i = 0; i <= steps; i += 4) {
                     const progress = i / steps;
                     const y = startY + progress * totalHeight;
@@ -1453,7 +1464,6 @@
                     const x1 = centerX + wave1;
                     const x2 = centerX + wave2;
 
-                    // Barra de conexão
                     const alphaBar = 0.35 + Math.sin(progress * Math.PI * 4 + t * 0.002) * 0.15;
                     ctx.strokeStyle = `rgba(0, 180, 216, ${alphaBar})`;
                     ctx.lineWidth = 1.2;
@@ -1462,7 +1472,6 @@
                     ctx.lineTo(x2, y);
                     ctx.stroke();
 
-                    // Esferas nos pontos
                     for (let s = 0; s < 2; s++) {
                         const x = s === 0 ? x1 : x2;
                         const alphaSphere = 0.7 + Math.sin(progress * Math.PI * 6 + t * 0.003 + s) * 0.3;
@@ -1471,7 +1480,6 @@
                         ctx.beginPath();
                         ctx.arc(x, y, size, 0, Math.PI * 2);
                         ctx.fill();
-                        // Brilho central
                         ctx.fillStyle = `rgba(255, 255, 255, ${alphaSphere * 0.6})`;
                         ctx.beginPath();
                         ctx.arc(x, y, size * 0.5, 0, Math.PI * 2);
@@ -1484,7 +1492,6 @@
                 time = timestamp;
                 ctx.clearRect(0, 0, width, height);
 
-                // Desenhar grid hexagonal sutil
                 ctx.strokeStyle = 'rgba(0, 180, 216, 0.04)';
                 ctx.lineWidth = 0.6;
                 const hexSize = 50;
@@ -1505,10 +1512,8 @@
                     }
                 }
 
-                // Desenhar DNA
                 drawDNAHelix(time);
 
-                // Atualizar e desenhar partículas
                 particles.forEach(p => {
                     p.update();
                     p.draw(ctx);
