@@ -19,6 +19,7 @@
             --danger: #e63946;
             --success: #2a9d8f;
             --warning: #f4a261;
+            --info: #00b4d8;
             --radius: 12px;
             --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
             --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -449,7 +450,6 @@
             background: var(--surface);
         }
 
-        /* Barra de marcas com rolagem horizontal */
         .brand-filters {
             display: flex;
             flex-wrap: nowrap;
@@ -980,7 +980,7 @@
             'AM': 120
         };
 
-        // ===== BASE DE PRODUTOS (365 itens) =====
+        // ===== BASE DE PRODUTOS (367 itens - atualizada com todos os produtos da lista) =====
         const produtosBase = [
             { id: 1, nome: 'GHK-Cu 100mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-Cu' },
             { id: 2, nome: 'SLU-PP-332 5mg/3ml', preco: 600, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=SLU' },
@@ -1029,6 +1029,8 @@
             { id: 45, nome: 'GH ZPTrop 90ui vial', preco: 1900, marca: 'ZPHC LABS PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=ZPT90v' },
             { id: 46, nome: 'GH ZPTrop 72ui caneta', preco: 1800, marca: 'ZPHC LABS PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=ZPT72c' },
             { id: 47, nome: 'Primobolan 200mg/2ml', preco: 1250, marca: 'ZPHC LABS PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=Primo200' },
+            // NOVO: Retage 40mg Caneta (OXYGEN KW)
+            { id: 366, nome: 'Retage 40mg Caneta', preco: 1950, marca: 'OXYGEN KW', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=Retage40' },
             { id: 48, nome: 'Testosteone Mix 250mg/10ml', preco: 390, marca: 'LINHA ZPHC PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=TestMix' },
             { id: 49, nome: 'Testosterone Enanthate 250mg/10ml', preco: 370, marca: 'LINHA ZPHC PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=Enan' },
             { id: 50, nome: 'Testosterone Cypionate 200mg/10ml', preco: 290, marca: 'LINHA ZPHC PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=Cyp' },
@@ -1130,6 +1132,8 @@
             { id: 146, nome: 'Turinabol 50cmp/10mg', preco: 199, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/10a3a2e/d4af37?text=TuriK' },
             { id: 147, nome: 'Halotestin 30comp/10mg', preco: 400, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/10a3a2e/d4af37?text=HaloK' },
             { id: 148, nome: 'Proviron 20cmp/25mg', preco: 135, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/10a3a2e/d4af37?text=ProvK' },
+            // NOVO: Tizerpatida 60mg King Pharma
+            { id: 367, nome: 'Tizerpatida 60mg', preco: 1400, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/10a3a2e/d4af37?text=Tiz60K' },
             { id: 149, nome: 'Sustan 250mg/1ml', preco: 29, marca: 'LINHA MUSCLE PHARMA', img: 'https://placehold.co/150x150/11a3a2e/d4af37?text=Sust1MP' },
             { id: 150, nome: 'Sustan XT 250mg/10ml', preco: 220, marca: 'LINHA MUSCLE PHARMA', img: 'https://placehold.co/150x150/11a3a2e/d4af37?text=SustXTMP' },
             { id: 151, nome: 'Testoviron 250 250mg/10ml', preco: 220, marca: 'LINHA MUSCLE PHARMA', img: 'https://placehold.co/150x150/11a3a2e/d4af37?text=Testo250MP' },
@@ -1983,6 +1987,12 @@
             if (marcaFinal === '__nova__') { marcaFinal = inputNovaMarca.value.trim(); if (!marcaFinal) return mostrarToast('Digite a nova marca.', 'error'); }
             if (!marcaFinal) return mostrarToast('Selecione ou digite uma marca.', 'error');
             if (!nome) return mostrarToast('Informe o nome.', 'error');
+
+            const duplicado = produtos.find(p => p.nome.toLowerCase() === nome.toLowerCase() && p.marca.toLowerCase() === marcaFinal.toLowerCase());
+            if (duplicado) {
+                return mostrarToast(`❌ Produto já existe: "${duplicado.nome}" da marca "${duplicado.marca}".`, 'error');
+            }
+
             const novoId = Date.now();
             const novoProduto = { id: novoId, nome, preco, marca: marcaFinal, img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=' + encodeURIComponent(nome.substring(0,10)), obs: '' };
             if (imgEl.files && imgEl.files[0]) { try { novoProduto.img = await fileToBase64Resized(imgEl.files[0], 500, 500); } catch (e) { console.error(e); } }
