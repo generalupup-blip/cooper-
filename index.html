@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CENTRAL LABS PREMIUM | Representante David Oficial</title>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js">
+    </script>
     <style>
         :root {
             --bg: #0a0f14;
@@ -760,6 +762,53 @@
             }
         }
 
+        /* Estilos para a seção de ordenação de marcas */
+        .marca-order-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(17, 24, 32, 0.75);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+        .marca-order-item:hover {
+            border-color: var(--accent);
+        }
+        .marca-order-item span {
+            font-weight: 600;
+            color: var(--text);
+        }
+        .order-buttons {
+            display: flex;
+            gap: 0.3rem;
+        }
+        .order-buttons button {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .order-buttons button:hover {
+            background: var(--accent);
+            color: #000;
+            border-color: var(--accent);
+        }
+        .order-buttons button:disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
         @media (max-width: 768px) {
             header {
                 padding: 1rem;
@@ -810,6 +859,7 @@
             <button onclick="showSection('admin')" id="nav-admin" style="display:none;" aria-label="Dashboard">📊 Dashboard</button>
             <button onclick="showSection('gerenciarClientes')" id="nav-clientes" style="display:none;" aria-label="Clientes">👥 Clientes</button>
             <button onclick="showSection('gerenciarProdutos')" id="nav-gerenciar" style="display:none;" aria-label="Catálogo">⚙️ Catálogo</button>
+            <button onclick="showSection('ordenarMarcas')" id="nav-ordenar" style="display:none;" aria-label="Ordenar Marcas">🔀 Marcas</button>
             <button onclick="logout()" id="nav-logout" style="display:none;" aria-label="Sair">🚪 Sair</button>
         </nav>
     </header>
@@ -917,6 +967,16 @@
             </div>
             <div id="gerenciarContainer"></div>
         </section>
+        <!-- NOVA SEÇÃO: Ordenar Marcas -->
+        <section id="ordenarMarcas" class="section">
+            <h2>🔀 Ordenar Filtros de Marcas</h2>
+            <p style="color:var(--text2);margin-bottom:1.5rem;">Defina a ordem de exibição das marcas no catálogo. Use os botões para mover as marcas para cima ou para baixo.</p>
+            <div id="ordenarMarcasContainer"></div>
+            <div class="flex-row mt-2" style="justify-content:flex-end;">
+                <button class="btn btn-success" onclick="salvarOrdemMarcas()">💾 Salvar Ordem</button>
+                <button class="btn btn-outline" onclick="resetarOrdemMarcas()">🔄 Restaurar Padrão (A-Z)</button>
+            </div>
+        </section>
         <div id="modalEditarCliente" class="modal-overlay hidden">
             <div class="modal">
                 <h3>✏️ Editar Cliente</h3>
@@ -980,7 +1040,7 @@
             'AM': 120
         };
 
-        // ===== BASE DE PRODUTOS (367 itens - atualizada com todos os produtos da lista) =====
+        // ===== BASE DE PRODUTOS (367 itens) =====
         const produtosBase = [
             { id: 1, nome: 'GHK-Cu 100mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=GHK-Cu' },
             { id: 2, nome: 'SLU-PP-332 5mg/3ml', preco: 600, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=SLU' },
@@ -1029,7 +1089,6 @@
             { id: 45, nome: 'GH ZPTrop 90ui vial', preco: 1900, marca: 'ZPHC LABS PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=ZPT90v' },
             { id: 46, nome: 'GH ZPTrop 72ui caneta', preco: 1800, marca: 'ZPHC LABS PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=ZPT72c' },
             { id: 47, nome: 'Primobolan 200mg/2ml', preco: 1250, marca: 'ZPHC LABS PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=Primo200' },
-            // NOVO: Retage 40mg Caneta (OXYGEN KW)
             { id: 366, nome: 'Retage 40mg Caneta', preco: 1950, marca: 'OXYGEN KW', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=Retage40' },
             { id: 48, nome: 'Testosteone Mix 250mg/10ml', preco: 390, marca: 'LINHA ZPHC PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=TestMix' },
             { id: 49, nome: 'Testosterone Enanthate 250mg/10ml', preco: 370, marca: 'LINHA ZPHC PREMIUM', img: 'https://placehold.co/150x150/3a2a1e/d4af37?text=Enan' },
@@ -1132,7 +1191,6 @@
             { id: 146, nome: 'Turinabol 50cmp/10mg', preco: 199, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/10a3a2e/d4af37?text=TuriK' },
             { id: 147, nome: 'Halotestin 30comp/10mg', preco: 400, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/10a3a2e/d4af37?text=HaloK' },
             { id: 148, nome: 'Proviron 20cmp/25mg', preco: 135, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/10a3a2e/d4af37?text=ProvK' },
-            // NOVO: Tizerpatida 60mg King Pharma
             { id: 367, nome: 'Tizerpatida 60mg', preco: 1400, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/10a3a2e/d4af37?text=Tiz60K' },
             { id: 149, nome: 'Sustan 250mg/1ml', preco: 29, marca: 'LINHA MUSCLE PHARMA', img: 'https://placehold.co/150x150/11a3a2e/d4af37?text=Sust1MP' },
             { id: 150, nome: 'Sustan XT 250mg/10ml', preco: 220, marca: 'LINHA MUSCLE PHARMA', img: 'https://placehold.co/150x150/11a3a2e/d4af37?text=SustXTMP' },
@@ -1355,11 +1413,19 @@
 
         // ===== ESTADO GLOBAL =====
         let produtos = [];
-        let carrinho = [], usuarios = [], pedidos = [], clienteLogado = null, adminLogado = false;
-        let filtroMarca = 'TODAS', filtroAdminStatus = 'todos', clienteEditandoId = null;
+        let carrinho = [],
+            usuarios = [],
+            pedidos = [],
+            clienteLogado = null,
+            adminLogado = false;
+        let filtroMarca = 'TODAS',
+            filtroAdminStatus = 'todos',
+            clienteEditandoId = null;
         const ITEMS_PER_PAGE = 30;
         let catalogoPaginaAtual = 1;
         let catalogoFiltrados = [];
+        // Ordem personalizada das marcas
+        let ordemMarcas = [];
 
         // ===== ANIMAÇÃO DNA / MOLÉCULAS (CANVAS) =====
         (function() {
@@ -1452,7 +1518,8 @@
                     for (let i = 0; i <= steps; i++) {
                         const progress = i / steps;
                         const y = startY + progress * totalHeight;
-                        const waveOffset = Math.sin(progress * totalHeight * frequency + t * 0.001 + phase + rotation) * amplitude;
+                        const waveOffset = Math.sin(progress * totalHeight * frequency + t * 0.001 + phase + rotation) *
+                            amplitude;
                         const x = centerX + waveOffset;
                         if (i === 0) ctx.moveTo(x, y);
                         else ctx.lineTo(x, y);
@@ -1464,7 +1531,8 @@
                     const progress = i / steps;
                     const y = startY + progress * totalHeight;
                     const wave1 = Math.sin(progress * totalHeight * frequency + t * 0.001 + rotation) * amplitude;
-                    const wave2 = Math.sin(progress * totalHeight * frequency + t * 0.001 + Math.PI + rotation) * amplitude;
+                    const wave2 = Math.sin(progress * totalHeight * frequency + t * 0.001 + Math.PI + rotation) *
+                    amplitude;
                     const x1 = centerX + wave1;
                     const x2 = centerX + wave2;
 
@@ -1533,10 +1601,65 @@
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.style.borderColor = tipo === 'success' ? 'var(--success)' : tipo === 'error' ? 'var(--danger)' : 'var(--accent)';
+            toast.style.borderColor = tipo === 'success' ? 'var(--success)' : tipo === 'error' ? 'var(--danger)' :
+                'var(--accent)';
             toast.textContent = msg;
             container.appendChild(toast);
             setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3300);
+        }
+
+        // ===== ORDEM DAS MARCAS (FIRESTORE) =====
+        async function carregarOrdemMarcas() {
+            try {
+                const snap = await db.collection('config').doc('ordemMarcas').get();
+                if (snap.exists && snap.data().ordem && Array.isArray(snap.data().ordem)) {
+                    ordemMarcas = snap.data().ordem;
+                } else {
+                    ordemMarcas = [];
+                }
+            } catch (e) {
+                console.error('Erro ao carregar ordem das marcas:', e);
+                ordemMarcas = [];
+            }
+        }
+
+        async function salvarOrdemMarcasFirestore() {
+            try {
+                await db.collection('config').doc('ordemMarcas').set({ ordem: ordemMarcas }, { merge: true });
+                mostrarToast('✅ Ordem das marcas salva!', 'success');
+                renderBrandFilters();
+                renderCatalogo();
+            } catch (e) {
+                console.error(e);
+                mostrarToast('Erro ao salvar ordem.', 'error');
+            }
+        }
+
+        function getMarcasOrdenadas() {
+            const todas = [...new Set(produtos.map(p => p.marca))];
+            // Se temos uma ordem salva, usamos ela como base
+            if (ordemMarcas.length > 0) {
+                const ordenadas = [];
+                // Primeiro as que estão na ordem salva e ainda existem
+                ordemMarcas.forEach(m => {
+                    if (todas.includes(m)) ordenadas.push(m);
+                });
+                // Depois as novas marcas que não estão na ordem (em ordem alfabética)
+                const novas = todas.filter(m => !ordemMarcas.includes(m)).sort();
+                return ordenadas.concat(novas);
+            }
+            // Caso não tenha ordem salva, ordem alfabética
+            return todas.sort();
+        }
+
+        function atualizarOrdemMarcasComNovasMarcas() {
+            const todas = [...new Set(produtos.map(p => p.marca))];
+            // Remove da ordem marcas que não existem mais
+            ordemMarcas = ordemMarcas.filter(m => todas.includes(m));
+            // Adiciona novas marcas no final
+            todas.forEach(m => {
+                if (!ordemMarcas.includes(m)) ordemMarcas.push(m);
+            });
         }
 
         // ===== CARREGAR DADOS =====
@@ -1555,7 +1678,8 @@
                     const batch = db.batch();
                     produtos.forEach(p => {
                         const ref = db.collection('produtos').doc(String(p.id));
-                        batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p.obs || '' });
+                        batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img,
+                            obs: p.obs || '' });
                     });
                     await batch.commit();
                 } else {
@@ -1566,6 +1690,8 @@
                     });
                     produtos = Object.values(mapBase).sort((a, b) => a.id - b.id);
                 }
+                await carregarOrdemMarcas();
+                atualizarOrdemMarcasComNovasMarcas();
             } catch (e) {
                 console.error('Erro ao carregar dados:', e);
                 produtos = JSON.parse(JSON.stringify(produtosBase));
@@ -1576,9 +1702,15 @@
         async function salvarProdutoFirestore(prod) {
             try {
                 await db.collection('produtos').doc(String(prod.id)).set({
-                    id: prod.id, nome: prod.nome, preco: prod.preco, marca: prod.marca, img: prod.img || '', obs: prod.obs || ''
+                    id: prod.id,
+                    nome: prod.nome,
+                    preco: prod.preco,
+                    marca: prod.marca,
+                    img: prod.img || '',
+                    obs: prod.obs || ''
                 }, { merge: true });
-            } catch (e) { console.error(e); mostrarToast('Erro ao salvar produto', 'error'); }
+            } catch (e) { console.error(e);
+                mostrarToast('Erro ao salvar produto', 'error'); }
         }
 
         async function deletarProdutoFirestore(id) {
@@ -1595,16 +1727,20 @@
             document.getElementById('cart-count').textContent = carrinho.reduce((s, i) => s + i.qtd, 0);
             const bf = document.getElementById('btnFinalizar');
             const ml = document.getElementById('msgLoginNeeded');
-            if (clienteLogado) { bf.disabled = false; ml.style.display = 'none'; } else { bf.disabled = true; ml.style.display = 'block'; }
+            if (clienteLogado) { bf.disabled = false;
+                ml.style.display = 'none'; } else { bf.disabled = true;
+                ml.style.display = 'block'; }
             const navAdmin = document.getElementById('nav-admin');
             const navClientes = document.getElementById('nav-clientes');
             const navGerenciar = document.getElementById('nav-gerenciar');
+            const navOrdenar = document.getElementById('nav-ordenar');
             const navLogout = document.getElementById('nav-logout');
             const navLogin = document.getElementById('nav-login');
             const mostrarAdmin = adminLogado;
             navAdmin.style.display = mostrarAdmin ? 'inline-block' : 'none';
             navClientes.style.display = mostrarAdmin ? 'inline-block' : 'none';
             navGerenciar.style.display = mostrarAdmin ? 'inline-block' : 'none';
+            navOrdenar.style.display = mostrarAdmin ? 'inline-block' : 'none';
             navLogout.style.display = (clienteLogado || adminLogado) ? 'inline-block' : 'none';
             navLogin.style.display = (clienteLogado || adminLogado) ? 'none' : 'inline-block';
         }
@@ -1613,42 +1749,65 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             const sec = document.getElementById(id);
             if (sec) sec.classList.add('active');
-            if (id === 'catalogo') { catalogoPaginaAtual = 1; renderCatalogo(); }
+            if (id === 'catalogo') { catalogoPaginaAtual = 1;
+                renderCatalogo(); }
             if (id === 'carrinho') renderCarrinho();
             if (id === 'admin') renderAdmin();
             if (id === 'gerenciarClientes') {
-                if (!adminLogado) { mostrarToast('Acesso restrito.', 'error'); showSection('login'); return; }
+                if (!adminLogado) { mostrarToast('Acesso restrito.', 'error');
+                    showSection('login'); return; }
                 renderGerenciarClientes();
             }
             if (id === 'gerenciarProdutos') {
-                if (!adminLogado) { mostrarToast('Acesso restrito.', 'error'); showSection('login'); return; }
-                atualizarMarcaSelect(); renderGerenciarProdutos();
+                if (!adminLogado) { mostrarToast('Acesso restrito.', 'error');
+                    showSection('login'); return; }
+                atualizarMarcaSelect();
+                renderGerenciarProdutos();
+            }
+            if (id === 'ordenarMarcas') {
+                if (!adminLogado) { mostrarToast('Acesso restrito.', 'error');
+                    showSection('login'); return; }
+                renderOrdenarMarcas();
             }
             atualizarUI();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function logout() {
-            clienteLogado = null; adminLogado = false; salvarDadosLocais(); showSection('catalogo'); atualizarUI();
+            clienteLogado = null;
+            adminLogado = false;
+            salvarDadosLocais();
+            showSection('catalogo');
+            atualizarUI();
             mostrarToast('Sessão encerrada.', 'info');
         }
 
         let debounceTimer;
+
         function debounceSearch() {
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => { catalogoPaginaAtual = 1; renderCatalogo(); }, 250);
+            debounceTimer = setTimeout(() => { catalogoPaginaAtual = 1;
+                renderCatalogo(); }, 250);
         }
 
         function renderBrandFilters() {
-            const marcas = [...new Set(produtos.map(p => p.marca))].sort();
-            document.getElementById('brandFilters').innerHTML = '<button class="toggle-brand ' + (filtroMarca === 'TODAS' ? 'active' : '') + '" onclick="setFiltroMarca(\'TODAS\')">TODAS</button>' + marcas.map(m => '<button class="toggle-brand ' + (filtroMarca === m ? 'active' : '') + '" onclick="setFiltroMarca(\'' + m.replace(/'/g, "\\'") + '\')">' + m + '</button>').join('');
+            const marcas = getMarcasOrdenadas();
+            document.getElementById('brandFilters').innerHTML =
+                '<button class="toggle-brand ' + (filtroMarca === 'TODAS' ? 'active' : '') +
+                '" onclick="setFiltroMarca(\'TODAS\')">TODAS</button>' +
+                marcas.map(m => '<button class="toggle-brand ' + (filtroMarca === m ? 'active' : '') +
+                    '" onclick="setFiltroMarca(\'' + m.replace(/'/g, "\\'") + '\')">' + m + '</button>').join('');
         }
 
-        function setFiltroMarca(m) { filtroMarca = m; catalogoPaginaAtual = 1; renderBrandFilters(); renderCatalogo(); }
+        function setFiltroMarca(m) { filtroMarca = m;
+            catalogoPaginaAtual = 1;
+            renderBrandFilters();
+            renderCatalogo(); }
 
         function getProdutosFiltrados() {
             const s = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            return produtos.filter(p => (filtroMarca === 'TODAS' || p.marca === filtroMarca) && p.nome.toLowerCase().includes(s));
+            return produtos.filter(p => (filtroMarca === 'TODAS' || p.marca === filtroMarca) && p.nome.toLowerCase()
+                .includes(s));
         }
 
         function renderCatalogo() {
@@ -1670,22 +1829,26 @@
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.style.animationDelay = (index * 0.03) + 's';
-                card.innerHTML = `<img src="${p.img}" alt="${p.nome}" loading="lazy" onerror="this.src='https://placehold.co/150x150/ffffff/0d6efd?text=Sem'"><span class="brand-tag">${p.marca}</span><span class="name">${p.nome}</span><span class="price">${pr}</span><div style="display:flex;gap:0.5rem;justify-content:center;align-items:center;margin-top:auto;"><input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}" aria-label="Quantidade"><button class="btn" onclick="adicionarAoCarrinho(${p.id})">🛒</button></div>`;
+                card.innerHTML =
+                    `<img src="${p.img}" alt="${p.nome}" loading="lazy" onerror="this.src='https://placehold.co/150x150/ffffff/0d6efd?text=Sem'"><span class="brand-tag">${p.marca}</span><span class="name">${p.nome}</span><span class="price">${pr}</span><div style="display:flex;gap:0.5rem;justify-content:center;align-items:center;margin-top:auto;"><input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}" aria-label="Quantidade"><button class="btn" onclick="adicionarAoCarrinho(${p.id})">🛒</button></div>`;
                 fragment.appendChild(card);
             });
             container.innerHTML = '';
             container.appendChild(fragment);
             let pagHTML = '';
             if (totalPages > 1) {
-                pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual - 1})" ${catalogoPaginaAtual === 1 ? 'disabled' : ''}>«</button>`;
+                pagHTML +=
+                    `<button onclick="irPagina(${catalogoPaginaAtual - 1})" ${catalogoPaginaAtual === 1 ? 'disabled' : ''}>«</button>`;
                 for (let i = 1; i <= totalPages; i++) {
                     if (i === 1 || i === totalPages || (i >= catalogoPaginaAtual - 2 && i <= catalogoPaginaAtual + 2)) {
-                        pagHTML += `<button onclick="irPagina(${i})" class="${i === catalogoPaginaAtual ? 'active' : ''}">${i}</button>`;
+                        pagHTML +=
+                            `<button onclick="irPagina(${i})" class="${i === catalogoPaginaAtual ? 'active' : ''}">${i}</button>`;
                     } else if (i === catalogoPaginaAtual - 3 || i === catalogoPaginaAtual + 3) {
                         pagHTML += '<button disabled>...</button>';
                     }
                 }
-                pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual + 1})" ${catalogoPaginaAtual === totalPages ? 'disabled' : ''}>»</button>`;
+                pagHTML +=
+                    `<button onclick="irPagina(${catalogoPaginaAtual + 1})" ${catalogoPaginaAtual === totalPages ? 'disabled' : ''}>»</button>`;
             }
             paginationEl.innerHTML = pagHTML;
         }
@@ -1705,14 +1868,16 @@
             const e = carrinho.find(i => i.prodId === pid);
             if (e) e.qtd += q;
             else carrinho.push({ prodId: pid, qtd: q, preco: p.preco, nome: p.nome, marca: p.marca });
-            salvarDadosLocais(); atualizarUI();
+            salvarDadosLocais();
+            atualizarUI();
             mostrarToast('✅ ' + p.nome + ' adicionado!', 'success');
         }
 
         function calcularTotaisCarrinho() {
             const sub = carrinho.reduce((s, i) => s + i.preco * i.qtd, 0);
             let frete = 0;
-            if (clienteLogado && clienteLogado.regiao && fretePorRegiao[clienteLogado.regiao]) frete = fretePorRegiao[clienteLogado.regiao];
+            if (clienteLogado && clienteLogado.regiao && fretePorRegiao[clienteLogado.regiao]) frete = fretePorRegiao[
+                clienteLogado.regiao];
             return { subtotal: sub, frete: frete, total: sub + frete };
         }
 
@@ -1731,7 +1896,8 @@
                 const mt = item.marca ? ' (' + item.marca + ')' : '';
                 const card = document.createElement('div');
                 card.className = 'card flex-row flex-between';
-                card.innerHTML = `<div><strong>${item.nome}</strong>${mt}<br>R$ ${item.preco.toFixed(2)} x ${item.qtd} = <strong>R$ ${sub.toFixed(2)}</strong></div><div class="flex-row"><input type="number" min="1" value="${item.qtd}" class="qty-input" onchange="alterarQtdCarrinho(${i}, this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(${i})">🗑️</button></div>`;
+                card.innerHTML =
+                    `<div><strong>${item.nome}</strong>${mt}<br>R$ ${item.preco.toFixed(2)} x ${item.qtd} = <strong>R$ ${sub.toFixed(2)}</strong></div><div class="flex-row"><input type="number" min="1" value="${item.qtd}" class="qty-input" onchange="alterarQtdCarrinho(${i}, this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(${i})">🗑️</button></div>`;
                 fragment.appendChild(card);
             });
             c.innerHTML = '';
@@ -1739,12 +1905,22 @@
             const t = calcularTotaisCarrinho();
             document.getElementById('resumoItens').textContent = carrinho.reduce((s, i) => s + i.qtd, 0);
             document.getElementById('resumoSubtotal').textContent = 'R$ ' + t.subtotal.toFixed(2);
-            document.getElementById('resumoFrete').textContent = t.frete > 0 ? 'R$ ' + t.frete.toFixed(2) : (clienteLogado ? 'R$ 0,00' : 'Faça login');
+            document.getElementById('resumoFrete').textContent = t.frete > 0 ? 'R$ ' + t.frete.toFixed(2) : (clienteLogado ?
+                'R$ 0,00' : 'Faça login');
             document.getElementById('resumoTotal').textContent = 'R$ ' + t.total.toFixed(2);
         }
 
-        function alterarQtdCarrinho(i, v) { carrinho[i].qtd = Math.max(1, parseInt(v) || 1); salvarDadosLocais(); renderCarrinho(); atualizarUI(); }
-        function removerDoCarrinho(i) { const nome = carrinho[i]?.nome || 'Item'; carrinho.splice(i, 1); salvarDadosLocais(); renderCarrinho(); atualizarUI(); mostrarToast('🗑️ ' + nome + ' removido.', 'info'); }
+        function alterarQtdCarrinho(i, v) { carrinho[i].qtd = Math.max(1, parseInt(v) || 1);
+            salvarDadosLocais();
+            renderCarrinho();
+            atualizarUI(); }
+
+        function removerDoCarrinho(i) { const nome = carrinho[i]?.nome || 'Item';
+            carrinho.splice(i, 1);
+            salvarDadosLocais();
+            renderCarrinho();
+            atualizarUI();
+            mostrarToast('🗑️ ' + nome + ' removido.', 'info'); }
 
         function finalizarPedido() {
             if (!clienteLogado) return mostrarToast('Faça login.', 'error');
@@ -1752,40 +1928,64 @@
             const t = calcularTotaisCarrinho();
             const num = Date.now().toString().slice(-8);
             const ref = clienteLogado.referencia || 'Não informada';
-            const enderecoFormatado = `Rua: ${clienteLogado.rua || ''} N*${clienteLogado.numero || ''}\nReferência: ${ref}\nBairro: ${clienteLogado.bairro || ''}\nRegião: ${clienteLogado.regiao || ''}\nCEP: ${clienteLogado.cep || ''}`;
+            const enderecoFormatado =
+                `Rua: ${clienteLogado.rua || ''} N*${clienteLogado.numero || ''}\nReferência: ${ref}\nBairro: ${clienteLogado.bairro || ''}\nRegião: ${clienteLogado.regiao || ''}\nCEP: ${clienteLogado.cep || ''}`;
             let itensMsg = '';
-            carrinho.forEach(item => { itensMsg += `> ${item.qtd}x ${item.nome}${item.marca ? ` (${item.marca})` : ''} - R$ ${(item.preco * item.qtd).toFixed(2)}\n`; });
+            carrinho.forEach(item => { itensMsg +=
+                    `> ${item.qtd}x ${item.nome}${item.marca ? ` (${item.marca})` : ''} - R$ ${(item.preco * item.qtd).toFixed(2)}\n`; });
             let detalhesMsg = `Subtotal: R$ ${t.subtotal.toFixed(2)}\n`;
             if (t.frete > 0) detalhesMsg += `Frete: R$ ${t.frete.toFixed(2)}\n`;
             detalhesMsg += `TOTAL: R$ ${t.total.toFixed(2)}`;
-            const mensagem = `⚠️ ATENÇÃO: ENDEREÇO SEM DIVERGÊNCIAS!\n\nNOVO PEDIDO #${num}\n\nCliente: ${clienteLogado.nome}\nCPF: ${clienteLogado.cpf}\nEndereço:\n${enderecoFormatado}\nContato: ${clienteLogado.contato}\n\nITENS:\n${itensMsg}\n${detalhesMsg}\n\nAguardando confirmação.`;
+            const mensagem =
+                `⚠️ ATENÇÃO: ENDEREÇO SEM DIVERGÊNCIAS!\n\nNOVO PEDIDO #${num}\n\nCliente: ${clienteLogado.nome}\nCPF: ${clienteLogado.cpf}\nEndereço:\n${enderecoFormatado}\nContato: ${clienteLogado.contato}\n\nITENS:\n${itensMsg}\n${detalhesMsg}\n\nAguardando confirmação.`;
             if (confirm('Confirma o pedido?\n\nTotal: R$ ' + t.total.toFixed(2))) {
                 const novoPedido = {
-                    id: Date.now(), numero: num,
-                    clienteId: clienteLogado.id, clienteNome: clienteLogado.nome, clienteContato: clienteLogado.contato,
-                    clienteEndereco: enderecoFormatado.replace(/\n/g, ' | '), clienteCpf: clienteLogado.cpf,
-                    itens: carrinho.map(i => ({ ...i })), subtotal: t.subtotal, frete: t.frete, total: t.total,
-                    status: 'pendente', data: new Date().toISOString()
+                    id: Date.now(),
+                    numero: num,
+                    clienteId: clienteLogado.id,
+                    clienteNome: clienteLogado.nome,
+                    clienteContato: clienteLogado.contato,
+                    clienteEndereco: enderecoFormatado.replace(/\n/g, ' | '),
+                    clienteCpf: clienteLogado.cpf,
+                    itens: carrinho.map(i => ({ ...i })),
+                    subtotal: t.subtotal,
+                    frete: t.frete,
+                    total: t.total,
+                    status: 'pendente',
+                    data: new Date().toISOString()
                 };
                 pedidos.unshift(novoPedido);
                 db.collection('pedidos').doc(String(novoPedido.id)).set(novoPedido).catch(e => console.error(e));
-                carrinho = []; salvarDadosLocais(); atualizarUI(); renderCarrinho();
+                carrinho = [];
+                salvarDadosLocais();
+                atualizarUI();
+                renderCarrinho();
                 mostrarToast('✅ Pedido #' + num + ' criado!', 'success');
                 window.open(`https://wa.me/5519997390834?text=${encodeURIComponent(mensagem)}`, '_blank');
             }
         }
 
-        async function salvarUsuario(u) { try { await db.collection('usuarios').doc(String(u.id)).set(u); } catch (e) { console.error(e); } }
-        async function atualizarUsuario(u) { try { await db.collection('usuarios').doc(String(u.id)).update(u); } catch (e) { console.error(e); } }
-        async function deletarUsuario(id) { try { await db.collection('usuarios').doc(String(id)).delete(); } catch (e) { console.error(e); } }
+        async function salvarUsuario(u) { try { await db.collection('usuarios').doc(String(u.id)).set(u); } catch (
+            e) { console.error(e); } }
 
-        function toggleCadastro() { document.getElementById('loginForm').classList.toggle('hidden'); document.getElementById('cadastroForm').classList.toggle('hidden'); }
+        async function atualizarUsuario(u) { try { await db.collection('usuarios').doc(String(u.id)).update(u); } catch (
+            e) { console.error(e); } }
+
+        async function deletarUsuario(id) { try { await db.collection('usuarios').doc(String(id)).delete(); } catch (
+            e) { console.error(e); } }
+
+        function toggleCadastro() { document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('cadastroForm').classList.toggle('hidden'); }
 
         function loginCliente() {
             const cpf = document.getElementById('loginCpf').value.replace(/\D/g, '');
             const u = usuarios.find(u => u.cpf === cpf);
             if (!u) return mostrarToast('CPF não cadastrado.', 'error');
-            clienteLogado = u; adminLogado = false; salvarDadosLocais(); atualizarUI(); showSection('catalogo');
+            clienteLogado = u;
+            adminLogado = false;
+            salvarDadosLocais();
+            atualizarUI();
+            showSection('catalogo');
             mostrarToast('👋 Bem-vindo(a), ' + u.nome.split(' ')[0] + '!', 'success');
         }
 
@@ -1800,22 +2000,42 @@
             const regiao = document.getElementById('cadRegiao').value;
             const cep = document.getElementById('cadCep').value.trim();
             const t = document.getElementById('cadContato').value.trim();
-            if (!n || !c || !rua || !num || !bairro || !cidade || !regiao || !t) return mostrarToast('Preencha todos os campos.', 'error');
+            if (!n || !c || !rua || !num || !bairro || !cidade || !regiao || !t) return mostrarToast(
+                'Preencha todos os campos.', 'error');
             if (usuarios.find(u => u.cpf === c)) return mostrarToast('CPF já cadastrado.', 'error');
             const novo = {
-                id: Date.now(), nome: n, cpf: c,
-                rua, numero: num, referencia, bairro, cidade, regiao, cep, contato: t,
+                id: Date.now(),
+                nome: n,
+                cpf: c,
+                rua,
+                numero: num,
+                referencia,
+                bairro,
+                cidade,
+                regiao,
+                cep,
+                contato: t,
                 endereco: `${rua}, ${num} - Ref: ${referencia || 'N/A'} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}`
             };
-            usuarios.push(novo); salvarUsuario(novo);
-            clienteLogado = novo; adminLogado = false; salvarDadosLocais(); atualizarUI(); showSection('catalogo');
+            usuarios.push(novo);
+            salvarUsuario(novo);
+            clienteLogado = novo;
+            adminLogado = false;
+            salvarDadosLocais();
+            atualizarUI();
+            showSection('catalogo');
             mostrarToast('🎉 Cadastro realizado!', 'success');
         }
 
         function showAdminLogin() { showSection('admin'); }
+
         function loginAdmin() {
-            if (document.getElementById('adminUser').value.trim() === 'BOMBADAVID' && document.getElementById('adminPass').value.trim() === '5858') {
-                adminLogado = true; clienteLogado = null; salvarDadosLocais(); atualizarUI();
+            if (document.getElementById('adminUser').value.trim() === 'BOMBADAVID' && document.getElementById('adminPass')
+                .value.trim() === '5858') {
+                adminLogado = true;
+                clienteLogado = null;
+                salvarDadosLocais();
+                atualizarUI();
                 document.getElementById('adminLoginForm').style.display = 'none';
                 document.getElementById('adminContent').classList.remove('hidden');
                 renderAdmin();
@@ -1823,8 +2043,13 @@
             } else mostrarToast('Credenciais inválidas.', 'error');
         }
 
-        function renderAdmin() { if (!adminLogado) return; document.getElementById('adminLoginForm').style.display = 'none'; document.getElementById('adminContent').classList.remove('hidden'); renderAdminPedidos(); }
-        function filtrarPedidos(s) { filtroAdminStatus = s; renderAdminPedidos(); }
+        function renderAdmin() { if (!adminLogado) return;
+            document.getElementById('adminLoginForm').style.display = 'none';
+            document.getElementById('adminContent').classList.remove('hidden');
+            renderAdminPedidos(); }
+
+        function filtrarPedidos(s) { filtroAdminStatus = s;
+            renderAdminPedidos(); }
 
         function renderAdminPedidos() {
             const c = document.getElementById('adminPedidosContainer');
@@ -1834,13 +2059,15 @@
             if (!f.length) { c.innerHTML = '<div class="empty-state">📭 Nenhum pedido.</div>'; return; }
             const fragment = document.createDocumentFragment();
             f.forEach(p => {
-                const itens = p.itens.map(i => i.qtd + 'x ' + i.nome + (i.marca ? ' (' + i.marca + ')' : '')).join(', ');
+                const itens = p.itens.map(i => i.qtd + 'x ' + i.nome + (i.marca ? ' (' + i.marca + ')' : ''))
+                    .join(', ');
                 const det = [];
                 if (p.subtotal) det.push('Subtotal: R$ ' + p.subtotal.toFixed(2));
                 if (p.frete > 0) det.push('Frete: R$ ' + p.frete.toFixed(2));
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `<div class="flex-row flex-between"><div><strong>#${p.numero}</strong> <span class="status-badge ${p.status === 'pendente' ? 'status-pendente' : 'status-finalizado'}">${p.status}</span></div><div class="flex-row">${p.status === 'pendente' ? `<button class="btn btn-success btn-sm" onclick="marcarFinalizado(${p.id})">✅ Finalizar</button>` : ''}<button class="btn btn-danger btn-sm" onclick="apagarPedido(${p.id})">🗑️ Excluir</button></div></div><p><strong>${p.clienteNome}</strong> | ${p.clienteContato}</p><p style="font-size:0.85rem;color:var(--text2);">${p.clienteEndereco}</p><p>${itens}</p>${det.length ? '<p>' + det.join(' | ') + '</p>' : ''}<p style="font-size:1.2rem;font-weight:800;color:var(--accent);">Total: R$ ${p.total.toFixed(2)}</p>`;
+                card.innerHTML =
+                    `<div class="flex-row flex-between"><div><strong>#${p.numero}</strong> <span class="status-badge ${p.status === 'pendente' ? 'status-pendente' : 'status-finalizado'}">${p.status}</span></div><div class="flex-row">${p.status === 'pendente' ? `<button class="btn btn-success btn-sm" onclick="marcarFinalizado(${p.id})">✅ Finalizar</button>` : ''}<button class="btn btn-danger btn-sm" onclick="apagarPedido(${p.id})">🗑️ Excluir</button></div></div><p><strong>${p.clienteNome}</strong> | ${p.clienteContato}</p><p style="font-size:0.85rem;color:var(--text2);">${p.clienteEndereco}</p><p>${itens}</p>${det.length ? '<p>' + det.join(' | ') + '</p>' : ''}<p style="font-size:1.2rem;font-weight:800;color:var(--accent);">Total: R$ ${p.total.toFixed(2)}</p>`;
                 fragment.appendChild(card);
             });
             c.innerHTML = '';
@@ -1849,7 +2076,10 @@
 
         function marcarFinalizado(id) {
             const p = pedidos.find(x => x.id === id);
-            if (p) { p.status = 'finalizado'; db.collection('pedidos').doc(String(id)).update({ status: 'finalizado' }); renderAdminPedidos(); mostrarToast('✅ Pedido finalizado.', 'success'); }
+            if (p) { p.status = 'finalizado';
+                db.collection('pedidos').doc(String(id)).update({ status: 'finalizado' });
+                renderAdminPedidos();
+                mostrarToast('✅ Pedido finalizado.', 'success'); }
         }
 
         async function apagarPedido(id) {
@@ -1866,13 +2096,16 @@
             const c = document.getElementById('clientesContainer');
             if (!usuarios.length) { c.innerHTML = '<div class="empty-state">👥 Nenhum cliente.</div>'; return; }
             const searchVal = (document.getElementById('searchClientes')?.value || '').toLowerCase();
-            const filtrados = usuarios.filter(u => u.nome.toLowerCase().includes(searchVal) || u.cpf.includes(searchVal) || u.contato.includes(searchVal));
+            const filtrados = usuarios.filter(u => u.nome.toLowerCase().includes(searchVal) || u.cpf.includes(searchVal) || u
+                .contato.includes(searchVal));
             const fragment = document.createDocumentFragment();
             filtrados.forEach(u => {
-                const end = u.endereco || `${u.rua || ''}, ${u.numero || ''} - Ref: ${u.referencia || 'N/A'} - ${u.bairro || ''}, ${u.cidade || ''} - ${u.regiao || ''}, CEP: ${u.cep || ''}`;
+                const end = u.endereco ||
+                    `${u.rua || ''}, ${u.numero || ''} - Ref: ${u.referencia || 'N/A'} - ${u.bairro || ''}, ${u.cidade || ''} - ${u.regiao || ''}, CEP: ${u.cep || ''}`;
                 const card = document.createElement('div');
                 card.className = 'client-card flex-row flex-between';
-                card.innerHTML = `<div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📱 ${u.contato}</small><br><small style="color:var(--text2);">${end}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️ Editar</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️ Excluir</button></div>`;
+                card.innerHTML =
+                    `<div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📱 ${u.contato}</small><br><small style="color:var(--text2);">${end}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️ Editar</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️ Excluir</button></div>`;
                 fragment.appendChild(card);
             });
             c.innerHTML = '';
@@ -1882,11 +2115,15 @@
         async function excluirCliente(id) {
             if (!confirm('Excluir cliente?')) return;
             const i = usuarios.findIndex(u => u.id === id);
-            if (i !== -1) { usuarios.splice(i, 1); await deletarUsuario(id); if (clienteLogado && clienteLogado.id === id) logout(); renderGerenciarClientes(); mostrarToast('🗑️ Cliente excluído.', 'info'); }
+            if (i !== -1) { usuarios.splice(i, 1);
+                await deletarUsuario(id); if (clienteLogado && clienteLogado.id === id) logout();
+                renderGerenciarClientes();
+                mostrarToast('🗑️ Cliente excluído.', 'info'); }
         }
 
         function abrirModalEditarCliente(id) {
-            const u = usuarios.find(x => x.id === id); if (!u) return; clienteEditandoId = id;
+            const u = usuarios.find(x => x.id === id); if (!u) return;
+            clienteEditandoId = id;
             document.getElementById('editNome').value = u.nome || '';
             document.getElementById('editCpf').value = u.cpf || '';
             document.getElementById('editRua').value = u.rua || '';
@@ -1900,7 +2137,9 @@
             document.getElementById('editClienteId').value = id;
             document.getElementById('modalEditarCliente').classList.remove('hidden');
         }
-        function fecharModal() { document.getElementById('modalEditarCliente').classList.add('hidden'); clienteEditandoId = null; }
+
+        function fecharModal() { document.getElementById('modalEditarCliente').classList.add('hidden');
+            clienteEditandoId = null; }
 
         async function salvarEdicaoCliente() {
             const id = parseInt(document.getElementById('editClienteId').value);
@@ -1914,27 +2153,37 @@
             u.regiao = document.getElementById('editRegiao').value;
             u.cep = document.getElementById('editCep').value.trim();
             u.contato = document.getElementById('editContato').value.trim();
-            u.endereco = `${u.rua}, ${u.numero} - Ref: ${u.referencia || 'N/A'} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}`;
+            u.endereco =
+                `${u.rua}, ${u.numero} - Ref: ${u.referencia || 'N/A'} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}`;
             await atualizarUsuario(u);
-            if (clienteLogado && clienteLogado.id === id) { clienteLogado = u; salvarDadosLocais(); }
-            fecharModal(); renderGerenciarClientes();
+            if (clienteLogado && clienteLogado.id === id) { clienteLogado = u;
+                salvarDadosLocais(); }
+            fecharModal();
+            renderGerenciarClientes();
             mostrarToast('💾 Dados atualizados.', 'success');
         }
 
         function atualizarMarcaSelect() {
             const select = document.getElementById('novoProdMarcaSelect'); if (!select) return;
-            const marcas = [...new Set(produtos.map(p => p.marca))].sort();
+            const marcas = getMarcasOrdenadas();
             select.innerHTML = '<option value="">Selecione a marca...</option>';
-            marcas.forEach(m => { const opt = document.createElement('option'); opt.value = m; opt.textContent = m; select.appendChild(opt); });
-            const optNova = document.createElement('option'); optNova.value = '__nova__'; optNova.textContent = '+ Nova Marca...'; select.appendChild(optNova);
+            marcas.forEach(m => { const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                select.appendChild(opt); });
+            const optNova = document.createElement('option');
+            optNova.value = '__nova__';
+            optNova.textContent = '+ Nova Marca...';
+            select.appendChild(optNova);
             toggleNovaMarcaInput();
         }
 
         function toggleNovaMarcaInput() {
             const select = document.getElementById('novoProdMarcaSelect');
             const inputNovo = document.getElementById('novoProdMarcaNovo');
-            if (select && select.value === '__nova__') { inputNovo.classList.remove('hidden'); inputNovo.focus(); }
-            else { inputNovo.classList.add('hidden'); inputNovo.value = ''; }
+            if (select && select.value === '__nova__') { inputNovo.classList.remove('hidden');
+                inputNovo.focus(); } else { inputNovo.classList.add('hidden');
+                inputNovo.value = ''; }
         }
 
         function renderGerenciarProdutos() {
@@ -1945,7 +2194,8 @@
             produtos.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'produto-editar-item';
-                item.innerHTML = `<img src="${p.img}" class="image-preview" onerror="this.src='https://placehold.co/100x100/ffffff/0d6efd?text=Sem'"><input type="text" class="nome-prod" value="${p.nome.replace(/"/g, '&quot;')}" id="nome-${p.id}"><input type="number" class="preco-prod" value="${p.preco}" step="0.01" min="0" id="preco-${p.id}"><input type="text" class="marca-prod" value="${p.marca.replace(/"/g, '&quot;')}" id="marca-${p.id}"><div class="upload-group"><input type="file" id="file-${p.id}" class="file-input" accept="image/*"><button class="btn btn-info btn-sm" id="btnUpload-${p.id}" onclick="uploadImagemProduto(${p.id})">🖼️ Imagem</button></div><button class="btn btn-success btn-sm" onclick="salvarEdicaoProduto(${p.id})">💾 Salvar</button><button class="btn btn-danger btn-sm" onclick="excluirProduto(${p.id})">🗑️ Excluir</button>`;
+                item.innerHTML =
+                    `<img src="${p.img}" class="image-preview" onerror="this.src='https://placehold.co/100x100/ffffff/0d6efd?text=Sem'"><input type="text" class="nome-prod" value="${p.nome.replace(/"/g, '&quot;')}" id="nome-${p.id}"><input type="number" class="preco-prod" value="${p.preco}" step="0.01" min="0" id="preco-${p.id}"><input type="text" class="marca-prod" value="${p.marca.replace(/"/g, '&quot;')}" id="marca-${p.id}"><div class="upload-group"><input type="file" id="file-${p.id}" class="file-input" accept="image/*"><button class="btn btn-info btn-sm" id="btnUpload-${p.id}" onclick="uploadImagemProduto(${p.id})">🖼️ Imagem</button></div><button class="btn btn-success btn-sm" onclick="salvarEdicaoProduto(${p.id})">💾 Salvar</button><button class="btn btn-danger btn-sm" onclick="excluirProduto(${p.id})">🗑️ Excluir</button>`;
                 fragment.appendChild(item);
             });
             container.innerHTML = '';
@@ -1954,16 +2204,28 @@
 
         async function salvarEdicaoProduto(id) {
             const produto = produtos.find(p => p.id === id); if (!produto) return;
-            const nomeEl = document.getElementById('nome-' + id), precoEl = document.getElementById('preco-' + id), marcaEl = document.getElementById('marca-' + id);
+            const nomeEl = document.getElementById('nome-' + id),
+                precoEl = document.getElementById('preco-' + id),
+                marcaEl = document.getElementById('marca-' + id);
             if (!nomeEl || !precoEl || !marcaEl) return;
             const novoNome = nomeEl.value.trim();
             const novoPreco = parseFloat(precoEl.value) || 0;
             const novaMarca = marcaEl.value.trim();
             if (!novoNome) return mostrarToast('Nome obrigatório.', 'error');
-            produto.nome = novoNome; produto.preco = novoPreco; produto.marca = novaMarca;
-            carrinho.forEach(item => { if (item.prodId === id) { item.nome = novoNome; item.marca = novaMarca; item.preco = novoPreco; } });
+            produto.nome = novoNome;
+            produto.preco = novoPreco;
+            produto.marca = novaMarca;
+            carrinho.forEach(item => { if (item.prodId === id) { item.nome = novoNome;
+                    item.marca = novaMarca;
+                    item.preco = novoPreco; } });
             await salvarProdutoFirestore(produto);
-            salvarDadosLocais(); renderGerenciarProdutos(); renderCatalogo(); renderBrandFilters(); atualizarMarcaSelect();
+            // Atualiza ordem das marcas se necessário
+            atualizarOrdemMarcasComNovasMarcas();
+            salvarDadosLocais();
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandFilters();
+            atualizarMarcaSelect();
             mostrarToast('✅ Produto atualizado.', 'success');
         }
 
@@ -1971,34 +2233,68 @@
             if (!confirm('Excluir produto?')) return;
             const index = produtos.findIndex(p => p.id === id); if (index === -1) return;
             const nome = produtos[index].nome;
-            produtos.splice(index, 1); carrinho = carrinho.filter(i => i.prodId !== id);
+            produtos.splice(index, 1);
+            carrinho = carrinho.filter(i => i.prodId !== id);
             await deletarProdutoFirestore(id);
-            salvarDadosLocais(); renderGerenciarProdutos(); renderCatalogo(); renderBrandFilters(); atualizarMarcaSelect(); atualizarUI();
+            atualizarOrdemMarcasComNovasMarcas();
+            salvarDadosLocais();
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandFilters();
+            atualizarMarcaSelect();
+            atualizarUI();
             mostrarToast('🗑️ ' + nome + ' excluído.', 'info');
         }
 
         async function adicionarNovoProduto() {
             if (!adminLogado) return;
-            const nomeEl = document.getElementById('novoProdNome'), precoEl = document.getElementById('novoProdPreco');
-            const selectMarca = document.getElementById('novoProdMarcaSelect'), inputNovaMarca = document.getElementById('novoProdMarcaNovo');
+            const nomeEl = document.getElementById('novoProdNome'),
+                precoEl = document.getElementById('novoProdPreco');
+            const selectMarca = document.getElementById('novoProdMarcaSelect'),
+                inputNovaMarca = document.getElementById('novoProdMarcaNovo');
             const imgEl = document.getElementById('novoProdImg');
-            const nome = nomeEl.value.trim(); const preco = parseFloat(precoEl.value) || 0;
+            const nome = nomeEl.value.trim();
+            const preco = parseFloat(precoEl.value) || 0;
             let marcaFinal = selectMarca.value;
-            if (marcaFinal === '__nova__') { marcaFinal = inputNovaMarca.value.trim(); if (!marcaFinal) return mostrarToast('Digite a nova marca.', 'error'); }
+            if (marcaFinal === '__nova__') { marcaFinal = inputNovaMarca.value.trim(); if (!marcaFinal) return mostrarToast(
+                    'Digite a nova marca.', 'error'); }
             if (!marcaFinal) return mostrarToast('Selecione ou digite uma marca.', 'error');
             if (!nome) return mostrarToast('Informe o nome.', 'error');
 
-            const duplicado = produtos.find(p => p.nome.toLowerCase() === nome.toLowerCase() && p.marca.toLowerCase() === marcaFinal.toLowerCase());
+            const duplicado = produtos.find(p => p.nome.toLowerCase() === nome.toLowerCase() && p.marca.toLowerCase() ===
+                marcaFinal.toLowerCase());
             if (duplicado) {
                 return mostrarToast(`❌ Produto já existe: "${duplicado.nome}" da marca "${duplicado.marca}".`, 'error');
             }
 
             const novoId = Date.now();
-            const novoProduto = { id: novoId, nome, preco, marca: marcaFinal, img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=' + encodeURIComponent(nome.substring(0,10)), obs: '' };
-            if (imgEl.files && imgEl.files[0]) { try { novoProduto.img = await fileToBase64Resized(imgEl.files[0], 500, 500); } catch (e) { console.error(e); } }
-            produtos.push(novoProduto); await salvarProdutoFirestore(novoProduto);
-            nomeEl.value = ''; precoEl.value = ''; selectMarca.value = ''; inputNovaMarca.value = ''; inputNovaMarca.classList.add('hidden'); imgEl.value = '';
-            atualizarMarcaSelect(); renderGerenciarProdutos(); renderCatalogo(); renderBrandFilters();
+            const novoProduto = {
+                id: novoId,
+                nome,
+                preco,
+                marca: marcaFinal,
+                img: 'https://placehold.co/150x150/1a1a2e/d4af37?text=' + encodeURIComponent(nome.substring(0, 10)),
+                obs: ''
+            };
+            if (imgEl.files && imgEl.files[0]) { try { novoProduto.img = await fileToBase64Resized(imgEl.files[0], 500,
+                    500); } catch (e) { console.error(e); } }
+            produtos.push(novoProduto);
+            await salvarProdutoFirestore(novoProduto);
+            nomeEl.value = '';
+            precoEl.value = '';
+            selectMarca.value = '';
+            inputNovaMarca.value = '';
+            inputNovaMarca.classList.add('hidden');
+            imgEl.value = '';
+            // Adiciona a nova marca à ordem se for nova
+            if (!ordemMarcas.includes(marcaFinal)) {
+                ordemMarcas.push(marcaFinal);
+                await salvarOrdemMarcasFirestore();
+            }
+            atualizarMarcaSelect();
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandFilters();
             mostrarToast('✅ Produto adicionado!', 'success');
         }
 
@@ -2009,10 +2305,13 @@
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        let width = img.width, height = img.height;
-                        if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; } }
-                        else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } }
-                        canvas.width = width; canvas.height = height;
+                        let width = img.width,
+                            height = img.height;
+                        if (width > height) { if (width > maxWidth) { height *= maxWidth / width;
+                                width = maxWidth; } } else { if (height > maxHeight) { width *= maxHeight / height;
+                                height = maxHeight; } }
+                        canvas.width = width;
+                        canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
                         resolve(canvas.toDataURL('image/jpeg', 0.85));
@@ -2026,35 +2325,114 @@
         }
 
         function uploadImagemProduto(produtoId) {
-            const fileInput = document.getElementById('file-' + produtoId), btn = document.getElementById('btnUpload-' + produtoId);
+            const fileInput = document.getElementById('file-' + produtoId),
+                btn = document.getElementById('btnUpload-' + produtoId);
             if (!fileInput || !btn) return;
             const file = fileInput.files[0];
             if (!file) return mostrarToast('Selecione uma imagem.', 'error');
-            btn.disabled = true; btn.textContent = '⏳...';
+            btn.disabled = true;
+            btn.textContent = '⏳...';
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    const maxWidth = 500, maxHeight = 500;
-                    let width = img.width, height = img.height;
-                    if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; } }
-                    else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } }
-                    canvas.width = width; canvas.height = height;
+                    const maxWidth = 500,
+                        maxHeight = 500;
+                    let width = img.width,
+                        height = img.height;
+                    if (width > height) { if (width > maxWidth) { height *= maxWidth / width;
+                            width = maxWidth; } } else { if (height > maxHeight) { width *= maxHeight / height;
+                            height = maxHeight; } }
+                    canvas.width = width;
+                    canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     const base64 = canvas.toDataURL('image/jpeg', 0.85);
                     const produto = produtos.find(p => p.id === produtoId);
                     if (produto) produto.img = base64;
-                    salvarProdutoFirestore(produto).then(() => { renderGerenciarProdutos(); renderCatalogo(); mostrarToast('🖼️ Imagem atualizada!', 'success'); })
+                    salvarProdutoFirestore(produto).then(() => { renderGerenciarProdutos();
+                            renderCatalogo();
+                            mostrarToast('🖼️ Imagem atualizada!', 'success'); })
                         .catch(error => { mostrarToast('Falha ao salvar: ' + error.message, 'error'); })
-                        .finally(() => { btn.disabled = false; btn.textContent = '🖼️ Imagem'; fileInput.value = ''; });
+                        .finally(() => { btn.disabled = false;
+                            btn.textContent = '🖼️ Imagem';
+                            fileInput.value = ''; });
                 };
-                img.onerror = function() { mostrarToast('Erro ao carregar imagem.', 'error'); btn.disabled = false; btn.textContent = '🖼️ Imagem'; };
+                img.onerror = function() { mostrarToast('Erro ao carregar imagem.', 'error');
+                    btn.disabled = false;
+                    btn.textContent = '🖼️ Imagem'; };
                 img.src = e.target.result;
             };
-            reader.onerror = function() { mostrarToast('Erro ao ler arquivo.', 'error'); btn.disabled = false; btn.textContent = '🖼️ Imagem'; };
+            reader.onerror = function() { mostrarToast('Erro ao ler arquivo.', 'error');
+                btn.disabled = false;
+                btn.textContent = '🖼️ Imagem'; };
             reader.readAsDataURL(file);
+        }
+
+        // ===== FUNÇÕES DE ORDENAÇÃO DE MARCAS =====
+        function renderOrdenarMarcas() {
+            if (!adminLogado) return;
+            const container = document.getElementById('ordenarMarcasContainer');
+            const marcas = getMarcasOrdenadas();
+            if (!marcas.length) {
+                container.innerHTML = '<div class="empty-state">🏷️ Nenhuma marca cadastrada.</div>';
+                return;
+            }
+            const fragment = document.createDocumentFragment();
+            marcas.forEach((marca, index) => {
+                const item = document.createElement('div');
+                item.className = 'marca-order-item';
+                item.innerHTML = `
+                    <span>🏷️ ${marca}</span>
+                    <div class="order-buttons">
+                        <button onclick="moverMarca(${index}, 'cima')" ${index === 0 ? 'disabled' : ''} title="Mover para cima">▲</button>
+                        <button onclick="moverMarca(${index}, 'baixo')" ${index === marcas.length - 1 ? 'disabled' : ''} title="Mover para baixo">▼</button>
+                    </div>`;
+                fragment.appendChild(item);
+            });
+            container.innerHTML = '';
+            container.appendChild(fragment);
+        }
+
+        function moverMarca(index, direcao) {
+            if (!adminLogado) return;
+            const marcas = getMarcasOrdenadas();
+            if (direcao === 'cima' && index > 0) {
+                [marcas[index - 1], marcas[index]] = [marcas[index], marcas[index - 1]];
+            } else if (direcao === 'baixo' && index < marcas.length - 1) {
+                [marcas[index], marcas[index + 1]] = [marcas[index + 1], marcas[index]];
+            } else {
+                return;
+            }
+            // Salva a nova ordem
+            ordemMarcas = [...marcas];
+            // Re-renderiza a lista
+            renderOrdenarMarcas();
+            // Atualiza os filtros e catálogo imediatamente (opcional, pode esperar salvar)
+            renderBrandFilters();
+        }
+
+        async function salvarOrdemMarcas() {
+            if (!adminLogado) return;
+            // Garante que a ordem atual está sincronizada
+            const marcas = getMarcasOrdenadas();
+            ordemMarcas = [...marcas];
+            await salvarOrdemMarcasFirestore();
+            renderOrdenarMarcas();
+            renderBrandFilters();
+            renderCatalogo();
+        }
+
+        async function resetarOrdemMarcas() {
+            if (!adminLogado) return;
+            if (!confirm('Restaurar ordem alfabética padrão?')) return;
+            ordemMarcas = [];
+            await salvarOrdemMarcasFirestore();
+            renderOrdenarMarcas();
+            renderBrandFilters();
+            renderCatalogo();
+            mostrarToast('🔄 Ordem restaurada para A-Z.', 'info');
         }
 
         async function init() {
@@ -2062,14 +2440,18 @@
             clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado')) || null;
             adminLogado = JSON.parse(sessionStorage.getItem('adminLogado')) || false;
             await carregarDados();
-            renderBrandFilters(); renderCatalogo(); atualizarUI();
+            renderBrandFilters();
+            renderCatalogo();
+            atualizarUI();
             if (adminLogado) {
                 document.getElementById('nav-admin').style.display = 'inline-block';
                 document.getElementById('nav-clientes').style.display = 'inline-block';
                 document.getElementById('nav-gerenciar').style.display = 'inline-block';
+                document.getElementById('nav-ordenar').style.display = 'inline-block';
             }
             const overlay = document.getElementById('loadingOverlay');
-            overlay.style.opacity = '0'; overlay.style.transition = 'opacity 0.5s';
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.5s';
             setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 600);
         }
         init();
