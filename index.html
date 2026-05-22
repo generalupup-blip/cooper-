@@ -78,6 +78,84 @@
             border-radius: 4px;
         }
 
+        /* ----- BANNER DE ANÚNCIO ----- */
+        .anuncio-banner {
+            position: relative;
+            padding: 1rem 2rem;
+            margin: 1rem auto;
+            max-width: 1300px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+            animation: slideDown 0.5s ease;
+            z-index: 10;
+            border-left: 6px solid transparent;
+        }
+        .anuncio-banner .anuncio-content {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.75rem;
+        }
+        .anuncio-banner .anuncio-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: #fff;
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+        .anuncio-banner .anuncio-close:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(90deg);
+        }
+        .anuncio-banner.info {
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            color: #fff;
+            border-left-color: #00e5ff;
+        }
+        .anuncio-banner.warning {
+            background: linear-gradient(135deg, #f4a261, #e76f51);
+            color: #000;
+            border-left-color: #ffb703;
+        }
+        .anuncio-banner.warning .anuncio-close {
+            color: #000;
+            background: rgba(0, 0, 0, 0.15);
+        }
+        .anuncio-banner.success {
+            background: linear-gradient(135deg, #2a9d8f, #1b6b5e);
+            color: #fff;
+            border-left-color: #52b788;
+        }
+        .anuncio-banner.danger {
+            background: linear-gradient(135deg, #e63946, #b71c1c);
+            color: #fff;
+            border-left-color: #ff4d5a;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
         header {
             background: rgba(10, 15, 20, 0.85);
             backdrop-filter: blur(20px);
@@ -94,17 +172,6 @@
             z-index: 100;
             box-shadow: 0 2px 30px rgba(0, 180, 216, 0.08);
             animation: slideDown 0.6s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         .logo {
@@ -838,6 +905,19 @@
                 right: 1rem;
                 bottom: 1rem;
             }
+            .anuncio-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            .anuncio-banner .anuncio-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            .anuncio-banner .anuncio-close {
+                align-self: flex-end;
+                margin-left: 0;
+            }
         }
     </style>
 </head>
@@ -860,11 +940,21 @@
             <button onclick="showSection('gerenciarClientes')" id="nav-clientes" style="display:none;" aria-label="Clientes">👥 Clientes</button>
             <button onclick="showSection('gerenciarProdutos')" id="nav-gerenciar" style="display:none;" aria-label="Catálogo">⚙️ Catálogo</button>
             <button onclick="showSection('ordenarMarcas')" id="nav-ordenar" style="display:none;" aria-label="Ordenar Marcas">🔀 Marcas</button>
+            <button onclick="showSection('gerenciarAnuncio')" id="nav-anuncio" style="display:none;" aria-label="Anúncio">📢 Anúncio</button>
             <button onclick="logout()" id="nav-logout" style="display:none;" aria-label="Sair">🚪 Sair</button>
         </nav>
     </header>
 
     <main>
+        <!-- Banner de anúncio global -->
+        <div id="anuncioBanner" class="anuncio-banner hidden">
+            <div class="anuncio-content">
+                <strong id="anuncioTitulo"></strong>
+                <span id="anuncioMensagem"></span>
+            </div>
+            <button class="anuncio-close" onclick="fecharAnuncioCliente()" title="Fechar anúncio">✕</button>
+        </div>
+
         <section id="catalogo" class="section active">
             <h2>📦 Catálogo de Produtos</h2>
             <input type="text" class="search-box" placeholder="🔍 Buscar por nome do produto..." id="searchInput" oninput="debounceSearch()">
@@ -975,6 +1065,49 @@
             <div class="flex-row mt-2" style="justify-content:flex-end;">
                 <button class="btn btn-success" onclick="salvarOrdemMarcas()">💾 Salvar Ordem</button>
                 <button class="btn btn-outline" onclick="resetarOrdemMarcas()">🔄 Restaurar Padrão (A-Z)</button>
+            </div>
+        </section>
+        <!-- NOVA SEÇÃO: Gerenciar Anúncio -->
+        <section id="gerenciarAnuncio" class="section">
+            <h2>📢 Gerenciar Anúncio Promocional</h2>
+            <div class="card">
+                <p style="color:var(--text2);margin-bottom:1rem;">Configure um banner de alerta que aparecerá para todos os clientes no topo do site. Ideal para promoções, avisos ou novidades.</p>
+                <div class="form-group">
+                    <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+                        <input type="checkbox" id="anuncioAtivo" onchange="previewAnuncio()"> <strong>Ativar anúncio</strong>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Título do anúncio</label>
+                    <input type="text" id="anuncioTituloInput" placeholder="Ex: ⚡ Promoção Relâmpago!" oninput="previewAnuncio()">
+                </div>
+                <div class="form-group">
+                    <label>Mensagem</label>
+                    <textarea id="anuncioMensagemInput" rows="3" placeholder="Descreva a promoção ou aviso..." oninput="previewAnuncio()"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Estilo do banner</label>
+                    <select id="anuncioCorSelect" onchange="previewAnuncio()">
+                        <option value="info">🔵 Azul (Informativo)</option>
+                        <option value="warning" selected>🟠 Laranja (Promoção)</option>
+                        <option value="success">🟢 Verde (Sucesso)</option>
+                        <option value="danger">🔴 Vermelho (Urgente)</option>
+                    </select>
+                </div>
+                <div class="flex-row mt-2" style="justify-content:space-between;">
+                    <button class="btn btn-danger" onclick="removerAnuncio()">🗑️ Remover Anúncio</button>
+                    <button class="btn btn-success" onclick="salvarAnuncio()">💾 Salvar e Publicar</button>
+                </div>
+                <div id="anuncioPreview" class="mt-2 hidden">
+                    <p style="font-weight:600;color:var(--accent);">👁️ Pré-visualização:</p>
+                    <div id="anuncioPreviewBox" class="anuncio-banner warning" style="margin:0.5rem 0;">
+                        <div class="anuncio-content">
+                            <strong id="prevTitulo">Promoção</strong>
+                            <span id="prevMensagem">Mensagem de exemplo...</span>
+                        </div>
+                        <button class="anuncio-close" disabled>✕</button>
+                    </div>
+                </div>
             </div>
         </section>
         <div id="modalEditarCliente" class="modal-overlay hidden">
@@ -1426,6 +1559,8 @@
         let catalogoFiltrados = [];
         // Ordem personalizada das marcas
         let ordemMarcas = [];
+        // Anúncio
+        let anuncioAtual = null;
 
         // ===== ANIMAÇÃO DNA / MOLÉCULAS (CANVAS) =====
         (function() {
@@ -1662,6 +1797,137 @@
             });
         }
 
+        // ===== ANÚNCIO (FIRESTORE) =====
+        async function carregarAnuncioGlobal() {
+            try {
+                const snap = await db.collection('config').doc('announcement').get();
+                if (snap.exists) {
+                    anuncioAtual = snap.data();
+                } else {
+                    anuncioAtual = null;
+                }
+            } catch (e) {
+                console.error('Erro ao carregar anúncio:', e);
+                anuncioAtual = null;
+            }
+            exibirAnuncioBanner();
+        }
+
+        function exibirAnuncioBanner() {
+            const banner = document.getElementById('anuncioBanner');
+            const tituloEl = document.getElementById('anuncioTitulo');
+            const msgEl = document.getElementById('anuncioMensagem');
+            if (!banner || !tituloEl || !msgEl) return;
+
+            const fechado = sessionStorage.getItem('anuncioFechado') === 'true';
+
+            if (anuncioAtual && anuncioAtual.ativo && !fechado) {
+                banner.className = 'anuncio-banner ' + (anuncioAtual.cor || 'warning');
+                tituloEl.textContent = anuncioAtual.titulo || '';
+                msgEl.textContent = anuncioAtual.mensagem || '';
+                banner.classList.remove('hidden');
+                // Animação extra
+                banner.style.animation = 'none';
+                banner.offsetHeight; // trigger reflow
+                banner.style.animation = 'slideDown 0.5s ease';
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        function fecharAnuncioCliente() {
+            sessionStorage.setItem('anuncioFechado', 'true');
+            document.getElementById('anuncioBanner').classList.add('hidden');
+        }
+
+        function previewAnuncio() {
+            const ativo = document.getElementById('anuncioAtivo').checked;
+            const titulo = document.getElementById('anuncioTituloInput').value.trim();
+            const mensagem = document.getElementById('anuncioMensagemInput').value.trim();
+            const cor = document.getElementById('anuncioCorSelect').value;
+            const previewDiv = document.getElementById('anuncioPreview');
+            const box = document.getElementById('anuncioPreviewBox');
+            const prevTitulo = document.getElementById('prevTitulo');
+            const prevMensagem = document.getElementById('prevMensagem');
+
+            if (!ativo || (!titulo && !mensagem)) {
+                previewDiv.classList.add('hidden');
+            } else {
+                previewDiv.classList.remove('hidden');
+                box.className = 'anuncio-banner ' + cor;
+                prevTitulo.textContent = titulo || 'Título do anúncio';
+                prevMensagem.textContent = mensagem || 'Mensagem do anúncio...';
+            }
+        }
+
+        async function salvarAnuncio() {
+            if (!adminLogado) return;
+            const ativo = document.getElementById('anuncioAtivo').checked;
+            const titulo = document.getElementById('anuncioTituloInput').value.trim();
+            const mensagem = document.getElementById('anuncioMensagemInput').value.trim();
+            const cor = document.getElementById('anuncioCorSelect').value;
+
+            if (ativo && !titulo && !mensagem) {
+                return mostrarToast('Preencha pelo menos o título ou a mensagem.', 'error');
+            }
+
+            const dados = {
+                ativo,
+                titulo,
+                mensagem,
+                cor,
+                atualizadoEm: new Date().toISOString()
+            };
+
+            try {
+                await db.collection('config').doc('announcement').set(dados, { merge: true });
+                anuncioAtual = dados;
+                sessionStorage.removeItem('anuncioFechado'); // reexibe para todos
+                exibirAnuncioBanner();
+                mostrarToast('✅ Anúncio salvo e publicado!', 'success');
+                renderGerenciarAnuncio();
+            } catch (e) {
+                console.error(e);
+                mostrarToast('Erro ao salvar anúncio.', 'error');
+            }
+        }
+
+        async function removerAnuncio() {
+            if (!adminLogado) return;
+            if (!confirm('Remover completamente o anúncio?')) return;
+            try {
+                await db.collection('config').doc('announcement').delete();
+                anuncioAtual = null;
+                document.getElementById('anuncioBanner').classList.add('hidden');
+                mostrarToast('🗑️ Anúncio removido.', 'info');
+                renderGerenciarAnuncio();
+            } catch (e) {
+                console.error(e);
+                mostrarToast('Erro ao remover anúncio.', 'error');
+            }
+        }
+
+        function renderGerenciarAnuncio() {
+            if (!adminLogado) return;
+            const ativoCheck = document.getElementById('anuncioAtivo');
+            const tituloInput = document.getElementById('anuncioTituloInput');
+            const msgInput = document.getElementById('anuncioMensagemInput');
+            const corSelect = document.getElementById('anuncioCorSelect');
+
+            if (anuncioAtual) {
+                ativoCheck.checked = !!anuncioAtual.ativo;
+                tituloInput.value = anuncioAtual.titulo || '';
+                msgInput.value = anuncioAtual.mensagem || '';
+                corSelect.value = anuncioAtual.cor || 'warning';
+            } else {
+                ativoCheck.checked = false;
+                tituloInput.value = '';
+                msgInput.value = '';
+                corSelect.value = 'warning';
+            }
+            previewAnuncio();
+        }
+
         // ===== CARREGAR DADOS =====
         async function carregarDados() {
             try {
@@ -1734,6 +2000,7 @@
             const navClientes = document.getElementById('nav-clientes');
             const navGerenciar = document.getElementById('nav-gerenciar');
             const navOrdenar = document.getElementById('nav-ordenar');
+            const navAnuncio = document.getElementById('nav-anuncio');
             const navLogout = document.getElementById('nav-logout');
             const navLogin = document.getElementById('nav-login');
             const mostrarAdmin = adminLogado;
@@ -1741,6 +2008,7 @@
             navClientes.style.display = mostrarAdmin ? 'inline-block' : 'none';
             navGerenciar.style.display = mostrarAdmin ? 'inline-block' : 'none';
             navOrdenar.style.display = mostrarAdmin ? 'inline-block' : 'none';
+            navAnuncio.style.display = mostrarAdmin ? 'inline-block' : 'none';
             navLogout.style.display = (clienteLogado || adminLogado) ? 'inline-block' : 'none';
             navLogin.style.display = (clienteLogado || adminLogado) ? 'none' : 'inline-block';
         }
@@ -1768,6 +2036,11 @@
                 if (!adminLogado) { mostrarToast('Acesso restrito.', 'error');
                     showSection('login'); return; }
                 renderOrdenarMarcas();
+            }
+            if (id === 'gerenciarAnuncio') {
+                if (!adminLogado) { mostrarToast('Acesso restrito.', 'error');
+                    showSection('login'); return; }
+                renderGerenciarAnuncio();
             }
             atualizarUI();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2440,6 +2713,7 @@
             clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado')) || null;
             adminLogado = JSON.parse(sessionStorage.getItem('adminLogado')) || false;
             await carregarDados();
+            await carregarAnuncioGlobal(); // Carrega o anúncio
             renderBrandFilters();
             renderCatalogo();
             atualizarUI();
@@ -2448,6 +2722,7 @@
                 document.getElementById('nav-clientes').style.display = 'inline-block';
                 document.getElementById('nav-gerenciar').style.display = 'inline-block';
                 document.getElementById('nav-ordenar').style.display = 'inline-block';
+                document.getElementById('nav-anuncio').style.display = 'inline-block';
             }
             const overlay = document.getElementById('loadingOverlay');
             overlay.style.opacity = '0';
