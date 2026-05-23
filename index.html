@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CENTRAL LABS PREMIUM | Representante David Oficial</title>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
     </script>
@@ -45,6 +45,8 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             position: relative;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         #dnaCanvas {
@@ -62,7 +64,8 @@
         main,
         #toastContainer,
         #modalEditarCliente,
-        #loadingOverlay {
+        #loadingOverlay,
+        .filter-drawer-overlay {
             position: relative;
             z-index: 1;
         }
@@ -513,6 +516,7 @@
             background: var(--surface);
         }
 
+        /* === FILTROS DESKTOP === */
         .brand-filters {
             display: flex;
             flex-wrap: nowrap;
@@ -558,6 +562,137 @@
             color: #000;
             border-color: var(--accent);
             box-shadow: var(--glow);
+        }
+
+        /* === BOTÃO FILTRO MOBILE === */
+        .filter-mobile-btn {
+            display: none;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            text-align: left;
+            transition: var(--transition);
+            font-weight: 500;
+            position: relative;
+        }
+        .filter-mobile-btn::after {
+            content: '›';
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.4rem;
+            color: var(--accent);
+            transition: transform 0.3s;
+        }
+        .filter-mobile-btn:active {
+            background: var(--surface);
+            border-color: var(--accent);
+        }
+
+        /* === DRAWER DE FILTROS MOBILE (LATERAL ESQUERDA) === */
+        .filter-drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 300;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .filter-drawer-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .filter-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 85%;
+            max-width: 360px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            z-index: 301;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.6);
+        }
+        .filter-drawer-overlay.active .filter-drawer {
+            transform: translateX(0);
+        }
+        .filter-drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .filter-drawer-header h3 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin: 0;
+            text-align: left;
+        }
+        .filter-drawer-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .filter-drawer-close:active {
+            background: var(--danger);
+            transform: scale(0.9);
+        }
+        .filter-drawer-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        .filter-drawer-body .toggle-brand {
+            width: 100%;
+            text-align: left;
+            padding: 0.7rem 1.2rem;
+            font-size: 0.85rem;
+            border-radius: 12px;
+            justify-content: flex-start;
+        }
+        .filter-drawer-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        .filter-drawer-footer button {
+            flex: 1;
+            padding: 0.7rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
         }
 
         .card {
@@ -891,6 +1026,26 @@
                 align-self: flex-end;
                 margin-left: 0;
             }
+            
+            /* === MOBILE: ESCONDE FILTROS HORIZONTAIS, MOSTRA BOTÃO === */
+            .brand-filters {
+                display: none;
+            }
+            .filter-mobile-btn {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .filter-mobile-btn {
+                display: none !important;
+            }
+            .filter-drawer-overlay {
+                display: none !important;
+            }
+            .brand-filters {
+                display: flex;
+            }
         }
     </style>
 </head>
@@ -902,6 +1057,21 @@
         <span style="color:var(--text2);">Carregando sistema...</span>
     </div>
     <div id="toastContainer"></div>
+
+    <!-- DRAWER DE FILTROS MOBILE (LATERAL ESQUERDA) -->
+    <div class="filter-drawer-overlay" id="filterDrawerOverlay" onclick="fecharDrawerFiltro(event)">
+        <div class="filter-drawer" onclick="event.stopPropagation()">
+            <div class="filter-drawer-header">
+                <h3>🏷️ Filtrar por Marca</h3>
+                <button class="filter-drawer-close" onclick="fecharDrawerFiltro()" aria-label="Fechar filtros">✕</button>
+            </div>
+            <div class="filter-drawer-body" id="filterDrawerBody"></div>
+            <div class="filter-drawer-footer">
+                <button class="btn btn-outline" onclick="setFiltroMarca('TODAS'); fecharDrawerFiltro();">🔄 Limpar</button>
+                <button class="btn" onclick="fecharDrawerFiltro()">✅ Aplicar</button>
+            </div>
+        </div>
+    </div>
 
     <header>
         <div class="logo" onclick="showSection('catalogo')">CENTRAL LABS PREMIUM</div>
@@ -930,10 +1100,20 @@
         <section id="catalogo" class="section active">
             <h2>📦 Catálogo de Produtos</h2>
             <input type="text" class="search-box" placeholder="🔍 Buscar por nome do produto..." id="searchInput" oninput="debounceSearch()">
+            
+            <!-- FILTROS DESKTOP -->
             <div class="brand-filters" id="brandFilters"></div>
+            
+            <!-- BOTÃO FILTRO MOBILE -->
+            <button class="filter-mobile-btn" id="filterMobileBtn" onclick="abrirDrawerFiltro()">
+                🏷️ <span id="filterMobileLabel">Filtrar por Marca</span>
+            </button>
+            
             <div id="catalogoContainer" class="product-grid"></div>
             <div class="pagination" id="catalogoPagination"></div>
         </section>
+        
+        <!-- As demais seções permanecem idênticas ao código original (carrinho, login, admin, etc.) -->
         <section id="carrinho" class="section">
             <h2>🛒 Seu Carrinho</h2>
             <div id="carrinhoContainer"></div>
@@ -1510,7 +1690,7 @@
         let ordemMarcas = [];
         let anuncioAtual = null;
 
-        // ===== FUNÇÃO AUXILIAR: CRIA CONTAINER DE IMAGEM COM PLACEHOLDER INSTANTÂNEO =====
+        // ===== FUNÇÃO AUXILIAR: CRIA CONTAINER DE IMAGEM COM PLACEHOLDER =====
         function createImageHTML(src, alt, className = '') {
             return `
                 <div class="img-container">
@@ -1699,6 +1879,59 @@
             toast.textContent = msg;
             container.appendChild(toast);
             setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3300);
+        }
+
+        // ===== DRAWER DE FILTROS MOBILE (LATERAL ESQUERDA) =====
+        function abrirDrawerFiltro() {
+            const overlay = document.getElementById('filterDrawerOverlay');
+            const body = document.getElementById('filterDrawerBody');
+            const marcas = getMarcasOrdenadas();
+            
+            body.innerHTML = `
+                <button class="toggle-brand ${filtroMarca === 'TODAS' ? 'active' : ''}" onclick="setFiltroMarca('TODAS'); atualizarDrawerFiltro();">
+                    🏷️ TODAS AS MARCAS
+                </button>
+                ${marcas.map(m => `
+                    <button class="toggle-brand ${filtroMarca === m ? 'active' : ''}" onclick="setFiltroMarca('${m.replace(/'/g, "\\'")}'); atualizarDrawerFiltro();">
+                        ${m}
+                    </button>
+                `).join('')}
+            `;
+            
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            atualizarLabelFiltroMobile();
+        }
+
+        function fecharDrawerFiltro(event) {
+            if (event && event.target !== document.getElementById('filterDrawerOverlay')) return;
+            const overlay = document.getElementById('filterDrawerOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            atualizarLabelFiltroMobile();
+        }
+
+        function atualizarDrawerFiltro() {
+            const body = document.getElementById('filterDrawerBody');
+            const botoes = body.querySelectorAll('.toggle-brand');
+            botoes.forEach(btn => {
+                const marca = btn.textContent.trim();
+                if (marca === '🏷️ TODAS AS MARCAS') {
+                    btn.classList.toggle('active', filtroMarca === 'TODAS');
+                } else {
+                    btn.classList.toggle('active', filtroMarca === marca);
+                }
+            });
+            renderBrandFilters();
+            renderCatalogo();
+            atualizarLabelFiltroMobile();
+        }
+
+        function atualizarLabelFiltroMobile() {
+            const label = document.getElementById('filterMobileLabel');
+            if (label) {
+                label.textContent = filtroMarca === 'TODAS' ? 'Filtrar por Marca' : filtroMarca;
+            }
         }
 
         // ===== ORDEM DAS MARCAS (FIRESTORE) =====
@@ -2027,7 +2260,18 @@
                 marcas.map(m => '<button class="toggle-brand ' + (filtroMarca === m ? 'active' : '') + '" onclick="setFiltroMarca(\'' + m.replace(/'/g, "\\'") + '\')">' + m + '</button>').join('');
         }
 
-        function setFiltroMarca(m) { filtroMarca = m; catalogoPaginaAtual = 1; renderBrandFilters(); renderCatalogo(); }
+        function setFiltroMarca(m) {
+            filtroMarca = m;
+            catalogoPaginaAtual = 1;
+            renderBrandFilters();
+            renderCatalogo();
+            atualizarLabelFiltroMobile();
+            // Se o drawer estiver aberto, atualiza os botões
+            const overlay = document.getElementById('filterDrawerOverlay');
+            if (overlay.classList.contains('active')) {
+                atualizarDrawerFiltro();
+            }
+        }
 
         function getProdutosFiltrados() {
             const s = (document.getElementById('searchInput')?.value || '').toLowerCase();
@@ -2367,7 +2611,6 @@
             if (select && select.value === '__nova__') { inputNovo.classList.remove('hidden'); inputNovo.focus(); } else { inputNovo.classList.add('hidden'); inputNovo.value = ''; }
         }
 
-        // ===== GERENCIAR PRODUTOS (COM UPLOAD AUTOMÁTICO) =====
         function renderGerenciarProdutos() {
             if (!adminLogado) return;
             const container = document.getElementById('gerenciarContainer');
@@ -2559,7 +2802,6 @@
             mostrarToast('✅ Produto adicionado!', 'success');
         }
 
-        // ===== ORDENAÇÃO DE MARCAS =====
         function renderOrdenarMarcas() {
             if (!adminLogado) return;
             const container = document.getElementById('ordenarMarcasContainer');
@@ -2628,6 +2870,7 @@
             await carregarAnuncioGlobal();
             renderBrandFilters();
             renderCatalogo();
+            atualizarLabelFiltroMobile();
             atualizarUI();
             if (adminLogado) {
                 document.getElementById('nav-admin').style.display = 'inline-block';
