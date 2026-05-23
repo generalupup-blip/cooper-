@@ -27,6 +27,7 @@
             --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
             --glow: 0 0 20px rgba(0, 180, 216, 0.4);
+            --sidebar-width: 260px;
         }
 
         * {
@@ -275,11 +276,126 @@
             text-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
         }
 
+        /* NOVO LAYOUT COM SIDEBAR */
+        .catalog-layout {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: rgba(17, 24, 32, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1.2rem;
+        }
+        .sidebar-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .sidebar-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text2);
+            margin-bottom: 0.8rem;
+            padding-left: 0.2rem;
+        }
+
+        .sidebar-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .sidebar-list li a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.6rem;
+            border-radius: 6px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .sidebar-list li a:hover {
+            background: rgba(0, 180, 216, 0.08);
+            color: #fff;
+        }
+
+        .sidebar-list li.active a {
+            background: rgba(0, 180, 216, 0.15);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-list li.active a::before {
+            content: '✓';
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .sidebar-list li a .icon {
+            width: 18px;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .catalog-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+            outline: none;
+        }
+        .search-box:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.15);
+            background: var(--surface);
+        }
+
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1.5rem;
             will-change: transform;
+        }
+
+        .product-list-view {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .product-card {
@@ -327,6 +443,37 @@
             border-color: var(--accent);
             box-shadow: 0 20px 45px rgba(0, 180, 216, 0.3);
             z-index: 2;
+        }
+
+        .product-list-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: rgba(17, 24, 32, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        .product-list-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0, 180, 216, 0.2);
+        }
+        .product-list-item .img-container {
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+        .product-list-item .product-info {
+            flex: 1;
+        }
+        .product-list-item .product-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .img-container {
@@ -493,24 +640,6 @@
             opacity: 0.5;
             pointer-events: none;
             filter: grayscale(0.5);
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 0.75rem 1.5rem;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            color: var(--text);
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-            transition: var(--transition);
-            outline: none;
-        }
-        .search-box:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.15);
-            background: var(--surface);
         }
 
         .brand-filters {
@@ -850,6 +979,15 @@
         }
 
         @media (max-width: 768px) {
+            .catalog-layout {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                position: static;
+                max-height: none;
+                margin-bottom: 1rem;
+            }
             header {
                 padding: 1rem;
                 flex-direction: column;
@@ -929,10 +1067,50 @@
 
         <section id="catalogo" class="section active">
             <h2>📦 Catálogo de Produtos</h2>
-            <input type="text" class="search-box" placeholder="🔍 Buscar por nome do produto..." id="searchInput" oninput="debounceSearch()">
-            <div class="brand-filters" id="brandFilters"></div>
-            <div id="catalogoContainer" class="product-grid"></div>
-            <div class="pagination" id="catalogoPagination"></div>
+            <div class="catalog-layout">
+                <!-- SIDEBAR DE FILTROS ESTILO LANDERLAN GOLD -->
+                <aside class="sidebar" id="catalogSidebar">
+                    <!-- BUSCA -->
+                    <div class="sidebar-section">
+                        <input type="text" class="search-box" placeholder="🔍 Buscar produto..." id="searchInput" oninput="debounceSearch()" style="margin-bottom:0;">
+                    </div>
+
+                    <!-- CATEGORIES (MARCAS) -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Categories</h3>
+                        <ul class="sidebar-list" id="sidebarCategories">
+                            <!-- Preenchido via JS -->
+                        </ul>
+                    </div>
+
+                    <!-- SORT BY -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Sort by</h3>
+                        <ul class="sidebar-list" id="sidebarSort">
+                            <li class="active"><a onclick="setOrdenacao('categories')">✓ Categories</a></li>
+                            <li><a onclick="setOrdenacao('lowest')">Lowest price</a></li>
+                            <li><a onclick="setOrdenacao('highest')">Highest price</a></li>
+                            <li><a onclick="setOrdenacao('az')">A-Z</a></li>
+                            <li><a onclick="setOrdenacao('za')">Z-A</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LAYOUT -->
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-title">Layout</h3>
+                        <ul class="sidebar-list" id="sidebarLayout">
+                            <li><a onclick="setLayout('instaview')"><span class="icon">⊞</span> Instaview</a></li>
+                            <li class="active"><a onclick="setLayout('list')"><span class="icon">☰</span> List</a></li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- CONTEÚDO PRINCIPAL -->
+                <div class="catalog-content">
+                    <div id="catalogoContainer" class="product-grid"></div>
+                    <div class="pagination" id="catalogoPagination"></div>
+                </div>
+            </div>
         </section>
         <section id="carrinho" class="section">
             <h2>🛒 Seu Carrinho</h2>
@@ -1501,9 +1679,11 @@
             pedidos = [],
             clienteLogado = null,
             adminLogado = false;
-        let filtroMarca = 'TODAS',
+        let filtroMarca = 'ALL',
             filtroAdminStatus = 'todos',
             clienteEditandoId = null;
+        let ordenacao = 'categories'; // 'categories', 'lowest', 'highest', 'az', 'za'
+        let layoutMode = 'list'; // 'instaview' (grid) ou 'list'
         const ITEMS_PER_PAGE = 30;
         let catalogoPaginaAtual = 1;
         let catalogoFiltrados = [];
@@ -1720,7 +1900,7 @@
             try {
                 await db.collection('config').doc('ordemMarcas').set({ ordem: ordemMarcas }, { merge: true });
                 mostrarToast('✅ Ordem das marcas salva!', 'success');
-                renderBrandFilters();
+                renderSidebarCategories();
                 renderCatalogo();
             } catch (e) {
                 console.error(e);
@@ -1981,7 +2161,7 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             const sec = document.getElementById(id);
             if (sec) sec.classList.add('active');
-            if (id === 'catalogo') { catalogoPaginaAtual = 1; renderCatalogo(); }
+            if (id === 'catalogo') { catalogoPaginaAtual = 1; renderSidebarCategories(); renderCatalogo(); }
             if (id === 'carrinho') renderCarrinho();
             if (id === 'admin') renderAdmin();
             if (id === 'gerenciarClientes') {
@@ -2020,18 +2200,72 @@
             debounceTimer = setTimeout(() => { catalogoPaginaAtual = 1; renderCatalogo(); }, 250);
         }
 
-        function renderBrandFilters() {
+        // ===== SIDEBAR =====
+        function renderSidebarCategories() {
+            const container = document.getElementById('sidebarCategories');
+            if (!container) return;
             const marcas = getMarcasOrdenadas();
-            document.getElementById('brandFilters').innerHTML =
-                '<button class="toggle-brand ' + (filtroMarca === 'TODAS' ? 'active' : '') + '" onclick="setFiltroMarca(\'TODAS\')">TODAS</button>' +
-                marcas.map(m => '<button class="toggle-brand ' + (filtroMarca === m ? 'active' : '') + '" onclick="setFiltroMarca(\'' + m.replace(/'/g, "\\'") + '\')">' + m + '</button>').join('');
+            let html = '<li class="' + (filtroMarca === 'ALL' ? 'active' : '') + '"><a onclick="setFiltroMarca(\'ALL\')">All</a></li>';
+            marcas.forEach(m => {
+                html += '<li class="' + (filtroMarca === m ? 'active' : '') + '"><a onclick="setFiltroMarca(\'' + m.replace(/'/g, "\\'") + '\')">' + m + '</a></li>';
+            });
+            container.innerHTML = html;
         }
 
-        function setFiltroMarca(m) { filtroMarca = m; catalogoPaginaAtual = 1; renderBrandFilters(); renderCatalogo(); }
+        function setFiltroMarca(m) {
+            filtroMarca = m;
+            catalogoPaginaAtual = 1;
+            renderSidebarCategories();
+            renderCatalogo();
+        }
+
+        function setOrdenacao(tipo) {
+            ordenacao = tipo;
+            document.querySelectorAll('#sidebarSort li').forEach(li => li.classList.remove('active'));
+            const items = document.querySelectorAll('#sidebarSort li a');
+            items.forEach(a => {
+                if (a.textContent.toLowerCase().includes(tipo) || (tipo === 'categories' && a.textContent.includes('Categories'))) {
+                    a.parentElement.classList.add('active');
+                }
+            });
+            catalogoPaginaAtual = 1;
+            renderCatalogo();
+        }
+
+        function setLayout(tipo) {
+            layoutMode = tipo;
+            document.querySelectorAll('#sidebarLayout li').forEach(li => li.classList.remove('active'));
+            const items = document.querySelectorAll('#sidebarLayout li a');
+            items.forEach(a => {
+                if (a.textContent.toLowerCase().includes(tipo)) {
+                    a.parentElement.classList.add('active');
+                }
+            });
+            renderCatalogo();
+        }
 
         function getProdutosFiltrados() {
             const s = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            return produtos.filter(p => (filtroMarca === 'TODAS' || p.marca === filtroMarca) && p.nome.toLowerCase().includes(s));
+            let filtrados = produtos.filter(p => (filtroMarca === 'ALL' || p.marca === filtroMarca) && p.nome.toLowerCase().includes(s));
+
+            // Ordenação
+            switch (ordenacao) {
+                case 'lowest':
+                    filtrados.sort((a, b) => a.preco - b.preco);
+                    break;
+                case 'highest':
+                    filtrados.sort((a, b) => b.preco - a.preco);
+                    break;
+                case 'az':
+                    filtrados.sort((a, b) => a.nome.localeCompare(b.nome));
+                    break;
+                case 'za':
+                    filtrados.sort((a, b) => b.nome.localeCompare(a.nome));
+                    break;
+                default: // categories - mantém ordem original (por marca)
+                    break;
+            }
+            return filtrados;
         }
 
         function renderCatalogo() {
@@ -2042,30 +2276,62 @@
             if (catalogoPaginaAtual > totalPages) catalogoPaginaAtual = totalPages;
             const start = (catalogoPaginaAtual - 1) * ITEMS_PER_PAGE;
             const paginaItems = catalogoFiltrados.slice(start, start + ITEMS_PER_PAGE);
+
             if (!paginaItems.length) {
                 container.innerHTML = '<div class="empty-state">🔍 Nenhum produto encontrado.</div>';
                 paginationEl.innerHTML = '';
                 return;
             }
-            const fragment = document.createDocumentFragment();
-            paginaItems.forEach((p, index) => {
-                const pr = p.preco > 0 ? 'R$ ' + p.preco.toFixed(2) : (p.obs || 'Consulte');
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.style.animationDelay = (index * 0.03) + 's';
-                card.innerHTML = `
-                    ${createImageHTML(p.img, p.nome)}
-                    <span class="brand-tag">${p.marca}</span>
-                    <span class="name">${p.nome}</span>
-                    <span class="price">${pr}</span>
-                    <div style="display:flex;gap:0.5rem;justify-content:center;align-items:center;margin-top:auto;">
-                        <input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}" aria-label="Quantidade">
-                        <button class="btn" onclick="adicionarAoCarrinho(${p.id})">🛒</button>
-                    </div>`;
-                fragment.appendChild(card);
-            });
-            container.innerHTML = '';
-            container.appendChild(fragment);
+
+            if (layoutMode === 'list') {
+                // Modo lista (list view)
+                container.className = 'product-list-view';
+                const fragment = document.createDocumentFragment();
+                paginaItems.forEach((p, index) => {
+                    const pr = p.preco > 0 ? 'R$ ' + p.preco.toFixed(2) : (p.obs || 'Consulte');
+                    const item = document.createElement('div');
+                    item.className = 'product-list-item';
+                    item.style.animationDelay = (index * 0.03) + 's';
+                    item.innerHTML = `
+                        ${createImageHTML(p.img, p.nome)}
+                        <div class="product-info">
+                            <span class="brand-tag">${p.marca}</span>
+                            <strong style="display:block;margin:0.3rem 0;">${p.nome}</strong>
+                            <span class="price" style="font-size:1.2rem;">${pr}</span>
+                        </div>
+                        <div class="product-actions">
+                            <input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}" aria-label="Quantidade">
+                            <button class="btn" onclick="adicionarAoCarrinho(${p.id})">🛒</button>
+                        </div>`;
+                    fragment.appendChild(item);
+                });
+                container.innerHTML = '';
+                container.appendChild(fragment);
+            } else {
+                // Modo grid (instaview)
+                container.className = 'product-grid';
+                const fragment = document.createDocumentFragment();
+                paginaItems.forEach((p, index) => {
+                    const pr = p.preco > 0 ? 'R$ ' + p.preco.toFixed(2) : (p.obs || 'Consulte');
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.style.animationDelay = (index * 0.03) + 's';
+                    card.innerHTML = `
+                        ${createImageHTML(p.img, p.nome)}
+                        <span class="brand-tag">${p.marca}</span>
+                        <span class="name">${p.nome}</span>
+                        <span class="price">${pr}</span>
+                        <div style="display:flex;gap:0.5rem;justify-content:center;align-items:center;margin-top:auto;">
+                            <input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}" aria-label="Quantidade">
+                            <button class="btn" onclick="adicionarAoCarrinho(${p.id})">🛒</button>
+                        </div>`;
+                    fragment.appendChild(card);
+                });
+                container.innerHTML = '';
+                container.appendChild(fragment);
+            }
+
+            // Paginação
             let pagHTML = '';
             if (totalPages > 1) {
                 pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual - 1})" ${catalogoPaginaAtual === 1 ? 'disabled' : ''}>«</button>`;
@@ -2490,7 +2756,7 @@
             salvarDadosLocais();
             renderGerenciarProdutos();
             renderCatalogo();
-            renderBrandFilters();
+            renderSidebarCategories();
             atualizarMarcaSelect();
             mostrarToast('✅ Produto atualizado.', 'success');
         }
@@ -2506,7 +2772,7 @@
             salvarDadosLocais();
             renderGerenciarProdutos();
             renderCatalogo();
-            renderBrandFilters();
+            renderSidebarCategories();
             atualizarMarcaSelect();
             atualizarUI();
             mostrarToast('🗑️ ' + nome + ' excluído.', 'info');
@@ -2555,7 +2821,7 @@
             atualizarMarcaSelect();
             renderGerenciarProdutos();
             renderCatalogo();
-            renderBrandFilters();
+            renderSidebarCategories();
             mostrarToast('✅ Produto adicionado!', 'success');
         }
 
@@ -2596,7 +2862,7 @@
             }
             ordemMarcas = [...marcas];
             renderOrdenarMarcas();
-            renderBrandFilters();
+            renderSidebarCategories();
         }
 
         async function salvarOrdemMarcas() {
@@ -2605,7 +2871,7 @@
             ordemMarcas = [...marcas];
             await salvarOrdemMarcasFirestore();
             renderOrdenarMarcas();
-            renderBrandFilters();
+            renderSidebarCategories();
             renderCatalogo();
         }
 
@@ -2615,7 +2881,7 @@
             ordemMarcas = [];
             await salvarOrdemMarcasFirestore();
             renderOrdenarMarcas();
-            renderBrandFilters();
+            renderSidebarCategories();
             renderCatalogo();
             mostrarToast('🔄 Ordem restaurada para A-Z.', 'info');
         }
@@ -2626,7 +2892,7 @@
             adminLogado = JSON.parse(sessionStorage.getItem('adminLogado')) || false;
             await carregarDados();
             await carregarAnuncioGlobal();
-            renderBrandFilters();
+            renderSidebarCategories();
             renderCatalogo();
             atualizarUI();
             if (adminLogado) {
