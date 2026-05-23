@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CENTRAL LABS PREMIUM | Representante David Oficial</title>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js">
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
     <style>
         :root {
             --bg: #0a0f14;
@@ -1206,6 +1205,7 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         // ===== FRETE POR REGIÃO =====
         const fretePorRegiao = {
@@ -2004,7 +2004,17 @@
                     const mapBase = {};
                     produtosBase.forEach(p => mapBase[p.id] = p);
                     firestoreProds.forEach(fp => {
-                        mapBase[fp.id] = { ...mapBase[fp.id], ...fp, preco: parseFloat(fp.preco) || 0, esgotado: fp.esgotado || false };
+                        // Cria entrada se não existir
+                        if (!mapBase[fp.id]) mapBase[fp.id] = {};
+                        // Mantém a imagem existente se a do Firestore estiver vazia
+                        const imgValida = (fp.img && fp.img.trim() !== '') ? fp.img : (mapBase[fp.id].img || '');
+                        mapBase[fp.id] = { 
+                            ...mapBase[fp.id], 
+                            ...fp, 
+                            preco: parseFloat(fp.preco) || 0, 
+                            esgotado: fp.esgotado || false,
+                            img: imgValida
+                        };
                     });
                     produtos = Object.values(mapBase).sort((a, b) => a.id - b.id);
                 }
@@ -2017,23 +2027,102 @@
             }
         }
 
+        // ===== SALVAR / DELETAR PRODUTO NO FIRESTORE (AJUSTADO) =====
         async function salvarProdutoFirestore(prod) {
+            const data = {
+                id: prod.id,
+                nome: prod.nome,
+                preco: prod.preco,
+                marca: prod.marca,
+                obs: prod.obs || '',
+                esgotado: prod.esgotado || false
+            };
+            // Só inclui img se tiver valor válido (URL ou base64)
+            if (prod.img && prod.img.trim() !== '') {
+                data.img = prod.img;
+            }
             try {
-                await db.collection('produtos').doc(String(prod.id)).set({
-                    id: prod.id,
-                    nome: prod.nome,
-                    preco: prod.preco,
-                    marca: prod.marca,
-                    img: prod.img || '',
-                    obs: prod.obs || '',
-                    esgotado: prod.esgotado || false
-                }, { merge: true });
-            } catch (e) { console.error(e);
-                mostrarToast('Erro ao salvar produto', 'error'); }
+                await db.collection('produtos').doc(String(prod.id)).set(data, { merge: true });
+            } catch (e) {
+                console.error(e);
+                mostrarToast('Erro ao salvar produto', 'error');
+            }
         }
 
         async function deletarProdutoFirestore(id) {
             try { await db.collection('produtos').doc(String(id)).delete(); } catch (e) { console.error(e); }
+        }
+
+        // ===== FUNÇÕES DE UPLOAD DE IMAGEM (USANDO STORAGE) =====
+        function fileToBase64Resized(file, maxWidth, maxHeight) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width,
+                            height = img.height;
+                        if (width > height) { if (width > maxWidth) { height *= maxWidth / width;
+                                width = maxWidth; } } else { if (height > maxHeight) { width *= maxHeight / height;
+                                height = maxHeight; } }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.85));
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function uploadImagemProduto(produtoId) {
+            const fileInput = document.getElementById('file-' + produtoId);
+            const btn = document.getElementById('btnUpload-' + produtoId);
+            if (!fileInput || !btn) return;
+            const file = fileInput.files[0];
+            if (!file) return mostrarToast('Selecione uma imagem.', 'error');
+            
+            btn.disabled = true;
+            btn.textContent = '⏳...';
+            
+            try {
+                // Redimensiona a imagem antes de enviar
+                const base64Resized = await fileToBase64Resized(file, 500, 500);
+                
+                // Converte base64 para Blob
+                const blob = await (await fetch(base64Resized)).blob();
+                
+                // Cria referência no Storage
+                const ref = storage.ref(`produtos/${produtoId}.jpg`);
+                
+                // Faz upload
+                await ref.put(blob, { contentType: 'image/jpeg' });
+                
+                // Obtém URL pública
+                const url = await ref.getDownloadURL();
+                
+                // Atualiza produto com a URL da imagem
+                const produto = produtos.find(p => p.id === produtoId);
+                if (produto) produto.img = url;
+                
+                await salvarProdutoFirestore(produto);
+                
+                renderGerenciarProdutos();
+                renderCatalogo();
+                mostrarToast('🖼️ Imagem atualizada!', 'success');
+            } catch (error) {
+                console.error(error);
+                mostrarToast('Erro ao enviar imagem.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🖼️ Imagem';
+                fileInput.value = '';
+            }
         }
 
         function salvarDadosLocais() {
@@ -2649,78 +2738,6 @@
             renderCatalogo();
             renderBrandFilters();
             mostrarToast('✅ Produto adicionado!', 'success');
-        }
-
-        function fileToBase64Resized(file, maxWidth, maxHeight) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width,
-                            height = img.height;
-                        if (width > height) { if (width > maxWidth) { height *= maxWidth / width;
-                                width = maxWidth; } } else { if (height > maxHeight) { width *= maxHeight / height;
-                                height = maxHeight; } }
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.85));
-                    };
-                    img.onerror = reject;
-                    img.src = e.target.result;
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function uploadImagemProduto(produtoId) {
-            const fileInput = document.getElementById('file-' + produtoId),
-                btn = document.getElementById('btnUpload-' + produtoId);
-            if (!fileInput || !btn) return;
-            const file = fileInput.files[0];
-            if (!file) return mostrarToast('Selecione uma imagem.', 'error');
-            btn.disabled = true;
-            btn.textContent = '⏳...';
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const maxWidth = 500,
-                        maxHeight = 500;
-                    let width = img.width,
-                        height = img.height;
-                    if (width > height) { if (width > maxWidth) { height *= maxWidth / width;
-                            width = maxWidth; } } else { if (height > maxHeight) { width *= maxHeight / height;
-                            height = maxHeight; } }
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    const base64 = canvas.toDataURL('image/jpeg', 0.85);
-                    const produto = produtos.find(p => p.id === produtoId);
-                    if (produto) produto.img = base64;
-                    salvarProdutoFirestore(produto).then(() => { renderGerenciarProdutos();
-                            renderCatalogo();
-                            mostrarToast('🖼️ Imagem atualizada!', 'success'); })
-                        .catch(error => { mostrarToast('Falha ao salvar: ' + error.message, 'error'); })
-                        .finally(() => { btn.disabled = false;
-                            btn.textContent = '🖼️ Imagem';
-                            fileInput.value = ''; });
-                };
-                img.onerror = function() { mostrarToast('Erro ao carregar imagem.', 'error');
-                    btn.disabled = false;
-                    btn.textContent = '🖼️ Imagem'; };
-                img.src = e.target.result;
-            };
-            reader.onerror = function() { mostrarToast('Erro ao ler arquivo.', 'error');
-                btn.disabled = false;
-                btn.textContent = '🖼️ Imagem'; };
-            reader.readAsDataURL(file);
         }
 
         // ===== FUNÇÕES DE ORDENAÇÃO DE MARCAS =====
