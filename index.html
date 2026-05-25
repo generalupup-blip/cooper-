@@ -653,8 +653,8 @@
         let ordemMarcas = [];
         let anuncioAtual = null;
 
-        // ===== NOTIFICAÇÕES DE COMPRA =====
-        let notificacaoIndicesExibidos = new Set(); // evita repetir mesma notificação muito rápido
+        // ===== NOTIFICAÇÕES DE COMPRA (efeito visual) =====
+        let notificacaoIndicesExibidos = new Set();
         let intervaloNotificacoes = null;
 
         function mostrarNotificacaoCompra(nomeCliente, produtoNome) {
@@ -722,7 +722,7 @@
                 </div>`;
         }
 
-        // ===== ANIMAÇÃO DNA ===== (versão resumida porém funcional)
+        // ===== ANIMAÇÃO DNA =====
         (function() {
             const canvas = document.getElementById('dnaCanvas');
             const ctx = canvas.getContext('2d');
@@ -1149,26 +1149,79 @@
         }
         function alterarQtdCarrinho(i,v){ carrinho[i].qtd=Math.max(1,parseInt(v)||1); salvarDadosLocais(); renderCarrinho(); atualizarUI(); }
         function removerDoCarrinho(i){ const nome=carrinho[i]?.nome||'Item'; carrinho.splice(i,1); salvarDadosLocais(); renderCarrinho(); atualizarUI(); mostrarToast('🗑️ '+nome+' removido.','info'); }
-        async function finalizarPedido(){
-            if(!clienteLogado) return mostrarToast('Faça login.','error');
-            if(!carrinho.length) return mostrarToast('Carrinho vazio.','error');
-            const t=calcularTotaisCarrinho();
-            const num=Date.now().toString().slice(-8);
-            const ref=clienteLogado.referencia||'Não informada';
-            const enderecoFormatado=`Rua: ${clienteLogado.rua||''} N*${clienteLogado.numero||''}\nReferência: ${ref}\nBairro: ${clienteLogado.bairro||''}\nRegião: ${clienteLogado.regiao||''}\nCEP: ${clienteLogado.cep||''}`;
-            let itensMsg=''; carrinho.forEach(item=>{ itensMsg+=`> ${item.qtd}x ${item.nome}${item.marca?` (${item.marca})`:''} - R$ ${(item.preco*item.qtd).toFixed(2)}\n`; });
-            let detalhesMsg=`Subtotal: R$ ${t.subtotal.toFixed(2)}\n`; if(t.frete>0) detalhesMsg+=`Frete: R$ ${t.frete.toFixed(2)}\n`; detalhesMsg+=`TOTAL: R$ ${t.total.toFixed(2)}`;
-            const mensagem=`⚠️ ATENÇÃO: ENDEREÇO SEM DIVERGÊNCIAS!\n\nNOVO PEDIDO #${num}\n\nCliente: ${clienteLogado.nome}\nCPF: ${clienteLogado.cpf}\nEndereço:\n${enderecoFormatado}\nContato: ${clienteLogado.contato}\n\nITENS:\n${itensMsg}\n${detalhesMsg}\n\nAguardando confirmação.`;
-            if(confirm('Confirma o pedido?\n\nTotal: R$ '+t.total.toFixed(2))){
-                const novoPedido = { id:Date.now(), numero:num, clienteId:clienteLogado.id, clienteNome:clienteLogado.nome, clienteContato:clienteLogado.contato, clienteEndereco:enderecoFormatado.replace(/\n/g,' | '), clienteCpf:clienteLogado.cpf, itens:carrinho.map(i=>({...i})), subtotal:t.subtotal, frete:t.frete, total:t.total, status:'pendente', data:new Date().toISOString() };
+
+        // ===== FINALIZAR PEDIDO E DIRECIONAR PARA WHATSAPP =====
+        async function finalizarPedido() {
+            if (!clienteLogado) return mostrarToast('Faça login.', 'error');
+            if (!carrinho.length) return mostrarToast('Carrinho vazio.', 'error');
+
+            const t = calcularTotaisCarrinho();
+            const num = Date.now().toString().slice(-8);
+            const ref = clienteLogado.referencia || 'Não informada';
+
+            // Endereço completo
+            const enderecoFormatado = 
+                `Rua: ${clienteLogado.rua || ''}, Nº ${clienteLogado.numero || ''}\n` +
+                `Referência: ${ref}\n` +
+                `Bairro: ${clienteLogado.bairro || ''}\n` +
+                `Cidade: ${clienteLogado.cidade || ''}\n` +
+                `Estado: ${clienteLogado.regiao || ''}\n` +
+                `CEP: ${clienteLogado.cep || ''}`;
+
+            // Itens do pedido
+            let itensMsg = '';
+            carrinho.forEach(item => {
+                itensMsg += `➤ ${item.qtd}x ${item.nome} (${item.marca || ''}) - R$ ${(item.preco * item.qtd).toFixed(2)}\n`;
+            });
+
+            // Totais
+            let detalhesMsg = `Subtotal: R$ ${t.subtotal.toFixed(2)}\n`;
+            if (t.frete > 0) detalhesMsg += `Frete: R$ ${t.frete.toFixed(2)}\n`;
+            detalhesMsg += `TOTAL: R$ ${t.total.toFixed(2)}`;
+
+            // Monta a mensagem para o WhatsApp
+            const mensagem = 
+                `⚠️ *NOVO PEDIDO #${num}*\n\n` +
+                `*Cliente:* ${clienteLogado.nome}\n` +
+                `*CPF:* ${clienteLogado.cpf}\n` +
+                `*Contato:* ${clienteLogado.contato}\n\n` +
+                `*ENDEREÇO COMPLETO:*\n${enderecoFormatado}\n\n` +
+                `*ITENS:*\n${itensMsg}\n` +
+                `${detalhesMsg}\n\n` +
+                `✅ Pedido aguardando confirmação.`;
+
+            if (confirm('Confirma o pedido?\n\nTotal: R$ ' + t.total.toFixed(2))) {
+                const novoPedido = {
+                    id: Date.now(),
+                    numero: num,
+                    clienteId: clienteLogado.id,
+                    clienteNome: clienteLogado.nome,
+                    clienteContato: clienteLogado.contato,
+                    clienteEndereco: enderecoFormatado.replace(/\n/g, ' | '),
+                    clienteCpf: clienteLogado.cpf,
+                    itens: carrinho.map(i => ({ ...i })),
+                    subtotal: t.subtotal,
+                    frete: t.frete,
+                    total: t.total,
+                    status: 'pendente',
+                    data: new Date().toISOString()
+                };
+
                 pedidos.unshift(novoPedido);
                 await db.collection('pedidos').doc(String(novoPedido.id)).set(novoPedido);
+
+                // Limpa o carrinho
                 carrinho = [];
                 salvarDadosLocais();
                 atualizarUI();
                 renderCarrinho();
-                mostrarToast('✅ Pedido #'+num+' criado!','success');
-                window.open(`https://wa.me/5519997390834?text=${encodeURIComponent(mensagem)}`,'_blank');
+
+                mostrarToast('✅ Pedido #' + num + ' criado!', 'success');
+
+                // Abre o WhatsApp do DONO (19 99739-0834) com a mensagem pronta
+                const numeroDono = "55199997390834";
+                const urlWhatsApp = `https://wa.me/${numeroDono}?text=${encodeURIComponent(mensagem)}`;
+                window.open(urlWhatsApp, '_blank');
             }
         }
 
@@ -1221,7 +1274,6 @@
                 await db.collection('pedidos').doc(String(id)).update({ status:'finalizado' });
                 renderAdminPedidos();
                 mostrarToast('✅ Pedido finalizado.','success');
-                // DISPARA NOTIFICAÇÃO DE COMPRA IMEDIATAMENTE
                 gerarNotificacaoDePedido(p);
             }
         }
