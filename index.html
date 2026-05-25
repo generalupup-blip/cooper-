@@ -164,6 +164,7 @@
             font-weight: 500;
             transition: var(--transition);
             white-space: nowrap;
+            min-height: 44px; /* touch friendly */
         }
         nav button:hover {
             background: var(--accent);
@@ -241,14 +242,16 @@
             background: var(--surface2);
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 0.6rem 1rem;
+            padding: 0.75rem 1rem; /* aumentado para toque */
             border-radius: 12px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 0.8rem;
+            font-size: 0.9rem; /* ligeiramente maior */
             transition: var(--transition);
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            min-height: 48px; /* touch friendly */
+            touch-action: manipulation;
         }
         .toggle-brand.active,
         .toggle-brand:hover {
@@ -354,11 +357,13 @@
             background: var(--accent);
             color: white;
             border: none;
-            padding: 0.55rem 1.3rem;
+            padding: 0.65rem 1.4rem;
             border-radius: 40px;
             cursor: pointer;
             font-weight: 600;
             transition: var(--transition);
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .btn:hover {
             background: var(--accent2);
@@ -400,6 +405,8 @@
             margin-bottom: 1.5rem;
             cursor: pointer;
             font-weight: 500;
+            min-height: 48px;
+            touch-action: manipulation;
         }
         .filter-drawer-overlay {
             position: fixed;
@@ -425,6 +432,8 @@
             transform: translateX(-100%);
             transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
             box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
         }
         .filter-drawer-overlay.active .filter-drawer { transform: translateX(0); }
         .filter-drawer-header {
@@ -432,8 +441,23 @@
             justify-content: space-between;
             padding: 1.2rem;
             border-bottom: 1px solid var(--border);
+            min-height: 60px;
         }
-        .filter-drawer-body { padding: 1rem; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+        .filter-drawer-body {
+            padding: 1rem;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        .filter-drawer-footer {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.5rem;
+        }
 
         .card {
             background: var(--surface);
@@ -501,6 +525,8 @@
             border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .pagination button.active, .pagination button:hover {
             background: var(--accent);
@@ -571,8 +597,6 @@
     </style>
 </head>
 <body>
-    <!-- SEM ANIMAÇÃO DE FUNDO (DNA REMOVIDO) -->
-
     <div id="loadingOverlay">
         <div style="width:50px;height:50px;border:4px solid #cbd5e1;border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
         <span style="color:var(--text);">Carregando sistema...</span>
@@ -584,10 +608,10 @@
         <div class="filter-drawer" onclick="event.stopPropagation()">
             <div class="filter-drawer-header">
                 <h3>🏷️ Filtrar por Marca</h3>
-                <button class="filter-drawer-close" onclick="fecharDrawerFiltro()">✕</button>
+                <button class="filter-drawer-close" onclick="fecharDrawerFiltro()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;min-width:44px;min-height:44px;">✕</button>
             </div>
             <div class="filter-drawer-body" id="filterDrawerBody"></div>
-            <div class="filter-drawer-footer" style="padding:1rem; border-top:1px solid var(--border); display:flex; gap:0.5rem;">
+            <div class="filter-drawer-footer">
                 <button class="btn btn-outline" onclick="setFiltroMarca('TODAS'); fecharDrawerFiltro();">Limpar</button>
                 <button class="btn" onclick="fecharDrawerFiltro()">Aplicar</button>
             </div>
