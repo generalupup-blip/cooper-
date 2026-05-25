@@ -660,16 +660,125 @@
 
         <section id="login" class="section">
             <h2>🔐 Acesso do Cliente</h2>
-            <div class="card" style="max-width:600px;margin:0 auto;"><div id="loginForm"><h3>Entrar</h3><div class="form-group"><label>CPF</label><input type="text" id="loginCpf" placeholder="000.000.000-00"></div><button class="btn" onclick="loginCliente()">Entrar</button><p style="margin-top:1rem;">Não tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent);">Cadastre-se</a></p></div><div id="cadastroForm" class="hidden"><h3>📝 Cadastro</h3><div class="alert-box" style="background:#fef3c7; padding:1rem; border-radius:12px; margin-bottom:1rem;"><strong>⚠️ ATENÇÃO</strong><br>O ENDEREÇO NÃO PODE CONTER DIVERGÊNCIAS.</div><div class="form-group"><label>NOME COMPLETO</label><input type="text" id="cadNome"></div><div class="form-group"><label>CPF</label><input type="text" id="cadCpf"></div><div class="form-group"><label>Rua</label><input type="text" id="cadRua"></div><div class="form-group"><label>Número</label><input type="text" id="cadNumero"></div><div class="form-group"><label>Referência</label><input type="text" id="cadReferencia"></div><div class="form-group"><label>Bairro</label><input type="text" id="cadBairro"></div><div class="form-group"><label>Cidade</label><input type="text" id="cadCidade"></div><div class="form-group"><label>Estado</label><select id="cadRegiao"><option value="">Selecione</option><option>SP</option><option>RJ</option><option>MG</option></select></div><div class="form-group"><label>CEP</label><input type="text" id="cadCep"></div><div class="form-group"><label>WhatsApp</label><input type="text" id="cadContato"></div><button class="btn btn-success" onclick="cadastrarCliente()">Cadastrar</button><p style="margin-top:1rem;">Já tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent);">Entrar</a></p></div></div>
+            <div class="card" style="max-width:600px;margin:0 auto;">
+                <div id="loginForm">
+                    <h3>Entrar</h3>
+                    <div class="form-group"><label>CPF</label><input type="text" id="loginCpf" placeholder="000.000.000-00"></div>
+                    <button class="btn" onclick="loginCliente()">Entrar</button>
+                    <p style="margin-top:1rem;">Não tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent);">Cadastre-se</a></p>
+                </div>
+                <div id="cadastroForm" class="hidden">
+                    <h3>📝 Cadastro</h3>
+                    <div class="alert-box" style="background:#fef3c7; padding:1rem; border-radius:12px; margin-bottom:1rem;"><strong>⚠️ ATENÇÃO</strong><br>O ENDEREÇO NÃO PODE CONTER DIVERGÊNCIAS.</div>
+                    <div class="form-group"><label>NOME COMPLETO</label><input type="text" id="cadNome"></div>
+                    <div class="form-group"><label>CPF</label><input type="text" id="cadCpf"></div>
+                    <div class="form-group"><label>Rua</label><input type="text" id="cadRua"></div>
+                    <div class="form-group"><label>Número</label><input type="text" id="cadNumero"></div>
+                    <div class="form-group"><label>Referência</label><input type="text" id="cadReferencia"></div>
+                    <div class="form-group"><label>Bairro</label><input type="text" id="cadBairro"></div>
+                    <div class="form-group"><label>Cidade</label><input type="text" id="cadCidade"></div>
+                    <div class="form-group"><label>Estado</label><select id="cadRegiao"><option value="">Selecione</option></select></div>
+                    <div class="form-group"><label>CEP</label><input type="text" id="cadCep"></div>
+                    <div class="form-group"><label>WhatsApp</label><input type="text" id="cadContato"></div>
+                    <button class="btn btn-success" onclick="cadastrarCliente()">Cadastrar</button>
+                    <p style="margin-top:1rem;">Já tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent);">Entrar</a></p>
+                </div>
+            </div>
             <div class="card" style="max-width:500px;margin:1rem auto;"><p style="font-size:0.85rem;"><strong>🔑 Administrador?</strong></p><button class="btn btn-outline btn-sm" onclick="showAdminLogin()">Acessar Painel Admin</button></div>
         </section>
 
-        <section id="admin" class="section"><h2>📊 Painel Administrativo</h2><div id="adminLoginForm" class="card"><h3>Login Admin</h3><div class="form-group"><label>Usuário</label><input type="text" id="adminUser"></div><div class="form-group"><label>Senha</label><input type="password" id="adminPass"></div><button class="btn" onclick="loginAdmin()">Entrar</button></div><div id="adminContent" class="hidden"><div class="flex-row flex-between mb-2"><h2 style="border:none;">Pedidos</h2><div class="flex-row"><button class="btn-outline btn-sm" onclick="filtrarPedidos('todos')">Todos</button><button class="btn-outline btn-sm" onclick="filtrarPedidos('pendente')">Pendentes</button><button class="btn-outline btn-sm" onclick="filtrarPedidos('finalizado')">Finalizados</button></div></div><div id="adminPedidosContainer"></div></div></section>
-        <section id="gerenciarClientes" class="section"><h2>👥 Gerenciar Clientes</h2><input type="text" class="search-box" placeholder="Buscar cliente..." id="searchClientes" oninput="renderGerenciarClientes()"><div id="clientesContainer"></div></section>
-        <section id="gerenciarProdutos" class="section"><h2>⚙️ Gerenciar Catálogo</h2><div class="card"><h3>➕ Adicionar Produto</h3><div class="flex-row"><div class="form-group" style="flex:2"><label>Nome</label><input type="text" id="novoProdNome"></div><div class="form-group" style="flex:1"><label>Preço</label><input type="number" id="novoProdPreco" step="0.01"></div><div class="form-group" style="flex:2"><label>Marca</label><select id="novoProdMarcaSelect" onchange="toggleNovaMarcaInput()"></select><input type="text" id="novoProdMarcaNovo" class="hidden" placeholder="Nova marca"></div><div class="form-group"><label>Imagem</label><input type="file" id="novoProdImg" accept="image/*"></div><button class="btn btn-success" onclick="adicionarNovoProduto()">➕ Adicionar</button></div></div><div id="gerenciarContainer"></div></section>
-        <section id="ordenarMarcas" class="section"><h2>🔀 Ordenar Marcas</h2><div id="ordenarMarcasContainer"></div><div class="flex-row mt-2"><button class="btn btn-success" onclick="salvarOrdemMarcas()">💾 Salvar Ordem</button><button class="btn btn-outline" onclick="resetarOrdemMarcas()">🔄 Padrão A-Z</button></div></section>
-        <section id="gerenciarAnuncio" class="section"><h2>📢 Gerenciar Anúncio</h2><div class="card"><label><input type="checkbox" id="anuncioAtivo" onchange="previewAnuncio()"> Ativar anúncio</label><div class="form-group"><label>Título</label><input type="text" id="anuncioTituloInput" oninput="previewAnuncio()"></div><div class="form-group"><label>Mensagem</label><textarea id="anuncioMensagemInput" rows="3" oninput="previewAnuncio()"></textarea></div><div class="form-group"><label>Estilo</label><select id="anuncioCorSelect" onchange="previewAnuncio()"><option value="info">Informativo</option><option value="warning" selected>Promoção</option><option value="success">Sucesso</option><option value="danger">Urgente</option></select></div><div class="flex-row"><button class="btn btn-danger" onclick="removerAnuncio()">🗑️ Remover</button><button class="btn btn-success" onclick="salvarAnuncio()">💾 Salvar</button></div><div id="anuncioPreview" class="mt-2 hidden"><div id="anuncioPreviewBox" class="anuncio-banner warning"><div class="anuncio-content"><strong id="prevTitulo"></strong><span id="prevMensagem"></span></div><button class="anuncio-close" disabled>✕</button></div></div></div></section>
-        <div id="modalEditarCliente" class="modal-overlay hidden"><div class="modal"><h3>✏️ Editar Cliente</h3><div class="form-group"><label>Nome</label><input type="text" id="editNome"></div><div class="form-group"><label>CPF</label><input type="text" id="editCpf" readonly></div><div class="form-group"><label>Rua</label><input type="text" id="editRua"></div><div class="form-group"><label>Número</label><input type="text" id="editNumero"></div><div class="form-group"><label>Referência</label><input type="text" id="editReferencia"></div><div class="form-group"><label>Bairro</label><input type="text" id="editBairro"></div><div class="form-group"><label>Cidade</label><input type="text" id="editCidade"></div><div class="form-group"><label>Estado</label><select id="editRegiao"><option>SP</option><option>RJ</option></select></div><div class="form-group"><label>CEP</label><input type="text" id="editCep"></div><div class="form-group"><label>WhatsApp</label><input type="text" id="editContato"></div><div class="flex-row flex-between mt-2"><button class="btn btn-danger" onclick="fecharModal()">Cancelar</button><button class="btn btn-success" onclick="salvarEdicaoCliente()">Salvar</button></div></div></div>
+        <section id="admin" class="section">
+            <h2>📊 Painel Administrativo</h2>
+            <div id="adminLoginForm" class="card">
+                <h3>Login Admin</h3>
+                <div class="form-group"><label>Usuário</label><input type="text" id="adminUser"></div>
+                <div class="form-group"><label>Senha</label><input type="password" id="adminPass"></div>
+                <button class="btn" onclick="loginAdmin()">Entrar</button>
+            </div>
+            <div id="adminContent" class="hidden">
+                <div class="flex-row flex-between mb-2">
+                    <h2 style="border:none;">Pedidos</h2>
+                    <div class="flex-row">
+                        <button class="btn-outline btn-sm" onclick="filtrarPedidos('todos')">Todos</button>
+                        <button class="btn-outline btn-sm" onclick="filtrarPedidos('pendente')">Pendentes</button>
+                        <button class="btn-outline btn-sm" onclick="filtrarPedidos('finalizado')">Finalizados</button>
+                    </div>
+                </div>
+                <div id="adminPedidosContainer"></div>
+            </div>
+        </section>
+
+        <section id="gerenciarClientes" class="section">
+            <h2>👥 Gerenciar Clientes</h2>
+            <input type="text" class="search-box" placeholder="Buscar cliente..." id="searchClientes" oninput="renderGerenciarClientes()">
+            <div id="clientesContainer"></div>
+        </section>
+
+        <section id="gerenciarProdutos" class="section">
+            <h2>⚙️ Gerenciar Catálogo</h2>
+            <div class="card">
+                <h3>➕ Adicionar Produto</h3>
+                <div class="flex-row">
+                    <div class="form-group" style="flex:2"><label>Nome</label><input type="text" id="novoProdNome"></div>
+                    <div class="form-group" style="flex:1"><label>Preço</label><input type="number" id="novoProdPreco" step="0.01"></div>
+                    <div class="form-group" style="flex:2"><label>Marca</label><select id="novoProdMarcaSelect" onchange="toggleNovaMarcaInput()"></select><input type="text" id="novoProdMarcaNovo" class="hidden" placeholder="Nova marca"></div>
+                    <div class="form-group"><label>Imagem</label><input type="file" id="novoProdImg" accept="image/*"></div>
+                    <button class="btn btn-success" onclick="adicionarNovoProduto()">➕ Adicionar</button>
+                </div>
+            </div>
+            <div id="gerenciarContainer"></div>
+        </section>
+
+        <section id="ordenarMarcas" class="section">
+            <h2>🔀 Ordenar Marcas</h2>
+            <div id="ordenarMarcasContainer"></div>
+            <div class="flex-row mt-2">
+                <button class="btn btn-success" onclick="salvarOrdemMarcas()">💾 Salvar Ordem</button>
+                <button class="btn btn-outline" onclick="resetarOrdemMarcas()">🔄 Padrão A-Z</button>
+            </div>
+        </section>
+
+        <section id="gerenciarAnuncio" class="section">
+            <h2>📢 Gerenciar Anúncio</h2>
+            <div class="card">
+                <label><input type="checkbox" id="anuncioAtivo" onchange="previewAnuncio()"> Ativar anúncio</label>
+                <div class="form-group"><label>Título</label><input type="text" id="anuncioTituloInput" oninput="previewAnuncio()"></div>
+                <div class="form-group"><label>Mensagem</label><textarea id="anuncioMensagemInput" rows="3" oninput="previewAnuncio()"></textarea></div>
+                <div class="form-group"><label>Estilo</label><select id="anuncioCorSelect" onchange="previewAnuncio()"><option value="info">Informativo</option><option value="warning" selected>Promoção</option><option value="success">Sucesso</option><option value="danger">Urgente</option></select></div>
+                <div class="flex-row">
+                    <button class="btn btn-danger" onclick="removerAnuncio()">🗑️ Remover</button>
+                    <button class="btn btn-success" onclick="salvarAnuncio()">💾 Salvar</button>
+                </div>
+                <div id="anuncioPreview" class="mt-2 hidden">
+                    <div id="anuncioPreviewBox" class="anuncio-banner warning">
+                        <div class="anuncio-content"><strong id="prevTitulo"></strong><span id="prevMensagem"></span></div>
+                        <button class="anuncio-close" disabled>✕</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal Editar Cliente (CORRIGIDO) -->
+        <div id="modalEditarCliente" class="modal-overlay hidden">
+            <div class="modal">
+                <h3>✏️ Editar Cliente</h3>
+                <input type="hidden" id="editClienteId">
+                <div class="form-group"><label>Nome</label><input type="text" id="editNome"></div>
+                <div class="form-group"><label>CPF</label><input type="text" id="editCpf" readonly></div>
+                <div class="form-group"><label>Rua</label><input type="text" id="editRua"></div>
+                <div class="form-group"><label>Número</label><input type="text" id="editNumero"></div>
+                <div class="form-group"><label>Referência</label><input type="text" id="editReferencia"></div>
+                <div class="form-group"><label>Bairro</label><input type="text" id="editBairro"></div>
+                <div class="form-group"><label>Cidade</label><input type="text" id="editCidade"></div>
+                <div class="form-group"><label>Estado</label><select id="editRegiao"><option value="">Selecione</option></select></div>
+                <div class="form-group"><label>CEP</label><input type="text" id="editCep"></div>
+                <div class="form-group"><label>WhatsApp</label><input type="text" id="editContato"></div>
+                <div class="flex-row flex-between mt-2">
+                    <button class="btn btn-danger" onclick="fecharModal()">Cancelar</button>
+                    <button class="btn btn-success" onclick="salvarEdicaoCliente()">Salvar</button>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -719,6 +828,27 @@
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3300);
         }
+
+        // NOVO: Preenche os selects de estado com base no fretePorRegiao
+        function popularSelectsRegiao() {
+            const estados = Object.keys(fretePorRegiao).sort();
+            const selects = ['cadRegiao', 'editRegiao'];
+            selects.forEach(id => {
+                const select = document.getElementById(id);
+                if (!select) return;
+                // Mantém a primeira opção "Selecione" se já existir
+                const valorAtual = select.value;
+                select.innerHTML = '<option value="">Selecione</option>';
+                estados.forEach(sigla => {
+                    const opt = document.createElement('option');
+                    opt.value = sigla;
+                    opt.textContent = sigla;
+                    select.appendChild(opt);
+                });
+                if (valorAtual && estados.includes(valorAtual)) select.value = valorAtual;
+            });
+        }
+
         function abrirDrawerFiltro() {
             const overlay = document.getElementById('filterDrawerOverlay');
             const body = document.getElementById('filterDrawerBody');
@@ -1361,6 +1491,7 @@
             await carregarDados();
             await carregarOrdemMarcas();
             await carregarAnuncioGlobal();
+            popularSelectsRegiao(); // <--- Chama a função que preenche os selects de estado
             renderBrandFilters();
             renderCatalogo();
             atualizarUI();
