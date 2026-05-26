@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CENTRAL LABS PREMIUM | Representante David Oficial</title>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js">
+    </script>
     <style>
         :root {
             --bg: #f8fafc;
@@ -26,9 +28,11 @@
             --transition: 0.2s ease;
             --font: 'Segoe UI', system-ui, -apple-system, 'Inter', sans-serif;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: var(--font);
             background: linear-gradient(145deg, #f1f5f9 0%, #eef2f6 100%);
@@ -37,16 +41,27 @@
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
         }
-
-        header, main, #toastContainer, #buyNotificationContainer, #modalEditarCliente, #loadingOverlay, .filter-drawer-overlay {
+        header,
+        main,
+        #toastContainer,
+        #buyNotificationContainer,
+        #modalEditarCliente,
+        #loadingOverlay,
+        .filter-drawer-overlay {
             position: relative;
             z-index: 1;
         }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 8px; }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 8px; }
-
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 8px;
+        }
         #buyNotificationContainer {
             position: fixed;
             bottom: 2rem;
@@ -73,17 +88,36 @@
             align-items: center;
             gap: 0.8rem;
         }
-        .buy-notification .icon { font-size: 1.8rem; }
-        .buy-notification .text strong { color: var(--accent); font-weight: 800; }
-        .buy-notification .text small { font-size: 0.7rem; color: var(--text2); display: block; margin-top: 0.2rem; }
+        .buy-notification .icon {
+            font-size: 1.8rem;
+        }
+        .buy-notification .text strong {
+            color: var(--accent);
+            font-weight: 800;
+        }
+        .buy-notification .text small {
+            font-size: 0.7rem;
+            color: var(--text2);
+            display: block;
+            margin-top: 0.2rem;
+        }
         @keyframes subirNotificacao {
-            0% { opacity: 0; transform: translateY(40px) scale(0.9); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
         @keyframes desaparecerNotificacao {
-            to { opacity: 0; transform: translateY(-20px) scale(0.8); visibility: hidden; }
+            to {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.8);
+                visibility: hidden;
+            }
         }
-
         .anuncio-banner {
             position: relative;
             padding: 1rem 2rem;
@@ -98,9 +132,15 @@
             animation: slideDown 0.5s ease;
             border-left: 6px solid transparent;
         }
-        .anuncio-banner .anuncio-content { flex: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem; }
+        .anuncio-banner .anuncio-content {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.75rem;
+        }
         .anuncio-banner .anuncio-close {
-            background: rgba(0,0,0,0.1);
+            background: rgba(0, 0, 0, 0.1);
             border: none;
             color: #1e293b;
             font-size: 1.3rem;
@@ -113,13 +153,40 @@
             justify-content: center;
             transition: var(--transition);
         }
-        .anuncio-banner .anuncio-close:hover { background: rgba(0,0,0,0.2); transform: rotate(90deg); }
-        .anuncio-banner.info { background: #e0f2fe; color: #0f172a; border-left-color: #0ea5e9; }
-        .anuncio-banner.warning { background: #fef3c7; color: #0f172a; border-left-color: #f59e0b; }
-        .anuncio-banner.success { background: #d1fae5; color: #0f172a; border-left-color: #10b981; }
-        .anuncio-banner.danger { background: #fee2e2; color: #0f172a; border-left-color: #ef4444; }
-        @keyframes slideDown { from { transform: translateY(-30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
+        .anuncio-banner .anuncio-close:hover {
+            background: rgba(0, 0, 0, 0.2);
+            transform: rotate(90deg);
+        }
+        .anuncio-banner.info {
+            background: #e0f2fe;
+            color: #0f172a;
+            border-left-color: #0ea5e9;
+        }
+        .anuncio-banner.warning {
+            background: #fef3c7;
+            color: #0f172a;
+            border-left-color: #f59e0b;
+        }
+        .anuncio-banner.success {
+            background: #d1fae5;
+            color: #0f172a;
+            border-left-color: #10b981;
+        }
+        .anuncio-banner.danger {
+            background: #fee2e2;
+            color: #0f172a;
+            border-left-color: #ef4444;
+        }
+        @keyframes slideDown {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
         header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -146,9 +213,16 @@
             color: transparent;
             transition: var(--transition);
         }
-        .logo:hover { opacity: 0.85; transform: scale(1.01); }
-
-        nav { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+        .logo:hover {
+            opacity: 0.85;
+            transform: scale(1.01);
+        }
+        nav {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
         nav button {
             background: var(--surface2);
             border: 1px solid var(--border);
@@ -167,10 +241,11 @@
             border-color: var(--accent);
             color: white;
             transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
         }
-        nav button:active { transform: scale(0.96); }
-
+        nav button:active {
+            transform: scale(0.96);
+        }
         .cart-badge {
             background: var(--accent);
             color: white;
@@ -180,17 +255,28 @@
             font-weight: 800;
             margin-left: 5px;
         }
-
         main {
             max-width: 1300px;
             margin: 2rem auto;
             padding: 0 1.5rem;
         }
-
-        .section { display: none; }
-        .section.active { display: block; animation: fadeUp 0.4s ease; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+            animation: fadeUp 0.4s ease;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         h2 {
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
@@ -199,7 +285,6 @@
             padding-bottom: 0.5rem;
             display: inline-block;
         }
-
         .catalogo-layout {
             display: flex;
             gap: 1.5rem;
@@ -253,11 +338,12 @@
             background: var(--accent);
             color: white;
             border-color: var(--accent);
-            box-shadow: 0 2px 6px rgba(59,130,246,0.2);
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.2);
         }
-
-        .catalogo-main { flex: 1; min-width: 0; }
-
+        .catalogo-main {
+            flex: 1;
+            min-width: 0;
+        }
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -303,22 +389,27 @@
             transition: opacity 0.3s;
             opacity: 0;
         }
-        .img-container img.loaded { opacity: 1; }
+        .img-container img.loaded {
+            opacity: 1;
+        }
         .img-container .placeholder-svg {
             position: absolute;
             width: 48px;
             height: 48px;
             color: #cbd5e1;
         }
-
-        /* ⭐ MARCA PISCANDO E EM NEGRITO */
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.2; }
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.2;
+            }
         }
         .brand-tag {
             font-size: 0.7rem;
-            font-weight: 800; /* negrito reforçado */
+            font-weight: 800;
             background: #eef2ff;
             color: var(--accent);
             padding: 0.25rem 0.75rem;
@@ -328,9 +419,8 @@
             text-transform: uppercase;
             width: fit-content;
             margin: 0 auto;
-            animation: blink 1.2s ease-in-out infinite; /* piscando */
+            animation: blink 1.2s ease-in-out infinite;
         }
-
         .product-card .name {
             font-weight: 700;
             font-size: 1rem;
@@ -353,8 +443,10 @@
             text-align: center;
             font-weight: 600;
         }
-        .qty-input:focus { outline: none; border-color: var(--accent); }
-
+        .qty-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
         .btn {
             background: var(--accent);
             color: white;
@@ -370,20 +462,50 @@
         .btn:hover {
             background: var(--accent2);
             transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(59,130,246,0.2);
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
         }
-        .btn:active { transform: scale(0.96); }
-        .btn-danger { background: var(--danger); }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-success { background: var(--success); }
-        .btn-success:hover { background: #059669; }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn-danger {
+            background: var(--danger);
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-success {
+            background: var(--success);
+        }
+        .btn-success:hover {
+            background: #059669;
+        }
         .btn-outline {
             background: transparent;
             border: 2px solid var(--accent);
             color: var(--accent);
         }
-        .btn-outline:hover { background: var(--accent); color: white; }
-
+        .btn-outline:hover {
+            background: var(--accent);
+            color: white;
+        }
+        .btn-esgotado {
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            color: #64748b;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            transition: var(--transition);
+            white-space: nowrap;
+            min-height: 44px;
+        }
+        .btn-esgotado.ativo {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #ef4444;
+            font-weight: 800;
+        }
         .search-box {
             width: 100%;
             padding: 0.85rem 1.5rem;
@@ -395,8 +517,11 @@
             transition: var(--transition);
             box-shadow: var(--shadow);
         }
-        .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
-
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
         .filter-mobile-btn {
             display: none;
             width: 100%;
@@ -413,14 +538,17 @@
         .filter-drawer-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0, 0, 0, 0.3);
             z-index: 300;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.2s;
             backdrop-filter: blur(4px);
         }
-        .filter-drawer-overlay.active { opacity: 1; pointer-events: auto; }
+        .filter-drawer-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
         .filter-drawer {
             position: fixed;
             top: 0;
@@ -432,12 +560,14 @@
             border-right: 1px solid var(--border);
             z-index: 301;
             transform: translateX(-100%);
-            transition: transform 0.3s cubic-bezier(0.2,0.9,0.4,1.1);
-            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
         }
-        .filter-drawer-overlay.active .filter-drawer { transform: translateX(0); }
+        .filter-drawer-overlay.active .filter-drawer {
+            transform: translateX(0);
+        }
         .filter-drawer-header {
             display: flex;
             justify-content: space-between;
@@ -460,7 +590,6 @@
             display: flex;
             gap: 0.5rem;
         }
-
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -469,16 +598,20 @@
             margin-bottom: 1.5rem;
             box-shadow: var(--shadow);
         }
-
         .status-badge {
             padding: 0.25rem 0.8rem;
             border-radius: 30px;
             font-weight: 700;
             font-size: 0.7rem;
         }
-        .status-pendente { background: #fef3c7; color: #b45309; }
-        .status-finalizado { background: #d1fae5; color: #065f46; }
-
+        .status-pendente {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .status-finalizado {
+            background: #d1fae5;
+            color: #065f46;
+        }
         .client-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -486,11 +619,10 @@
             padding: 1.2rem;
             margin-bottom: 1rem;
         }
-
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -505,7 +637,6 @@
             width: 90%;
             box-shadow: var(--shadow-hover);
         }
-
         .empty-state {
             text-align: center;
             padding: 3rem;
@@ -513,7 +644,6 @@
             background: var(--surface);
             border-radius: var(--radius);
         }
-
         .pagination {
             display: flex;
             gap: 0.4rem;
@@ -530,12 +660,12 @@
             min-height: 44px;
             touch-action: manipulation;
         }
-        .pagination button.active, .pagination button:hover {
+        .pagination button.active,
+        .pagination button:hover {
             background: var(--accent);
             color: white;
             border-color: var(--accent);
         }
-
         #toastContainer {
             position: fixed;
             bottom: 2rem;
@@ -553,36 +683,88 @@
             box-shadow: var(--shadow-hover);
             animation: slideInToast 0.3s ease forwards, fadeOutToast 0.3s 3s forwards;
         }
-
-        @keyframes slideInToast { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes fadeOutToast { to { opacity: 0; transform: translateX(30%); } }
-
+        @keyframes slideInToast {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeOutToast {
+            to {
+                opacity: 0;
+                transform: translateX(30%);
+            }
+        }
         @media (max-width: 768px) {
-            header { flex-direction: column; text-align: center; }
-            .product-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-            .filtros-sidebar { display: none; }
-            .filter-mobile-btn { display: block; }
-            .catalogo-layout { display: block; }
-            .modal { padding: 1.5rem; }
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+            .filtros-sidebar {
+                display: none;
+            }
+            .filter-mobile-btn {
+                display: block;
+            }
+            .catalogo-layout {
+                display: block;
+            }
+            .modal {
+                padding: 1.5rem;
+            }
         }
         @media (min-width: 769px) {
-            .filter-mobile-btn, .filter-drawer-overlay { display: none !important; }
-            .filtros-sidebar { display: block; }
+            .filter-mobile-btn,
+            .filter-drawer-overlay {
+                display: none !important;
+            }
+            .filtros-sidebar {
+                display: block;
+            }
         }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 0.3rem; color: var(--text); }
-        .form-group input, .form-group select, .form-group textarea {
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
             padding: 0.6rem;
             border-radius: 12px;
             border: 1px solid var(--border);
             background: var(--surface2);
         }
-        .flex-row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
-        .flex-between { justify-content: space-between; }
-        .hidden { display: none !important; }
-        .mt-2 { margin-top: 1rem; }
-        .mb-2 { margin-bottom: 1rem; }
+        .flex-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .flex-between {
+            justify-content: space-between;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .mt-2 {
+            margin-top: 1rem;
+        }
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
         #loadingOverlay {
             position: fixed;
             inset: 0;
@@ -595,7 +777,25 @@
             gap: 1rem;
             transition: opacity 0.4s;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .produto-editar-item {
+            display: flex;
+            gap: 0.8rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+            background: #fff;
+        }
+        .produto-editar-item>* {
+            min-width: 60px;
+        }
     </style>
 </head>
 <body>
@@ -657,7 +857,17 @@
         <section id="carrinho" class="section">
             <h2>🛒 Seu Carrinho</h2>
             <div id="carrinhoContainer"></div>
-            <div id="carrinhoResumo" class="hidden"><div class="card"><h3>📋 Resumo do Pedido</h3><p><strong>Total de itens:</strong> <span id="resumoItens">0</span></p><p><strong>Subtotal:</strong> <span id="resumoSubtotal">R$ 0,00</span></p><p><strong>Frete:</strong> <span id="resumoFrete">R$ 0,00</span></p><p><strong>Valor Total:</strong> <span id="resumoTotal" style="font-size:1.6rem;color:#059669;font-weight:800;">R$ 0,00</span></p><button class="btn" onclick="finalizarPedido()" id="btnFinalizar" disabled>✅ Finalizar Compra</button><p id="msgLoginNeeded" style="color:#ef4444;margin-top:0.5rem;">⚠️ Faça login para finalizar.</p></div></div>
+            <div id="carrinhoResumo" class="hidden">
+                <div class="card">
+                    <h3>📋 Resumo do Pedido</h3>
+                    <p><strong>Total de itens:</strong> <span id="resumoItens">0</span></p>
+                    <p><strong>Subtotal:</strong> <span id="resumoSubtotal">R$ 0,00</span></p>
+                    <p><strong>Frete:</strong> <span id="resumoFrete">R$ 0,00</span></p>
+                    <p><strong>Valor Total:</strong> <span id="resumoTotal" style="font-size:1.6rem;color:#059669;font-weight:800;">R$ 0,00</span></p>
+                    <button class="btn" onclick="finalizarPedido()" id="btnFinalizar" disabled>✅ Finalizar Compra</button>
+                    <p id="msgLoginNeeded" style="color:#ef4444;margin-top:0.5rem;">⚠️ Faça login para finalizar.</p>
+                </div>
+            </div>
         </section>
 
         <section id="login" class="section">
@@ -686,7 +896,8 @@
                     <p style="margin-top:1rem;">Já tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent);">Entrar</a></p>
                 </div>
             </div>
-            <div class="card" style="max-width:500px;margin:1rem auto;"><p style="font-size:0.85rem;"><strong>🔑 Administrador?</strong></p><button class="btn btn-outline btn-sm" onclick="showAdminLogin()">Acessar Painel Admin</button></div>
+            <div class="card" style="max-width:500px;margin:1rem auto;">
+                <p style="font-size:0.85rem;"><strong>🔑 Administrador?</strong></p><button class="btn btn-outline btn-sm" onclick="showAdminLogin()">Acessar Painel Admin</button></div>
         </section>
 
         <section id="admin" class="section">
@@ -725,6 +936,7 @@
                     <div class="form-group" style="flex:1"><label>Preço</label><input type="number" id="novoProdPreco" step="0.01"></div>
                     <div class="form-group" style="flex:2"><label>Marca</label><select id="novoProdMarcaSelect" onchange="toggleNovaMarcaInput()"></select><input type="text" id="novoProdMarcaNovo" class="hidden" placeholder="Nova marca"></div>
                     <div class="form-group"><label>Imagem</label><input type="file" id="novoProdImg" accept="image/*"></div>
+                    <div class="form-group" style="display:flex;align-items:center;gap:0.5rem;"><label style="margin:0;">Esgotado</label><input type="checkbox" id="novoProdEsgotado"></div>
                     <button class="btn btn-success" onclick="adicionarNovoProduto()">➕ Adicionar</button>
                 </div>
             </div>
@@ -795,33 +1007,76 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        const fretePorRegiao = { 'SP':50,'RJ':60,'MG':60,'SC':60,'RS':60,'PR':60,'ES':60,'DF':65,'CE':70,'BA':70,'AL':70,'MA':70,'MT':75,'PE':75,'PB':75,'PI':75,'PA':80,'TO':80,'MS':90,'SE':100,'RN':100,'RO':100,'AM':120 };
+        const fretePorRegiao = {
+            'SP': 50,
+            'RJ': 60,
+            'MG': 60,
+            'SC': 60,
+            'RS': 60,
+            'PR': 60,
+            'ES': 60,
+            'DF': 65,
+            'CE': 70,
+            'BA': 70,
+            'AL': 70,
+            'MA': 70,
+            'MT': 75,
+            'PE': 75,
+            'PB': 75,
+            'PI': 75,
+            'PA': 80,
+            'TO': 80,
+            'MS': 90,
+            'SE': 100,
+            'RN': 100,
+            'RO': 100,
+            'AM': 120
+        };
         const produtosBase = [
-            { id:1, nome:'GHK-Cu 100mg/3ml', preco:800, marca:'NEOPEPTIDES', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=GHK-Cu', esgotado:false },
-            { id:2, nome:'SLU-PP-332 5mg/3ml', preco:600, marca:'NEOPEPTIDES', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=SLU', esgotado:false },
-            { id:3, nome:'Tesamorelin 10mg/3ml', preco:750, marca:'NEOPEPTIDES', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tesa', esgotado:false },
-            { id:4, nome:'GLOW 70mg/3ml', preco:800, marca:'NEOPEPTIDES', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=GLOW', esgotado:false },
-            { id:5, nome:'GHK-CU NOVAX 100MG/2ML', preco:750, marca:'NEOPEPTIDES', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=GHKCU', esgotado:false },
-            { id:6, nome:'KLOW-4 80mg/2ml', preco:1200, marca:'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=KLOW', esgotado:false },
-            { id:7, nome:'KPV 10mg/2ml', preco:580, marca:'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=KPV', esgotado:false },
-            { id:366, nome:'Retage 40mg Caneta', preco:1950, marca:'OXYGEN KW', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=Retage40', esgotado:false },
-            { id:367, nome:'Tizerpatida 60mg', preco:1400, marca:'KING PHARMA', img:'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tiz60K', esgotado:false }
+            { id: 1, nome: 'GHK-Cu 100mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=GHK-Cu',
+                esgotado: false },
+            { id: 2, nome: 'SLU-PP-332 5mg/3ml', preco: 600, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=SLU',
+                esgotado: false },
+            { id: 3, nome: 'Tesamorelin 10mg/3ml', preco: 750, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tesa',
+                esgotado: false },
+            { id: 4, nome: 'GLOW 70mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=GLOW',
+                esgotado: false },
+            { id: 5, nome: 'GHK-CU NOVAX 100MG/2ML', preco: 750, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=GHKCU',
+                esgotado: false },
+            { id: 6, nome: 'KLOW-4 80mg/2ml', preco: 1200, marca: 'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA',
+                img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=KLOW', esgotado: false },
+            { id: 7, nome: 'KPV 10mg/2ml', preco: 580, marca: 'PEPTÍDEOS PREMIUM – NOVAX PHARMACEUTICA',
+                img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=KPV', esgotado: false },
+            { id: 366, nome: 'Retage 40mg Caneta', preco: 1950, marca: 'OXYGEN KW', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Retage40',
+                esgotado: false },
+            { id: 367, nome: 'Tizerpatida 60mg', preco: 1400, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tiz60K',
+                esgotado: false }
         ];
-        let produtos = [], carrinho = [], usuarios = [], pedidos = [], clienteLogado = null, adminLogado = false;
-        let filtroMarca = 'TODAS', filtroAdminStatus = 'todos', clienteEditandoId = null;
+        let produtos = [],
+            carrinho = [],
+            usuarios = [],
+            pedidos = [],
+            clienteLogado = null,
+            adminLogado = false;
+        let filtroMarca = 'TODAS',
+            filtroAdminStatus = 'todos',
+            clienteEditandoId = null;
         const ITEMS_PER_PAGE = 30;
-        let catalogoPaginaAtual = 1, catalogoFiltrados = [], ordemMarcas = [], anuncioAtual = null;
-        let notificacaoIndicesExibidos = new Set();
-        let intervaloNotificacoes = null;
+        let catalogoPaginaAtual = 1,
+            catalogoFiltrados = [],
+            ordemMarcas = [],
+            anuncioAtual = null;
 
-        function createImageHTML(src, alt, className='') {
+        function createImageHTML(src, alt, className = '') {
             return `<div class="img-container"><svg class="placeholder-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><img src="${src}" alt="${alt}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'" class="${className}"></div>`;
         }
-        function mostrarToast(msg, tipo='info') {
+
+        function mostrarToast(msg, tipo = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.style.borderLeftColor = tipo === 'success' ? '#10b981' : tipo === 'error' ? '#ef4444' : '#3b82f6';
+            toast.style.borderLeftColor = tipo === 'success' ? '#10b981' : tipo === 'error' ? '#ef4444' :
+            '#3b82f6';
             toast.textContent = msg;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3300);
@@ -849,17 +1104,20 @@
             const overlay = document.getElementById('filterDrawerOverlay');
             const body = document.getElementById('filterDrawerBody');
             const marcas = getMarcasOrdenadas();
-            body.innerHTML = `<button class="toggle-brand ${filtroMarca === 'TODAS' ? 'active' : ''}" onclick="setFiltroMarca('TODAS'); atualizarDrawerFiltro();">🏷️ TODAS AS MARCAS</button>${marcas.map(m => `<button class="toggle-brand ${filtroMarca === m ? 'active' : ''}" onclick="setFiltroMarca('${m.replace(/'/g, "\\'")}'); atualizarDrawerFiltro();">${m}</button>`).join('')}`;
+            body.innerHTML =
+                `<button class="toggle-brand ${filtroMarca === 'TODAS' ? 'active' : ''}" onclick="setFiltroMarca('TODAS'); atualizarDrawerFiltro();">🏷️ TODAS AS MARCAS</button>${marcas.map(m => `<button class="toggle-brand ${filtroMarca === m ? 'active' : ''}" onclick="setFiltroMarca('${m.replace(/'/g, "\\'")}'); atualizarDrawerFiltro();">${m}</button>`).join('')}`;
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
             atualizarLabelFiltroMobile();
         }
+
         function fecharDrawerFiltro(e) {
             if (e && e.target !== document.getElementById('filterDrawerOverlay')) return;
             document.getElementById('filterDrawerOverlay').classList.remove('active');
             document.body.style.overflow = '';
             atualizarLabelFiltroMobile();
         }
+
         function atualizarDrawerFiltro() {
             const body = document.getElementById('filterDrawerBody');
             if (!body) return;
@@ -873,6 +1131,7 @@
             renderCatalogo();
             atualizarLabelFiltroMobile();
         }
+
         function atualizarLabelFiltroMobile() {
             const label = document.getElementById('filterMobileLabel');
             if (label) label.textContent = filtroMarca === 'TODAS' ? 'Filtrar por Marca' : filtroMarca;
@@ -882,14 +1141,15 @@
                 const snap = await db.collection('config').doc('ordemMarcas').get();
                 if (snap.exists && snap.data().ordem) ordemMarcas = snap.data().ordem;
                 else ordemMarcas = [];
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         }
         async function salvarOrdemMarcasFirestore() {
             try {
                 await db.collection('config').doc('ordemMarcas').set({ ordem: ordemMarcas }, { merge: true });
                 mostrarToast('✅ Ordem salva', 'success');
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         }
+
         function getMarcasOrdenadas() {
             const todas = [...new Set(produtos.map(p => p.marca))];
             if (ordemMarcas.length) {
@@ -914,7 +1174,8 @@
                     const batch = db.batch();
                     produtos.forEach(p => {
                         const ref = db.collection('produtos').doc(String(p.id));
-                        batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p.obs || '', esgotado: p.esgotado || false });
+                        batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img,
+                            obs: p.obs || '', esgotado: p.esgotado || false });
                     });
                     await batch.commit();
                 } else {
@@ -922,22 +1183,28 @@
                     produtosBase.forEach(p => mapBase[p.id] = p);
                     prodSnap.docs.forEach(fp => {
                         const d = fp.data();
-                        mapBase[d.id] = { ...mapBase[d.id], ...d, preco: parseFloat(d.preco) || 0, img: d.img || mapBase[d.id]?.img || '', esgotado: !!d.esgotado };
+                        mapBase[d.id] = { ...mapBase[d.id], ...d, preco: parseFloat(d.preco) || 0, img: d.img ||
+                                mapBase[d.id]?.img || '', esgotado: !!d.esgotado };
                     });
-                    produtos = Object.values(mapBase).sort((a,b) => a.id - b.id);
+                    produtos = Object.values(mapBase).sort((a, b) => a.id - b.id);
                 }
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 produtos = JSON.parse(JSON.stringify(produtosBase));
                 mostrarToast('Erro ao carregar dados do Firebase, usando cache local.', 'warning');
             }
         }
+
         function renderBrandFilters() {
             const marcas = getMarcasOrdenadas();
             const container = document.getElementById('brandFilters');
             if (!container) return;
-            container.innerHTML = '<button class="toggle-brand ' + (filtroMarca === 'TODAS' ? 'active' : '') + '" onclick="setFiltroMarca(\'TODAS\')">TODAS</button>' + marcas.map(m => '<button class="toggle-brand ' + (filtroMarca === m ? 'active' : '') + '" onclick="setFiltroMarca(\'' + m.replace(/'/g, "\\'") + '\')">' + m + '</button>').join('');
+            container.innerHTML = '<button class="toggle-brand ' + (filtroMarca === 'TODAS' ? 'active' : '') +
+                '" onclick="setFiltroMarca(\'TODAS\')">TODAS</button>' + marcas.map(m =>
+                    '<button class="toggle-brand ' + (filtroMarca === m ? 'active' : '') +
+                    '" onclick="setFiltroMarca(\'' + m.replace(/'/g, "\\'") + '\')">' + m + '</button>').join('');
         }
+
         function setFiltroMarca(m) {
             filtroMarca = m;
             catalogoPaginaAtual = 1;
@@ -946,10 +1213,13 @@
             atualizarLabelFiltroMobile();
             if (document.getElementById('filterDrawerOverlay').classList.contains('active')) atualizarDrawerFiltro();
         }
+
         function getProdutosFiltrados() {
             const s = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            return produtos.filter(p => (filtroMarca === 'TODAS' || p.marca === filtroMarca) && p.nome.toLowerCase().includes(s));
+            return produtos.filter(p => (filtroMarca === 'TODAS' || p.marca === filtroMarca) && p.nome.toLowerCase()
+                .includes(s));
         }
+
         function renderCatalogo() {
             const container = document.getElementById('catalogoContainer');
             const paginationEl = document.getElementById('catalogoPagination');
@@ -970,21 +1240,27 @@
                 const pr = esgotado ? 'ESGOTADO' : 'R$ ' + p.preco.toFixed(2);
                 const card = document.createElement('div');
                 card.className = 'product-card' + (esgotado ? ' esgotado' : '');
-                card.innerHTML = `${createImageHTML(p.img, p.nome)}<span class="brand-tag">${p.marca}</span><span class="name">${p.nome}</span><span class="price">${pr}</span><div style="display:flex;gap:0.5rem;justify-content:center;margin-top:auto;"><input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}" ${esgotado ? 'disabled' : ''}><button class="btn" onclick="adicionarAoCarrinho(${p.id})" ${esgotado ? 'disabled' : ''}>🛒</button></div>`;
+                card.innerHTML =
+                    `${createImageHTML(p.img, p.nome)}<span class="brand-tag">${p.marca}</span><span class="name">${p.nome}</span><span class="price">${pr}</span><div style="display:flex;gap:0.5rem;justify-content:center;margin-top:auto;"><input type="number" min="1" value="1" class="qty-input" id="qty-${p.id}" ${esgotado ? 'disabled' : ''}><button class="btn" onclick="adicionarAoCarrinho(${p.id})" ${esgotado ? 'disabled' : ''}>🛒</button></div>`;
                 container.appendChild(card);
             });
             let pagHTML = '';
             if (totalPages > 1) {
-                pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual - 1})" ${catalogoPaginaAtual === 1 ? 'disabled' : ''}>«</button>`;
+                pagHTML +=
+                    `<button onclick="irPagina(${catalogoPaginaAtual - 1})" ${catalogoPaginaAtual === 1 ? 'disabled' : ''}>«</button>`;
                 for (let i = 1; i <= totalPages; i++) {
                     if (i === 1 || i === totalPages || (i >= catalogoPaginaAtual - 2 && i <= catalogoPaginaAtual + 2))
-                        pagHTML += `<button onclick="irPagina(${i})" class="${i === catalogoPaginaAtual ? 'active' : ''}">${i}</button>`;
-                    else if (i === catalogoPaginaAtual - 3 || i === catalogoPaginaAtual + 3) pagHTML += '<button disabled>...</button>';
+                        pagHTML +=
+                        `<button onclick="irPagina(${i})" class="${i === catalogoPaginaAtual ? 'active' : ''}">${i}</button>`;
+                    else if (i === catalogoPaginaAtual - 3 || i === catalogoPaginaAtual + 3) pagHTML +=
+                        '<button disabled>...</button>';
                 }
-                pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual + 1})" ${catalogoPaginaAtual === totalPages ? 'disabled' : ''}>»</button>`;
+                pagHTML +=
+                    `<button onclick="irPagina(${catalogoPaginaAtual + 1})" ${catalogoPaginaAtual === totalPages ? 'disabled' : ''}>»</button>`;
             }
             paginationEl.innerHTML = pagHTML;
         }
+
         function irPagina(pag) {
             const total = Math.ceil(catalogoFiltrados.length / ITEMS_PER_PAGE) || 1;
             if (pag < 1 || pag > total) return;
@@ -992,6 +1268,7 @@
             renderCatalogo();
             document.getElementById('catalogoContainer').scrollIntoView({ behavior: 'smooth' });
         }
+
         function adicionarAoCarrinho(pid) {
             const p = produtos.find(x => x.id === pid);
             if (!p || p.esgotado) return;
@@ -1003,9 +1280,11 @@
             atualizarUI();
             mostrarToast('✅ ' + p.nome, 'success');
         }
+
         function atualizarUI() {
             document.getElementById('cart-count').textContent = carrinho.reduce((s, i) => s + i.qtd, 0);
-            const bf = document.getElementById('btnFinalizar'), ml = document.getElementById('msgLoginNeeded');
+            const bf = document.getElementById('btnFinalizar'),
+                ml = document.getElementById('msgLoginNeeded');
             if (clienteLogado) {
                 if (bf) bf.disabled = false;
                 if (ml) ml.style.display = 'none';
@@ -1029,39 +1308,49 @@
             if (navLogout) navLogout.style.display = (clienteLogado || adminLogado) ? 'inline-block' : 'none';
             if (navLogin) navLogin.style.display = (clienteLogado || adminLogado) ? 'none' : 'inline-block';
         }
+
         function showSection(id) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             const sec = document.getElementById(id);
             if (sec) sec.classList.add('active');
-            if (id === 'catalogo') { catalogoPaginaAtual = 1; renderCatalogo(); }
+            if (id === 'catalogo') { catalogoPaginaAtual = 1;
+                renderCatalogo(); }
             if (id === 'carrinho') renderCarrinho();
             if (id === 'admin') renderAdmin();
             if (id === 'gerenciarClientes') renderGerenciarClientes();
-            if (id === 'gerenciarProdutos') { atualizarMarcaSelect(); renderGerenciarProdutos(); }
+            if (id === 'gerenciarProdutos') { atualizarMarcaSelect();
+                renderGerenciarProdutos(); }
             if (id === 'ordenarMarcas') renderOrdenarMarcas();
             if (id === 'gerenciarAnuncio') renderGerenciarAnuncio();
             window.scrollTo({ top: 0 });
         }
+
         function logout() {
             clienteLogado = null;
             adminLogado = false;
             sessionStorage.clear();
             localStorage.removeItem('carrinho');
+            carrinho = [];
             showSection('catalogo');
             atualizarUI();
             mostrarToast('Sessão encerrada.', 'info');
         }
         let debounceTimer;
+
         function debounceSearch() {
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => { catalogoPaginaAtual = 1; renderCatalogo(); }, 250);
+            debounceTimer = setTimeout(() => { catalogoPaginaAtual = 1;
+                renderCatalogo(); }, 250);
         }
+
         function calcularTotaisCarrinho() {
             const sub = carrinho.reduce((s, i) => s + i.preco * i.qtd, 0);
             let frete = 0;
-            if (clienteLogado && clienteLogado.regiao && fretePorRegiao[clienteLogado.regiao]) frete = fretePorRegiao[clienteLogado.regiao];
+            if (clienteLogado && clienteLogado.regiao && fretePorRegiao[clienteLogado.regiao]) frete =
+                fretePorRegiao[clienteLogado.regiao];
             return { subtotal: sub, frete, total: sub + frete };
         }
+
         function renderCarrinho() {
             const c = document.getElementById('carrinhoContainer');
             const r = document.getElementById('carrinhoResumo');
@@ -1077,21 +1366,25 @@
                 const mt = item.marca ? ' (' + item.marca + ')' : '';
                 const card = document.createElement('div');
                 card.className = 'card flex-row flex-between';
-                card.innerHTML = `<div><strong>${item.nome}</strong>${mt}<br>R$ ${item.preco.toFixed(2)} x ${item.qtd} = <strong>R$ ${sub.toFixed(2)}</strong></div><div class="flex-row"><input type="number" min="1" value="${item.qtd}" class="qty-input" onchange="alterarQtdCarrinho(${i}, this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(${i})">🗑️</button></div>`;
+                card.innerHTML =
+                    `<div><strong>${item.nome}</strong>${mt}<br>R$ ${item.preco.toFixed(2)} x ${item.qtd} = <strong>R$ ${sub.toFixed(2)}</strong></div><div class="flex-row"><input type="number" min="1" value="${item.qtd}" class="qty-input" onchange="alterarQtdCarrinho(${i}, this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(${i})">🗑️</button></div>`;
                 c.appendChild(card);
             });
             const t = calcularTotaisCarrinho();
             document.getElementById('resumoItens').textContent = carrinho.reduce((s, i) => s + i.qtd, 0);
             document.getElementById('resumoSubtotal').textContent = 'R$ ' + t.subtotal.toFixed(2);
-            document.getElementById('resumoFrete').textContent = t.frete > 0 ? 'R$ ' + t.frete.toFixed(2) : (clienteLogado ? 'R$ 0,00' : 'Faça login');
+            document.getElementById('resumoFrete').textContent = t.frete > 0 ? 'R$ ' + t.frete.toFixed(2) : (clienteLogado ?
+                'R$ 0,00' : 'Faça login');
             document.getElementById('resumoTotal').textContent = 'R$ ' + t.total.toFixed(2);
         }
+
         function alterarQtdCarrinho(i, v) {
             carrinho[i].qtd = Math.max(1, parseInt(v) || 1);
             localStorage.setItem('carrinho', JSON.stringify(carrinho));
             renderCarrinho();
             atualizarUI();
         }
+
         function removerDoCarrinho(i) {
             carrinho.splice(i, 1);
             localStorage.setItem('carrinho', JSON.stringify(carrinho));
@@ -1104,10 +1397,13 @@
             if (!carrinho.length) return;
             const t = calcularTotaisCarrinho();
             const num = Date.now().toString().slice(-8);
-            const enderecoFormatado = `Rua: ${clienteLogado.rua || ''}, Nº ${clienteLogado.numero || ''}\nRef: ${clienteLogado.referencia || ''}\nBairro: ${clienteLogado.bairro || ''}\nCidade: ${clienteLogado.cidade || ''}\nEstado: ${clienteLogado.regiao || ''}\nCEP: ${clienteLogado.cep || ''}`;
+            const enderecoFormatado =
+                `Rua: ${clienteLogado.rua || ''}, Nº ${clienteLogado.numero || ''}\nRef: ${clienteLogado.referencia || ''}\nBairro: ${clienteLogado.bairro || ''}\nCidade: ${clienteLogado.cidade || ''}\nEstado: ${clienteLogado.regiao || ''}\nCEP: ${clienteLogado.cep || ''}`;
             let itensMsg = '';
-            carrinho.forEach(item => { itensMsg += `➤ ${item.qtd}x ${item.nome} (${item.marca || ''}) - R$ ${(item.preco * item.qtd).toFixed(2)}\n`; });
-            const mensagem = `⚠️ *NOVO PEDIDO #${num}*\n\n*Cliente:* ${clienteLogado.nome}\n*CPF:* ${clienteLogado.cpf}\n*Contato:* ${clienteLogado.contato}\n\n*ENDEREÇO:*\n${enderecoFormatado}\n\n*ITENS:*\n${itensMsg}\nSubtotal: R$ ${t.subtotal.toFixed(2)}\nFrete: R$ ${t.frete.toFixed(2)}\nTOTAL: R$ ${t.total.toFixed(2)}`;
+            carrinho.forEach(item => { itensMsg +=
+                    `➤ ${item.qtd}x ${item.nome} (${item.marca || ''}) - R$ ${(item.preco * item.qtd).toFixed(2)}\n`; });
+            const mensagem =
+                `⚠️ *NOVO PEDIDO #${num}*\n\n*Cliente:* ${clienteLogado.nome}\n*CPF:* ${clienteLogado.cpf}\n*Contato:* ${clienteLogado.contato}\n\n*ENDEREÇO:*\n${enderecoFormatado}\n\n*ITENS:*\n${itensMsg}\nSubtotal: R$ ${t.subtotal.toFixed(2)}\nFrete: R$ ${t.frete.toFixed(2)}\nTOTAL: R$ ${t.total.toFixed(2)}`;
             if (confirm('Confirma o pedido? Total: R$ ' + t.total.toFixed(2))) {
                 const novoPedido = {
                     id: Date.now(),
@@ -1134,6 +1430,7 @@
                 window.open(`https://wa.me/5519997390834?text=${encodeURIComponent(mensagem)}`, '_blank');
             }
         }
+
         function loginCliente() {
             const cpf = document.getElementById('loginCpf').value.replace(/\D/g, '');
             const u = usuarios.find(u => u.cpf === cpf);
@@ -1145,6 +1442,7 @@
             showSection('catalogo');
             mostrarToast('👋 Bem-vindo(a)', 'success');
         }
+
         function cadastrarCliente() {
             const n = document.getElementById('cadNome').value.trim();
             const c = document.getElementById('cadCpf').value.replace(/\D/g, '');
@@ -1156,9 +1454,11 @@
             const regiao = document.getElementById('cadRegiao').value;
             const cep = document.getElementById('cadCep').value.trim();
             const contato = document.getElementById('cadContato').value.trim();
-            if (!n || !c || !rua || !num || !bairro || !cidade || !regiao || !contato) return mostrarToast('Preencha todos os campos.', 'error');
+            if (!n || !c || !rua || !num || !bairro || !cidade || !regiao || !contato) return mostrarToast(
+                'Preencha todos os campos.', 'error');
             if (usuarios.find(u => u.cpf === c)) return mostrarToast('CPF já cadastrado.', 'error');
-            const novo = { id: Date.now(), nome: n, cpf: c, rua, numero: num, referencia: ref, bairro, cidade, regiao, cep, contato, endereco: `${rua}, ${num} - ${ref} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}` };
+            const novo = { id: Date.now(), nome: n, cpf: c, rua, numero: num, referencia: ref, bairro, cidade, regiao, cep,
+                contato, endereco: `${rua}, ${num} - ${ref} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}` };
             usuarios.push(novo);
             db.collection('usuarios').doc(String(novo.id)).set(novo);
             clienteLogado = novo;
@@ -1167,9 +1467,12 @@
             showSection('catalogo');
             mostrarToast('🎉 Cadastro realizado!', 'success');
         }
+
         function showAdminLogin() { showSection('admin'); }
+
         function loginAdmin() {
-            if (document.getElementById('adminUser').value.trim() === 'BOMBADAVID' && document.getElementById('adminPass').value.trim() === '5858') {
+            if (document.getElementById('adminUser').value.trim() === 'BOMBADAVID' && document.getElementById('adminPass')
+                .value.trim() === '5858') {
                 adminLogado = true;
                 clienteLogado = null;
                 sessionStorage.setItem('adminLogado', JSON.stringify(adminLogado));
@@ -1181,13 +1484,17 @@
                 mostrarToast('🔑 Acesso admin liberado.', 'success');
             } else mostrarToast('Credenciais inválidas.', 'error');
         }
+
         function renderAdmin() {
             if (!adminLogado) return;
             document.getElementById('adminLoginForm').style.display = 'none';
             document.getElementById('adminContent').classList.remove('hidden');
             renderAdminPedidos();
         }
-        function filtrarPedidos(s) { filtroAdminStatus = s; renderAdminPedidos(); }
+
+        function filtrarPedidos(s) { filtroAdminStatus = s;
+            renderAdminPedidos(); }
+
         function renderAdminPedidos() {
             const container = document.getElementById('adminPedidosContainer');
             let f = pedidos;
@@ -1198,7 +1505,8 @@
             f.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `<div class="flex-row flex-between"><div><strong>#${p.numero}</strong> <span class="status-badge ${p.status === 'pendente' ? 'status-pendente' : 'status-finalizado'}">${p.status}</span></div><div class="flex-row">${p.status === 'pendente' ? `<button class="btn btn-success btn-sm" onclick="marcarFinalizado(${p.id})">✅ Finalizar</button>` : ''}<button class="btn btn-danger btn-sm" onclick="apagarPedido(${p.id})">🗑️ Excluir</button></div></div><p><strong>${p.clienteNome}</strong> | ${p.clienteContato}</p><p style="font-size:0.85rem;">${p.clienteEndereco}</p><p>${p.itens.map(i => i.qtd + 'x ' + i.nome).join(', ')}</p><p style="font-size:1.2rem;font-weight:800;color:#059669;">Total: R$ ${p.total.toFixed(2)}</p>`;
+                card.innerHTML =
+                    `<div class="flex-row flex-between"><div><strong>#${p.numero}</strong> <span class="status-badge ${p.status === 'pendente' ? 'status-pendente' : 'status-finalizado'}">${p.status}</span></div><div class="flex-row">${p.status === 'pendente' ? `<button class="btn btn-success btn-sm" onclick="marcarFinalizado(${p.id})">✅ Finalizar</button>` : ''}<button class="btn btn-danger btn-sm" onclick="apagarPedido(${p.id})">🗑️ Excluir</button></div></div><p><strong>${p.clienteNome}</strong> | ${p.clienteContato}</p><p style="font-size:0.85rem;">${p.clienteEndereco}</p><p>${p.itens.map(i => i.qtd + 'x ' + i.nome).join(', ')}</p><p style="font-size:1.2rem;font-weight:800;color:#059669;">Total: R$ ${p.total.toFixed(2)}</p>`;
                 container.appendChild(card);
             });
         }
@@ -1219,6 +1527,7 @@
                 mostrarToast('🗑️ Pedido excluído.', 'info');
             }
         }
+
         function renderGerenciarClientes() {
             if (!adminLogado) return;
             const container = document.getElementById('clientesContainer');
@@ -1229,7 +1538,8 @@
             filtrados.forEach(u => {
                 const card = document.createElement('div');
                 card.className = 'client-card flex-row flex-between';
-                card.innerHTML = `<div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📱 ${u.contato}</small><br><small>${u.endereco || ''}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️ Editar</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️ Excluir</button></div>`;
+                card.innerHTML =
+                    `<div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📱 ${u.contato}</small><br><small>${u.endereco || ''}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️ Editar</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️ Excluir</button></div>`;
                 container.appendChild(card);
             });
         }
@@ -1244,6 +1554,7 @@
                 mostrarToast('🗑️ Cliente excluído.', 'info');
             }
         }
+
         function abrirModalEditarCliente(id) {
             const u = usuarios.find(x => x.id === id);
             if (!u) return;
@@ -1261,7 +1572,9 @@
             document.getElementById('editClienteId').value = id;
             document.getElementById('modalEditarCliente').classList.remove('hidden');
         }
-        function fecharModal() { document.getElementById('modalEditarCliente').classList.add('hidden'); clienteEditandoId = null; }
+
+        function fecharModal() { document.getElementById('modalEditarCliente').classList.add('hidden');
+            clienteEditandoId = null; }
         async function salvarEdicaoCliente() {
             const id = parseInt(document.getElementById('editClienteId').value);
             const u = usuarios.find(x => x.id === id);
@@ -1275,26 +1588,41 @@
             u.regiao = document.getElementById('editRegiao').value;
             u.cep = document.getElementById('editCep').value.trim();
             u.contato = document.getElementById('editContato').value.trim();
-            u.endereco = `${u.rua}, ${u.numero} - Ref: ${u.referencia || 'N/A'} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}`;
+            u.endereco =
+                `${u.rua}, ${u.numero} - Ref: ${u.referencia || 'N/A'} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}`;
             await db.collection('usuarios').doc(String(id)).update(u);
-            if (clienteLogado && clienteLogado.id === id) { clienteLogado = u; sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado)); }
+            if (clienteLogado && clienteLogado.id === id) { clienteLogado = u;
+                sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado)); }
             fecharModal();
             renderGerenciarClientes();
             mostrarToast('💾 Dados atualizados.', 'success');
         }
+
         function atualizarMarcaSelect() {
             const select = document.getElementById('novoProdMarcaSelect');
+            if (!select) return;
             const marcas = getMarcasOrdenadas();
             select.innerHTML = '<option value="">Selecione a marca...</option>';
-            marcas.forEach(m => { const opt = document.createElement('option'); opt.value = m; opt.textContent = m; select.appendChild(opt); });
-            const optNova = document.createElement('option'); optNova.value = '__nova__'; optNova.textContent = '+ Nova Marca...'; select.appendChild(optNova);
+            marcas.forEach(m => { const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                select.appendChild(opt); });
+            const optNova = document.createElement('option');
+            optNova.value = '__nova__';
+            optNova.textContent = '+ Nova Marca...';
+            select.appendChild(optNova);
             toggleNovaMarcaInput();
         }
+
         function toggleNovaMarcaInput() {
             const select = document.getElementById('novoProdMarcaSelect');
             const inputNovo = document.getElementById('novoProdMarcaNovo');
-            if (select && select.value === '__nova__') { inputNovo.classList.remove('hidden'); inputNovo.focus(); } else { inputNovo.classList.add('hidden'); inputNovo.value = ''; }
+            if (!select || !inputNovo) return;
+            if (select.value === '__nova__') { inputNovo.classList.remove('hidden');
+                inputNovo.focus(); } else { inputNovo.classList.add('hidden');
+                inputNovo.value = ''; }
         }
+
         function renderGerenciarProdutos() {
             if (!adminLogado) return;
             const container = document.getElementById('gerenciarContainer');
@@ -1303,18 +1631,24 @@
             produtos.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'produto-editar-item';
-                item.style.display = 'flex';
-                item.style.gap = '0.8rem';
-                item.style.padding = '1rem';
-                item.style.border = '1px solid var(--border)';
-                item.style.borderRadius = '12px';
-                item.style.marginBottom = '0.8rem';
-                item.style.flexWrap = 'wrap';
-                item.style.alignItems = 'center';
-                item.innerHTML = `<div style="width:80px;height:80px;">${createImageHTML(p.img, p.nome)}</div><input type="text" value="${p.nome.replace(/"/g, '&quot;')}" id="nome-${p.id}" style="flex:2;"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:100px;"><input type="text" value="${p.marca.replace(/"/g, '&quot;')}" id="marca-${p.id}" style="flex:1;"><input type="file" id="file-${p.id}" accept="image/*"><button class="btn btn-success btn-sm" onclick="salvarEdicaoProduto(${p.id})">💾 Salvar</button><button class="btn btn-danger btn-sm" onclick="excluirProduto(${p.id})">🗑️ Excluir</button>`;
+                item.innerHTML =
+                    `<div style="width:80px;height:80px;flex-shrink:0;">${createImageHTML(p.img, p.nome)}</div><input type="text" value="${p.nome.replace(/"/g, '&quot;')}" id="nome-${p.id}" style="flex:2;min-width:120px;"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:100px;"><input type="text" value="${p.marca.replace(/"/g, '&quot;')}" id="marca-${p.id}" style="flex:1;min-width:100px;"><input type="file" id="file-${p.id}" accept="image/*" style="width:120px;"><button class="btn-esgotado ${p.esgotado ? 'ativo' : ''}" id="btnEsgotado-${p.id}" onclick="toggleEsgotado(${p.id})">${p.esgotado ? '🚫 Esgotado' : '✅ Disponível'}</button><button class="btn btn-success btn-sm" onclick="salvarEdicaoProduto(${p.id})">💾 Salvar</button><button class="btn btn-danger btn-sm" onclick="excluirProduto(${p.id})">🗑️ Excluir</button>`;
                 container.appendChild(item);
             });
         }
+
+        function toggleEsgotado(id) {
+            const p = produtos.find(prod => prod.id === id);
+            if (!p) return;
+            p.esgotado = !p.esgotado;
+            const btn = document.getElementById('btnEsgotado-' + id);
+            if (btn) {
+                btn.textContent = p.esgotado ? '🚫 Esgotado' : '✅ Disponível';
+                btn.classList.toggle('ativo', p.esgotado);
+            }
+            mostrarToast(p.esgotado ? '🚫 Marcado como esgotado' : '✅ Marcado como disponível', 'info');
+        }
+
         async function salvarEdicaoProduto(id) {
             const p = produtos.find(prod => prod.id === id);
             if (!p) return;
@@ -1322,10 +1656,14 @@
             const preco = parseFloat(document.getElementById(`preco-${id}`).value) || 0;
             const marca = document.getElementById(`marca-${id}`).value.trim();
             if (!nome) return mostrarToast('Nome obrigatório', 'error');
-            p.nome = nome; p.preco = preco; p.marca = marca;
-            await db.collection('produtos').doc(String(id)).set({ id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, esgotado: p.esgotado }, { merge: true });
+            p.nome = nome;
+            p.preco = preco;
+            p.marca = marca;
+            await db.collection('produtos').doc(String(id)).set({ id: p.id, nome: p.nome, preco: p.preco, marca: p.marca,
+                img: p.img, esgotado: p.esgotado }, { merge: true });
             renderGerenciarProdutos();
             renderCatalogo();
+            renderBrandFilters();
             mostrarToast('✅ Produto atualizado', 'success');
         }
         async function excluirProduto(id) {
@@ -1336,6 +1674,7 @@
             await db.collection('produtos').doc(String(id)).delete();
             renderGerenciarProdutos();
             renderCatalogo();
+            renderBrandFilters();
             mostrarToast('🗑️ Produto excluído', 'info');
         }
         async function adicionarNovoProduto() {
@@ -1345,9 +1684,10 @@
             let marca = document.getElementById('novoProdMarcaSelect').value;
             if (marca === '__nova__') marca = document.getElementById('novoProdMarcaNovo').value.trim();
             if (!nome || !marca) return mostrarToast('Nome e marca obrigatórios', 'error');
+            const esgotado = document.getElementById('novoProdEsgotado')?.checked || false;
             const novoId = Date.now();
             const imgPadrao = 'https://placehold.co/150x150/f1f5f9/3b82f6?text=' + encodeURIComponent(nome.substring(0, 10));
-            const novoProd = { id: novoId, nome, preco, marca, img: imgPadrao, obs: '', esgotado: false };
+            const novoProd = { id: novoId, nome, preco, marca, img: imgPadrao, obs: '', esgotado };
             produtos.push(novoProd);
             await db.collection('produtos').doc(String(novoId)).set(novoProd);
             document.getElementById('novoProdNome').value = '';
@@ -1355,11 +1695,14 @@
             document.getElementById('novoProdMarcaSelect').value = '';
             document.getElementById('novoProdMarcaNovo').value = '';
             document.getElementById('novoProdMarcaNovo').classList.add('hidden');
+            if (document.getElementById('novoProdEsgotado')) document.getElementById('novoProdEsgotado').checked = false;
             renderGerenciarProdutos();
             renderCatalogo();
+            renderBrandFilters();
             atualizarMarcaSelect();
             mostrarToast('✅ Produto adicionado', 'success');
         }
+
         function renderOrdenarMarcas() {
             if (!adminLogado) return;
             const container = document.getElementById('ordenarMarcasContainer');
@@ -1375,14 +1718,19 @@
                 div.style.border = '1px solid var(--border)';
                 div.style.borderRadius = '12px';
                 div.style.marginBottom = '0.5rem';
-                div.innerHTML = `<span>🏷️ ${marca}</span><div><button onclick="moverMarca(${idx},'cima')" ${idx === 0 ? 'disabled' : ''}>▲</button><button onclick="moverMarca(${idx},'baixo')" ${idx === marcas.length - 1 ? 'disabled' : ''}>▼</button></div>`;
+                div.style.background = '#fff';
+                div.innerHTML =
+                    `<span>🏷️ ${marca}</span><div><button onclick="moverMarca(${idx},'cima')" ${idx === 0 ? 'disabled' : ''}>▲</button><button onclick="moverMarca(${idx},'baixo')" ${idx === marcas.length - 1 ? 'disabled' : ''}>▼</button></div>`;
                 container.appendChild(div);
             });
         }
+
         function moverMarca(index, dir) {
             const marcas = getMarcasOrdenadas();
-            if (dir === 'cima' && index > 0) [marcas[index - 1], marcas[index]] = [marcas[index], marcas[index - 1]];
-            else if (dir === 'baixo' && index < marcas.length - 1) [marcas[index], marcas[index + 1]] = [marcas[index + 1], marcas[index]];
+            if (dir === 'cima' && index > 0)[marcas[index - 1], marcas[index]] = [marcas[index], marcas[index - 1]];
+            else if (dir === 'baixo' && index < marcas.length - 1)[marcas[index], marcas[index + 1]] = [marcas[index + 1],
+                marcas[index]
+            ];
             else return;
             ordemMarcas = [...marcas];
             renderOrdenarMarcas();
@@ -1407,9 +1755,10 @@
                 const snap = await db.collection('config').doc('announcement').get();
                 if (snap.exists) anuncioAtual = snap.data();
                 else anuncioAtual = null;
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
             exibirAnuncioBanner();
         }
+
         function exibirAnuncioBanner() {
             const banner = document.getElementById('anuncioBanner');
             const tituloEl = document.getElementById('anuncioTitulo');
@@ -1423,10 +1772,12 @@
                 banner.classList.remove('hidden');
             } else banner.classList.add('hidden');
         }
+
         function fecharAnuncioCliente() {
             sessionStorage.setItem('anuncioFechado', 'true');
             document.getElementById('anuncioBanner').classList.add('hidden');
         }
+
         function previewAnuncio() {
             const ativo = document.getElementById('anuncioAtivo').checked;
             const titulo = document.getElementById('anuncioTituloInput').value.trim();
@@ -1464,6 +1815,7 @@
             mostrarToast('🗑️ Anúncio removido', 'info');
             renderGerenciarAnuncio();
         }
+
         function renderGerenciarAnuncio() {
             if (!adminLogado) return;
             document.getElementById('anuncioAtivo').checked = anuncioAtual?.ativo || false;
@@ -1472,12 +1824,11 @@
             document.getElementById('anuncioCorSelect').value = anuncioAtual?.cor || 'warning';
             previewAnuncio();
         }
+
         function toggleCadastro() {
             document.getElementById('loginForm').classList.toggle('hidden');
             document.getElementById('cadastroForm').classList.toggle('hidden');
         }
-        function gerarNotificacaoDePedido(pedido) { }
-        function iniciarIntervaloNotificacoes() { }
 
         async function init() {
             carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
@@ -1500,4 +1851,3 @@
     </script>
 </body>
 </html>
-
