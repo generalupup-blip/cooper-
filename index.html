@@ -939,6 +939,10 @@
                     <div class="form-group" style="display:flex;align-items:center;gap:0.5rem;"><label style="margin:0;">Esgotado</label><input type="checkbox" id="novoProdEsgotado"></div>
                     <button class="btn btn-success" onclick="adicionarNovoProduto()">➕ Adicionar</button>
                 </div>
+                <div id="previewNovaImagem" class="mt-2" style="display:none;">
+                    <p>Pré-visualização:</p>
+                    <img id="previewNovaImgTag" src="" alt="Preview" style="max-width:150px; border-radius:12px; border:1px solid var(--border);">
+                </div>
             </div>
             <div id="gerenciarContainer"></div>
         </section>
@@ -972,8 +976,8 @@
             </div>
         </section>
 
-        <div id="modalEditarCliente" class="modal-overlay hidden">
-            <div class="modal">
+        <div id="modalEditarCliente" class="modal-overlay hidden" onclick="if(event.target===this) fecharModal()">
+            <div class="modal" onclick="event.stopPropagation()">
                 <h3>✏️ Editar Cliente</h3>
                 <input type="hidden" id="editClienteId">
                 <div class="form-group"><label>Nome</label><input type="text" id="editNome"></div>
@@ -1066,6 +1070,16 @@
             catalogoFiltrados = [],
             ordemMarcas = [],
             anuncioAtual = null;
+        let imagensTemp = {};
+
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
 
         function createImageHTML(src, alt, className = '') {
             return `<div class="img-container"><svg class="placeholder-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><img src="${src}" alt="${alt}" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'" class="${className}"></div>`;
@@ -1331,6 +1345,7 @@
             sessionStorage.clear();
             localStorage.removeItem('carrinho');
             carrinho = [];
+            imagensTemp = {};
             showSection('catalogo');
             atualizarUI();
             mostrarToast('Sessão encerrada.', 'info');
@@ -1623,6 +1638,29 @@
                 inputNovo.value = ''; }
         }
 
+        // Preview da nova imagem ao selecionar
+        document.addEventListener('DOMContentLoaded', function() {
+            const novoImgInput = document.getElementById('novoProdImg');
+            if (novoImgInput) {
+                novoImgInput.addEventListener('change', async function() {
+                    const file = this.files[0];
+                    const previewDiv = document.getElementById('previewNovaImagem');
+                    const previewImg = document.getElementById('previewNovaImgTag');
+                    if (file && previewDiv && previewImg) {
+                        try {
+                            const dataUrl = await readFileAsDataURL(file);
+                            previewImg.src = dataUrl;
+                            previewDiv.style.display = 'block';
+                        } catch (e) {
+                            previewDiv.style.display = 'none';
+                        }
+                    } else {
+                        if (previewDiv) previewDiv.style.display = 'none';
+                    }
+                });
+            }
+        });
+
         function renderGerenciarProdutos() {
             if (!adminLogado) return;
             const container = document.getElementById('gerenciarContainer');
@@ -1632,8 +1670,41 @@
                 const item = document.createElement('div');
                 item.className = 'produto-editar-item';
                 item.innerHTML =
-                    `<div style="width:80px;height:80px;flex-shrink:0;">${createImageHTML(p.img, p.nome)}</div><input type="text" value="${p.nome.replace(/"/g, '&quot;')}" id="nome-${p.id}" style="flex:2;min-width:120px;"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:100px;"><input type="text" value="${p.marca.replace(/"/g, '&quot;')}" id="marca-${p.id}" style="flex:1;min-width:100px;"><input type="file" id="file-${p.id}" accept="image/*" style="width:120px;"><button class="btn-esgotado ${p.esgotado ? 'ativo' : ''}" id="btnEsgotado-${p.id}" onclick="toggleEsgotado(${p.id})">${p.esgotado ? '🚫 Esgotado' : '✅ Disponível'}</button><button class="btn btn-success btn-sm" onclick="salvarEdicaoProduto(${p.id})">💾 Salvar</button><button class="btn btn-danger btn-sm" onclick="excluirProduto(${p.id})">🗑️ Excluir</button>`;
+                    `<div style="width:80px;height:80px;flex-shrink:0;" id="thumb-${p.id}">${createImageHTML(p.img, p.nome)}</div>
+                     <input type="text" value="${p.nome.replace(/"/g, '&quot;')}" id="nome-${p.id}" style="flex:2;min-width:120px;">
+                     <input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:100px;">
+                     <input type="text" value="${p.marca.replace(/"/g, '&quot;')}" id="marca-${p.id}" style="flex:1;min-width:100px;">
+                     <input type="file" id="file-${p.id}" accept="image/*" style="width:120px;">
+                     <button class="btn-esgotado ${p.esgotado ? 'ativo' : ''}" id="btnEsgotado-${p.id}">${p.esgotado ? '🚫 Esgotado' : '✅ Disponível'}</button>
+                     <button class="btn btn-success btn-sm" id="salvar-${p.id}">💾 Salvar</button>
+                     <button class="btn btn-danger btn-sm" id="excluir-${p.id}">🗑️ Excluir</button>`;
                 container.appendChild(item);
+
+                // Eventos
+                const btnEsgotado = document.getElementById('btnEsgotado-' + p.id);
+                btnEsgotado.addEventListener('click', () => toggleEsgotado(p.id));
+
+                const fileInput = document.getElementById('file-' + p.id);
+                fileInput.addEventListener('change', async function() {
+                    const file = this.files[0];
+                    if (file) {
+                        try {
+                            const dataUrl = await readFileAsDataURL(file);
+                            imagensTemp[p.id] = dataUrl;
+                            // Atualizar preview
+                            const thumb = document.getElementById('thumb-' + p.id);
+                            if (thumb) {
+                                thumb.innerHTML = createImageHTML(dataUrl, p.nome);
+                            }
+                        } catch (e) {
+                            console.error('Erro ao ler imagem:', e);
+                        }
+                    }
+                });
+
+                document.getElementById('salvar-' + p.id).addEventListener('click', () => salvarEdicaoProduto(p
+                    .id));
+                document.getElementById('excluir-' + p.id).addEventListener('click', () => excluirProduto(p.id));
             });
         }
 
@@ -1659,24 +1730,37 @@
             p.nome = nome;
             p.preco = preco;
             p.marca = marca;
-            await db.collection('produtos').doc(String(id)).set({ id: p.id, nome: p.nome, preco: p.preco, marca: p.marca,
-                img: p.img, esgotado: p.esgotado }, { merge: true });
+            if (imagensTemp[id]) {
+                p.img = imagensTemp[id];
+                delete imagensTemp[id];
+            }
+            await db.collection('produtos').doc(String(id)).set({
+                id: p.id,
+                nome: p.nome,
+                preco: p.preco,
+                marca: p.marca,
+                img: p.img,
+                esgotado: p.esgotado
+            }, { merge: true });
             renderGerenciarProdutos();
             renderCatalogo();
             renderBrandFilters();
             mostrarToast('✅ Produto atualizado', 'success');
         }
+
         async function excluirProduto(id) {
             if (!confirm('Excluir produto?')) return;
             const index = produtos.findIndex(p => p.id === id);
             if (index === -1) return;
             produtos.splice(index, 1);
+            delete imagensTemp[id];
             await db.collection('produtos').doc(String(id)).delete();
             renderGerenciarProdutos();
             renderCatalogo();
             renderBrandFilters();
             mostrarToast('🗑️ Produto excluído', 'info');
         }
+
         async function adicionarNovoProduto() {
             if (!adminLogado) return;
             const nome = document.getElementById('novoProdNome').value.trim();
@@ -1686,8 +1770,16 @@
             if (!nome || !marca) return mostrarToast('Nome e marca obrigatórios', 'error');
             const esgotado = document.getElementById('novoProdEsgotado')?.checked || false;
             const novoId = Date.now();
-            const imgPadrao = 'https://placehold.co/150x150/f1f5f9/3b82f6?text=' + encodeURIComponent(nome.substring(0, 10));
-            const novoProd = { id: novoId, nome, preco, marca, img: imgPadrao, obs: '', esgotado };
+            let img = 'https://placehold.co/150x150/f1f5f9/3b82f6?text=' + encodeURIComponent(nome.substring(0, 10));
+            const fileInput = document.getElementById('novoProdImg');
+            if (fileInput && fileInput.files[0]) {
+                try {
+                    img = await readFileAsDataURL(fileInput.files[0]);
+                } catch (e) {
+                    console.error('Erro ao ler imagem:', e);
+                }
+            }
+            const novoProd = { id: novoId, nome, preco, marca, img, obs: '', esgotado };
             produtos.push(novoProd);
             await db.collection('produtos').doc(String(novoId)).set(novoProd);
             document.getElementById('novoProdNome').value = '';
@@ -1696,6 +1788,9 @@
             document.getElementById('novoProdMarcaNovo').value = '';
             document.getElementById('novoProdMarcaNovo').classList.add('hidden');
             if (document.getElementById('novoProdEsgotado')) document.getElementById('novoProdEsgotado').checked = false;
+            if (fileInput) fileInput.value = '';
+            const previewDiv = document.getElementById('previewNovaImagem');
+            if (previewDiv) previewDiv.style.display = 'none';
             renderGerenciarProdutos();
             renderCatalogo();
             renderBrandFilters();
@@ -1712,13 +1807,8 @@
             marcas.forEach((marca, idx) => {
                 const div = document.createElement('div');
                 div.className = 'marca-order-item';
-                div.style.display = 'flex';
-                div.style.justifyContent = 'space-between';
-                div.style.padding = '0.8rem';
-                div.style.border = '1px solid var(--border)';
-                div.style.borderRadius = '12px';
-                div.style.marginBottom = '0.5rem';
-                div.style.background = '#fff';
+                div.style.cssText =
+                    'display:flex;justify-content:space-between;padding:0.8rem;border:1px solid var(--border);border-radius:12px;margin-bottom:0.5rem;background:#fff;';
                 div.innerHTML =
                     `<span>🏷️ ${marca}</span><div><button onclick="moverMarca(${idx},'cima')" ${idx === 0 ? 'disabled' : ''}>▲</button><button onclick="moverMarca(${idx},'baixo')" ${idx === marcas.length - 1 ? 'disabled' : ''}>▼</button></div>`;
                 container.appendChild(div);
