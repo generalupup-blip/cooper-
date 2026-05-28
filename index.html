@@ -254,7 +254,49 @@
         async function carregarOrdemMarcas(){try{const snap=await db.collection('config').doc('ordemMarcas').get({source:'default'});ordemMarcas=snap.exists?snap.data().ordem||[]:[]}catch(e){console.error(e)}}
         async function salvarOrdemMarcasFirestore(){await db.collection('config').doc('ordemMarcas').set({ordem:ordemMarcas},{merge:!0});mostrarToast('✅ Ordem salva','success')}
         function getMarcasOrdenadas(){const todas=[...new Set(produtos.map(p=>p.marca))];if(ordemMarcas.length){const ordenadas=[];ordemMarcas.forEach(m=>{if(todas.includes(m))ordenadas.push(m)});const novas=todas.filter(m=>!ordemMarcas.includes(m)).sort();return ordenadas.concat(novas)}return todas.sort()}
-        async function carregarDados(){try{const[uSnap,pSnap,prodSnap]=await Promise.all([db.collection('usuarios').get({source:'default'}),db.collection('pedidos').orderBy('data','desc').get({source:'default'}),db.collection('produtos').get({source:'default'})]);usuarios=uSnap.docs.map(d=>({id:d.id,...d.data()}));pedidos=pSnap.docs.map(d=>({id:d.id,...d.data()}));if(prodSnap.empty){produtos=JSON.parse(JSON.stringify(produtosBase));const batch=db.batch();produtos.forEach(p=>{const ref=db.collection('produtos').doc(String(p.id));batch.set(ref,{id:p.id,nome:p.nome,preco:p.preco,marca:p.marca,img:p.img,obs:p.obs||'',esgotado:p.esgotado||!1})});await batch.commit()}else{const mapBase={};produtosBase.forEach(p=>mapBase[p.id]=p);prodSnap.docs.forEach(fp=>{const d=fp.data();mapBase[d.id]={...mapBase[d.id],...d,preco:parseFloat(d.preco)||0,img:d.img||mapBase[d.id]?.img||'',esgotado:!!d.esgotado}});produtos=Object.values(mapBase).sort((a,b)=>a.id-b.id)}}catch(e){console.error(e);produtos=JSON.parse(JSON.stringify(produtosBase));mostrarToast('Erro ao carregar dados, usando cache local.','warning')}}
+
+        // ========== CARREGAMENTO CORRIGIDO (Fonte: Firestore) ==========
+        async function carregarDados(){
+            try{
+                const[uSnap,pSnap,prodSnap]=await Promise.all([
+                    db.collection('usuarios').get({source:'default'}),
+                    db.collection('pedidos').orderBy('data','desc').get({source:'default'}),
+                    db.collection('produtos').get({source:'default'})
+                ]);
+                usuarios=uSnap.docs.map(d=>({id:d.id,...d.data()}));
+                pedidos=pSnap.docs.map(d=>({id:d.id,...d.data()}));
+
+                if(prodSnap.empty){
+                    // Primeira execução: popula com a base
+                    produtos=JSON.parse(JSON.stringify(produtosBase));
+                    const batch=db.batch();
+                    produtos.forEach(p=>{
+                        const ref=db.collection('produtos').doc(String(p.id));
+                        batch.set(ref,{id:p.id,nome:p.nome,preco:p.preco,marca:p.marca,img:p.img,obs:p.obs||'',esgotado:p.esgotado||!1});
+                    });
+                    await batch.commit();
+                }else{
+                    // Firestore é a fonte da verdade: carrega APENAS o que está lá
+                    produtos = prodSnap.docs.map(fp => {
+                        const d = fp.data();
+                        return {
+                            id: Number(fp.id),
+                            nome: d.nome,
+                            preco: parseFloat(d.preco) || 0,
+                            marca: d.marca,
+                            img: d.img || '',
+                            esgotado: !!d.esgotado
+                        };
+                    }).sort((a, b) => a.id - b.id);
+                }
+            }catch(e){
+                console.error(e);
+                produtos=JSON.parse(JSON.stringify(produtosBase));
+                mostrarToast('Erro ao carregar dados, usando cache local.','warning');
+            }
+        }
+        // ============================================================
+
         function renderBrandFilters(){const container=document.getElementById('brandFilters');if(!container)return;const marcas=getMarcasOrdenadas();container.innerHTML='<button class="toggle-brand '+(filtroMarca==='TODAS'?'active':'')+'" onclick="setFiltroMarca(\'TODAS\')">TODAS</button>'+marcas.map(m=>'<button class="toggle-brand '+(filtroMarca===m?'active':'')+'" onclick="setFiltroMarca(\''+m.replace(/'/g,"\\'")+'\')">'+m+'</button>').join('')}
         function setFiltroMarca(m){filtroMarca=m;catalogoPaginaAtual=1;renderBrandFilters();renderCatalogo();atualizarLabelFiltroMobile();if(document.getElementById('filterDrawerOverlay').classList.contains('active'))atualizarDrawerFiltro()}
         function getProdutosFiltrados(){const s=(document.getElementById('searchInput')?.value||'').toLowerCase();return produtos.filter(p=>(filtroMarca==='TODAS'||p.marca===filtroMarca)&&p.nome.toLowerCase().includes(s))}
@@ -287,14 +329,173 @@
         async function salvarEdicaoCliente(){const id=parseInt(document.getElementById('editClienteId').value);const u=usuarios.find(x=>x.id===id);if(!u)return;u.nome=document.getElementById('editNome').value.trim();u.rua=document.getElementById('editRua').value.trim();u.numero=document.getElementById('editNumero').value.trim();u.referencia=document.getElementById('editReferencia').value.trim();u.bairro=document.getElementById('editBairro').value.trim();u.cidade=document.getElementById('editCidade').value.trim();u.regiao=document.getElementById('editRegiao').value;u.cep=document.getElementById('editCep').value.trim();u.contato=document.getElementById('editContato').value.trim();u.endereco=`${u.rua}, ${u.numero} - Ref: ${u.referencia||'N/A'} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}`;await db.collection('usuarios').doc(String(id)).update(u);if(clienteLogado?.id===id){clienteLogado=u;sessionStorage.setItem('clienteLogado',JSON.stringify(clienteLogado))}fecharModal();renderGerenciarClientes();mostrarToast('💾 Atualizado.','success')}
         function atualizarMarcaSelect(){const select=document.getElementById('novoProdMarcaSelect');if(!select)return;const marcas=getMarcasOrdenadas();select.innerHTML='<option value="">Selecione a marca...</option>';marcas.forEach(m=>{const opt=document.createElement('option');opt.value=m;opt.textContent=m;select.appendChild(opt)});const optNova=document.createElement('option');optNova.value='__nova__';optNova.textContent='+ Nova Marca...';select.appendChild(optNova);toggleNovaMarcaInput()}
         function toggleNovaMarcaInput(){const select=document.getElementById('novoProdMarcaSelect'),inputNovo=document.getElementById('novoProdMarcaNovo');if(!select||!inputNovo)return;if(select.value==='__nova__'){inputNovo.classList.remove('hidden');inputNovo.focus()}else{inputNovo.classList.add('hidden');inputNovo.value=''}}
-        document.addEventListener('DOMContentLoaded',function(){const novoImgInput=document.getElementById('novoProdImg');if(novoImgInput){novoImgInput.addEventListener('change',async function(){const file=this.files[0];const previewDiv=document.getElementById('previewNovaImagem'),previewImg=document.getElementById('previewNovaImgTag');if(file&&previewDiv&&previewImg){try{previewImg.src=await readFileAsDataURL(file);previewDiv.style.display='block'}catch(e){previewDiv.style.display='none'}}else{if(previewDiv)previewDiv.style.display='none'}})}});
-        function renderGerenciarProdutos(){if(!adminLogado)return;const container=document.getElementById('gerenciarContainer');if(!produtos.length){container.innerHTML='<div class="empty-state">📦 Nenhum produto.</div>';return}container.innerHTML='';const fragment=document.createDocumentFragment();produtos.forEach(p=>{const item=document.createElement('div');item.className='produto-editar-item';item.innerHTML=`<div style="width:80px;height:80px;flex-shrink:0" id="thumb-${p.id}">${createImageHTML(p.img,p.nome)}</div><input type="text" value="${p.nome.replace(/"/g,'&quot;')}" id="nome-${p.id}" style="flex:2;min-width:120px"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:100px"><input type="text" value="${p.marca.replace(/"/g,'&quot;')}" id="marca-${p.id}" style="flex:1;min-width:100px"><input type="file" id="file-${p.id}" accept="image/*" style="width:120px"><button class="btn-esgotado ${p.esgotado?'ativo':''}" id="btnEsgotado-${p.id}">${p.esgotado?'🚫 Esgotado':'✅ Disponível'}</button><button class="btn btn-success btn-sm" id="salvar-${p.id}">💾 Salvar</button><button class="btn btn-danger btn-sm" id="excluir-${p.id}">🗑️ Excluir</button>`;fragment.appendChild(item)});container.appendChild(fragment);produtos.forEach(p=>{document.getElementById('btnEsgotado-'+p.id).addEventListener('click',()=>toggleEsgotado(p.id));const fileInput=document.getElementById('file-'+p.id);fileInput.addEventListener('change',async function(){const file=this.files[0];if(file){try{const dataUrl=await readFileAsDataURL(file);imagensTemp[p.id]=dataUrl;document.getElementById('thumb-'+p.id).innerHTML=createImageHTML(dataUrl,p.nome)}catch(e){console.error(e)}}});document.getElementById('salvar-'+p.id).addEventListener('click',()=>salvarEdicaoProduto(p.id));document.getElementById('excluir-'+p.id).addEventListener('click',()=>excluirProduto(p.id))})}
-        function toggleEsgotado(id){const p=produtos.find(prod=>prod.id===id);if(!p)return;p.esgotado=!p.esgotado;const btn=document.getElementById('btnEsgotado-'+id);if(btn){btn.textContent=p.esgotado?'🚫 Esgotado':'✅ Disponível';btn.classList.toggle('ativo',p.esgotado)}}
-        async function salvarEdicaoProduto(id){const p=produtos.find(prod=>prod.id===id);if(!p)return;const nome=document.getElementById('nome-'+id).value.trim(),preco=parseFloat(document.getElementById('preco-'+id).value)||0,marca=document.getElementById('marca-'+id).value.trim();if(!nome)return mostrarToast('Nome obrigatório','error');p.nome=nome;p.preco=preco;p.marca=marca;if(imagensTemp[id]){p.img=imagensTemp[id];delete imagensTemp[id]}await db.collection('produtos').doc(String(id)).set({id:p.id,nome:p.nome,preco:p.preco,marca:p.marca,img:p.img,esgotado:p.esgotado},{merge:!0});renderGerenciarProdutos();renderCatalogo();renderBrandFilters();mostrarToast('✅ Produto atualizado','success')}
-        async function excluirProduto(id){if(!confirm('Excluir produto?'))return;const index=produtos.findIndex(p=>p.id===id);if(index===-1)return;produtos.splice(index,1);delete imagensTemp[id];await db.collection('produtos').doc(String(id)).delete();renderGerenciarProdutos();renderCatalogo();renderBrandFilters();mostrarToast('🗑️ Excluído.','info')}
-        async function adicionarNovoProduto(){if(!adminLogado)return;const nome=document.getElementById('novoProdNome').value.trim();const preco=parseFloat(document.getElementById('novoProdPreco').value)||0;let marca=document.getElementById('novoProdMarcaSelect').value;if(marca==='__nova__')marca=document.getElementById('novoProdMarcaNovo').value.trim();if(!nome||!marca)return mostrarToast('Nome e marca obrigatórios','error');const esgotado=document.getElementById('novoProdEsgotado')?.checked||!1;const novoId=Date.now();let img='https://placehold.co/150x150/f1f5f9/3b82f6?text='+encodeURIComponent(nome.substring(0,10));const fileInput=document.getElementById('novoProdImg');if(fileInput?.files[0]){try{img=await readFileAsDataURL(fileInput.files[0])}catch(e){console.error(e)}}const novo={id:novoId,nome,preco,marca,img,obs:'',esgotado};produtos.push(novo);await db.collection('produtos').doc(String(novoId)).set(novo);['novoProdNome','novoProdPreco','novoProdMarcaNovo'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('novoProdMarcaSelect').value='';document.getElementById('novoProdMarcaNovo').classList.add('hidden');if(fileInput)fileInput.value='';document.getElementById('previewNovaImagem').style.display='none';renderGerenciarProdutos();renderCatalogo();renderBrandFilters();atualizarMarcaSelect();mostrarToast('✅ Produto adicionado','success')}
-        function renderOrdenarMarcas(){if(!adminLogado)return;const container=document.getElementById('ordenarMarcasContainer');const marcas=getMarcasOrdenadas();if(!marcas.length){container.innerHTML='<div class="empty-state">🏷️ Nenhuma marca.</div>';return}container.innerHTML='';const fragment=document.createDocumentFragment();marcas.forEach((marca,idx)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;padding:.8rem;border:1px solid var(--border);border-radius:12px;margin-bottom:.5rem;background:#fff';div.innerHTML=`<span>🏷️ ${marca}</span><div><button onclick="moverMarca(${idx},'cima')" ${idx===0?'disabled':''}>▲</button><button onclick="moverMarca(${idx},'baixo')" ${idx===marcas.length-1?'disabled':''}>▼</button></div>`;fragment.appendChild(div)});container.appendChild(fragment)}
-        function moverMarca(index,dir){const marcas=getMarcasOrdenadas();if(dir==='cima'&&index>0)[marcas[index-1],marcas[index]]=[marcas[index],marcas[index-1]];else if(dir==='baixo'&&index<marcas.length-1)[marcas[index],marcas[index+1]]=[marcas[index+1],marcas[index]];else return;ordemMarcas=[...marcas];renderOrdenarMarcas();renderBrandFilters()}
+
+        // ========== PRODUTOS (CRUD com Firestore) ==========
+        async function toggleEsgotado(id){
+            const p = produtos.find(prod => prod.id === id);
+            if(!p) return;
+            p.esgotado = !p.esgotado;
+            const btn = document.getElementById('btnEsgotado-'+id);
+            if(btn){
+                btn.textContent = p.esgotado ? '🚫 Esgotado' : '✅ Disponível';
+                btn.classList.toggle('ativo', p.esgotado);
+            }
+            try {
+                await db.collection('produtos').doc(String(id)).update({ esgotado: p.esgotado });
+            } catch(e) {
+                mostrarToast('Erro ao salvar estado', 'error');
+                console.error(e);
+            }
+        }
+
+        async function salvarEdicaoProduto(id){
+            const p = produtos.find(prod => prod.id === id);
+            if(!p) return;
+            const nome = document.getElementById('nome-'+id).value.trim();
+            const preco = parseFloat(document.getElementById('preco-'+id).value) || 0;
+            const marca = document.getElementById('marca-'+id).value.trim();
+            if(!nome) return mostrarToast('Nome obrigatório','error');
+            const data = { id: p.id, nome, preco, marca, img: p.img, esgotado: p.esgotado };
+            if(imagensTemp[id]) data.img = imagensTemp[id];
+            try {
+                await db.collection('produtos').doc(String(id)).set(data, {merge: true});
+                p.nome = nome;
+                p.preco = preco;
+                p.marca = marca;
+                if(imagensTemp[id]) {
+                    p.img = imagensTemp[id];
+                    delete imagensTemp[id];
+                }
+                renderGerenciarProdutos();
+                renderCatalogo();
+                renderBrandFilters();
+                mostrarToast('✅ Produto atualizado','success');
+            } catch(e) {
+                mostrarToast('Erro ao atualizar','error');
+                console.error(e);
+            }
+        }
+
+        async function excluirProduto(id){
+            if(!confirm('Excluir produto?')) return;
+            try {
+                await db.collection('produtos').doc(String(id)).delete();
+                const index = produtos.findIndex(p => p.id === id);
+                if (index !== -1) produtos.splice(index, 1);
+                delete imagensTemp[id];
+                renderGerenciarProdutos();
+                renderCatalogo();
+                renderBrandFilters();
+                mostrarToast('🗑️ Excluído.','info');
+            } catch(e) {
+                mostrarToast('Erro ao excluir.','error');
+                console.error(e);
+            }
+        }
+
+        async function adicionarNovoProduto(){
+            if(!adminLogado) return;
+            const nome = document.getElementById('novoProdNome').value.trim();
+            const preco = parseFloat(document.getElementById('novoProdPreco').value) || 0;
+            let marca = document.getElementById('novoProdMarcaSelect').value;
+            if(marca === '__nova__') marca = document.getElementById('novoProdMarcaNovo').value.trim();
+            if(!nome || !marca) return mostrarToast('Nome e marca obrigatórios','error');
+            const esgotado = document.getElementById('novoProdEsgotado')?.checked || false;
+            const novoId = Date.now();
+            let img = 'https://placehold.co/150x150/f1f5f9/3b82f6?text=' + encodeURIComponent(nome.substring(0,10));
+            const fileInput = document.getElementById('novoProdImg');
+            if(fileInput?.files[0]){
+                try { img = await readFileAsDataURL(fileInput.files[0]); } catch(e){}
+            }
+            const novo = { id: novoId, nome, preco, marca, img, obs:'', esgotado };
+            try {
+                await db.collection('produtos').doc(String(novoId)).set(novo);
+                produtos.push(novo);
+                ['novoProdNome','novoProdPreco','novoProdMarcaNovo'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+                document.getElementById('novoProdMarcaSelect').value='';
+                document.getElementById('novoProdMarcaNovo').classList.add('hidden');
+                if(fileInput) fileInput.value='';
+                document.getElementById('previewNovaImagem').style.display='none';
+                renderGerenciarProdutos();
+                renderCatalogo();
+                renderBrandFilters();
+                atualizarMarcaSelect();
+                mostrarToast('✅ Produto adicionado','success');
+            } catch(e) {
+                mostrarToast('Erro ao adicionar.','error');
+                console.error(e);
+            }
+        }
+        // ===================================================
+
+        document.addEventListener('DOMContentLoaded',function(){
+            const novoImgInput=document.getElementById('novoProdImg');
+            if(novoImgInput){
+                novoImgInput.addEventListener('change',async function(){
+                    const file=this.files[0];
+                    const previewDiv=document.getElementById('previewNovaImagem'),previewImg=document.getElementById('previewNovaImgTag');
+                    if(file&&previewDiv&&previewImg){
+                        try{previewImg.src=await readFileAsDataURL(file);previewDiv.style.display='block'}catch(e){previewDiv.style.display='none'}
+                    }else{if(previewDiv)previewDiv.style.display='none'}
+                });
+            }
+        });
+
+        function renderGerenciarProdutos(){
+            if(!adminLogado) return;
+            const container=document.getElementById('gerenciarContainer');
+            if(!produtos.length){container.innerHTML='<div class="empty-state">📦 Nenhum produto.</div>';return}
+            container.innerHTML='';
+            const fragment=document.createDocumentFragment();
+            produtos.forEach(p=>{
+                const item=document.createElement('div');
+                item.className='produto-editar-item';
+                item.innerHTML=`<div style="width:80px;height:80px;flex-shrink:0" id="thumb-${p.id}">${createImageHTML(p.img,p.nome)}</div><input type="text" value="${p.nome.replace(/"/g,'&quot;')}" id="nome-${p.id}" style="flex:2;min-width:120px"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:100px"><input type="text" value="${p.marca.replace(/"/g,'&quot;')}" id="marca-${p.id}" style="flex:1;min-width:100px"><input type="file" id="file-${p.id}" accept="image/*" style="width:120px"><button class="btn-esgotado ${p.esgotado?'ativo':''}" id="btnEsgotado-${p.id}">${p.esgotado?'🚫 Esgotado':'✅ Disponível'}</button><button class="btn btn-success btn-sm" id="salvar-${p.id}">💾 Salvar</button><button class="btn btn-danger btn-sm" id="excluir-${p.id}">🗑️ Excluir</button>`;
+                fragment.appendChild(item);
+            });
+            container.appendChild(fragment);
+            produtos.forEach(p=>{
+                document.getElementById('btnEsgotado-'+p.id).addEventListener('click', ()=>toggleEsgotado(p.id));
+                const fileInput=document.getElementById('file-'+p.id);
+                fileInput.addEventListener('change', async function(){
+                    const file=this.files[0];
+                    if(file){
+                        try{
+                            const dataUrl=await readFileAsDataURL(file);
+                            imagensTemp[p.id]=dataUrl;
+                            document.getElementById('thumb-'+p.id).innerHTML=createImageHTML(dataUrl,p.nome);
+                        }catch(e){console.error(e)}
+                    }
+                });
+                document.getElementById('salvar-'+p.id).addEventListener('click', ()=>salvarEdicaoProduto(p.id));
+                document.getElementById('excluir-'+p.id).addEventListener('click', ()=>excluirProduto(p.id));
+            });
+        }
+
+        function renderOrdenarMarcas(){
+            if(!adminLogado) return;
+            const container=document.getElementById('ordenarMarcasContainer');
+            const marcas=getMarcasOrdenadas();
+            if(!marcas.length){container.innerHTML='<div class="empty-state">🏷️ Nenhuma marca.</div>';return}
+            container.innerHTML='';
+            const fragment=document.createDocumentFragment();
+            marcas.forEach((marca,idx)=>{
+                const div=document.createElement('div');
+                div.style.cssText='display:flex;justify-content:space-between;padding:.8rem;border:1px solid var(--border);border-radius:12px;margin-bottom:.5rem;background:#fff';
+                div.innerHTML=`<span>🏷️ ${marca}</span><div><button onclick="moverMarca(${idx},'cima')" ${idx===0?'disabled':''}>▲</button><button onclick="moverMarca(${idx},'baixo')" ${idx===marcas.length-1?'disabled':''}>▼</button></div>`;
+                fragment.appendChild(div);
+            });
+            container.appendChild(fragment);
+        }
+        function moverMarca(index,dir){
+            const marcas=getMarcasOrdenadas();
+            if(dir==='cima'&&index>0)[marcas[index-1],marcas[index]]=[marcas[index],marcas[index-1]];
+            else if(dir==='baixo'&&index<marcas.length-1)[marcas[index],marcas[index+1]]=[marcas[index+1],marcas[index]];
+            else return;
+            ordemMarcas=[...marcas];
+            renderOrdenarMarcas();
+            renderBrandFilters();
+        }
         async function salvarOrdemMarcas(){await salvarOrdemMarcasFirestore();renderOrdenarMarcas();renderBrandFilters();renderCatalogo()}
         async function resetarOrdemMarcas(){ordemMarcas=[];await salvarOrdemMarcasFirestore();renderOrdenarMarcas();renderBrandFilters();renderCatalogo();mostrarToast('🔄 Ordem restaurada','info')}
         async function carregarAnuncioGlobal(){try{const snap=await db.collection('config').doc('announcement').get({source:'default'});anuncioAtual=snap.exists?snap.data():null}catch(e){console.error(e)}exibirAnuncioBanner()}
@@ -304,7 +505,21 @@
         async function salvarAnuncio(){if(!adminLogado)return;const ativo=document.getElementById('anuncioAtivo').checked,titulo=document.getElementById('anuncioTituloInput').value.trim(),mensagem=document.getElementById('anuncioMensagemInput').value.trim(),cor=document.getElementById('anuncioCorSelect').value;if(ativo&&!titulo&&!mensagem)return mostrarToast('Preencha título ou mensagem','error');const dados={ativo,titulo,mensagem,cor,atualizadoEm:new Date().toISOString()};await db.collection('config').doc('announcement').set(dados,{merge:!0});anuncioAtual=dados;sessionStorage.removeItem('anuncioFechado');exibirAnuncioBanner();mostrarToast('✅ Anúncio salvo','success');renderGerenciarAnuncio()}
         async function removerAnuncio(){if(!adminLogado||!confirm('Remover anúncio?'))return;await db.collection('config').doc('announcement').delete();anuncioAtual=null;document.getElementById('anuncioBanner').classList.add('hidden');mostrarToast('🗑️ Removido','info');renderGerenciarAnuncio()}
         function renderGerenciarAnuncio(){if(!adminLogado)return;document.getElementById('anuncioAtivo').checked=anuncioAtual?.ativo||!1;document.getElementById('anuncioTituloInput').value=anuncioAtual?.titulo||'';document.getElementById('anuncioMensagemInput').value=anuncioAtual?.mensagem||'';document.getElementById('anuncioCorSelect').value=anuncioAtual?.cor||'warning';previewAnuncio()}
-        async function init(){carrinho=JSON.parse(localStorage.getItem('carrinho'))||[];clienteLogado=JSON.parse(sessionStorage.getItem('clienteLogado'))||null;adminLogado=JSON.parse(sessionStorage.getItem('adminLogado'))||!1;await carregarDados();await carregarOrdemMarcas();await carregarAnuncioGlobal();popularSelectsRegiao();renderBrandFilters();renderCatalogo();atualizarUI();const overlay=document.getElementById('loadingOverlay');if(overlay){overlay.style.opacity='0';setTimeout(()=>overlay.remove(),500)}}
+
+        async function init(){
+            carrinho=JSON.parse(localStorage.getItem('carrinho'))||[];
+            clienteLogado=JSON.parse(sessionStorage.getItem('clienteLogado'))||null;
+            adminLogado=JSON.parse(sessionStorage.getItem('adminLogado'))||!1;
+            await carregarDados();
+            await carregarOrdemMarcas();
+            await carregarAnuncioGlobal();
+            popularSelectsRegiao();
+            renderBrandFilters();
+            renderCatalogo();
+            atualizarUI();
+            const overlay=document.getElementById('loadingOverlay');
+            if(overlay){overlay.style.opacity='0';setTimeout(()=>overlay.remove(),500)}
+        }
         window.addEventListener('DOMContentLoaded',init);
     </script>
 </body>
