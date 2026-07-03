@@ -53,6 +53,14 @@
         nav button:active { transform: scale(.96) }
         .cart-badge { background: var(--accent); color: #fff; border-radius: 50%; padding: .1rem .4rem; font-size: .6rem; font-weight: 800; margin-left: 3px }
 
+        /* Estilos do botão de contato e dropdown */
+        .contato-wrapper { position: relative; display: inline-block; }
+        .contato-dropdown { position: absolute; right: 0; top: 100%; margin-top: 6px; background: #ffffff; border: 1px solid var(--border); border-radius: 12px; min-width: 200px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); z-index: 200; display: none; overflow: hidden; }
+        .contato-dropdown.show { display: block; }
+        .contato-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; text-decoration: none; color: var(--text); font-size: .82rem; font-weight: 500; transition: background 0.15s; }
+        .contato-item:hover { background: #f8fafc; }
+        .contato-item .icon { font-size: 1.3rem; width: 24px; text-align: center; }
+
         main { max-width: 1200px; margin: 0 auto; padding: 0 .8rem; }
         .section { display: none; content-visibility: auto; contain-intrinsic-size: auto 400px }
         .section.active { display: block; animation: fadeUp .3s ease; content-visibility: visible; contain-intrinsic-size: none }
@@ -220,6 +228,18 @@
             <button onclick="showSection('ordenarMarcas')" id="nav-ordenar" style="display:none">🔀 Marcas</button>
             <button onclick="showSection('gerenciarAnuncio')" id="nav-anuncio" style="display:none">📢 Anúncio</button>
             <button onclick="showSection('gerenciarBanner')" id="nav-banner" style="display:none">📷 Banner</button>
+            <!-- Botão de Contato com dropdown -->
+            <div class="contato-wrapper">
+                <button id="nav-contato" onclick="toggleContatoDropdown()">📞 Contato</button>
+                <div id="contatoDropdown" class="contato-dropdown">
+                    <a href="https://t.me/+wBlBe1wdi94xZTAx" target="_blank" class="contato-item">
+                        <span class="icon">📱</span> Telegram
+                    </a>
+                    <a href="https://wa.me/5519997390834" target="_blank" class="contato-item">
+                        <span class="icon">💬</span> WhatsApp Oficial
+                    </a>
+                </div>
+            </div>
             <button onclick="logout()" id="nav-logout" style="display:none">🚪 Sair</button>
         </nav>
     </header>
@@ -1010,6 +1030,21 @@
             document.getElementById('bannerImgInput').value = '';
             mostrarToast('🔄 Banner restaurado.', 'info');
         }
+
+        // Função para abrir/fechar o dropdown de contato
+        function toggleContatoDropdown() {
+            const dropdown = document.getElementById('contatoDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Fecha o dropdown ao clicar fora
+        document.addEventListener('click', function(event) {
+            const wrapper = document.querySelector('.contato-wrapper');
+            if (wrapper && !wrapper.contains(event.target)) {
+                const dropdown = document.getElementById('contatoDropdown');
+                if (dropdown) dropdown.classList.remove('show');
+            }
+        });
 
         async function init() {
             carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
