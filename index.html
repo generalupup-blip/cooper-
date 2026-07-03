@@ -60,7 +60,6 @@
 
         h2 { font-size: 1.6rem; margin-bottom: 1.2rem; color: #0f172a; border-bottom: 3px solid var(--accent); padding-bottom: .5rem; display: inline-block }
 
-        /* ===== BANNER HERO COM TICKER FLUTUANTE ===== */
         .hero-banner { position: relative; width: 100%; height: 320px; background-color: #1e293b; background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center top; margin-bottom: 30px; border-radius: var(--radius); overflow: hidden; transition: background-image 0.5s ease; }
         .hero-ticker-wrapper { position: absolute; bottom: 0; left: 0; width: 100%; background: #ffffff; padding: 15px 0; overflow: hidden; z-index: 10; border-top: 1px solid rgba(0, 0, 0, 0.03); box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.03); }
         .ticker-track { display: flex; gap: 15px; width: max-content; animation: scrollTicker 25s linear infinite; }
@@ -69,7 +68,6 @@
         .ticker-item.v3 { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
         @keyframes scrollTicker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* ===== CARROSSEL DE MARCAS ===== */
         .brand-carousel-wrapper { background: #ffffff; padding: 25px 0; text-align: center; border-bottom: 1px solid #f1f5f9; margin-bottom: 25px; border-radius: var(--radius); box-shadow: var(--shadow); }
         .brand-carousel-title { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 20px; letter-spacing: -0.5px; }
         .brand-slider-container { display: flex; align-items: center; justify-content: center; gap: 10px; max-width: 100%; margin: 0 auto; padding: 0 5px; }
@@ -83,13 +81,12 @@
         .brand-logo-circle img { width: 100%; height: 100%; object-fit: contain; }
         .brand-item span { margin-top: 8px; font-size: 12px; font-weight: 600; color: #1e293b; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px; }
 
-        /* ===== GRID DE PRODUTOS ===== */
         .catalogo-layout { display: flex; gap: 1.5rem; align-items: flex-start; }
         .filtros-sidebar { display: none !important; }
         .catalogo-main { flex: 1; min-width: 0; }
         .search-box { width: 100%; padding: .7rem 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 60px; font-size: .95rem; margin-bottom: 1.2rem; transition: var(--transition); box-shadow: var(--shadow) }
         .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, .15) }
-        
+
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
 
         .product-card { background: #ffffff; border-radius: 16px; padding: 20px; text-align: left; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: visible; }
@@ -110,7 +107,6 @@
 
         .filter-mobile-btn { display: none !important; }
 
-        /* ---- Demais estilos originais ---- */
         .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1.2rem; box-shadow: var(--shadow) }
         .status-badge { padding: .2rem .7rem; border-radius: 30px; font-weight: 700; font-size: .68rem }
         .status-pendente { background: #fef3c7; color: #b45309 }
@@ -148,27 +144,8 @@
         .produto-editar-item { display: flex; gap: .6rem; padding: .8rem; border: 1px solid var(--border); border-radius: 10px; margin-bottom: .6rem; flex-wrap: wrap; align-items: center; background: #fff }
         .produto-editar-item>* { min-width: 50px }
 
-        #loadingOverlay { position: fixed; inset: 0; background: #0a0f1a; z-index: 9999; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1.5rem; transition: opacity .6s ease, visibility .6s ease; overflow: hidden; }
-        #loadingOverlay.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
-        #loadingOverlay .bg-particles { position: absolute; inset: 0; pointer-events: none; }
-        #loadingOverlay .particle { position: absolute; background: rgba(59, 130, 246, .15); border-radius: 50%; animation: floatUp linear infinite; }
-        @keyframes floatUp { 0% { transform: translateY(110vh) scale(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
-        #loadingOverlay .loader-container { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 1.8rem; }
-        #loadingOverlay .brand-name { font-size: 2rem; font-weight: 900; letter-spacing: .04em; background: linear-gradient(135deg, #60a5fa, #3b82f6, #93c5fd); -webkit-background-clip: text; background-clip: text; color: transparent; animation: glowPulse 2s ease-in-out infinite; text-align: center; font-family: var(--font); }
-        @keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 8px rgba(59, 130, 246, .4)); } 50% { filter: drop-shadow(0 0 22px rgba(59, 130, 246, .9)); } }
-        #loadingOverlay .dna-orbital { position: relative; width: 100px; height: 100px; }
-        #loadingOverlay .ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid transparent; animation: ringSpin 2s linear infinite; }
-        #loadingOverlay .ring:nth-child(1) { border-top-color: #3b82f6; border-right-color: rgba(59, 130, 246, .4); animation-duration: 1.8s; }
-        #loadingOverlay .ring:nth-child(2) { inset: 12px; border-top-color: #60a5fa; border-left-color: rgba(96, 165, 250, .4); animation-duration: 2.4s; animation-direction: reverse; }
-        #loadingOverlay .ring:nth-child(3) { inset: 24px; border-bottom-color: #93c5fd; border-right-color: rgba(147, 197, 253, .4); animation-duration: 3s; }
-        #loadingOverlay .center-dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 14px; height: 14px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 18px rgba(59, 130, 246, .8), 0 0 36px rgba(59, 130, 246, .4); animation: dotPulse 1.5s ease-in-out infinite; }
-        @keyframes ringSpin { to { transform: rotate(360deg); } }
-        @keyframes dotPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.8); } }
-        #loadingOverlay .progress-wrapper { width: 260px; display: flex; flex-direction: column; align-items: center; gap: .6rem; }
-        #loadingOverlay .progress-bar-track { width: 100%; height: 4px; background: rgba(255, 255, 255, .08); border-radius: 6px; overflow: hidden; }
-        #loadingOverlay .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #2563eb, #3b82f6, #60a5fa); border-radius: 6px; transition: width .3s ease; box-shadow: 0 0 10px rgba(59, 130, 246, .5); }
-        #loadingOverlay .progress-label { color: #94a3b8; font-size: .8rem; font-weight: 500; letter-spacing: .03em; font-family: var(--font); }
-        #loadingOverlay .progress-percent { color: #60a5fa; font-size: 1.6rem; font-weight: 900; letter-spacing: .02em; font-family: var(--font); }
+        /* Removendo loading overlay - não é mais usado */
+        #loadingOverlay { display: none; }
 
         #processingModal { position: fixed; inset: 0; background: rgba(10, 15, 26, .85); z-index: 9998; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1.2rem; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s ease, visibility .35s ease; }
         #processingModal.active { opacity: 1; visibility: visible; pointer-events: all; }
@@ -191,32 +168,12 @@
         #processingModal .proc-whatsapp-hint.visible { opacity: 1; }
         #processingModal .proc-check { display: none; font-size: 3.5rem; animation: popCheck .5s ease forwards; }
         @keyframes popCheck { 0% { transform: scale(0) rotate(-20deg); opacity: 0; } 60% { transform: scale(1.2) rotate(5deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-        @keyframes spin { to { transform: rotate(360deg) } }
 
         @media (max-width: 950px) { .hero-banner { height: 220px; } .product-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <!-- NOVO LOADING SCREEN PROFISSIONAL -->
-    <div id="loadingOverlay">
-        <div class="bg-particles" id="loadingParticles"></div>
-        <div class="loader-container">
-            <span class="brand-name">CENTRAL LABS PREMIUM</span>
-            <div class="dna-orbital">
-                <div class="ring"></div>
-                <div class="ring"></div>
-                <div class="ring"></div>
-                <div class="center-dot"></div>
-            </div>
-            <div class="progress-wrapper">
-                <span class="progress-percent" id="loadingPercent">0%</span>
-                <div class="progress-bar-track">
-                    <div class="progress-bar-fill" id="loadingBar"></div>
-                </div>
-                <span class="progress-label" id="loadingLabel">Inicializando módulos...</span>
-            </div>
-        </div>
-    </div>
+    <!-- Loading screen removido para carregamento instantâneo -->
 
     <!-- MODAL DE PROCESSAMENTO (EMPACOTANDO) -->
     <div id="processingModal">
@@ -259,7 +216,7 @@
     </header>
 
     <main>
-        <!-- ===== BANNER HERO COM TICKER FLUTUANTE ===== -->
+        <!-- BANNER HERO COM TICKER FLUTUANTE -->
         <div class="hero-banner" id="heroBanner">
             <div class="hero-ticker-wrapper">
                 <div class="ticker-track">
@@ -277,7 +234,7 @@
             </div>
         </div>
 
-        <!-- ===== CARROSSEL DE MARCAS ===== -->
+        <!-- CARROSSEL DE MARCAS -->
         <div class="brand-carousel-wrapper">
             <h2 class="brand-carousel-title">Laboratórios</h2>
             <div class="brand-slider-container">
@@ -287,7 +244,7 @@
             </div>
         </div>
 
-        <!-- ===== SEÇÃO CATÁLOGO ===== -->
+        <!-- SEÇÃO CATÁLOGO -->
         <section id="catalogo" class="section active">
             <h2 style="display:none">📦 Catálogo de Produtos</h2>
             <input type="text" class="search-box" placeholder="🔍 Buscar por nome do produto..." id="searchInput" oninput="debounceSearch()" autocomplete="off">
@@ -400,7 +357,6 @@
             <div id="gerenciarContainer"></div>
         </section>
 
-        <!-- ===== SEÇÃO DE MARCAS COM UPLOAD DE LOGO ===== -->
         <section id="ordenarMarcas" class="section">
             <h2>🔀 Ordenar e Adicionar Logotipos</h2>
             <div class="card" style="background:var(--surface2);">
@@ -438,7 +394,6 @@
             </div>
         </section>
 
-        <!-- ===== NOVA SEÇÃO: GERENCIAR BANNER ===== -->
         <section id="gerenciarBanner" class="section">
             <h2>📷 Gerenciar Imagem do Banner</h2>
             <div class="card">
@@ -507,9 +462,9 @@
             { id: 367, nome: 'Tizerpatida 60mg', preco: 1400, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tiz60K', esgotado: !1 }
         ];
 
-        let produtos = [], carrinho = [], usuarios = [], pedidos = [], clienteLogado = null, adminLogado = !1, filtroMarca = 'TODAS', filtroAdminStatus = 'todos', clienteEditandoId = null, ITEMS_PER_PAGE = 20, catalogoPaginaAtual = 1, catalogoFiltrados = [], ordemMarcas = [], anuncioAtual = null, imagensTemp = {}, debounceTimer;
+        let produtos = JSON.parse(JSON.stringify(produtosBase));
+        let carrinho = [], usuarios = [], pedidos = [], clienteLogado = null, adminLogado = !1, filtroMarca = 'TODAS', filtroAdminStatus = 'todos', clienteEditandoId = null, ITEMS_PER_PAGE = 20, catalogoPaginaAtual = 1, catalogoFiltrados = [], ordemMarcas = [], anuncioAtual = null, imagensTemp = {}, debounceTimer;
 
-        // NOVAS VARIÁVEIS GLOBAIS PARA BANNER E LOGOS
         let bannerData = null;
         let marcasLogos = {};
 
@@ -563,17 +518,9 @@
             })
         }
 
-        async function carregarOrdemMarcas() {
-            try { const snap = await db.collection('config').doc('ordemMarcas').get({ source: 'default' }); ordemMarcas = snap.exists ? snap.data().ordem || [] : [] } catch (e) { console.error(e) }
-        }
-        
-        async function carregarLogosMarcas() {
-            try { const snap = await db.collection('config').doc('marcasLogos').get({ source: 'default' }); marcasLogos = snap.exists ? snap.data() || {} : {} } catch (e) { console.error(e) }
-        }
-
-        async function carregarBanner() {
-            try { const snap = await db.collection('config').doc('banner').get({ source: 'default' }); bannerData = snap.exists ? snap.data() : null; atualizarBannerUI() } catch (e) { console.error(e) }
-        }
+        async function carregarOrdemMarcas() { try { const snap = await db.collection('config').doc('ordemMarcas').get({ source: 'default' }); ordemMarcas = snap.exists ? snap.data().ordem || [] : [] } catch (e) { console.error(e) } }
+        async function carregarLogosMarcas() { try { const snap = await db.collection('config').doc('marcasLogos').get({ source: 'default' }); marcasLogos = snap.exists ? snap.data() || {} : {} } catch (e) { console.error(e) } }
+        async function carregarBanner() { try { const snap = await db.collection('config').doc('banner').get({ source: 'default' }); bannerData = snap.exists ? snap.data() : null; atualizarBannerUI() } catch (e) { console.error(e) } }
 
         function atualizarBannerUI() {
             const el = document.getElementById('heroBanner');
@@ -603,14 +550,14 @@
                 usuarios = uSnap.docs.map(d => ({ id: d.id, ...d.data() }));
                 pedidos = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
                 if (prodSnap.empty) {
-                    produtos = JSON.parse(JSON.stringify(produtosBase));
+                    // Já temos produtosBase carregado, então apenas sincronizamos com Firestore
                     const batch = db.batch();
                     produtos.forEach(p => { const ref = db.collection('produtos').doc(String(p.id)); batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p.obs || '', esgotado: p.esgotado || !1 }) });
                     await batch.commit();
                 } else {
                     produtos = prodSnap.docs.map(fp => { const d = fp.data(); return { id: Number(fp.id), nome: d.nome, preco: parseFloat(d.preco) || 0, marca: d.marca, img: d.img || '', esgotado: !!d.esgotado } }).sort((a, b) => a.id - b.id);
                 }
-            } catch (e) { console.error(e); produtos = JSON.parse(JSON.stringify(produtosBase)); mostrarToast('Erro ao carregar dados, usando cache local.', 'warning') }
+            } catch (e) { console.error(e); /* mantém produtosBase */ }
         }
 
         function setFiltroMarca(m) { filtroMarca = m; catalogoPaginaAtual = 1; renderCatalogo(); renderBrandCarousel(); }
@@ -665,7 +612,6 @@
             const marcas = getMarcasOrdenadas();
             container.innerHTML = marcas.map(m => {
                 const isActive = filtroMarca === m;
-                // Verifica se existe logo carregado, se não, usa o placeholder
                 const logoUrl = marcasLogos[m] || `https://placehold.co/80x80/fff/0f172a?text=${m.substring(0,3)}`;
                 return `
                     <div class="brand-item" onclick="setFiltroMarca('${m.replace(/'/g,"\\'")}'); scrollBrands(0)" style="${isActive ? 'transform: scale(1.05);' : ''}">
@@ -871,8 +817,37 @@
             });
             container.appendChild(fragment)
         }
-        async function marcarFinalizado(id) { const p = pedidos.find(x => x.id === id); if (p) { p.status = 'finalizado'; await db.collection('pedidos').doc(String(id)).update({ status: 'finalizado' }); renderAdminPedidos(); mostrarToast('✅ Finalizado.', 'success') } }
-        async function apagarPedido(id) { if (confirm('Excluir pedido?')) { pedidos = pedidos.filter(x => x.id !== id); await db.collection('pedidos').doc(String(id)).delete(); renderAdminPedidos(); mostrarToast('🗑️ Excluído.', 'info') } }
+
+        async function marcarFinalizado(id) {
+            try {
+                const p = pedidos.find(x => x.id === id);
+                if (p) {
+                    p.status = 'finalizado';
+                    await db.collection('pedidos').doc(String(id)).update({ status: 'finalizado' });
+                    renderAdminPedidos();
+                    mostrarToast('✅ Finalizado.', 'success')
+                }
+            } catch (e) {
+                console.error(e);
+                mostrarToast('Erro ao finalizar pedido. Tente novamente.', 'error');
+            }
+        }
+
+        async function apagarPedido(id) {
+            if (!confirm('Excluir pedido?')) return;
+            try {
+                // Remove localmente primeiro para resposta instantânea
+                pedidos = pedidos.filter(x => x.id !== id);
+                renderAdminPedidos();
+                await db.collection('pedidos').doc(String(id)).delete();
+                mostrarToast('🗑️ Excluído.', 'info')
+            } catch (e) {
+                console.error(e);
+                mostrarToast('Erro ao excluir pedido. Verifique sua conexão.', 'error');
+                // Recarrega os pedidos para sincronizar com o servidor
+                carregarDados().then(() => renderAdminPedidos());
+            }
+        }
 
         function renderGerenciarClientes() {
             if (!adminLogado) return;
@@ -988,7 +963,7 @@
             });
         }
 
-        // ===== NOVAS FUNÇÕES PARA MARCAS (COM UPLOAD DE LOGO) =====
+        // FUNÇÕES PARA MARCAS (COM UPLOAD DE LOGO)
         function renderOrdenarMarcas() {
             if (!adminLogado) return;
             const container = document.getElementById('ordenarMarcasContainer');
@@ -1016,23 +991,17 @@
                 `;
                 fragment.appendChild(div);
                 
-                // Event listener para upload do logo
                 const inputFile = div.querySelector(`#logoUpload-${idx}`);
                 if (inputFile) {
                     inputFile.addEventListener('change', async function(e) {
                         const file = e.target.files[0];
                         if (file && adminLogado) {
                             try {
-                                // Comprime a imagem em tamanho pequeno (100x100) para não pesar no Firestore
                                 const dataUrl = await compressImage(file, 100, 100, 0.6);
-                                // Atualiza no objeto local
                                 marcasLogos[marca] = dataUrl;
-                                // Atualiza o preview da imagem no admin
                                 const previewImg = document.getElementById(`logoPreview-${idx}`);
                                 if (previewImg) previewImg.src = dataUrl;
-                                // Salva no Firebase imediatamente
                                 await db.collection('config').doc('marcasLogos').set(marcasLogos, { merge: true });
-                                // Atualiza o carrossel público
                                 renderBrandCarousel();
                                 mostrarToast(`✅ Logo da marca ${marca} salva!`, 'success');
                             } catch (error) {
@@ -1068,7 +1037,7 @@
         async function salvarOrdemMarcas() { await salvarOrdemMarcasFirestore(); renderOrdenarMarcas(); renderBrandCarousel(); renderCatalogo() }
         async function resetarOrdemMarcas() { ordemMarcas = []; await salvarOrdemMarcasFirestore(); renderOrdenarMarcas(); renderBrandCarousel(); renderCatalogo(); mostrarToast('🔄 Ordem restaurada', 'info') }
 
-        // ===== NOVAS FUNÇÕES PARA BANNER ADMIN =====
+        // FUNÇÕES PARA BANNER ADMIN
         function renderBannerAdmin() {
             if (!adminLogado) return;
             const input = document.getElementById('bannerImgInput');
@@ -1095,7 +1064,6 @@
             const file = input.files[0];
             if (!file) return mostrarToast('Selecione uma imagem.', 'error');
             try {
-                // Comprime a imagem do banner para um tamanho menor, porém de boa qualidade (800x400)
                 const dataUrl = await compressImage(file, 800, 400, 0.75);
                 bannerData = { url: dataUrl };
                 await db.collection('config').doc('banner').set(bannerData, { merge: true });
@@ -1121,65 +1089,34 @@
 
         async function carregarAnuncioGlobal() { try { const snap = await db.collection('config').doc('announcement').get({ source: 'default' }); anuncioAtual = snap.exists ? snap.data() : null } catch (e) { console.error(e) } }
 
-        function iniciarLoadingScreen(callback) {
-            const overlay = document.getElementById('loadingOverlay');
-            const bar = document.getElementById('loadingBar'); const percentEl = document.getElementById('loadingPercent');
-            const labelEl = document.getElementById('loadingLabel'); const particlesContainer = document.getElementById('loadingParticles');
-
-            if (particlesContainer) {
-                particlesContainer.innerHTML = '';
-                for (let i = 0; i < 35; i++) {
-                    const particle = document.createElement('div'); particle.className = 'particle';
-                    const size = Math.random() * 6 + 3; particle.style.width = size + 'px'; particle.style.height = size + 'px';
-                    particle.style.left = Math.random() * 100 + '%'; particle.style.animationDuration = (Math.random() * 8 + 6) + 's';
-                    particle.style.animationDelay = Math.random() * 6 + 's';
-                    particle.style.background = ['rgba(59,130,246,.18)', 'rgba(96,165,250,.14)', 'rgba(147,197,253,.12)', 'rgba(16,185,129,.1)'][Math.floor(Math.random() * 4)];
-                    particlesContainer.appendChild(particle);
-                }
-            }
-
-            const etapas = [
-                { percent: 15, label: 'Conectando ao servidor...', delay: 300 },
-                { percent: 35, label: 'Carregando catálogo...', delay: 500 },
-                { percent: 55, label: 'Sincronizando dados...', delay: 500 },
-                { percent: 75, label: 'Preparando interface...', delay: 400 },
-                { percent: 90, label: 'Quase pronto...', delay: 300 },
-                { percent: 100, label: 'Sistema pronto!', delay: 350 },
-            ];
-
-            let totalDelay = 0;
-            etapas.forEach(etapa => {
-                totalDelay += etapa.delay;
-                setTimeout(() => { bar.style.width = etapa.percent + '%'; percentEl.textContent = etapa.percent + '%'; labelEl.textContent = etapa.label; }, totalDelay);
-            });
-
-            const tempoTotal = totalDelay + 400;
-            setTimeout(() => {
-                overlay.classList.add('fade-out');
-                setTimeout(() => { if (overlay.parentNode) overlay.remove(); if (callback) callback(); }, 600);
-            }, tempoTotal);
-            return tempoTotal;
-        }
-
+        // Função de inicialização otimizada - carrega UI imediatamente
         async function init() {
+            // Carrega dados locais primeiro
             carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
             clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado')) || null;
             adminLogado = JSON.parse(sessionStorage.getItem('adminLogado')) || !1;
 
-            const loadingPromise = new Promise(resolve => { iniciarLoadingScreen(resolve); });
-
-            await carregarDados();
-            await carregarOrdemMarcas();
-            await carregarLogosMarcas();
-            await carregarBanner();
-            await carregarAnuncioGlobal();
-            popularSelectsRegiao();
+            // Renderiza a interface imediatamente com produtosBase
             renderCatalogo();
-            renderBrandCarousel(); 
+            renderBrandCarousel();
             atualizarUI();
+            popularSelectsRegiao();
 
-            await loadingPromise;
+            // Busca dados do Firebase em segundo plano e atualiza a UI quando chegar
+            carregarDados().then(() => {
+                renderCatalogo();
+                renderBrandCarousel();
+                atualizarUI();
+            });
+            carregarOrdemMarcas().then(() => {
+                renderBrandCarousel();
+                renderCatalogo();
+            });
+            carregarLogosMarcas().then(() => renderBrandCarousel());
+            carregarBanner();
+            carregarAnuncioGlobal();
         }
+
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
