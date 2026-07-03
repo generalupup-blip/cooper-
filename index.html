@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1024">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>CENTRAL LABS PREMIUM | Representante David Oficial</title>
     <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
@@ -23,83 +23,83 @@
             --success: #10b981;
             --warning: #f59e0b;
             --info: #3b82f6;
-            --radius: 12px;
-            --shadow: 0 2px 4px rgba(0, 0, 0, .04);
-            --shadow-hover: 0 8px 16px rgba(0, 0, 0, .08);
+            --radius: 10px;
+            --shadow: 0 1px 3px rgba(0,0,0,.04);
+            --shadow-hover: 0 4px 12px rgba(0,0,0,.08);
             --transition: .15s ease;
             --font: 'Segoe UI', system-ui, -apple-system, 'Inter', sans-serif;
         }
         * { margin: 0; padding: 0; box-sizing: border-box }
-        html { min-width: 1024px; overflow-x: auto; -webkit-text-size-adjust: none; }
-        body { font-family: var(--font); background: #ffffff; color: var(--text); min-height: 100vh; min-width: 1024px; line-height: 1.4; -webkit-font-smoothing: antialiased; overflow-x: visible; }
-        ::-webkit-scrollbar { width: 8px }
-        ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 8px }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 8px }
+        html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+        body { font-family: var(--font); background: #ffffff; color: var(--text); min-height: 100vh; line-height: 1.3; -webkit-font-smoothing: antialiased; overflow-x: hidden; font-size: 14px; }
+        ::-webkit-scrollbar { width: 6px }
+        ::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 6px }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 6px }
 
-        #buyNotificationContainer { position: fixed; bottom: 2rem; right: 2rem; z-index: 1000; display: flex; flex-direction: column; gap: .8rem; pointer-events: none }
-        .buy-notification { background: #fff; border-left: 4px solid var(--accent); border-radius: var(--radius); padding: .9rem 1.2rem; min-width: 260px; max-width: 320px; box-shadow: var(--shadow-hover); color: var(--text); font-size: .9rem; animation: subirNotificacao .4s ease forwards, desaparecerNotificacao .4s 4s ease forwards; pointer-events: auto; display: flex; align-items: center; gap: .8rem }
-        .buy-notification .icon { font-size: 1.8rem }
+        #buyNotificationContainer { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 1000; display: flex; flex-direction: column; gap: .6rem; pointer-events: none }
+        .buy-notification { background: #fff; border-left: 4px solid var(--accent); border-radius: var(--radius); padding: .7rem 1rem; min-width: 220px; max-width: 280px; box-shadow: var(--shadow-hover); color: var(--text); font-size: .8rem; animation: subirNotificacao .4s ease forwards, desaparecerNotificacao .4s 4s ease forwards; pointer-events: auto; display: flex; align-items: center; gap: .6rem }
+        .buy-notification .icon { font-size: 1.5rem }
         .buy-notification .text strong { color: var(--accent); font-weight: 800 }
-        .buy-notification .text small { font-size: .7rem; color: var(--text2); display: block; margin-top: .2rem }
-        @keyframes subirNotificacao { 0% { opacity: 0; transform: translateY(40px) scale(.9) } 100% { opacity: 1; transform: translateY(0) scale(1) } }
-        @keyframes desaparecerNotificacao { to { opacity: 0; transform: translateY(-20px) scale(.8); visibility: hidden } }
+        .buy-notification .text small { font-size: .65rem; color: var(--text2); display: block; margin-top: .1rem }
+        @keyframes subirNotificacao { 0% { opacity: 0; transform: translateY(30px) scale(.9) } 100% { opacity: 1; transform: translateY(0) scale(1) } }
+        @keyframes desaparecerNotificacao { to { opacity: 0; transform: translateY(-15px) scale(.8); visibility: hidden } }
 
-        header { background: rgba(255, 255, 255, .98); border-bottom: 1px solid var(--border); padding: .8rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow) }
-        .logo { font-size: 1.5rem; font-weight: 800; cursor: pointer; letter-spacing: -.02em; background: linear-gradient(135deg, #1e40af, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; transition: var(--transition) }
+        header { background: rgba(255,255,255,.98); border-bottom: 1px solid var(--border); padding: .5rem 1.2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow) }
+        .logo { font-size: 1.2rem; font-weight: 800; cursor: pointer; letter-spacing: -.02em; background: linear-gradient(135deg, #1e40af, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; transition: var(--transition); }
         .logo:hover { opacity: .85; transform: scale(1.01) }
-        nav { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center }
-        nav button { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: .45rem 1rem; border-radius: 40px; cursor: pointer; font-size: .82rem; font-weight: 500; transition: var(--transition); white-space: nowrap; min-height: 40px }
-        nav button:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: 0 2px 8px rgba(59, 130, 246, .3) }
+        nav { display: flex; gap: .3rem; flex-wrap: wrap; align-items: center }
+        nav button { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: .35rem .8rem; border-radius: 30px; cursor: pointer; font-size: .72rem; font-weight: 500; transition: var(--transition); white-space: nowrap; min-height: 34px }
+        nav button:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: 0 2px 6px rgba(59,130,246,.25) }
         nav button:active { transform: scale(.96) }
-        .cart-badge { background: var(--accent); color: #fff; border-radius: 50%; padding: .12rem .45rem; font-size: .68rem; font-weight: 800; margin-left: 4px }
+        .cart-badge { background: var(--accent); color: #fff; border-radius: 50%; padding: .1rem .4rem; font-size: .6rem; font-weight: 800; margin-left: 3px }
 
-        main { max-width: 1300px; margin: 0 auto; padding: 0 1rem; }
-        .section { display: none; content-visibility: auto; contain-intrinsic-size: auto 500px }
-        .section.active { display: block; animation: fadeUp .35s ease; content-visibility: visible; contain-intrinsic-size: none }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: translateY(0) } }
+        main { max-width: 1200px; margin: 0 auto; padding: 0 .8rem; }
+        .section { display: none; content-visibility: auto; contain-intrinsic-size: auto 400px }
+        .section.active { display: block; animation: fadeUp .3s ease; content-visibility: visible; contain-intrinsic-size: none }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: translateY(0) } }
 
-        h2 { font-size: 1.6rem; margin-bottom: 1.2rem; color: #0f172a; border-bottom: 3px solid var(--accent); padding-bottom: .5rem; display: inline-block }
+        h2 { font-size: 1.2rem; margin-bottom: .8rem; color: #0f172a; border-bottom: 2px solid var(--accent); padding-bottom: .3rem; display: inline-block }
 
-        .hero-banner { position: relative; width: 100%; height: 320px; background-color: #1e293b; background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center top; margin-bottom: 30px; border-radius: var(--radius); overflow: hidden; transition: background-image 0.5s ease; }
-        .hero-ticker-wrapper { position: absolute; bottom: 0; left: 0; width: 100%; background: #ffffff; padding: 15px 0; overflow: hidden; z-index: 10; border-top: 1px solid rgba(0, 0, 0, 0.03); box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.03); }
-        .ticker-track { display: flex; gap: 15px; width: max-content; animation: scrollTicker 25s linear infinite; }
-        .ticker-item { display: inline-flex; align-items: center; gap: 8px; background: #f0fdf4; padding: 8px 18px; border-radius: 30px; color: #16a34a; border: 1px solid #dcfce7; font-size: 14px; font-weight: 600; white-space: nowrap; }
+        .hero-banner { position: relative; width: 100%; height: 200px; background-color: #1e293b; background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop'); background-size: cover; background-position: center top; margin-bottom: 20px; border-radius: var(--radius); overflow: hidden; transition: background-image 0.5s ease; }
+        .hero-ticker-wrapper { position: absolute; bottom: 0; left: 0; width: 100%; background: #ffffff; padding: 8px 0; overflow: hidden; z-index: 10; border-top: 1px solid rgba(0,0,0,0.03); box-shadow: 0 -2px 8px rgba(0,0,0,0.03); }
+        .ticker-track { display: flex; gap: 12px; width: max-content; animation: scrollTicker 20s linear infinite; }
+        .ticker-item { display: inline-flex; align-items: center; gap: 5px; background: #f0fdf4; padding: 5px 12px; border-radius: 20px; color: #16a34a; border: 1px solid #dcfce7; font-size: 11px; font-weight: 600; white-space: nowrap; }
         .ticker-item.v2 { background: #eff6ff; color: #2563eb; border-color: #dbeafe; }
         .ticker-item.v3 { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
         @keyframes scrollTicker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .brand-carousel-wrapper { background: #ffffff; padding: 25px 0; text-align: center; border-bottom: 1px solid #f1f5f9; margin-bottom: 25px; border-radius: var(--radius); box-shadow: var(--shadow); }
-        .brand-carousel-title { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 20px; letter-spacing: -0.5px; }
-        .brand-slider-container { display: flex; align-items: center; justify-content: center; gap: 10px; max-width: 100%; margin: 0 auto; padding: 0 5px; }
-        .brand-slider-items { display: flex; gap: 25px; overflow-x: auto; scroll-behavior: smooth; padding: 10px 0; scrollbar-width: none; width: 100%; justify-content: flex-start; }
+        .brand-carousel-wrapper { background: #ffffff; padding: 15px 0; text-align: center; border-bottom: 1px solid #f1f5f9; margin-bottom: 20px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .brand-carousel-title { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 15px; letter-spacing: -0.3px; }
+        .brand-slider-container { display: flex; align-items: center; justify-content: center; gap: 8px; max-width: 100%; margin: 0 auto; padding: 0 5px; }
+        .brand-slider-items { display: flex; gap: 18px; overflow-x: auto; scroll-behavior: smooth; padding: 8px 0; scrollbar-width: none; width: 100%; justify-content: flex-start; }
         .brand-slider-items::-webkit-scrollbar { display: none; }
-        .brand-slider-btn { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; color: #64748b; transition: all 0.2s; flex-shrink: 0; }
+        .brand-slider-btn { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; color: #64748b; transition: all 0.2s; flex-shrink: 0; }
         .brand-slider-btn:hover { background: #f1f5f9; color: #0f172a; }
-        .brand-item { display: flex; flex-direction: column; align-items: center; min-width: 80px; cursor: pointer; transition: transform 0.2s; }
-        .brand-item:hover { transform: translateY(-3px); }
-        .brand-logo-circle { width: 70px; height: 70px; border-radius: 50%; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; padding: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); overflow: hidden; }
+        .brand-item { display: flex; flex-direction: column; align-items: center; min-width: 60px; cursor: pointer; transition: transform 0.2s; }
+        .brand-item:hover { transform: translateY(-2px); }
+        .brand-logo-circle { width: 48px; height: 48px; border-radius: 50%; background: #ffffff; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; padding: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); overflow: hidden; }
         .brand-logo-circle img { width: 100%; height: 100%; object-fit: contain; }
-        .brand-item span { margin-top: 8px; font-size: 12px; font-weight: 600; color: #1e293b; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px; }
+        .brand-item span { margin-top: 5px; font-size: 10px; font-weight: 600; color: #1e293b; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60px; }
 
-        .catalogo-layout { display: flex; gap: 1.5rem; align-items: flex-start; }
+        .catalogo-layout { display: flex; gap: 1rem; align-items: flex-start; }
         .filtros-sidebar { display: none !important; }
         .catalogo-main { flex: 1; min-width: 0; }
-        .search-box { width: 100%; padding: .7rem 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 60px; font-size: .95rem; margin-bottom: 1.2rem; transition: var(--transition); box-shadow: var(--shadow) }
-        .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, .15) }
+        .search-box { width: 100%; padding: .5rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; font-size: .8rem; margin-bottom: 1rem; transition: var(--transition); box-shadow: var(--shadow) }
+        .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59,130,246,.15) }
 
-        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
 
-        .product-card { background: #ffffff; border-radius: 16px; padding: 20px; text-align: left; transition: transform 0.15s ease, box-shadow 0.15s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 6px; position: relative; overflow: visible; }
-        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); border-color: #cbd5e1; }
-        .product-card .status-badge { position: absolute; top: 16px; left: 16px; z-index: 10; padding: 4px 14px; border-radius: 30px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; background: #f0fdf4; color: #0d9488; }
+        .product-card { background: #ffffff; border-radius: 12px; padding: 10px; text-align: left; transition: transform 0.1s ease, box-shadow 0.1s ease; box-shadow: 0 1px 2px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 4px; position: relative; overflow: visible; }
+        .product-card:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.06); border-color: #cbd5e1; }
+        .product-card .status-badge { position: absolute; top: 8px; left: 8px; z-index: 10; padding: 2px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; background: #f0fdf4; color: #0d9488; }
         .product-card .status-badge.esgotado { background: #f1f5f9; color: #94a3b8; }
-        .product-card .img-container { background: transparent; width: 100%; aspect-ratio: 1/1; margin-bottom: 8px; border: 1px solid #f8fafc; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .product-card .img-container img { max-width: 85%; max-height: 85%; }
-        .product-card .brand-title { font-size: 11px; color: #94a3b8; text-transform: uppercase; font-weight: 600; margin-top: 4px; letter-spacing: 0.5px; }
-        .product-card .name { font-size: 17px; font-weight: 700; color: #0f172a; line-height: 1.2; margin: 2px 0; min-height: 2.4rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .product-card .dosage { font-size: 13px; color: #94a3b8; margin-bottom: 6px; }
-        .product-card .price { font-size: 18px; font-weight: 700; color: #0f172a; margin: 4px 0 14px; }
-        .product-card .btn-add-cart { width: 100%; background: #35b6a5; color: #ffffff; border: none; padding: 14px 0; border-radius: 30px; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background 0.2s; margin-top: auto; font-family: var(--font); }
+        .product-card .img-container { background: transparent; width: 100%; aspect-ratio: 1/1; margin-bottom: 4px; border: 1px solid #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .product-card .img-container img { max-width: 80%; max-height: 80%; }
+        .product-card .brand-title { font-size: 9px; color: #94a3b8; text-transform: uppercase; font-weight: 600; margin-top: 2px; letter-spacing: 0.3px; }
+        .product-card .name { font-size: 13px; font-weight: 700; color: #0f172a; line-height: 1.2; margin: 2px 0; min-height: 2.2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-card .dosage { font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+        .product-card .price { font-size: 15px; font-weight: 700; color: #0f172a; margin: 2px 0 8px; }
+        .product-card .btn-add-cart { width: 100%; background: #35b6a5; color: #ffffff; border: none; padding: 8px 0; border-radius: 20px; font-weight: 600; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; cursor: pointer; transition: background 0.2s; margin-top: auto; font-family: var(--font); }
         .product-card .btn-add-cart:hover { background: #2b9688; }
         .product-card .btn-add-cart.esgotado-btn { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
         .product-card .btn-add-cart.esgotado-btn:hover { background: #e2e8f0; }
@@ -107,31 +107,31 @@
 
         .filter-mobile-btn { display: none !important; }
 
-        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1.2rem; box-shadow: var(--shadow) }
-        .status-badge { padding: .2rem .7rem; border-radius: 30px; font-weight: 700; font-size: .68rem }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .8rem; margin-bottom: .8rem; box-shadow: var(--shadow) }
+        .status-badge { padding: .15rem .5rem; border-radius: 20px; font-weight: 700; font-size: .65rem }
         .status-pendente { background: #fef3c7; color: #b45309 }
         .status-finalizado { background: #d1fae5; color: #065f46 }
-        .client-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin-bottom: .8rem }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, .5); display: flex; align-items: center; justify-content: center; z-index: 200 }
-        .modal { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; max-width: 500px; width: 90%; box-shadow: var(--shadow-hover) }
-        .empty-state { text-align: center; padding: 2rem; color: var(--text2); background: #ffffff; border-radius: var(--radius); border: 1px solid var(--border);}
-        .pagination { display: flex; gap: .3rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap }
-        .pagination button { background: var(--surface); border: 1px solid var(--border); padding: .4rem .8rem; border-radius: 8px; cursor: pointer; font-weight: 600; min-height: 38px; touch-action: manipulation; font-size: .82rem }
+        .client-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: .7rem; margin-bottom: .6rem }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center; z-index: 200 }
+        .modal { background: var(--surface); border-radius: var(--radius); padding: 1.2rem; max-width: 450px; width: 90%; box-shadow: var(--shadow-hover) }
+        .empty-state { text-align: center; padding: 1.5rem; color: var(--text2); background: #ffffff; border-radius: var(--radius); border: 1px solid var(--border);}
+        .pagination { display: flex; gap: .2rem; justify-content: center; margin-top: 1rem; flex-wrap: wrap }
+        .pagination button { background: var(--surface); border: 1px solid var(--border); padding: .3rem .6rem; border-radius: 6px; cursor: pointer; font-weight: 600; min-height: 32px; touch-action: manipulation; font-size: .72rem }
         .pagination button.active, .pagination button:hover { background: var(--accent); color: #fff; border-color: var(--accent) }
-        #toastContainer { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; display: flex; flex-direction: column; gap: .8rem }
-        .toast { background: var(--surface); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: .8rem 1.2rem; box-shadow: var(--shadow-hover); animation: slideInToast .3s ease forwards, fadeOutToast .3s 3s forwards }
-        @keyframes slideInToast { from { transform: translateX(120%); opacity: 0 } to { transform: translateX(0); opacity: 1 } }
+        #toastContainer { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999; display: flex; flex-direction: column; gap: .6rem }
+        .toast { background: var(--surface); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: .6rem 1rem; box-shadow: var(--shadow-hover); animation: slideInToast .3s ease forwards, fadeOutToast .3s 3s forwards }
+        @keyframes slideInToast { from { transform: translateX(100%); opacity: 0 } to { transform: translateX(0); opacity: 1 } }
         @keyframes fadeOutToast { to { opacity: 0; transform: translateX(30%) } }
-        .form-group { margin-bottom: .8rem }
-        .form-group label { display: block; font-weight: 600; margin-bottom: .25rem; color: var(--text); font-size: .85rem }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: .5rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2) }
-        .flex-row { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center }
+        .form-group { margin-bottom: .6rem }
+        .form-group label { display: block; font-weight: 600; margin-bottom: .2rem; color: var(--text); font-size: .78rem }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: .4rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface2); font-size: .8rem }
+        .flex-row { display: flex; gap: .3rem; flex-wrap: wrap; align-items: center }
         .flex-between { justify-content: space-between }
         .hidden { display: none !important }
-        .mt-2 { margin-top: 1rem }
-        .mb-2 { margin-bottom: 1rem }
-        .btn { background: var(--accent); color: #fff; border: none; padding: .45rem .9rem; border-radius: 40px; cursor: pointer; font-weight: 600; font-size: .8rem; transition: var(--transition); min-height: 38px; touch-action: manipulation }
-        .btn:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 8px rgba(59, 130, 246, .2) }
+        .mt-2 { margin-top: .8rem }
+        .mb-2 { margin-bottom: .8rem }
+        .btn { background: var(--accent); color: #fff; border: none; padding: .35rem .7rem; border-radius: 30px; cursor: pointer; font-weight: 600; font-size: .72rem; transition: var(--transition); min-height: 32px; touch-action: manipulation }
+        .btn:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(59,130,246,.2) }
         .btn:active { transform: scale(.96) }
         .btn-danger { background: var(--danger) }
         .btn-danger:hover { background: #dc2626 }
@@ -139,43 +139,52 @@
         .btn-success:hover { background: #059669 }
         .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent) }
         .btn-outline:hover { background: var(--accent); color: #fff }
-        .btn-esgotado { background: #f1f5f9; border: 2px solid #e2e8f0; color: #64748b; cursor: pointer; font-weight: 600; padding: .4rem .8rem; border-radius: 40px; transition: var(--transition); white-space: nowrap; min-height: 38px; font-size: .78rem }
+        .btn-esgotado { background: #f1f5f9; border: 2px solid #e2e8f0; color: #64748b; cursor: pointer; font-weight: 600; padding: .3rem .6rem; border-radius: 30px; transition: var(--transition); white-space: nowrap; min-height: 32px; font-size: .7rem }
         .btn-esgotado.ativo { background: #fee2e2; border-color: #ef4444; color: #ef4444; font-weight: 800 }
-        .produto-editar-item { display: flex; gap: .6rem; padding: .8rem; border: 1px solid var(--border); border-radius: 10px; margin-bottom: .6rem; flex-wrap: wrap; align-items: center; background: #fff }
-        .produto-editar-item>* { min-width: 50px }
+        .produto-editar-item { display: flex; gap: .4rem; padding: .6rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: .4rem; flex-wrap: wrap; align-items: center; background: #fff; font-size: .78rem }
+        .produto-editar-item>* { min-width: 40px }
 
-        /* Removendo loading overlay - não é mais usado */
-        #loadingOverlay { display: none; }
-
-        #processingModal { position: fixed; inset: 0; background: rgba(10, 15, 26, .85); z-index: 9998; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1.2rem; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s ease, visibility .35s ease; }
+        #processingModal { position: fixed; inset: 0; background: rgba(10,15,26,.85); z-index: 9998; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .35s ease, visibility .35s ease; }
         #processingModal.active { opacity: 1; visibility: visible; pointer-events: all; }
-        #processingModal .proc-card { background: #fff; border-radius: 20px; padding: 2.5rem 2rem 2rem; max-width: 440px; width: 90%; text-align: center; box-shadow: 0 25px 60px rgba(0, 0, 0, .3); display: flex; flex-direction: column; align-items: center; gap: 1rem; animation: modalPopIn .4s ease forwards; }
+        #processingModal .proc-card { background: #fff; border-radius: 18px; padding: 2rem 1.5rem 1.5rem; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,.3); display: flex; flex-direction: column; align-items: center; gap: .8rem; animation: modalPopIn .4s ease forwards; }
         @keyframes modalPopIn { 0% { transform: scale(.85); opacity: 0; } 70% { transform: scale(1.03); } 100% { transform: scale(1); opacity: 1; } }
-        #processingModal .proc-icon-wrap { position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; }
-        #processingModal .proc-icon { font-size: 4rem; animation: bounceBox .6s ease-in-out infinite; }
-        @keyframes bounceBox { 0%, 100% { transform: translateY(0); } 30% { transform: translateY(-18px); } 50% { transform: translateY(0); } 70% { transform: translateY(-8px); } 85% { transform: translateY(0); } }
-        #processingModal .proc-sparkles { position: absolute; inset: -15px; pointer-events: none; }
-        #processingModal .sparkle { position: absolute; width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; animation: sparkleFloat 1.2s ease-in-out infinite; }
-        @keyframes sparkleFloat { 0%, 100% { opacity: 0; transform: translate(0, 0) scale(0); } 50% { opacity: 1; transform: translate(var(--sx), var(--sy)) scale(1.4); } }
-        #processingModal .proc-title { font-size: 1.3rem; font-weight: 800; color: #0f172a; letter-spacing: -.01em; }
-        #processingModal .proc-step { font-size: .9rem; color: #64748b; font-weight: 500; transition: all .3s ease; }
+        #processingModal .proc-icon-wrap { position: relative; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; }
+        #processingModal .proc-icon { font-size: 3rem; animation: bounceBox .6s ease-in-out infinite; }
+        @keyframes bounceBox { 0%,100% { transform: translateY(0); } 30% { transform: translateY(-12px); } 50% { transform: translateY(0); } 70% { transform: translateY(-5px); } 85% { transform: translateY(0); } }
+        #processingModal .proc-sparkles { position: absolute; inset: -10px; pointer-events: none; }
+        #processingModal .sparkle { position: absolute; width: 6px; height: 6px; background: #f59e0b; border-radius: 50%; animation: sparkleFloat 1.2s ease-in-out infinite; }
+        @keyframes sparkleFloat { 0%,100% { opacity: 0; transform: translate(0,0) scale(0); } 50% { opacity: 1; transform: translate(var(--sx),var(--sy)) scale(1.4); } }
+        #processingModal .proc-title { font-size: 1.1rem; font-weight: 800; color: #0f172a; letter-spacing: -.01em; }
+        #processingModal .proc-step { font-size: .8rem; color: #64748b; font-weight: 500; transition: all .3s ease; }
         #processingModal .proc-step.done { color: #10b981; text-decoration: line-through; text-decoration-color: #10b981; text-decoration-thickness: 2px; }
-        #processingModal .proc-step.active-step { color: #3b82f6; font-weight: 700; font-size: .95rem; animation: stepHighlight .8s ease-in-out infinite; }
-        @keyframes stepHighlight { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
-        #processingModal .proc-progress-track { width: 100%; height: 6px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: .3rem; }
-        #processingModal .proc-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #3b82f6, #10b981); border-radius: 10px; transition: width .5s ease; box-shadow: 0 0 8px rgba(16, 185, 129, .4); }
-        #processingModal .proc-whatsapp-hint { font-size: .78rem; color: #94a3b8; margin-top: .2rem; opacity: 0; transition: opacity .4s ease; }
+        #processingModal .proc-step.active-step { color: #3b82f6; font-weight: 700; font-size: .85rem; animation: stepHighlight .8s ease-in-out infinite; }
+        @keyframes stepHighlight { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+        #processingModal .proc-progress-track { width: 100%; height: 4px; background: #e2e8f0; border-radius: 8px; overflow: hidden; margin-top: .2rem; }
+        #processingModal .proc-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg,#3b82f6,#10b981); border-radius: 8px; transition: width .5s ease; box-shadow: 0 0 6px rgba(16,185,129,.4); }
+        #processingModal .proc-whatsapp-hint { font-size: .7rem; color: #94a3b8; margin-top: .2rem; opacity: 0; transition: opacity .4s ease; }
         #processingModal .proc-whatsapp-hint.visible { opacity: 1; }
-        #processingModal .proc-check { display: none; font-size: 3.5rem; animation: popCheck .5s ease forwards; }
+        #processingModal .proc-check { display: none; font-size: 3rem; animation: popCheck .5s ease forwards; }
         @keyframes popCheck { 0% { transform: scale(0) rotate(-20deg); opacity: 0; } 60% { transform: scale(1.2) rotate(5deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
 
-        @media (max-width: 950px) { .hero-banner { height: 220px; } .product-grid { grid-template-columns: 1fr; } }
+        /* Ajustes responsivos para manter o visual igual ao Atomopharma */
+        @media (max-width: 480px) {
+            .product-grid { gap: .6rem; }
+            .product-card { padding: 8px; }
+            .product-card .name { font-size: 12px; min-height: 2rem; }
+            .product-card .price { font-size: 14px; }
+            .product-card .btn-add-cart { padding: 6px 0; font-size: 11px; }
+            .brand-logo-circle { width: 42px; height: 42px; }
+            .brand-item span { font-size: 9px; max-width: 50px; }
+            .hero-banner { height: 140px; }
+            .ticker-item { font-size: 10px; padding: 4px 10px; }
+            header { padding: .4rem .8rem; }
+            .logo { font-size: 1rem; }
+            nav button { padding: .25rem .5rem; font-size: .65rem; min-height: 28px; }
+        }
     </style>
 </head>
 <body>
-    <!-- Loading screen removido para carregamento instantâneo -->
-
-    <!-- MODAL DE PROCESSAMENTO (EMPACOTANDO) -->
+    <!-- MODAL DE PROCESSAMENTO -->
     <div id="processingModal">
         <div class="proc-card">
             <div class="proc-icon-wrap">
@@ -183,7 +192,7 @@
                 <span class="proc-check" id="procCheck">✅</span>
             </div>
             <span class="proc-title" id="procTitle">Processando seu pedido</span>
-            <div style="display:flex;flex-direction:column;gap:.35rem;width:100%;">
+            <div style="display:flex;flex-direction:column;gap:.25rem;width:100%;">
                 <span class="proc-step active-step" id="procStep1">🔍 Conferindo itens...</span>
                 <span class="proc-step" id="procStep2">📦 Empacotando produtos...</span>
                 <span class="proc-step" id="procStep3">🎀 Lacrando embalagem...</span>
@@ -203,7 +212,7 @@
         <div class="logo" onclick="showSection('catalogo')">CENTRAL LABS PREMIUM</div>
         <nav>
             <button onclick="showSection('catalogo')">📦 Produtos</button>
-            <button onclick="showSection('carrinho')">🛒 Carrinho <span class="cart-badge" id="cart-count">0</span></button>
+            <button onclick="showSection('carrinho')">🛒 <span class="cart-badge" id="cart-count">0</span></button>
             <button onclick="showSection('login')" id="nav-login">🔐 Entrar</button>
             <button onclick="showSection('admin')" id="nav-admin" style="display:none">📊 Dashboard</button>
             <button onclick="showSection('gerenciarClientes')" id="nav-clientes" style="display:none">👥 Clientes</button>
@@ -216,25 +225,23 @@
     </header>
 
     <main>
-        <!-- BANNER HERO COM TICKER FLUTUANTE -->
         <div class="hero-banner" id="heroBanner">
             <div class="hero-ticker-wrapper">
                 <div class="ticker-track">
                     <span class="ticker-item">🚚 Envio Rápido</span>
-                    <span class="ticker-item v2">💬 Suporte via WhatsApp</span>
+                    <span class="ticker-item v2">💬 Suporte WhatsApp</span>
                     <span class="ticker-item">🛡️ Originalidade Garantida</span>
-                    <span class="ticker-item v3">🏷️ Produtos 100% Originais</span>
+                    <span class="ticker-item v3">🏷️ 100% Originais</span>
                     <span class="ticker-item v2">🔒 Pagamento Seguro</span>
                     <span class="ticker-item">🚚 Envio Rápido</span>
-                    <span class="ticker-item v2">💬 Suporte via WhatsApp</span>
+                    <span class="ticker-item v2">💬 Suporte WhatsApp</span>
                     <span class="ticker-item">🛡️ Originalidade Garantida</span>
-                    <span class="ticker-item v3">🏷️ Produtos 100% Originais</span>
+                    <span class="ticker-item v3">🏷️ 100% Originais</span>
                     <span class="ticker-item v2">🔒 Pagamento Seguro</span>
                 </div>
             </div>
         </div>
 
-        <!-- CARROSSEL DE MARCAS -->
         <div class="brand-carousel-wrapper">
             <h2 class="brand-carousel-title">Laboratórios</h2>
             <div class="brand-slider-container">
@@ -244,17 +251,12 @@
             </div>
         </div>
 
-        <!-- SEÇÃO CATÁLOGO -->
         <section id="catalogo" class="section active">
-            <h2 style="display:none">📦 Catálogo de Produtos</h2>
-            <input type="text" class="search-box" placeholder="🔍 Buscar por nome do produto..." id="searchInput" oninput="debounceSearch()" autocomplete="off">
+            <h2 style="display:none">📦 Catálogo</h2>
+            <input type="text" class="search-box" placeholder="🔍 Buscar por nome..." id="searchInput" oninput="debounceSearch()" autocomplete="off">
             <div class="catalogo-layout">
-                <aside class="filtros-sidebar" id="filtrosSidebar">
-                    <h3>🏷️ Marcas</h3>
-                    <div class="brand-filters" id="brandFilters"></div>
-                </aside>
+                <aside class="filtros-sidebar" id="filtrosSidebar"></aside>
                 <div class="catalogo-main">
-                    <button class="filter-mobile-btn" id="filterMobileBtn" onclick="abrirDrawerFiltro()">🏷️ <span id="filterMobileLabel">Filtrar por Marca</span></button>
                     <div id="catalogoContainer" class="product-grid"></div>
                     <div class="pagination" id="catalogoPagination"></div>
                 </div>
@@ -266,30 +268,29 @@
             <div id="carrinhoContainer"></div>
             <div id="carrinhoResumo" class="hidden">
                 <div class="card">
-                    <h3>📋 Resumo do Pedido</h3>
-                    <p><strong>Total de itens:</strong> <span id="resumoItens">0</span></p>
+                    <h3>📋 Resumo</h3>
+                    <p><strong>Itens:</strong> <span id="resumoItens">0</span></p>
                     <p><strong>Subtotal:</strong> <span id="resumoSubtotal">R$ 0,00</span></p>
                     <p><strong>Frete:</strong> <span id="resumoFrete">R$ 0,00</span></p>
-                    <p><strong>Valor Total:</strong> <span id="resumoTotal" style="font-size:1.4rem;color:#059669;font-weight:800">R$ 0,00</span></p>
+                    <p><strong>Total:</strong> <span id="resumoTotal" style="font-size:1.2rem;color:#059669;font-weight:800">R$ 0,00</span></p>
                     <button class="btn" onclick="finalizarPedido()" id="btnFinalizar" disabled>✅ Finalizar Compra</button>
-                    <p id="msgLoginNeeded" style="color:#ef4444;margin-top:.5rem">⚠️ Faça login para finalizar.</p>
+                    <p id="msgLoginNeeded" style="color:#ef4444;margin-top:.5rem;font-size:.75rem">⚠️ Faça login para finalizar.</p>
                 </div>
             </div>
         </section>
 
         <section id="login" class="section">
             <h2>🔐 Acesso do Cliente</h2>
-            <div class="card" style="max-width:600px;margin:0 auto">
+            <div class="card" style="max-width:500px;margin:0 auto">
                 <div id="loginForm">
                     <h3>Entrar</h3>
                     <div class="form-group"><label>CPF</label><input type="text" id="loginCpf" placeholder="000.000.000-00" inputmode="numeric"></div>
                     <button class="btn" onclick="loginCliente()">Entrar</button>
-                    <p style="margin-top:1rem">Não tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent)">Cadastre-se</a></p>
+                    <p style="margin-top:1rem;font-size:.8rem">Não tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent)">Cadastre-se</a></p>
                 </div>
                 <div id="cadastroForm" class="hidden">
                     <h3>📝 Cadastro</h3>
-                    <div class="alert-box" style="background:#fef3c7;padding:1rem;border-radius:12px;margin-bottom:1rem">
-                        <strong>⚠️ ATENÇÃO</strong><br>O ENDEREÇO NÃO PODE CONTER DIVERGÊNCIAS.</div>
+                    <div style="background:#fef3c7;padding:.8rem;border-radius:8px;margin-bottom:.8rem;font-size:.75rem"><strong>⚠️ ATENÇÃO</strong><br>O ENDEREÇO NÃO PODE CONTER DIVERGÊNCIAS.</div>
                     <div class="form-group"><label>NOME COMPLETO</label><input type="text" id="cadNome"></div>
                     <div class="form-group"><label>CPF</label><input type="text" id="cadCpf" inputmode="numeric"></div>
                     <div class="form-group"><label>Rua</label><input type="text" id="cadRua"></div>
@@ -301,11 +302,11 @@
                     <div class="form-group"><label>CEP</label><input type="text" id="cadCep" inputmode="numeric"></div>
                     <div class="form-group"><label>WhatsApp</label><input type="text" id="cadContato" inputmode="tel"></div>
                     <button class="btn btn-success" onclick="cadastrarCliente()">Cadastrar</button>
-                    <p style="margin-top:1rem">Já tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent)">Entrar</a></p>
+                    <p style="margin-top:1rem;font-size:.8rem">Já tem conta? <a href="#" onclick="toggleCadastro()" style="color:var(--accent)">Entrar</a></p>
                 </div>
             </div>
-            <div class="card" style="max-width:500px;margin:1rem auto">
-                <p style="font-size:.85rem"><strong>🔑 Administrador?</strong></p>
+            <div class="card" style="max-width:400px;margin:1rem auto">
+                <p style="font-size:.8rem"><strong>🔑 Administrador?</strong></p>
                 <button class="btn btn-outline btn-sm" onclick="showAdminLogin()">Acessar Painel Admin</button>
             </div>
         </section>
@@ -332,13 +333,13 @@
         </section>
 
         <section id="gerenciarClientes" class="section">
-            <h2>👥 Gerenciar Clientes</h2>
+            <h2>👥 Clientes</h2>
             <input type="text" class="search-box" placeholder="Buscar cliente..." id="searchClientes" oninput="renderGerenciarClientes()" autocomplete="off">
             <div id="clientesContainer"></div>
         </section>
 
         <section id="gerenciarProdutos" class="section">
-            <h2>⚙️ Gerenciar Catálogo</h2>
+            <h2>⚙️ Catálogo</h2>
             <div class="card">
                 <h3>➕ Adicionar Produto</h3>
                 <div class="flex-row">
@@ -346,67 +347,50 @@
                     <div class="form-group" style="flex:1"><label>Preço</label><input type="number" id="novoProdPreco" step="0.01"></div>
                     <div class="form-group" style="flex:2"><label>Marca</label><select id="novoProdMarcaSelect" onchange="toggleNovaMarcaInput()"></select><input type="text" id="novoProdMarcaNovo" class="hidden" placeholder="Nova marca"></div>
                     <div class="form-group"><label>Imagem</label><input type="file" id="novoProdImg" accept="image/*"></div>
-                    <div class="form-group" style="display:flex;align-items:center;gap:.5rem"><label style="margin:0">Esgotado</label><input type="checkbox" id="novoProdEsgotado"></div>
+                    <div class="form-group" style="display:flex;align-items:center;gap:.3rem"><label style="margin:0">Esgotado</label><input type="checkbox" id="novoProdEsgotado"></div>
                     <button class="btn btn-success" onclick="adicionarNovoProduto()">➕ Adicionar</button>
                 </div>
                 <div id="previewNovaImagem" class="mt-2" style="display:none">
-                    <p>Pré-visualização:</p>
-                    <img id="previewNovaImgTag" src="" alt="Preview" style="max-width:120px;border-radius:10px;border:1px solid var(--border)" width="120" height="120">
+                    <img id="previewNovaImgTag" src="" alt="Preview" style="max-width:80px;border-radius:8px;border:1px solid var(--border)">
                 </div>
             </div>
             <div id="gerenciarContainer"></div>
         </section>
 
         <section id="ordenarMarcas" class="section">
-            <h2>🔀 Ordenar e Adicionar Logotipos</h2>
-            <div class="card" style="background:var(--surface2);">
-                <p><strong>💡 Como funciona:</strong> <br>1. Clique em <strong>"Selecionar arquivo"</strong> ao lado da marca para enviar a imagem do logotipo que aparecerá no círculo do topo.<br>2. Arraste usando as setas para reordenar a lista.</p>
+            <h2>🔀 Ordenar Marcas</h2>
+            <div class="card" style="background:var(--surface2);font-size:.8rem">
+                <p><strong>💡 Como funciona:</strong> Arraste usando as setas e faça upload do logo.</p>
             </div>
             <div id="ordenarMarcasContainer"></div>
             <div class="flex-row mt-2">
-                <button class="btn btn-success" onclick="salvarOrdemMarcas()">💾 Salvar Ordem e Logos</button>
+                <button class="btn btn-success" onclick="salvarOrdemMarcas()">💾 Salvar Ordem</button>
                 <button class="btn btn-outline" onclick="resetarOrdemMarcas()">🔄 Padrão A-Z</button>
             </div>
         </section>
 
         <section id="gerenciarAnuncio" class="section">
-            <h2>📢 Gerenciar Anúncio</h2>
+            <h2>📢 Anúncio</h2>
             <div class="card">
-                <label><input type="checkbox" id="anuncioAtivo" onchange="previewAnuncio()"> Ativar anúncio</label>
+                <label style="font-size:.8rem"><input type="checkbox" id="anuncioAtivo" onchange="previewAnuncio()"> Ativar anúncio</label>
                 <div class="form-group"><label>Título</label><input type="text" id="anuncioTituloInput" oninput="previewAnuncio()"></div>
-                <div class="form-group"><label>Mensagem</label><textarea id="anuncioMensagemInput" rows="3" oninput="previewAnuncio()"></textarea></div>
-                <div class="form-group"><label>Estilo</label><select id="anuncioCorSelect" onchange="previewAnuncio()">
-                        <option value="info">Informativo</option>
-                        <option value="warning" selected>Promoção</option>
-                        <option value="success">Sucesso</option>
-                        <option value="danger">Urgente</option>
-                    </select></div>
+                <div class="form-group"><label>Mensagem</label><textarea id="anuncioMensagemInput" rows="2" oninput="previewAnuncio()"></textarea></div>
+                <div class="form-group"><label>Estilo</label><select id="anuncioCorSelect" onchange="previewAnuncio()"><option value="info">Informativo</option><option value="warning" selected>Promoção</option><option value="success">Sucesso</option><option value="danger">Urgente</option></select></div>
                 <div class="flex-row">
                     <button class="btn btn-danger" onclick="removerAnuncio()">🗑️ Remover</button>
                     <button class="btn btn-success" onclick="salvarAnuncio()">💾 Salvar</button>
-                </div>
-                <div id="anuncioPreview" class="mt-2 hidden">
-                    <div id="anuncioPreviewBox" class="anuncio-banner warning">
-                        <div class="anuncio-content"><strong id="prevTitulo"></strong><span id="prevMensagem"></span></div>
-                        <button class="anuncio-close" disabled>✕</button>
-                    </div>
                 </div>
             </div>
         </section>
 
         <section id="gerenciarBanner" class="section">
-            <h2>📷 Gerenciar Imagem do Banner</h2>
+            <h2>📷 Banner</h2>
             <div class="card">
-                <div class="form-group">
-                    <label>Nova Imagem do Banner (600x300 recomendado)</label>
-                    <input type="file" id="bannerImgInput" accept="image/*" onchange="previewBannerAdmin()">
-                </div>
-                <div id="bannerPreviewAdmin" class="mt-2" style="max-width:100%;border-radius:12px;overflow:hidden;display:none; border: 1px solid var(--border);">
-                    <img id="bannerPreviewImg" src="" alt="Banner Preview" style="width:100%;height:auto;max-height:300px;object-fit:cover;">
-                </div>
+                <div class="form-group"><label>Nova Imagem (600x300)</label><input type="file" id="bannerImgInput" accept="image/*" onchange="previewBannerAdmin()"></div>
+                <div id="bannerPreviewAdmin" class="mt-2" style="max-width:100%;border-radius:8px;overflow:hidden;display:none;"><img id="bannerPreviewImg" src="" style="width:100%;max-height:200px;object-fit:cover;"></div>
                 <div class="flex-row mt-2">
-                    <button class="btn btn-success" onclick="salvarBannerAdmin()">💾 Salvar Banner</button>
-                    <button class="btn btn-danger" onclick="removerBannerAdmin()">🗑️ Remover Banner (Padrão)</button>
+                    <button class="btn btn-success" onclick="salvarBannerAdmin()">💾 Salvar</button>
+                    <button class="btn btn-danger" onclick="removerBannerAdmin()">🗑️ Padrão</button>
                 </div>
             </div>
         </section>
@@ -450,8 +434,6 @@
             'SP': 50, 'RJ': 60, 'MG': 60, 'SC': 60, 'RS': 60, 'PR': 60, 'ES': 60, 'DF': 65, 'CE': 70, 'BA': 70, 'AL': 70, 'MA': 70, 'MT': 75, 'PE': 75, 'PB': 75, 'PI': 75, 'PA': 80, 'TO': 80, 'MS': 90, 'SE': 100, 'RN': 100, 'RO': 100, 'AM': 120
         };
 
-        const PLACEHOLDER_SVG = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23cbd5e1%22%3E%3Crect x=%223%22 y=%223%22 width=%2218%22 height=%2218%22 rx=%222%22/%3E%3Ccircle cx=%228.5%22 cy=%228.5%22 r=%221.5%22/%3E%3Cpolyline points=%2221 15 16 10 5 21%22/%3E%3C/svg%3E';
-
         const produtosBase = [
             { id: 1, nome: 'GHK-Cu 100mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=GHK-Cu', esgotado: !1 },
             { id: 2, nome: 'SLU-PP-332 5mg/3ml', preco: 600, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=SLU', esgotado: !1 },
@@ -464,11 +446,10 @@
 
         let produtos = JSON.parse(JSON.stringify(produtosBase));
         let carrinho = [], usuarios = [], pedidos = [], clienteLogado = null, adminLogado = !1, filtroMarca = 'TODAS', filtroAdminStatus = 'todos', clienteEditandoId = null, ITEMS_PER_PAGE = 20, catalogoPaginaAtual = 1, catalogoFiltrados = [], ordemMarcas = [], anuncioAtual = null, imagensTemp = {}, debounceTimer;
-
         let bannerData = null;
         let marcasLogos = {};
 
-        function compressImage(file, maxW = 400, maxH = 400, quality = .7) {
+        function compressImage(file, maxW = 300, maxH = 300, quality = .6) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -490,10 +471,10 @@
             })
         }
 
-        function readFileAsDataURL(file, maxW = 400, maxH = 400, quality = .75) { return compressImage(file, maxW, maxH, quality) }
+        function readFileAsDataURL(file, maxW = 300, maxH = 300, quality = .65) { return compressImage(file, maxW, maxH, quality) }
 
-        function createImageHTML(src, alt, cls = '') {
-            return `<div class="img-container"><img src="${src}" alt="${alt}" loading="lazy" decoding="async" fetchpriority="low" onload="this.classList.add('loaded')" onerror="this.style.display='none'" class="${cls}"></div>`
+        function createImageHTML(src, alt) {
+            return `<div class="img-container"><img src="${src}" alt="${alt}" loading="lazy" onerror="this.style.display='none'"></div>`
         }
 
         function mostrarToast(msg, tipo = 'info') {
@@ -525,11 +506,8 @@
         function atualizarBannerUI() {
             const el = document.getElementById('heroBanner');
             if (!el) return;
-            if (bannerData && bannerData.url) {
-                el.style.backgroundImage = `url('${bannerData.url}')`;
-            } else {
-                el.style.backgroundImage = `url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop')`;
-            }
+            if (bannerData && bannerData.url) el.style.backgroundImage = `url('${bannerData.url}')`;
+            else el.style.backgroundImage = `url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop')`;
         }
 
         async function salvarOrdemMarcasFirestore() { await db.collection('config').doc('ordemMarcas').set({ ordem: ordemMarcas }, { merge: !0 }); mostrarToast('✅ Ordem salva', 'success') }
@@ -550,14 +528,13 @@
                 usuarios = uSnap.docs.map(d => ({ id: d.id, ...d.data() }));
                 pedidos = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
                 if (prodSnap.empty) {
-                    // Já temos produtosBase carregado, então apenas sincronizamos com Firestore
                     const batch = db.batch();
                     produtos.forEach(p => { const ref = db.collection('produtos').doc(String(p.id)); batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p.obs || '', esgotado: p.esgotado || !1 }) });
                     await batch.commit();
                 } else {
                     produtos = prodSnap.docs.map(fp => { const d = fp.data(); return { id: Number(fp.id), nome: d.nome, preco: parseFloat(d.preco) || 0, marca: d.marca, img: d.img || '', esgotado: !!d.esgotado } }).sort((a, b) => a.id - b.id);
                 }
-            } catch (e) { console.error(e); /* mantém produtosBase */ }
+            } catch (e) { console.error(e); }
         }
 
         function setFiltroMarca(m) { filtroMarca = m; catalogoPaginaAtual = 1; renderCatalogo(); renderBrandCarousel(); }
@@ -595,9 +572,9 @@
             if (totalPages > 1) {
                 pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual-1})" ${catalogoPaginaAtual===1?'disabled':''}>«</button>`;
                 for (let i = 1; i <= totalPages; i++) {
-                    if (i === 1 || i === totalPages || (i >= catalogoPaginaAtual - 2 && i <= catalogoPaginaAtual + 2))
+                    if (i === 1 || i === totalPages || (i >= catalogoPaginaAtual - 1 && i <= catalogoPaginaAtual + 1))
                         pagHTML += `<button onclick="irPagina(${i})" class="${i===catalogoPaginaAtual?'active':''}">${i}</button>`;
-                    else if (i === catalogoPaginaAtual - 3 || i === catalogoPaginaAtual + 3) pagHTML += '<button disabled>...</button>'
+                    else if (i === catalogoPaginaAtual - 2 || i === catalogoPaginaAtual + 2) pagHTML += '<button disabled>...</button>'
                 }
                 pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual+1})" ${catalogoPaginaAtual===totalPages?'disabled':''}>»</button>`
             }
@@ -614,8 +591,8 @@
                 const isActive = filtroMarca === m;
                 const logoUrl = marcasLogos[m] || `https://placehold.co/80x80/fff/0f172a?text=${m.substring(0,3)}`;
                 return `
-                    <div class="brand-item" onclick="setFiltroMarca('${m.replace(/'/g,"\\'")}'); scrollBrands(0)" style="${isActive ? 'transform: scale(1.05);' : ''}">
-                        <div class="brand-logo-circle" style="${isActive ? 'border: 2px solid #3b82f6; box-shadow: 0 4px 8px rgba(59,130,246,0.2);' : ''}">
+                    <div class="brand-item" onclick="setFiltroMarca('${m.replace(/'/g,"\\'")}')" style="${isActive ? 'transform: scale(1.05);' : ''}">
+                        <div class="brand-logo-circle" style="${isActive ? 'border: 2px solid #3b82f6; box-shadow: 0 2px 6px rgba(59,130,246,0.2);' : ''}">
                             <img src="${logoUrl}" alt="${m}" loading="lazy" onerror="this.src='https://placehold.co/80x80/fff/0f172a?text=${m.substring(0,3)}'">
                         </div>
                         <span style="${isActive ? 'color: #3b82f6; font-weight: 800;' : ''}">${m}</span>
@@ -626,7 +603,7 @@
 
         function scrollBrands(dir) {
             const slider = document.getElementById('brandSliderItems');
-            const scrollAmount = 300;
+            const scrollAmount = 200;
             if(dir === 1) slider.scrollLeft += scrollAmount;
             else if(dir === -1) slider.scrollLeft -= scrollAmount;
         }
@@ -634,10 +611,9 @@
         function adicionarAoCarrinho(pid) {
             const p = produtos.find(x => x.id === pid);
             if (!p || p.esgotado) return;
-            const q = 1;
             const existente = carrinho.find(i => i.prodId === pid);
-            if (existente) existente.qtd += q;
-            else carrinho.push({ prodId: pid, qtd: q, preco: p.preco, nome: p.nome, marca: p.marca });
+            if (existente) existente.qtd += 1;
+            else carrinho.push({ prodId: pid, qtd: 1, preco: p.preco, nome: p.nome, marca: p.marca });
             localStorage.setItem('carrinho', JSON.stringify(carrinho));
             atualizarUI();
             mostrarToast('✅ ' + p.nome, 'success')
@@ -692,7 +668,7 @@
             carrinho.forEach((item, i) => {
                 const sub = item.preco * item.qtd;
                 const card = document.createElement('div'); card.className = 'card flex-row flex-between';
-                card.innerHTML = `<div><strong>${item.nome}</strong> (${item.marca})<br>R$ ${item.preco.toFixed(2)} x ${item.qtd} = <strong>R$ ${sub.toFixed(2)}</strong></div><div class="flex-row"><input type="number" min="1" value="${item.qtd}" class="qty-input" onchange="alterarQtdCarrinho(${i},this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(${i})">🗑️</button></div>`;
+                card.innerHTML = `<div><strong>${item.nome}</strong> (${item.marca})<br>R$ ${item.preco.toFixed(2)} x ${item.qtd} = <strong>R$ ${sub.toFixed(2)}</strong></div><div class="flex-row"><input type="number" min="1" value="${item.qtd}" style="width:50px" onchange="alterarQtdCarrinho(${i},this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(${i})">🗑️</button></div>`;
                 c.appendChild(card)
             });
             const t = calcularTotaisCarrinho();
@@ -703,51 +679,41 @@
         }
 
         function alterarQtdCarrinho(i, v) { carrinho[i].qtd = Math.max(1, parseInt(v) || 1); localStorage.setItem('carrinho', JSON.stringify(carrinho)); renderCarrinho(); atualizarUI() }
-
         function removerDoCarrinho(i) { carrinho.splice(i, 1); localStorage.setItem('carrinho', JSON.stringify(carrinho)); renderCarrinho(); atualizarUI(); mostrarToast('🗑️ Item removido.', 'info') }
 
         function mostrarProcessamentoEmpacotamento(mensagemWhatsapp, callbackApos) {
             const modal = document.getElementById('processingModal');
             const progressBar = document.getElementById('procProgressBar');
-            const step1 = document.getElementById('procStep1'); const step2 = document.getElementById('procStep2');
-            const step3 = document.getElementById('procStep3'); const step4 = document.getElementById('procStep4');
-            const procIcon = document.getElementById('procIcon'); const procCheck = document.getElementById('procCheck');
-            const procTitle = document.getElementById('procTitle'); const hint = document.getElementById('procWhatsappHint');
-
+            const step1 = document.getElementById('procStep1'), step2 = document.getElementById('procStep2'), step3 = document.getElementById('procStep3'), step4 = document.getElementById('procStep4');
+            const procIcon = document.getElementById('procIcon'), procCheck = document.getElementById('procCheck'), procTitle = document.getElementById('procTitle'), hint = document.getElementById('procWhatsappHint');
             modal.classList.add('active'); progressBar.style.width = '0%';
             [step1, step2, step3, step4].forEach(s => { s.classList.remove('done', 'active-step'); });
             step1.classList.add('active-step'); procIcon.style.display = ''; procCheck.style.display = 'none';
-            procTitle.textContent = 'Processando seu pedido'; hint.classList.remove('visible'); hint.textContent = 'Abrindo conversa com David...';
-
+            procTitle.textContent = 'Processando seu pedido'; hint.classList.remove('visible');
             const etapas = [
-                { step: step1, next: step2, percent: 20, delay: 700 },
-                { step: step2, next: step3, percent: 45, delay: 900 },
-                { step: step3, next: step4, percent: 70, delay: 900 },
-                { step: step4, next: null, percent: 90, delay: 800 },
+                { step: step1, next: step2, percent: 25, delay: 600 },
+                { step: step2, next: step3, percent: 50, delay: 700 },
+                { step: step3, next: step4, percent: 75, delay: 700 },
+                { step: step4, next: null, percent: 90, delay: 600 },
             ];
-
             let totalDelay = 0;
             etapas.forEach((etapa, idx) => {
                 totalDelay += etapa.delay;
                 setTimeout(() => {
                     etapa.step.classList.remove('active-step'); etapa.step.classList.add('done');
-                    if (etapa.next) { etapa.next.classList.add('active-step'); }
+                    if (etapa.next) etapa.next.classList.add('active-step');
                     progressBar.style.width = etapa.percent + '%';
-                    if (idx === 1) procIcon.textContent = '📦'; if (idx === 2) procIcon.textContent = '🎀'; if (idx === 3) procIcon.textContent = '📱';
                 }, totalDelay);
             });
-
-            const tempoFinal = totalDelay + 600;
+            const tempoFinal = totalDelay + 500;
             setTimeout(() => {
                 progressBar.style.width = '100%'; procIcon.style.display = 'none'; procCheck.style.display = 'block'; procTitle.textContent = 'Pedido enviado!'; hint.classList.add('visible');
                 [step1, step2, step3, step4].forEach(s => { s.classList.remove('active-step'); s.classList.add('done'); });
             }, tempoFinal);
-
-            const tempoWhatsapp = tempoFinal + 900;
             setTimeout(() => {
                 window.open('https://wa.me/5519997390834?text=' + encodeURIComponent(mensagemWhatsapp), '_blank');
                 setTimeout(() => { modal.classList.remove('active'); if (callbackApos) callbackApos(); }, 400);
-            }, tempoWhatsapp);
+            }, tempoFinal + 800);
         }
 
         async function finalizarPedido() {
@@ -762,7 +728,7 @@
             if (confirm('Confirma o pedido? Total: R$ ' + t.total.toFixed(2))) {
                 const novo = { id: Date.now(), numero: num, clienteId: clienteLogado.id, clienteNome: clienteLogado.nome, clienteContato: clienteLogado.contato, clienteEndereco: endereco.replace(/\n/g, ' | '), clienteCpf: clienteLogado.cpf, itens: carrinho.map(i => ({ ...i })), subtotal: t.subtotal, frete: t.frete, total: t.total, status: 'pendente', data: new Date().toISOString() };
                 pedidos.unshift(novo); await db.collection('pedidos').doc(String(novo.id)).set(novo);
-                const carrinhoBackup = [...carrinho]; carrinho = []; localStorage.removeItem('carrinho'); atualizarUI(); renderCarrinho(); mostrarToast('✅ Pedido #' + num + ' criado!', 'success');
+                carrinho = []; localStorage.removeItem('carrinho'); atualizarUI(); renderCarrinho(); mostrarToast('✅ Pedido #' + num + ' criado!', 'success');
                 mostrarProcessamentoEmpacotamento(mensagem, () => {});
             }
         }
@@ -787,7 +753,6 @@
         }
 
         function toggleCadastro() { document.getElementById('loginForm').classList.toggle('hidden'); document.getElementById('cadastroForm').classList.toggle('hidden') }
-
         function showAdminLogin() { showSection('admin') }
 
         function loginAdmin() {
@@ -799,7 +764,6 @@
         }
 
         function renderAdmin() { if (!adminLogado) return; document.getElementById('adminLoginForm').style.display = 'none'; document.getElementById('adminContent').classList.remove('hidden'); renderAdminPedidos() }
-
         function filtrarPedidos(s) { filtroAdminStatus = s; renderAdminPedidos() }
 
         function renderAdminPedidos() {
@@ -809,44 +773,22 @@
             if (filtroAdminStatus === 'finalizado') f = pedidos.filter(p => p.status === 'finalizado');
             if (!f.length) { container.innerHTML = '<div class="empty-state">📭 Nenhum pedido.</div>'; return }
             container.innerHTML = '';
-            const fragment = document.createDocumentFragment();
             f.forEach(p => {
                 const card = document.createElement('div'); card.className = 'card';
-                card.innerHTML = `<div class="flex-row flex-between"><div><strong>#${p.numero}</strong> <span class="status-badge ${p.status==='pendente'?'status-pendente':'status-finalizado'}">${p.status}</span></div><div class="flex-row">${p.status==='pendente'?`<button class="btn btn-success btn-sm" onclick="marcarFinalizado(${p.id})">✅ Finalizar</button>`:''}<button class="btn btn-danger btn-sm" onclick="apagarPedido(${p.id})">🗑️ Excluir</button></div></div><p><strong>${p.clienteNome}</strong> | ${p.clienteContato}</p><p style="font-size:.85rem">${p.clienteEndereco}</p><p>${p.itens.map(i=>i.qtd+'x '+i.nome).join(', ')}</p><p style="font-size:1.2rem;font-weight:800;color:#059669">Total: R$ ${p.total.toFixed(2)}</p>`;
-                fragment.appendChild(card)
+                card.innerHTML = `<div class="flex-row flex-between"><div><strong>#${p.numero}</strong> <span class="status-badge ${p.status==='pendente'?'status-pendente':'status-finalizado'}">${p.status}</span></div><div class="flex-row">${p.status==='pendente'?`<button class="btn btn-success btn-sm" onclick="marcarFinalizado(${p.id})">✅ Finalizar</button>`:''}<button class="btn btn-danger btn-sm" onclick="apagarPedido(${p.id})">🗑️ Excluir</button></div></div><p><strong>${p.clienteNome}</strong> | ${p.clienteContato}</p><p style="font-size:.8rem">${p.clienteEndereco}</p><p>${p.itens.map(i=>i.qtd+'x '+i.nome).join(', ')}</p><p style="font-size:1rem;font-weight:800;color:#059669">Total: R$ ${p.total.toFixed(2)}</p>`;
+                container.appendChild(card)
             });
-            container.appendChild(fragment)
         }
 
         async function marcarFinalizado(id) {
-            try {
-                const p = pedidos.find(x => x.id === id);
-                if (p) {
-                    p.status = 'finalizado';
-                    await db.collection('pedidos').doc(String(id)).update({ status: 'finalizado' });
-                    renderAdminPedidos();
-                    mostrarToast('✅ Finalizado.', 'success')
-                }
-            } catch (e) {
-                console.error(e);
-                mostrarToast('Erro ao finalizar pedido. Tente novamente.', 'error');
-            }
+            const p = pedidos.find(x => x.id === id);
+            if (p) { p.status = 'finalizado'; await db.collection('pedidos').doc(String(id)).update({ status: 'finalizado' }); renderAdminPedidos(); mostrarToast('✅ Finalizado.', 'success') }
         }
 
         async function apagarPedido(id) {
             if (!confirm('Excluir pedido?')) return;
-            try {
-                // Remove localmente primeiro para resposta instantânea
-                pedidos = pedidos.filter(x => x.id !== id);
-                renderAdminPedidos();
-                await db.collection('pedidos').doc(String(id)).delete();
-                mostrarToast('🗑️ Excluído.', 'info')
-            } catch (e) {
-                console.error(e);
-                mostrarToast('Erro ao excluir pedido. Verifique sua conexão.', 'error');
-                // Recarrega os pedidos para sincronizar com o servidor
-                carregarDados().then(() => renderAdminPedidos());
-            }
+            pedidos = pedidos.filter(x => x.id !== id); renderAdminPedidos();
+            await db.collection('pedidos').doc(String(id)).delete(); mostrarToast('🗑️ Excluído.', 'info')
         }
 
         function renderGerenciarClientes() {
@@ -856,15 +798,14 @@
             const search = (document.getElementById('searchClientes')?.value || '').toLowerCase();
             const filtrados = usuarios.filter(u => u.nome.toLowerCase().includes(search) || u.cpf.includes(search));
             container.innerHTML = '';
-            const fragment = document.createDocumentFragment();
             filtrados.forEach(u => {
                 const card = document.createElement('div'); card.className = 'client-card flex-row flex-between';
-                card.innerHTML = `<div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📱 ${u.contato}</small><br><small>${u.endereco||''}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️ Editar</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️ Excluir</button></div>`;
-                fragment.appendChild(card)
+                card.innerHTML = `<div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📱 ${u.contato}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️</button></div>`;
+                container.appendChild(card)
             });
-            container.appendChild(fragment)
         }
-        async function excluirCliente(id) { if (!confirm('Excluir cliente?')) return; const i = usuarios.findIndex(u => u.id === id); if (i !== -1) { usuarios.splice(i, 1); await db.collection('usuarios').doc(String(id)).delete(); if (clienteLogado?.id === id) logout(); renderGerenciarClientes(); mostrarToast('🗑️ Excluído.', 'info') } }
+
+        async function excluirCliente(id) { if (!confirm('Excluir cliente?')) return; usuarios = usuarios.filter(u => u.id !== id); await db.collection('usuarios').doc(String(id)).delete(); if (clienteLogado?.id === id) logout(); renderGerenciarClientes(); mostrarToast('🗑️ Excluído.', 'info') }
 
         function abrirModalEditarCliente(id) {
             const u = usuarios.find(x => x.id === id); if (!u) return;
@@ -873,7 +814,7 @@
             document.getElementById('editReferencia').value = u.referencia || ''; document.getElementById('editBairro').value = u.bairro || '';
             document.getElementById('editCidade').value = u.cidade || ''; document.getElementById('editRegiao').value = u.regiao || '';
             document.getElementById('editCep').value = u.cep || ''; document.getElementById('editContato').value = u.contato || '';
-            document.getElementById('editClienteId').value = id; document.getElementById('modalEditarCliente').classList.remove('hidden')
+            document.getElementById('modalEditarCliente').classList.remove('hidden')
         }
 
         function fecharModal() { document.getElementById('modalEditarCliente').classList.add('hidden'); clienteEditandoId = null }
@@ -892,7 +833,7 @@
         function atualizarMarcaSelect() {
             const select = document.getElementById('novoProdMarcaSelect'); if (!select) return;
             const marcas = getMarcasOrdenadas();
-            select.innerHTML = '<option value="">Selecione a marca...</option>'; marcas.forEach(m => { const opt = document.createElement('option'); opt.value = m; opt.textContent = m; select.appendChild(opt) });
+            select.innerHTML = '<option value="">Selecione...</option>'; marcas.forEach(m => { const opt = document.createElement('option'); opt.value = m; opt.textContent = m; select.appendChild(opt) });
             const optNova = document.createElement('option'); optNova.value = '__nova__'; optNova.textContent = '+ Nova Marca...'; select.appendChild(optNova); toggleNovaMarcaInput()
         }
 
@@ -906,20 +847,25 @@
             const p = produtos.find(prod => prod.id === id); if (!p) return;
             p.esgotado = !p.esgotado; const btn = document.getElementById('btnEsgotado-' + id);
             if (btn) { btn.textContent = p.esgotado ? '🚫 Esgotado' : '✅ Disponível'; btn.classList.toggle('ativo', p.esgotado) }
-            try { await db.collection('produtos').doc(String(id)).update({ esgotado: p.esgotado }) } catch (e) { mostrarToast('Erro ao salvar estado', 'error'); console.error(e) }
+            await db.collection('produtos').doc(String(id)).update({ esgotado: p.esgotado })
         }
+
         async function salvarEdicaoProduto(id) {
             const p = produtos.find(prod => prod.id === id); if (!p) return;
             const nome = document.getElementById('nome-' + id).value.trim(), preco = parseFloat(document.getElementById('preco-' + id).value) || 0, marca = document.getElementById('marca-' + id).value.trim();
             if (!nome) return mostrarToast('Nome obrigatório', 'error');
             const data = { id: p.id, nome, preco, marca, img: p.img, esgotado: p.esgotado };
             if (imagensTemp[id]) data.img = imagensTemp[id];
-            try { await db.collection('produtos').doc(String(id)).set(data, { merge: true }); p.nome = nome; p.preco = preco; p.marca = marca; if (imagensTemp[id]) { p.img = imagensTemp[id]; delete imagensTemp[id] } renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); mostrarToast('✅ Produto atualizado', 'success') } catch (e) { mostrarToast('Erro ao atualizar', 'error'); console.error(e) }
+            await db.collection('produtos').doc(String(id)).set(data, { merge: true }); p.nome = nome; p.preco = preco; p.marca = marca; if (imagensTemp[id]) { p.img = imagensTemp[id]; delete imagensTemp[id] }
+            renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); mostrarToast('✅ Produto atualizado', 'success')
         }
+
         async function excluirProduto(id) {
             if (!confirm('Excluir produto?')) return;
-            try { await db.collection('produtos').doc(String(id)).delete(); const index = produtos.findIndex(p => p.id === id); if (index !== -1) produtos.splice(index, 1); delete imagensTemp[id]; renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); mostrarToast('🗑️ Excluído.', 'info') } catch (e) { mostrarToast('Erro ao excluir.', 'error'); console.error(e) }
+            await db.collection('produtos').doc(String(id)).delete(); produtos = produtos.filter(p => p.id !== id); delete imagensTemp[id];
+            renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); mostrarToast('🗑️ Excluído.', 'info')
         }
+
         async function adicionarNovoProduto() {
             if (!adminLogado) return;
             const nome = document.getElementById('novoProdNome').value.trim(), preco = parseFloat(document.getElementById('novoProdPreco').value) || 0;
@@ -929,7 +875,11 @@
             let img = 'https://placehold.co/150x150/f1f5f9/3b82f6?text=' + encodeURIComponent(nome.substring(0, 10));
             const fileInput = document.getElementById('novoProdImg'); if (fileInput?.files[0]) { try { img = await readFileAsDataURL(fileInput.files[0]) } catch (e) {} }
             const novo = { id: novoId, nome, preco, marca, img, obs: '', esgotado };
-            try { await db.collection('produtos').doc(String(novoId)).set(novo); produtos.push(novo); ['novoProdNome', 'novoProdPreco', 'novoProdMarcaNovo'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '' }); document.getElementById('novoProdMarcaSelect').value = ''; document.getElementById('novoProdMarcaNovo').classList.add('hidden'); if (fileInput) fileInput.value = ''; document.getElementById('previewNovaImagem').style.display = 'none'; renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); atualizarMarcaSelect(); mostrarToast('✅ Produto adicionado', 'success') } catch (e) { mostrarToast('Erro ao adicionar.', 'error'); console.error(e) }
+            await db.collection('produtos').doc(String(novoId)).set(novo); produtos.push(novo);
+            ['novoProdNome', 'novoProdPreco', 'novoProdMarcaNovo'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '' });
+            document.getElementById('novoProdMarcaSelect').value = ''; document.getElementById('novoProdMarcaNovo').classList.add('hidden');
+            if (fileInput) fileInput.value = ''; document.getElementById('previewNovaImagem').style.display = 'none';
+            renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); atualizarMarcaSelect(); mostrarToast('✅ Produto adicionado', 'success')
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -947,13 +897,11 @@
             const container = document.getElementById('gerenciarContainer');
             if (!produtos.length) { container.innerHTML = '<div class="empty-state">📦 Nenhum produto.</div>'; return }
             container.innerHTML = '';
-            const fragment = document.createDocumentFragment();
             produtos.forEach(p => {
                 const item = document.createElement('div'); item.className = 'produto-editar-item';
-                item.innerHTML = `<div style="width:70px;height:70px;flex-shrink:0" id="thumb-${p.id}">${createImageHTML(p.img,p.nome)}</div><input type="text" value="${p.nome.replace(/"/g,'&quot;')}" id="nome-${p.id}" style="flex:2;min-width:120px"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:90px"><input type="text" value="${p.marca.replace(/"/g,'&quot;')}" id="marca-${p.id}" style="flex:1;min-width:100px"><input type="file" id="file-${p.id}" accept="image/*" style="width:110px"><button class="btn-esgotado ${p.esgotado?'ativo':''}" id="btnEsgotado-${p.id}">${p.esgotado?'🚫 Esgotado':'✅ Disponível'}</button><button class="btn btn-success btn-sm" id="salvar-${p.id}">💾 Salvar</button><button class="btn btn-danger btn-sm" id="excluir-${p.id}">🗑️ Excluir</button>`;
-                fragment.appendChild(item)
+                item.innerHTML = `<div style="width:50px;height:50px;flex-shrink:0" id="thumb-${p.id}">${createImageHTML(p.img,p.nome)}</div><input type="text" value="${p.nome.replace(/"/g,'&quot;')}" id="nome-${p.id}" style="flex:2;min-width:100px"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:70px"><input type="text" value="${p.marca.replace(/"/g,'&quot;')}" id="marca-${p.id}" style="flex:1;min-width:80px"><input type="file" id="file-${p.id}" accept="image/*" style="width:90px"><button class="btn-esgotado ${p.esgotado?'ativo':''}" id="btnEsgotado-${p.id}">${p.esgotado?'🚫 Esgotado':'✅ Disponível'}</button><button class="btn btn-success btn-sm" id="salvar-${p.id}">💾</button><button class="btn btn-danger btn-sm" id="excluir-${p.id}">🗑️</button>`;
+                container.appendChild(item)
             });
-            container.appendChild(fragment);
             produtos.forEach(p => {
                 document.getElementById('btnEsgotado-' + p.id).addEventListener('click', () => toggleEsgotado(p.id));
                 const fileInput = document.getElementById('file-' + p.id);
@@ -963,66 +911,51 @@
             });
         }
 
-        // FUNÇÕES PARA MARCAS (COM UPLOAD DE LOGO)
         function renderOrdenarMarcas() {
             if (!adminLogado) return;
             const container = document.getElementById('ordenarMarcasContainer');
             const marcas = getMarcasOrdenadas();
             if (!marcas.length) { container.innerHTML = '<div class="empty-state">🏷️ Nenhuma marca.</div>'; return }
             container.innerHTML = '';
-            const fragment = document.createDocumentFragment();
             marcas.forEach((marca, idx) => {
                 const logoUrl = marcasLogos[marca] || `https://placehold.co/50x50/fff/0f172a?text=${marca.substring(0,2)}`;
                 const div = document.createElement('div');
-                div.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:.8rem;border:1px solid var(--border);border-radius:12px;margin-bottom:.5rem;background:#fff';
+                div.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:.6rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.4rem;background:#fff';
                 div.innerHTML = `
-                    <div style="display:flex;align-items:center;gap:15px;flex-wrap:wrap;">
-                        <div style="width:50px;height:50px;border-radius:50%;border:1px solid #e2e8f0;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                            <img src="${logoUrl}" id="logoPreview-${idx}" alt="${marca}" style="width:100%;height:100%;object-fit:contain;" onerror="this.src='https://placehold.co/50x50/fff/0f172a?text=${marca.substring(0,2)}'">
-                        </div>
+                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                        <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;"><img src="${logoUrl}" id="logoPreview-${idx}" style="width:100%;height:100%;object-fit:contain;"></div>
                         <span>🏷️ ${marca}</span>
-                        <input type="file" id="logoUpload-${idx}" accept="image/*" style="font-size:11px;max-width:120px;">
-                        <button class="btn btn-sm btn-outline" onclick="removerLogoMarca('${marca}')">🗑️ Remover Logo</button>
+                        <input type="file" id="logoUpload-${idx}" accept="image/*" style="font-size:10px;max-width:100px;">
+                        <button class="btn btn-sm btn-outline" onclick="removerLogoMarca('${marca}')">🗑️</button>
                     </div>
-                    <div>
-                        <button onclick="moverMarca(${idx},'cima')" ${idx===0?'disabled':''}>▲</button>
-                        <button onclick="moverMarca(${idx},'baixo')" ${idx===marcas.length-1?'disabled':''}>▼</button>
-                    </div>
+                    <div><button onclick="moverMarca(${idx},'cima')" ${idx===0?'disabled':''}>▲</button><button onclick="moverMarca(${idx},'baixo')" ${idx===marcas.length-1?'disabled':''}>▼</button></div>
                 `;
-                fragment.appendChild(div);
-                
+                container.appendChild(div);
                 const inputFile = div.querySelector(`#logoUpload-${idx}`);
                 if (inputFile) {
                     inputFile.addEventListener('change', async function(e) {
                         const file = e.target.files[0];
                         if (file && adminLogado) {
                             try {
-                                const dataUrl = await compressImage(file, 100, 100, 0.6);
+                                const dataUrl = await compressImage(file, 80, 80, 0.5);
                                 marcasLogos[marca] = dataUrl;
-                                const previewImg = document.getElementById(`logoPreview-${idx}`);
-                                if (previewImg) previewImg.src = dataUrl;
+                                document.getElementById(`logoPreview-${idx}`).src = dataUrl;
                                 await db.collection('config').doc('marcasLogos').set(marcasLogos, { merge: true });
                                 renderBrandCarousel();
-                                mostrarToast(`✅ Logo da marca ${marca} salva!`, 'success');
-                            } catch (error) {
-                                console.error(error);
-                                mostrarToast('Erro ao salvar a logo.', 'error');
-                            }
+                                mostrarToast(`✅ Logo salva!`, 'success');
+                            } catch (error) { console.error(error); }
                         }
                     });
                 }
             });
-            container.appendChild(fragment);
         }
 
         async function removerLogoMarca(marca) {
             if (!adminLogado) return;
-            if (!confirm(`Remover o logo da marca ${marca}?`)) return;
+            if (!confirm(`Remover logo de ${marca}?`)) return;
             delete marcasLogos[marca];
             await db.collection('config').doc('marcasLogos').set(marcasLogos, { merge: true });
-            renderOrdenarMarcas();
-            renderBrandCarousel();
-            mostrarToast('🗑️ Logo removida.', 'info');
+            renderOrdenarMarcas(); renderBrandCarousel(); mostrarToast('🗑️ Logo removida.', 'info');
         }
 
         function moverMarca(index, dir) {
@@ -1031,28 +964,23 @@
             else if (dir === 'baixo' && index < marcas.length - 1)[marcas[index], marcas[index + 1]] = [marcas[index + 1], marcas[index]];
             else return;
             ordemMarcas = [...marcas];
-            renderOrdenarMarcas();
-            renderBrandCarousel();
+            renderOrdenarMarcas(); renderBrandCarousel();
         }
         async function salvarOrdemMarcas() { await salvarOrdemMarcasFirestore(); renderOrdenarMarcas(); renderBrandCarousel(); renderCatalogo() }
         async function resetarOrdemMarcas() { ordemMarcas = []; await salvarOrdemMarcasFirestore(); renderOrdenarMarcas(); renderBrandCarousel(); renderCatalogo(); mostrarToast('🔄 Ordem restaurada', 'info') }
 
-        // FUNÇÕES PARA BANNER ADMIN
         function renderBannerAdmin() {
             if (!adminLogado) return;
-            const input = document.getElementById('bannerImgInput');
-            input.value = '';
+            document.getElementById('bannerImgInput').value = '';
             document.getElementById('bannerPreviewAdmin').style.display = 'none';
         }
 
         function previewBannerAdmin() {
-            const input = document.getElementById('bannerImgInput');
-            const file = input.files[0];
+            const file = document.getElementById('bannerImgInput').files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.getElementById('bannerPreviewImg');
-                img.src = e.target.result;
+            reader.onload = e => {
+                document.getElementById('bannerPreviewImg').src = e.target.result;
                 document.getElementById('bannerPreviewAdmin').style.display = 'block';
             };
             reader.readAsDataURL(file);
@@ -1060,61 +988,41 @@
 
         async function salvarBannerAdmin() {
             if (!adminLogado) return;
-            const input = document.getElementById('bannerImgInput');
-            const file = input.files[0];
+            const file = document.getElementById('bannerImgInput').files[0];
             if (!file) return mostrarToast('Selecione uma imagem.', 'error');
             try {
-                const dataUrl = await compressImage(file, 800, 400, 0.75);
+                const dataUrl = await compressImage(file, 600, 300, 0.7);
                 bannerData = { url: dataUrl };
                 await db.collection('config').doc('banner').set(bannerData, { merge: true });
                 atualizarBannerUI();
                 document.getElementById('bannerPreviewAdmin').style.display = 'none';
-                mostrarToast('✅ Banner atualizado com sucesso!', 'success');
-            } catch (e) {
-                console.error(e);
-                mostrarToast('Erro ao salvar o banner.', 'error');
-            }
+                mostrarToast('✅ Banner atualizado!', 'success');
+            } catch (e) { console.error(e); mostrarToast('Erro ao salvar banner.', 'error'); }
         }
 
         async function removerBannerAdmin() {
             if (!adminLogado) return;
-            if (!confirm('Remover o banner personalizado e voltar ao padrão?')) return;
+            if (!confirm('Remover banner personalizado?')) return;
             bannerData = null;
             await db.collection('config').doc('banner').delete();
             atualizarBannerUI();
             document.getElementById('bannerPreviewAdmin').style.display = 'none';
             document.getElementById('bannerImgInput').value = '';
-            mostrarToast('🔄 Banner restaurado ao padrão.', 'info');
+            mostrarToast('🔄 Banner restaurado.', 'info');
         }
 
-        async function carregarAnuncioGlobal() { try { const snap = await db.collection('config').doc('announcement').get({ source: 'default' }); anuncioAtual = snap.exists ? snap.data() : null } catch (e) { console.error(e) } }
-
-        // Função de inicialização otimizada - carrega UI imediatamente
         async function init() {
-            // Carrega dados locais primeiro
             carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
             clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado')) || null;
             adminLogado = JSON.parse(sessionStorage.getItem('adminLogado')) || !1;
-
-            // Renderiza a interface imediatamente com produtosBase
             renderCatalogo();
             renderBrandCarousel();
             atualizarUI();
             popularSelectsRegiao();
-
-            // Busca dados do Firebase em segundo plano e atualiza a UI quando chegar
-            carregarDados().then(() => {
-                renderCatalogo();
-                renderBrandCarousel();
-                atualizarUI();
-            });
-            carregarOrdemMarcas().then(() => {
-                renderBrandCarousel();
-                renderCatalogo();
-            });
+            carregarDados().then(() => { renderCatalogo(); renderBrandCarousel(); atualizarUI(); });
+            carregarOrdemMarcas().then(() => { renderBrandCarousel(); renderCatalogo(); });
             carregarLogosMarcas().then(() => renderBrandCarousel());
             carregarBanner();
-            carregarAnuncioGlobal();
         }
 
         window.addEventListener('DOMContentLoaded', init);
