@@ -53,7 +53,6 @@
         nav button:active { transform: scale(.96) }
         .cart-badge { background: var(--accent); color: #fff; border-radius: 50%; padding: .1rem .4rem; font-size: .6rem; font-weight: 800; margin-left: 3px }
 
-        /* Estilos do botão de contato e dropdown */
         .contato-wrapper { position: relative; display: inline-block; }
         .contato-dropdown { position: absolute; right: 0; top: 100%; margin-top: 6px; background: #ffffff; border: 1px solid var(--border); border-radius: 12px; min-width: 200px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); z-index: 200; display: none; overflow: hidden; }
         .contato-dropdown.show { display: block; }
@@ -174,7 +173,6 @@
         #processingModal .proc-check { display: none; font-size: 3rem; animation: popCheck .5s ease forwards; }
         @keyframes popCheck { 0% { transform: scale(0) rotate(-20deg); opacity: 0; } 60% { transform: scale(1.2) rotate(5deg); } 100% { transform: scale(1) rotate(0); opacity: 1; } }
 
-        /* Ajustes responsivos para manter o visual igual ao Atomopharma */
         @media (max-width: 480px) {
             .product-grid { gap: .6rem; }
             .product-card { padding: 8px; }
@@ -192,7 +190,6 @@
     </style>
 </head>
 <body>
-    <!-- MODAL DE PROCESSAMENTO -->
     <div id="processingModal">
         <div class="proc-card">
             <div class="proc-icon-wrap">
@@ -228,7 +225,6 @@
             <button onclick="showSection('ordenarMarcas')" id="nav-ordenar" style="display:none">🔀 Marcas</button>
             <button onclick="showSection('gerenciarAnuncio')" id="nav-anuncio" style="display:none">📢 Anúncio</button>
             <button onclick="showSection('gerenciarBanner')" id="nav-banner" style="display:none">📷 Banner</button>
-            <!-- Botão de Contato com dropdown -->
             <div class="contato-wrapper">
                 <button id="nav-contato" onclick="toggleContatoDropdown()">📞 Contato</button>
                 <div id="contatoDropdown" class="contato-dropdown">
@@ -240,7 +236,6 @@
                     </a>
                 </div>
             </div>
-            <!-- NOVO BOTÃO DE RASTREIO -->
             <button onclick="abrirRastreio()">📦 Rastreio</button>
             <button onclick="logout()" id="nav-logout" style="display:none">🚪 Sair</button>
         </nav>
@@ -470,6 +465,7 @@
         let carrinho = [], usuarios = [], pedidos = [], clienteLogado = null, adminLogado = !1, filtroMarca = 'TODAS', filtroAdminStatus = 'todos', clienteEditandoId = null, ITEMS_PER_PAGE = 20, catalogoPaginaAtual = 1, catalogoFiltrados = [], ordemMarcas = [], anuncioAtual = null, imagensTemp = {}, debounceTimer;
         let bannerData = null;
         let marcasLogos = {};
+        const CACHE_DURATION = 10 * 60 * 1000; // 10 minutos
 
         function compressImage(file, maxW = 300, maxH = 300, quality = .6) {
             return new Promise((resolve, reject) => {
@@ -521,9 +517,79 @@
             })
         }
 
-        async function carregarOrdemMarcas() { try { const snap = await db.collection('config').doc('ordemMarcas').get({ source: 'default' }); ordemMarcas = snap.exists ? snap.data().ordem || [] : [] } catch (e) { console.error(e) } }
-        async function carregarLogosMarcas() { try { const snap = await db.collection('config').doc('marcasLogos').get({ source: 'default' }); marcasLogos = snap.exists ? snap.data() || {} : {} } catch (e) { console.error(e) } }
-        async function carregarBanner() { try { const snap = await db.collection('config').doc('banner').get({ source: 'default' }); bannerData = snap.exists ? snap.data() : null; atualizarBannerUI() } catch (e) { console.error(e) } }
+        function getFromCache(key) {
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return null;
+                const data = JSON.parse(raw);
+                if (Date.now() - data.timestamp > CACHE_DURATION) { localStorage.removeItem(key); return null; }
+                return data.value;
+            } catch (e) { return null; }
+        }
+
+        function setToCache(key, value) {
+            try { localStorage.setItem(key, JSON.stringify({ value, timestamp: Date.now() })); } catch (e) {}
+        }
+
+        function invalidateCache(key) { localStorage.removeItem(key); }
+
+        async function carregarProdutos() {
+            const cached = getFromCache('cacheProdutos');
+            if (cached) { produtos = cached; return; }
+            try {
+                const prodSnap = await db.collection('produtos').get({ source: 'default' });
+                if (prodSnap.empty) {
+                    const batch = db.batch();
+                    produtosBase.forEach(p => { const ref = db.collection('produtos').doc(String(p.id)); batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p.obs || '', esgotado: p.esgotado || !1 }) });
+                    await batch.commit();
+                    produtos = JSON.parse(JSON.stringify(produtosBase));
+                } else {
+                    produtos = prodSnap.docs.map(fp => { const d = fp.data(); return { id: Number(fp.id), nome: d.nome, preco: parseFloat(d.preco) || 0, marca: d.marca, img: d.img || '', esgotado: !!d.esgotado } }).sort((a, b) => a.id - b.id);
+                }
+                setToCache('cacheProdutos', produtos);
+            } catch (e) { console.error(e); }
+        }
+
+        async function carregarUsuarios() {
+            if (usuarios.length) return;
+            try {
+                const snap = await db.collection('usuarios').get({ source: 'default' });
+                usuarios = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            } catch (e) { console.error(e); }
+        }
+
+        async function carregarPedidos() {
+            if (pedidos.length) return;
+            try {
+                const snap = await db.collection('pedidos').orderBy('data', 'desc').get({ source: 'default' });
+                pedidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            } catch (e) { console.error(e); }
+        }
+
+        async function carregarOrdemMarcas() {
+            try {
+                const snap = await db.collection('config').doc('ordemMarcas').get({ source: 'default' });
+                ordemMarcas = snap.exists ? snap.data().ordem || [] : [];
+                setToCache('cacheOrdemMarcas', ordemMarcas);
+            } catch (e) { console.error(e); }
+        }
+
+        async function carregarLogosMarcas() {
+            try {
+                const snap = await db.collection('config').doc('marcasLogos').get({ source: 'default' });
+                marcasLogos = snap.exists ? snap.data() || {} : {};
+                setToCache('cacheMarcasLogos', marcasLogos);
+            } catch (e) { console.error(e); }
+        }
+
+        async function carregarBanner() {
+            try {
+                const snap = await db.collection('config').doc('banner').get({ source: 'default' });
+                bannerData = snap.exists ? snap.data() : null;
+                setToCache('cacheBanner', bannerData);
+                atualizarBannerUI();
+            } catch (e) { console.error(e); }
+        }
 
         function atualizarBannerUI() {
             const el = document.getElementById('heroBanner');
@@ -538,25 +604,6 @@
             const todas = [...new Set(produtos.map(p => p.marca))];
             if (ordemMarcas.length) { const ordenadas = []; ordemMarcas.forEach(m => { if (todas.includes(m)) ordenadas.push(m) }); const novas = todas.filter(m => !ordemMarcas.includes(m)).sort(); return ordenadas.concat(novas) }
             return todas.sort()
-        }
-
-        async function carregarDados() {
-            try {
-                const [uSnap, pSnap, prodSnap] = await Promise.all([
-                    db.collection('usuarios').get({ source: 'default' }),
-                    db.collection('pedidos').orderBy('data', 'desc').get({ source: 'default' }),
-                    db.collection('produtos').get({ source: 'default' })
-                ]);
-                usuarios = uSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-                pedidos = pSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-                if (prodSnap.empty) {
-                    const batch = db.batch();
-                    produtos.forEach(p => { const ref = db.collection('produtos').doc(String(p.id)); batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p.obs || '', esgotado: p.esgotado || !1 }) });
-                    await batch.commit();
-                } else {
-                    produtos = prodSnap.docs.map(fp => { const d = fp.data(); return { id: Number(fp.id), nome: d.nome, preco: parseFloat(d.preco) || 0, marca: d.marca, img: d.img || '', esgotado: !!d.esgotado } }).sort((a, b) => a.id - b.id);
-                }
-            } catch (e) { console.error(e); }
         }
 
         function setFiltroMarca(m) { filtroMarca = m; catalogoPaginaAtual = 1; renderCatalogo(); renderBrandCarousel(); }
@@ -662,13 +709,17 @@
             if (sec) sec.classList.add('active');
             if (id === 'catalogo') { catalogoPaginaAtual = 1; renderCatalogo() }
             if (id === 'carrinho') renderCarrinho();
-            if (id === 'admin') renderAdmin();
-            if (id === 'gerenciarClientes') renderGerenciarClientes();
+            if (id === 'admin') { if (adminLogado) { document.getElementById('adminLoginForm').style.display='none'; document.getElementById('adminContent').classList.remove('hidden'); carregarDadosAdmin().then(()=>renderAdmin()); } }
+            if (id === 'gerenciarClientes') { carregarUsuarios().then(()=>renderGerenciarClientes()); }
             if (id === 'gerenciarProdutos') { atualizarMarcaSelect(); renderGerenciarProdutos() }
             if (id === 'ordenarMarcas') renderOrdenarMarcas();
             if (id === 'gerenciarAnuncio') renderGerenciarAnuncio();
             if (id === 'gerenciarBanner') renderBannerAdmin();
             window.scrollTo({ top: 0 })
+        }
+
+        async function carregarDadosAdmin() {
+            await Promise.all([carregarUsuarios(), carregarPedidos()]);
         }
 
         function logout() { clienteLogado = null; adminLogado = !1; sessionStorage.clear(); localStorage.removeItem('carrinho'); carrinho = []; imagensTemp = {}; showSection('catalogo'); atualizarUI(); mostrarToast('Sessão encerrada.', 'info') }
@@ -755,32 +806,41 @@
             }
         }
 
-        function loginCliente() {
+        async function loginCliente() {
             const cpf = document.getElementById('loginCpf').value.replace(/\D/g, '');
-            const u = usuarios.find(u => u.cpf === cpf);
-            if (!u) return mostrarToast('CPF não cadastrado.', 'error');
-            clienteLogado = u; adminLogado = !1; sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado)); atualizarUI(); showSection('catalogo'); mostrarToast('👋 Bem-vindo(a)', 'success')
+            if (!cpf) return mostrarToast('Digite o CPF.', 'error');
+            try {
+                const snap = await db.collection('usuarios').where('cpf', '==', cpf).limit(1).get({ source: 'default' });
+                if (snap.empty) return mostrarToast('CPF não cadastrado.', 'error');
+                clienteLogado = { id: snap.docs[0].id, ...snap.docs[0].data() };
+                adminLogado = !1; sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado)); atualizarUI(); showSection('catalogo'); mostrarToast('👋 Bem-vindo(a)', 'success');
+            } catch (e) { console.error(e); mostrarToast('Erro ao fazer login.', 'error'); }
         }
 
-        function cadastrarCliente() {
+        async function cadastrarCliente() {
             const nome = document.getElementById('cadNome').value.trim(), cpf = document.getElementById('cadCpf').value.replace(/\D/g, ''),
                 rua = document.getElementById('cadRua').value.trim(), num = document.getElementById('cadNumero').value.trim(),
                 ref = document.getElementById('cadReferencia').value.trim(), bairro = document.getElementById('cadBairro').value.trim(),
                 cidade = document.getElementById('cadCidade').value.trim(), regiao = document.getElementById('cadRegiao').value,
                 cep = document.getElementById('cadCep').value.trim(), contato = document.getElementById('cadContato').value.trim();
             if (!nome || !cpf || !rua || !num || !bairro || !cidade || !regiao || !contato) return mostrarToast('Preencha todos os campos.', 'error');
-            if (usuarios.find(u => u.cpf === cpf)) return mostrarToast('CPF já cadastrado.', 'error');
-            const novo = { id: Date.now(), nome, cpf, rua, numero: num, referencia: ref, bairro, cidade, regiao, cep, contato, endereco: `${rua}, ${num} - ${ref} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}` };
-            usuarios.push(novo); db.collection('usuarios').doc(String(novo.id)).set(novo); clienteLogado = novo; sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado)); atualizarUI(); showSection('catalogo'); mostrarToast('🎉 Cadastro realizado!', 'success')
+            try {
+                const existente = await db.collection('usuarios').where('cpf', '==', cpf).limit(1).get({ source: 'default' });
+                if (!existente.empty) return mostrarToast('CPF já cadastrado.', 'error');
+                const novo = { id: Date.now(), nome, cpf, rua, numero: num, referencia: ref, bairro, cidade, regiao, cep, contato, endereco: `${rua}, ${num} - ${ref} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}` };
+                await db.collection('usuarios').doc(String(novo.id)).set(novo);
+                usuarios.push(novo); clienteLogado = novo; sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado)); atualizarUI(); showSection('catalogo'); mostrarToast('🎉 Cadastro realizado!', 'success');
+            } catch (e) { console.error(e); mostrarToast('Erro ao cadastrar.', 'error'); }
         }
 
         function toggleCadastro() { document.getElementById('loginForm').classList.toggle('hidden'); document.getElementById('cadastroForm').classList.toggle('hidden') }
         function showAdminLogin() { showSection('admin') }
 
-        function loginAdmin() {
+        async function loginAdmin() {
             if (document.getElementById('adminUser').value.trim() === 'BOMBADAVID' && document.getElementById('adminPass').value.trim() === '5858') {
                 adminLogado = !0; clienteLogado = null; sessionStorage.setItem('adminLogado', 'true'); sessionStorage.removeItem('clienteLogado');
                 document.getElementById('adminLoginForm').style.display = 'none'; document.getElementById('adminContent').classList.remove('hidden');
+                await carregarDadosAdmin();
                 renderAdmin(); atualizarUI(); mostrarToast('🔑 Acesso admin liberado.', 'success')
             } else mostrarToast('Credenciais inválidas.', 'error')
         }
@@ -831,7 +891,9 @@
 
         function abrirModalEditarCliente(id) {
             const u = usuarios.find(x => x.id === id); if (!u) return;
-            clienteEditandoId = id; document.getElementById('editNome').value = u.nome || ''; document.getElementById('editCpf').value = u.cpf || '';
+            clienteEditandoId = id;
+            document.getElementById('editClienteId').value = id; // CORRIGIDO
+            document.getElementById('editNome').value = u.nome || ''; document.getElementById('editCpf').value = u.cpf || '';
             document.getElementById('editRua').value = u.rua || ''; document.getElementById('editNumero').value = u.numero || '';
             document.getElementById('editReferencia').value = u.referencia || ''; document.getElementById('editBairro').value = u.bairro || '';
             document.getElementById('editCidade').value = u.cidade || ''; document.getElementById('editRegiao').value = u.regiao || '';
@@ -869,7 +931,8 @@
             const p = produtos.find(prod => prod.id === id); if (!p) return;
             p.esgotado = !p.esgotado; const btn = document.getElementById('btnEsgotado-' + id);
             if (btn) { btn.textContent = p.esgotado ? '🚫 Esgotado' : '✅ Disponível'; btn.classList.toggle('ativo', p.esgotado) }
-            await db.collection('produtos').doc(String(id)).update({ esgotado: p.esgotado })
+            await db.collection('produtos').doc(String(id)).update({ esgotado: p.esgotado });
+            invalidateCache('cacheProdutos');
         }
 
         async function salvarEdicaoProduto(id) {
@@ -879,12 +942,14 @@
             const data = { id: p.id, nome, preco, marca, img: p.img, esgotado: p.esgotado };
             if (imagensTemp[id]) data.img = imagensTemp[id];
             await db.collection('produtos').doc(String(id)).set(data, { merge: true }); p.nome = nome; p.preco = preco; p.marca = marca; if (imagensTemp[id]) { p.img = imagensTemp[id]; delete imagensTemp[id] }
+            invalidateCache('cacheProdutos');
             renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); mostrarToast('✅ Produto atualizado', 'success')
         }
 
         async function excluirProduto(id) {
             if (!confirm('Excluir produto?')) return;
             await db.collection('produtos').doc(String(id)).delete(); produtos = produtos.filter(p => p.id !== id); delete imagensTemp[id];
+            invalidateCache('cacheProdutos');
             renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); mostrarToast('🗑️ Excluído.', 'info')
         }
 
@@ -898,6 +963,7 @@
             const fileInput = document.getElementById('novoProdImg'); if (fileInput?.files[0]) { try { img = await readFileAsDataURL(fileInput.files[0]) } catch (e) {} }
             const novo = { id: novoId, nome, preco, marca, img, obs: '', esgotado };
             await db.collection('produtos').doc(String(novoId)).set(novo); produtos.push(novo);
+            invalidateCache('cacheProdutos');
             ['novoProdNome', 'novoProdPreco', 'novoProdMarcaNovo'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '' });
             document.getElementById('novoProdMarcaSelect').value = ''; document.getElementById('novoProdMarcaNovo').classList.add('hidden');
             if (fileInput) fileInput.value = ''; document.getElementById('previewNovaImagem').style.display = 'none';
@@ -963,6 +1029,7 @@
                                 marcasLogos[marca] = dataUrl;
                                 document.getElementById(`logoPreview-${idx}`).src = dataUrl;
                                 await db.collection('config').doc('marcasLogos').set(marcasLogos, { merge: true });
+                                invalidateCache('cacheMarcasLogos');
                                 renderBrandCarousel();
                                 mostrarToast(`✅ Logo salva!`, 'success');
                             } catch (error) { console.error(error); }
@@ -977,6 +1044,7 @@
             if (!confirm(`Remover logo de ${marca}?`)) return;
             delete marcasLogos[marca];
             await db.collection('config').doc('marcasLogos').set(marcasLogos, { merge: true });
+            invalidateCache('cacheMarcasLogos');
             renderOrdenarMarcas(); renderBrandCarousel(); mostrarToast('🗑️ Logo removida.', 'info');
         }
 
@@ -1016,6 +1084,7 @@
                 const dataUrl = await compressImage(file, 600, 300, 0.7);
                 bannerData = { url: dataUrl };
                 await db.collection('config').doc('banner').set(bannerData, { merge: true });
+                invalidateCache('cacheBanner');
                 atualizarBannerUI();
                 document.getElementById('bannerPreviewAdmin').style.display = 'none';
                 mostrarToast('✅ Banner atualizado!', 'success');
@@ -1027,24 +1096,22 @@
             if (!confirm('Remover banner personalizado?')) return;
             bannerData = null;
             await db.collection('config').doc('banner').delete();
+            invalidateCache('cacheBanner');
             atualizarBannerUI();
             document.getElementById('bannerPreviewAdmin').style.display = 'none';
             document.getElementById('bannerImgInput').value = '';
             mostrarToast('🔄 Banner restaurado.', 'info');
         }
 
-        // Função para abrir/fechar o dropdown de contato
         function toggleContatoDropdown() {
             const dropdown = document.getElementById('contatoDropdown');
             dropdown.classList.toggle('show');
         }
 
-        // NOVA FUNÇÃO: abre o site de rastreio em uma nova aba
         function abrirRastreio() {
             window.open('https://conecta.log.br/rastreio.php', '_blank');
         }
 
-        // Fecha o dropdown ao clicar fora
         document.addEventListener('click', function(event) {
             const wrapper = document.querySelector('.contato-wrapper');
             if (wrapper && !wrapper.contains(event.target)) {
@@ -1057,14 +1124,28 @@
             carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
             clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado')) || null;
             adminLogado = JSON.parse(sessionStorage.getItem('adminLogado')) || !1;
+            popularSelectsRegiao();
+            // Carrega apenas dados essenciais para o catálogo
+            await Promise.all([
+                carregarProdutos(),
+                carregarOrdemMarcas(),
+                carregarLogosMarcas(),
+                carregarBanner()
+            ]);
+            // Restaura caches de config se não vieram do Firestore
+            if (!ordemMarcas.length) ordemMarcas = getFromCache('cacheOrdemMarcas') || [];
+            if (!Object.keys(marcasLogos).length) marcasLogos = getFromCache('cacheMarcasLogos') || {};
+            if (!bannerData) bannerData = getFromCache('cacheBanner') || null;
+            atualizarBannerUI();
             renderCatalogo();
             renderBrandCarousel();
             atualizarUI();
-            popularSelectsRegiao();
-            carregarDados().then(() => { renderCatalogo(); renderBrandCarousel(); atualizarUI(); });
-            carregarOrdemMarcas().then(() => { renderBrandCarousel(); renderCatalogo(); });
-            carregarLogosMarcas().then(() => renderBrandCarousel());
-            carregarBanner();
+            // Se admin estiver logado, carrega dados administrativos em segundo plano
+            if (adminLogado) {
+                carregarDadosAdmin().then(() => {
+                    if (document.getElementById('admin').classList.contains('active')) renderAdmin();
+                });
+            }
         }
 
         window.addEventListener('DOMContentLoaded', init);
