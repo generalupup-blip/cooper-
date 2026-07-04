@@ -232,7 +232,7 @@
             <div class="contato-wrapper">
                 <button id="nav-contato" onclick="toggleContatoDropdown()">📞 Contato</button>
                 <div id="contatoDropdown" class="contato-dropdown">
-                    <a href="https://t.me/+nqZZZLFjt7gwMjAx" target="_blank" class="contato-item">
+                    <a href="https://t.me/+wBlBe1wdi94xZTAx" target="_blank" class="contato-item">
                         <span class="icon">📱</span> Telegram
                     </a>
                     <a href="https://wa.me/5519997390834" target="_blank" class="contato-item">
@@ -240,6 +240,8 @@
                     </a>
                 </div>
             </div>
+            <!-- NOVO BOTÃO DE RASTREIO -->
+            <button onclick="abrirRastreio()">📦 Rastreio</button>
             <button onclick="logout()" id="nav-logout" style="display:none">🚪 Sair</button>
         </nav>
     </header>
@@ -1035,6 +1037,11 @@
         function toggleContatoDropdown() {
             const dropdown = document.getElementById('contatoDropdown');
             dropdown.classList.toggle('show');
+        }
+
+        // NOVA FUNÇÃO: abre o site de rastreio em uma nova aba
+        function abrirRastreio() {
+            window.open('https://conecta.log.br/rastreio.php', '_blank');
         }
 
         // Fecha o dropdown ao clicar fora
