@@ -7,8 +7,10 @@
     <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
     <link rel="dns-prefetch" href="https://placehold.co">
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js">
+    </script>
     <style>
         :root {
             --bg: #f8fafc;
@@ -1305,7 +1307,6 @@
     <div id="toastContainer"></div>
     <div id="buyNotificationContainer"></div>
 
-    <!-- MODAL DE AVISO IMPORTANTE -->
     <div class="modal-overlay-aviso" id="modalAvisoOverlay" onclick="if(event.target===this)fecharModalAviso()">
         <div class="modal-aviso" onclick="event.stopPropagation()">
             <div class="aviso-header">
@@ -1317,8 +1318,7 @@
                 <p style="margin-top: 10px;">📦 Após <strong>05 dias úteis</strong>, rastreie sua encomenda com seu CPF.<br>
                     ⚠️ <em>Caso não atualize em 48hrs, entre em contato.</em></p>
                 <div class="destaque">
-                    🚨👇🏼 <strong>O ENDEREÇO NÃO PODE CONTER DIVERGÊNCIAS.</strong><br>
-                    SE O ENTREGADOR NÃO FOR ATENDIDO OU A MERCADORIA VOLTAR PARA O REMETENTE, A MERCADORIA É PERDIDA SEM DEVOLUÇÃO DO DINHEIRO E SEM NOVOS ENVIOS.
+                    🚨👇🏼 <strong>O ENDEREÇO NÃO PODE CONTER DIVERGÊNCIAS.</strong><br> SE O ENTREGADOR NÃO FOR ATENDIDO OU A MERCADORIA VOLTAR PARA O REMETENTE, A MERCADORIA É PERDIDA SEM DEVOLUÇÃO DO DINHEIRO E SEM NOVOS ENVIOS.
                 </div>
                 <p style="margin-top: 10px;">🚨👇🚨👇 <strong>Atenção para:</strong></p>
                 <ul>
@@ -1586,31 +1586,72 @@
         const db = firebase.firestore();
 
         const fretePorRegiao = {
-            'SP': 50, 'RJ': 60, 'MG': 60, 'SC': 60, 'RS': 60, 'PR': 60, 'ES': 60, 'DF': 65,
-            'CE': 70, 'BA': 70, 'AL': 70, 'MA': 70, 'MT': 75, 'PE': 75, 'PB': 75, 'PI': 75,
-            'PA': 80, 'TO': 80, 'MS': 90, 'SE': 100, 'RN': 100, 'RO': 100, 'AM': 120
+            'SP': 50,
+            'RJ': 60,
+            'MG': 60,
+            'SC': 60,
+            'RS': 60,
+            'PR': 60,
+            'ES': 60,
+            'DF': 65,
+            'CE': 70,
+            'BA': 70,
+            'AL': 70,
+            'MA': 70,
+            'MT': 75,
+            'PE': 75,
+            'PB': 75,
+            'PI': 75,
+            'PA': 80,
+            'TO': 80,
+            'MS': 90,
+            'SE': 100,
+            'RN': 100,
+            'RO': 100,
+            'AM': 120
         };
 
         const produtosBase = [
-            { id: 1, nome: 'GHK-Cu 100mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=GHK-Cu', esgotado: !1 },
-            { id: 2, nome: 'SLU-PP-332 5mg/3ml', preco: 600, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=SLU', esgotado: !1 },
-            { id: 3, nome: 'Tesamorelin 10mg/3ml', preco: 750, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tesa', esgotado: !1 },
-            { id: 4, nome: 'GLOW 70mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=GLOW', esgotado: !1 },
-            { id: 5, nome: 'KPV 10mg/2ml', preco: 580, marca: 'PEPTÍDEOS', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=KPV', esgotado: !1 },
-            { id: 366, nome: 'Retage 40mg Caneta', preco: 1950, marca: 'OXYGEN KW', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Retage40', esgotado: !1 },
-            { id: 367, nome: 'Tizerpatida 60mg', preco: 1400, marca: 'KING PHARMA', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tiz60K', esgotado: !1 }
+            { id: 1, nome: 'GHK-Cu 100mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=GHK-Cu',
+                esgotado: !1 },
+            { id: 2, nome: 'SLU-PP-332 5mg/3ml', preco: 600, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=SLU',
+                esgotado: !1 },
+            { id: 3, nome: 'Tesamorelin 10mg/3ml', preco: 750, marca: 'NEOPEPTIDES',
+                img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tesa', esgotado: !1 },
+            { id: 4, nome: 'GLOW 70mg/3ml', preco: 800, marca: 'NEOPEPTIDES', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=GLOW',
+                esgotado: !1 },
+            { id: 5, nome: 'KPV 10mg/2ml', preco: 580, marca: 'PEPTÍDEOS', img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=KPV',
+                esgotado: !1 },
+            { id: 366, nome: 'Retage 40mg Caneta', preco: 1950, marca: 'OXYGEN KW',
+                img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Retage40', esgotado: !1 },
+            { id: 367, nome: 'Tizerpatida 60mg', preco: 1400, marca: 'KING PHARMA',
+                img: 'https://placehold.co/150x150/f1f5f9/3b82f6?text=Tiz60K', esgotado: !1 }
         ];
 
         let produtos = JSON.parse(JSON.stringify(produtosBase));
-        let carrinho = [], usuarios = [], pedidos = [];
-        let clienteLogado = null, adminLogado = !1;
-        let filtroMarca = 'TODAS', filtroAdminStatus = 'todos', clienteEditandoId = null;
-        let ITEMS_PER_PAGE = 20, catalogoPaginaAtual = 1, catalogoFiltrados = [];
-        let ordemMarcas = [], anuncioAtual = null, imagensTemp = {}, debounceTimer;
-        let bannerData = null, marcasLogos = {};
+        let carrinho = [],
+            usuarios = [],
+            pedidos = [];
+        let clienteLogado = null,
+            adminLogado = !1;
+        let filtroMarca = 'TODAS',
+            filtroAdminStatus = 'todos',
+            clienteEditandoId = null;
+        let ITEMS_PER_PAGE = 20,
+            catalogoPaginaAtual = 1,
+            catalogoFiltrados = [];
+        let ordemMarcas = [],
+            anuncioAtual = null,
+            imagensTemp = {},
+            debounceTimer;
+        let bannerData = null,
+            marcasLogos = {};
 
-        const CACHE_DURATION = 30 * 60 * 1000;        // 30 minutos para produtos
-        const CACHE_DURATION_LONG = 60 * 60 * 1000;   // 1 hora para configurações
+        const CACHE_DURATION = 30 * 60 * 1000; // 30 minutos para produtos
+        const CACHE_DURATION_LONG = 60 * 60 * 1000; // 1 hora para configurações
+        const USUARIOS_CACHE_TTL = 15 * 60 * 1000; // 15 minutos para usuários
+        const PEDIDOS_CACHE_TTL = 5 * 60 * 1000; // 5 minutos para pedidos
+        const MAX_PEDIDOS = 100; // limita leitura dos pedidos mais recentes
 
         function compressImage(file, maxW = 300, maxH = 300, quality = .6) {
             return new Promise((resolve, reject) => {
@@ -1619,10 +1660,13 @@
                     const img = new Image();
                     img.onload = function() {
                         const canvas = document.createElement('canvas');
-                        let w = img.width, h = img.height;
-                        if (w > h) { if (w > maxW) { h *= maxW / w; w = maxW } }
-                        else { if (h > maxH) { w *= maxH / h; h = maxH } }
-                        canvas.width = w; canvas.height = h;
+                        let w = img.width,
+                            h = img.height;
+                        if (w > h) { if (w > maxW) { h *= maxW / w;
+                                w = maxW } } else { if (h > maxH) { w *= maxH / h;
+                                h = maxH } }
+                        canvas.width = w;
+                        canvas.height = h;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, w, h);
                         resolve(canvas.toDataURL('image/jpeg', quality))
@@ -1660,7 +1704,10 @@
                 if (!s) return;
                 const atual = s.value;
                 s.innerHTML = '<option value="">Selecione</option>';
-                estados.forEach(sigla => { const opt = document.createElement('option'); opt.value = sigla; opt.textContent = sigla; s.appendChild(opt) });
+                estados.forEach(sigla => { const opt = document.createElement('option');
+                    opt.value = sigla;
+                    opt.textContent = sigla;
+                    s.appendChild(opt) });
                 if (atual && estados.includes(atual)) s.value = atual
             })
         }
@@ -1688,34 +1735,43 @@
                 const prodSnap = await db.collection('produtos').get();
                 if (prodSnap.empty) {
                     const batch = db.batch();
-                    produtosBase.forEach(p => { const ref = db.collection('produtos').doc(String(p.id)); batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p.obs || '', esgotado: p.esgotado || !1 }) });
+                    produtosBase.forEach(p => { const ref = db.collection('produtos').doc(String(p.id));
+                        batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p
+                                .obs || '', esgotado: p.esgotado || !1 }) });
                     await batch.commit();
                     produtos = JSON.parse(JSON.stringify(produtosBase));
                 } else {
-                    produtos = prodSnap.docs.map(fp => { const d = fp.data(); return { id: Number(fp.id), nome: d.nome, preco: parseFloat(d.preco) || 0, marca: d.marca, img: d.img || '', esgotado: !!d.esgotado } }).sort((a, b) => a.id - b.id);
+                    produtos = prodSnap.docs.map(fp => { const d = fp.data(); return { id: Number(fp.id), nome: d.nome,
+                            preco: parseFloat(d.preco) || 0, marca: d.marca, img: d.img || '', esgotado: !!d
+                            .esgotado } }).sort((a, b) => a.id - b.id);
                 }
                 setToCache('cacheProdutos', produtos);
             } catch (e) {
                 console.error(e);
-                // fallback: tenta usar cache mesmo expirado
                 const old = getFromCache('cacheProdutos', Infinity);
                 if (old) produtos = old;
             }
         }
 
-        async function carregarUsuarios() {
-            if (usuarios.length) return;
+        async function carregarUsuarios(forcar = false) {
+            if (!forcar && usuarios.length) return;
+            const cached = getFromCache('cacheUsuarios', USUARIOS_CACHE_TTL);
+            if (!forcar && cached) { usuarios = cached; return; }
             try {
                 const snap = await db.collection('usuarios').get();
                 usuarios = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                setToCache('cacheUsuarios', usuarios);
             } catch (e) { console.error(e); }
         }
 
-        async function carregarPedidos() {
-            if (pedidos.length) return;
+        async function carregarPedidos(forcar = false) {
+            if (!forcar && pedidos.length) return;
+            const cached = getFromCache('cachePedidos', PEDIDOS_CACHE_TTL);
+            if (!forcar && cached) { pedidos = cached; return; }
             try {
-                const snap = await db.collection('pedidos').orderBy('data', 'desc').get();
+                const snap = await db.collection('pedidos').orderBy('data', 'desc').limit(MAX_PEDIDOS).get();
                 pedidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                setToCache('cachePedidos', pedidos);
             } catch (e) { console.error(e); }
         }
 
@@ -1741,7 +1797,8 @@
 
         async function carregarBanner() {
             const cached = getFromCache('cacheBanner', CACHE_DURATION_LONG);
-            if (cached) { bannerData = cached; atualizarBannerUI(); return; }
+            if (cached) { bannerData = cached;
+                atualizarBannerUI(); return; }
             try {
                 const snap = await db.collection('config').doc('banner').get();
                 bannerData = snap.exists ? snap.data() : null;
@@ -1754,12 +1811,14 @@
             const el = document.getElementById('heroBanner');
             if (!el) return;
             if (bannerData && bannerData.url) el.style.backgroundImage = `url('${bannerData.url}')`;
-            else el.style.backgroundImage = `url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop')`;
+            else el.style.backgroundImage =
+                `url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop')`;
         }
 
         async function carregarAnuncio() {
             const cached = getFromCache('cacheAnuncio', CACHE_DURATION_LONG);
-            if (cached) { anuncioAtual = cached; exibirAnuncioBanner(); return; }
+            if (cached) { anuncioAtual = cached;
+                exibirAnuncioBanner(); return; }
             try {
                 const snap = await db.collection('config').doc('anuncio').get();
                 anuncioAtual = snap.exists ? snap.data() : null;
@@ -1857,21 +1916,29 @@
             return todas.sort()
         }
 
-        function setFiltroMarca(m) { filtroMarca = m; catalogoPaginaAtual = 1; renderCatalogo(); renderBrandCarousel(); }
+        function setFiltroMarca(m) { filtroMarca = m;
+            catalogoPaginaAtual = 1;
+            renderCatalogo();
+            renderBrandCarousel(); }
 
         function getProdutosFiltrados() {
             const s = (document.getElementById('searchInput')?.value || '').toLowerCase();
-            return produtos.filter(p => (filtroMarca === 'TODAS' || p.marca === filtroMarca) && p.nome.toLowerCase().includes(s))
+            return produtos.filter(p => (filtroMarca === 'TODAS' || p.marca === filtroMarca) && p.nome.toLowerCase()
+                .includes(s))
         }
 
         function renderCatalogo() {
-            const container = document.getElementById('catalogoContainer'), paginationEl = document.getElementById('catalogoPagination');
+            const container = document.getElementById('catalogoContainer'),
+                paginationEl = document.getElementById('catalogoPagination');
             if (!container) return;
             catalogoFiltrados = getProdutosFiltrados();
             const totalPages = Math.ceil(catalogoFiltrados.length / ITEMS_PER_PAGE) || 1;
             if (catalogoPaginaAtual > totalPages) catalogoPaginaAtual = totalPages;
-            const start = (catalogoPaginaAtual - 1) * ITEMS_PER_PAGE, paginaItems = catalogoFiltrados.slice(start, start + ITEMS_PER_PAGE);
-            if (!paginaItems.length) { container.innerHTML = '<div class="empty-state">🔍 Nenhum produto encontrado.</div>'; paginationEl.innerHTML = ''; return }
+            const start = (catalogoPaginaAtual - 1) * ITEMS_PER_PAGE,
+                paginaItems = catalogoFiltrados.slice(start, start + ITEMS_PER_PAGE);
+            if (!paginaItems.length) { container.innerHTML =
+                '<div class="empty-state">🔍 Nenhum produto encontrado.</div>';
+                paginationEl.innerHTML = ''; return }
             const fragment = document.createDocumentFragment();
             paginaItems.forEach(p => {
                 const esgotado = p.esgotado;
@@ -1892,18 +1959,26 @@
             container.appendChild(fragment);
             let pagHTML = '';
             if (totalPages > 1) {
-                pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual-1})" ${catalogoPaginaAtual===1?'disabled':''}>«</button>`;
+                pagHTML +=
+                    `<button onclick="irPagina(${catalogoPaginaAtual-1})" ${catalogoPaginaAtual===1?'disabled':''}>«</button>`;
                 for (let i = 1; i <= totalPages; i++) {
                     if (i === 1 || i === totalPages || (i >= catalogoPaginaAtual - 1 && i <= catalogoPaginaAtual + 1))
-                        pagHTML += `<button onclick="irPagina(${i})" class="${i===catalogoPaginaAtual?'active':''}">${i}</button>`;
-                    else if (i === catalogoPaginaAtual - 2 || i === catalogoPaginaAtual + 2) pagHTML += '<button disabled>...</button>'
+                        pagHTML +=
+                        `<button onclick="irPagina(${i})" class="${i===catalogoPaginaAtual?'active':''}">${i}</button>`;
+                    else if (i === catalogoPaginaAtual - 2 || i === catalogoPaginaAtual + 2) pagHTML +=
+                        '<button disabled>...</button>'
                 }
-                pagHTML += `<button onclick="irPagina(${catalogoPaginaAtual+1})" ${catalogoPaginaAtual===totalPages?'disabled':''}>»</button>`
+                pagHTML +=
+                    `<button onclick="irPagina(${catalogoPaginaAtual+1})" ${catalogoPaginaAtual===totalPages?'disabled':''}>»</button>`
             }
             paginationEl.innerHTML = pagHTML
         }
 
-        function irPagina(pag) { const total = Math.ceil(catalogoFiltrados.length / ITEMS_PER_PAGE) || 1; if (pag < 1 || pag > total) return; catalogoPaginaAtual = pag; renderCatalogo(); document.getElementById('catalogoContainer').scrollIntoView({ behavior: 'smooth' }) }
+        function irPagina(pag) { const total = Math.ceil(catalogoFiltrados.length / ITEMS_PER_PAGE) || 1; if (pag < 1 || pag >
+                total) return;
+            catalogoPaginaAtual = pag;
+            renderCatalogo();
+            document.getElementById('catalogoContainer').scrollIntoView({ behavior: 'smooth' }) }
 
         function renderBrandCarousel() {
             const container = document.getElementById('brandSliderItems');
@@ -1911,7 +1986,8 @@
             const marcas = getMarcasOrdenadas();
             container.innerHTML = marcas.map(m => {
                 const isActive = filtroMarca === m;
-                const logoUrl = marcasLogos[m] || `https://placehold.co/80x80/fff/0f172a?text=${m.substring(0,3)}`;
+                const logoUrl = marcasLogos[m] ||
+                    `https://placehold.co/80x80/fff/0f172a?text=${m.substring(0,3)}`;
                 return `
                     <div class="brand-item" onclick="setFiltroMarca('${m.replace(/'/g,"\\'")}')" style="${isActive ? 'transform: scale(1.05);' : ''}">
                         <div class="brand-logo-circle" style="${isActive ? 'border: 2px solid #3b82f6; box-shadow: 0 2px 6px rgba(59,130,246,0.2);' : ''}">
@@ -1943,9 +2019,10 @@
 
         function atualizarUI() {
             document.getElementById('cart-count').textContent = carrinho.reduce((s, i) => s + i.qtd, 0);
-            const bf = document.getElementById('btnFinalizar'), ml = document.getElementById('msgLoginNeeded');
-            if (clienteLogado) { if (bf) bf.disabled = !1; if (ml) ml.style.display = 'none' }
-            else { if (bf) bf.disabled = !0; if (ml) ml.style.display = 'block' }
+            const bf = document.getElementById('btnFinalizar'),
+                ml = document.getElementById('msgLoginNeeded');
+            if (clienteLogado) { if (bf) bf.disabled = !1; if (ml) ml.style.display = 'none' } else { if (bf) bf.disabled = !
+                    0; if (ml) ml.style.display = 'block' }
             const mostrarAdmin = adminLogado;
             document.getElementById('nav-admin').style.display = mostrarAdmin ? 'inline-block' : 'none';
             document.getElementById('nav-clientes').style.display = mostrarAdmin ? 'inline-block' : 'none';
@@ -1961,11 +2038,15 @@
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             const sec = document.getElementById(id);
             if (sec) sec.classList.add('active');
-            if (id === 'catalogo') { catalogoPaginaAtual = 1; renderCatalogo() }
+            if (id === 'catalogo') { catalogoPaginaAtual = 1;
+                renderCatalogo() }
             if (id === 'carrinho') renderCarrinho();
-            if (id === 'admin') { if (adminLogado) { document.getElementById('adminLoginForm').style.display = 'none'; document.getElementById('adminContent').classList.remove('hidden'); carregarDadosAdmin().then(() => renderAdmin()); } }
+            if (id === 'admin') { if (adminLogado) { document.getElementById('adminLoginForm').style.display = 'none';
+                    document.getElementById('adminContent').classList.remove('hidden');
+                    carregarDadosAdmin().then(() => renderAdmin()); } }
             if (id === 'gerenciarClientes') { carregarUsuarios().then(() => renderGerenciarClientes()); }
-            if (id === 'gerenciarProdutos') { atualizarMarcaSelect(); renderGerenciarProdutos() }
+            if (id === 'gerenciarProdutos') { atualizarMarcaSelect();
+                renderGerenciarProdutos() }
             if (id === 'ordenarMarcas') renderOrdenarMarcas();
             if (id === 'gerenciarAnuncio') renderGerenciarAnuncio();
             if (id === 'gerenciarBanner') renderBannerAdmin();
@@ -1976,9 +2057,19 @@
             await Promise.all([carregarUsuarios(), carregarPedidos()]);
         }
 
-        function logout() { clienteLogado = null; adminLogado = !1; sessionStorage.clear(); localStorage.removeItem('carrinho'); carrinho = []; imagensTemp = {}; showSection('catalogo'); atualizarUI(); mostrarToast('Sessão encerrada.', 'info') }
+        function logout() { clienteLogado = null;
+            adminLogado = !1;
+            sessionStorage.clear();
+            localStorage.removeItem('carrinho');
+            carrinho = [];
+            imagensTemp = {};
+            showSection('catalogo');
+            atualizarUI();
+            mostrarToast('Sessão encerrada.', 'info') }
 
-        function debounceSearch() { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => { catalogoPaginaAtual = 1; renderCatalogo() }, 250) }
+        function debounceSearch() { clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => { catalogoPaginaAtual = 1;
+                renderCatalogo() }, 250) }
 
         function calcularTotaisCarrinho() {
             const sub = carrinho.reduce((s, i) => s + i.preco * i.qtd, 0);
@@ -1988,33 +2079,50 @@
         }
 
         function renderCarrinho() {
-            const c = document.getElementById('carrinhoContainer'), r = document.getElementById('carrinhoResumo');
-            if (!carrinho.length) { c.innerHTML = '<div class="empty-state">🛒 Carrinho vazio.</div>'; r.classList.add('hidden'); return }
+            const c = document.getElementById('carrinhoContainer'),
+                r = document.getElementById('carrinhoResumo');
+            if (!carrinho.length) { c.innerHTML = '<div class="empty-state">🛒 Carrinho vazio.</div>';
+                r.classList.add('hidden'); return }
             r.classList.remove('hidden');
             c.innerHTML = '';
             carrinho.forEach((item, i) => {
                 const sub = item.preco * item.qtd;
                 const card = document.createElement('div');
                 card.className = 'card flex-row flex-between';
-                card.innerHTML = `<div><strong>${item.nome}</strong> (${item.marca})<br>R$ ${item.preco.toFixed(2)} x ${item.qtd} = <strong>R$ ${sub.toFixed(2)}</strong></div><div class="flex-row"><input type="number" min="1" value="${item.qtd}" style="width:50px" onchange="alterarQtdCarrinho(${i},this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(${i})">🗑️</button></div>`;
+                card.innerHTML =
+                    `<div><strong>${item.nome}</strong> (${item.marca})<br>R$ ${item.preco.toFixed(2)} x ${item.qtd} = <strong>R$ ${sub.toFixed(2)}</strong></div><div class="flex-row"><input type="number" min="1" value="${item.qtd}" style="width:50px" onchange="alterarQtdCarrinho(${i},this.value)"><button class="btn btn-danger btn-sm" onclick="removerDoCarrinho(${i})">🗑️</button></div>`;
                 c.appendChild(card)
             });
             const t = calcularTotaisCarrinho();
             document.getElementById('resumoItens').textContent = carrinho.reduce((s, i) => s + i.qtd, 0);
             document.getElementById('resumoSubtotal').textContent = 'R$ ' + t.subtotal.toFixed(2);
-            document.getElementById('resumoFrete').textContent = t.frete > 0 ? 'R$ ' + t.frete.toFixed(2) : (clienteLogado ? 'R$ 0,00' : 'Faça login');
+            document.getElementById('resumoFrete').textContent = t.frete > 0 ? 'R$ ' + t.frete.toFixed(2) : (clienteLogado ?
+                'R$ 0,00' : 'Faça login');
             document.getElementById('resumoTotal').textContent = 'R$ ' + t.total.toFixed(2)
         }
 
-        function alterarQtdCarrinho(i, v) { carrinho[i].qtd = Math.max(1, parseInt(v) || 1); localStorage.setItem('carrinho', JSON.stringify(carrinho)); renderCarrinho(); atualizarUI() }
+        function alterarQtdCarrinho(i, v) { carrinho[i].qtd = Math.max(1, parseInt(v) || 1);
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+            renderCarrinho();
+            atualizarUI() }
 
-        function removerDoCarrinho(i) { carrinho.splice(i, 1); localStorage.setItem('carrinho', JSON.stringify(carrinho)); renderCarrinho(); atualizarUI(); mostrarToast('🗑️ Item removido.', 'info') }
+        function removerDoCarrinho(i) { carrinho.splice(i, 1);
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+            renderCarrinho();
+            atualizarUI();
+            mostrarToast('🗑️ Item removido.', 'info') }
 
         function mostrarProcessamentoEmpacotamento(mensagemWhatsapp, callbackApos) {
             const modal = document.getElementById('processingModal');
             const progressBar = document.getElementById('procProgressBar');
-            const step1 = document.getElementById('procStep1'), step2 = document.getElementById('procStep2'), step3 = document.getElementById('procStep3'), step4 = document.getElementById('procStep4');
-            const procIcon = document.getElementById('procIcon'), procCheck = document.getElementById('procCheck'), procTitle = document.getElementById('procTitle'), hint = document.getElementById('procWhatsappHint');
+            const step1 = document.getElementById('procStep1'),
+                step2 = document.getElementById('procStep2'),
+                step3 = document.getElementById('procStep3'),
+                step4 = document.getElementById('procStep4');
+            const procIcon = document.getElementById('procIcon'),
+                procCheck = document.getElementById('procCheck'),
+                procTitle = document.getElementById('procTitle'),
+                hint = document.getElementById('procWhatsappHint');
             modal.classList.add('active');
             progressBar.style.width = '0%';
             [step1, step2, step3, step4].forEach(s => { s.classList.remove('done', 'active-step'); });
@@ -2046,7 +2154,8 @@
                 procCheck.style.display = 'block';
                 procTitle.textContent = 'Pedido enviado!';
                 hint.classList.add('visible');
-                [step1, step2, step3, step4].forEach(s => { s.classList.remove('active-step'); s.classList.add('done'); });
+                [step1, step2, step3, step4].forEach(s => { s.classList.remove('active-step');
+                    s.classList.add('done'); });
             }, tempoFinal);
             setTimeout(() => {
                 window.open('https://wa.me/5519997390834?text=' + encodeURIComponent(mensagemWhatsapp), '_blank');
@@ -2059,16 +2168,25 @@
             if (!carrinho.length) return;
             const t = calcularTotaisCarrinho();
             const num = Date.now().toString().slice(-8);
-            const endereco = `Rua: ${clienteLogado.rua||''}, Nº ${clienteLogado.numero||''}\nRef: ${clienteLogado.referencia||''}\nBairro: ${clienteLogado.bairro||''}\nCidade: ${clienteLogado.cidade||''}\nEstado: ${clienteLogado.regiao||''}\nCEP: ${clienteLogado.cep||''}`;
+            const endereco =
+                `Rua: ${clienteLogado.rua||''}, Nº ${clienteLogado.numero||''}\nRef: ${clienteLogado.referencia||''}\nBairro: ${clienteLogado.bairro||''}\nCidade: ${clienteLogado.cidade||''}\nEstado: ${clienteLogado.regiao||''}\nCEP: ${clienteLogado.cep||''}`;
             let itensMsg = '';
-            carrinho.forEach(i => { itensMsg += `➤ ${i.qtd}x ${i.nome} (${i.marca}) - R$ ${(i.preco*i.qtd).toFixed(2)}\n` });
-            const mensagem = `⚠️ *NOVO PEDIDO #${num}*\n\n*Cliente:* ${clienteLogado.nome}\n*CPF:* ${clienteLogado.cpf}\n*Contato:* ${clienteLogado.contato}\n\n*ENDEREÇO:*\n${endereco}\n\n*ITENS:*\n${itensMsg}\nSubtotal: R$ ${t.subtotal.toFixed(2)}\nFrete: R$ ${t.frete.toFixed(2)}\nTOTAL: R$ ${t.total.toFixed(2)}`;
+            carrinho.forEach(i => { itensMsg +=
+                    `➤ ${i.qtd}x ${i.nome} (${i.marca}) - R$ ${(i.preco*i.qtd).toFixed(2)}\n` });
+            const mensagem =
+                `⚠️ *NOVO PEDIDO #${num}*\n\n*Cliente:* ${clienteLogado.nome}\n*CPF:* ${clienteLogado.cpf}\n*Contato:* ${clienteLogado.contato}\n\n*ENDEREÇO:*\n${endereco}\n\n*ITENS:*\n${itensMsg}\nSubtotal: R$ ${t.subtotal.toFixed(2)}\nFrete: R$ ${t.frete.toFixed(2)}\nTOTAL: R$ ${t.total.toFixed(2)}`;
             if (confirm('Confirma o pedido? Total: R$ ' + t.total.toFixed(2))) {
-                const novo = { id: Date.now(), numero: num, clienteId: clienteLogado.id, clienteNome: clienteLogado.nome, clienteContato: clienteLogado.contato, clienteEndereco: endereco.replace(/\n/g, ' | '), clienteCpf: clienteLogado.cpf, itens: carrinho.map(i => ({ ...i })), subtotal: t.subtotal, frete: t.frete, total: t.total, status: 'pendente', data: new Date().toISOString() };
+                const novo = { id: Date.now(), numero: num, clienteId: clienteLogado.id, clienteNome: clienteLogado.nome,
+                    clienteContato: clienteLogado.contato, clienteEndereco: endereco.replace(/\n/g, ' | '),
+                    clienteCpf: clienteLogado.cpf, itens: carrinho.map(i => ({ ...i })), subtotal: t.subtotal,
+                    frete: t.frete, total: t.total, status: 'pendente', data: new Date().toISOString() };
                 pedidos.unshift(novo);
                 await db.collection('pedidos').doc(String(novo.id)).set(novo);
-                carrinho = []; localStorage.removeItem('carrinho');
-                atualizarUI(); renderCarrinho();
+                invalidateCache('cachePedidos');
+                carrinho = [];
+                localStorage.removeItem('carrinho');
+                atualizarUI();
+                renderCarrinho();
                 mostrarToast('✅ Pedido #' + num + ' criado!', 'success');
                 mostrarProcessamentoEmpacotamento(mensagem, () => {});
             }
@@ -2083,49 +2201,71 @@
                 clienteLogado = { id: snap.docs[0].id, ...snap.docs[0].data() };
                 adminLogado = !1;
                 sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado));
-                atualizarUI(); showSection('catalogo');
+                atualizarUI();
+                showSection('catalogo');
                 mostrarToast('👋 Bem-vindo(a)', 'success');
-            } catch (e) { console.error(e); mostrarToast('Erro ao fazer login.', 'error'); }
+            } catch (e) { console.error(e);
+                mostrarToast('Erro ao fazer login.', 'error'); }
         }
 
         async function cadastrarCliente() {
-            const nome = document.getElementById('cadNome').value.trim(), cpf = document.getElementById('cadCpf').value.replace(/\D/g, ''),
-                rua = document.getElementById('cadRua').value.trim(), num = document.getElementById('cadNumero').value.trim(),
-                ref = document.getElementById('cadReferencia').value.trim(), bairro = document.getElementById('cadBairro').value.trim(),
-                cidade = document.getElementById('cadCidade').value.trim(), regiao = document.getElementById('cadRegiao').value,
-                cep = document.getElementById('cadCep').value.trim(), contato = document.getElementById('cadContato').value.trim();
-            if (!nome || !cpf || !rua || !num || !bairro || !cidade || !regiao || !contato) return mostrarToast('Preencha todos os campos.', 'error');
+            const nome = document.getElementById('cadNome').value.trim(),
+                cpf = document.getElementById('cadCpf').value.replace(/\D/g, ''),
+                rua = document.getElementById('cadRua').value.trim(),
+                num = document.getElementById('cadNumero').value.trim(),
+                ref = document.getElementById('cadReferencia').value.trim(),
+                bairro = document.getElementById('cadBairro').value.trim(),
+                cidade = document.getElementById('cadCidade').value.trim(),
+                regiao = document.getElementById('cadRegiao').value,
+                cep = document.getElementById('cadCep').value.trim(),
+                contato = document.getElementById('cadContato').value.trim();
+            if (!nome || !cpf || !rua || !num || !bairro || !cidade || !regiao || !contato) return mostrarToast(
+                'Preencha todos os campos.', 'error');
             try {
                 const existente = await db.collection('usuarios').where('cpf', '==', cpf).limit(1).get();
                 if (!existente.empty) return mostrarToast('CPF já cadastrado.', 'error');
-                const novo = { id: Date.now(), nome, cpf, rua, numero: num, referencia: ref, bairro, cidade, regiao, cep, contato, endereco: `${rua}, ${num} - ${ref} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}` };
+                const novo = { id: Date.now(), nome, cpf, rua, numero: num, referencia: ref, bairro, cidade, regiao, cep,
+                    contato, endereco: `${rua}, ${num} - ${ref} - ${bairro}, ${cidade} - ${regiao}, CEP: ${cep}` };
                 await db.collection('usuarios').doc(String(novo.id)).set(novo);
                 usuarios.push(novo);
+                invalidateCache('cacheUsuarios');
                 clienteLogado = novo;
                 sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado));
-                atualizarUI(); showSection('catalogo');
+                atualizarUI();
+                showSection('catalogo');
                 mostrarToast('🎉 Cadastro realizado!', 'success');
-            } catch (e) { console.error(e); mostrarToast('Erro ao cadastrar.', 'error'); }
+            } catch (e) { console.error(e);
+                mostrarToast('Erro ao cadastrar.', 'error'); }
         }
 
-        function toggleCadastro() { document.getElementById('loginForm').classList.toggle('hidden'); document.getElementById('cadastroForm').classList.toggle('hidden') }
+        function toggleCadastro() { document.getElementById('loginForm').classList.toggle('hidden');
+            document.getElementById('cadastroForm').classList.toggle('hidden') }
 
         function showAdminLogin() { showSection('admin') }
 
         async function loginAdmin() {
-            if (document.getElementById('adminUser').value.trim() === 'BOMBADAVID' && document.getElementById('adminPass').value.trim() === '5858') {
-                adminLogado = !0; clienteLogado = null;
-                sessionStorage.setItem('adminLogado', 'true'); sessionStorage.removeItem('clienteLogado');
+            if (document.getElementById('adminUser').value.trim() === 'BOMBADAVID' && document.getElementById('adminPass')
+                .value.trim() === '5858') {
+                adminLogado = !0;
+                clienteLogado = null;
+                sessionStorage.setItem('adminLogado', 'true');
+                sessionStorage.removeItem('clienteLogado');
                 document.getElementById('adminLoginForm').style.display = 'none';
                 document.getElementById('adminContent').classList.remove('hidden');
-                await carregarDadosAdmin(); renderAdmin(); atualizarUI();
+                await carregarDadosAdmin();
+                renderAdmin();
+                atualizarUI();
                 mostrarToast('🔑 Acesso admin liberado.', 'success')
             } else mostrarToast('Credenciais inválidas.', 'error')
         }
 
-        function renderAdmin() { if (!adminLogado) return; document.getElementById('adminLoginForm').style.display = 'none'; document.getElementById('adminContent').classList.remove('hidden'); renderAdminPedidos() }
+        function renderAdmin() { if (!adminLogado) return;
+            document.getElementById('adminLoginForm').style.display = 'none';
+            document.getElementById('adminContent').classList.remove('hidden');
+            renderAdminPedidos() }
 
-        function filtrarPedidos(s) { filtroAdminStatus = s; renderAdminPedidos() }
+        function filtrarPedidos(s) { filtroAdminStatus = s;
+            renderAdminPedidos() }
 
         function renderAdminPedidos() {
             const container = document.getElementById('adminPedidosContainer');
@@ -2137,20 +2277,28 @@
             f.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `<div class="flex-row flex-between"><div><strong>#${p.numero}</strong> <span class="status-badge ${p.status==='pendente'?'status-pendente':'status-finalizado'}">${p.status}</span></div><div class="flex-row">${p.status==='pendente'?`<button class="btn btn-success btn-sm" onclick="marcarFinalizado(${p.id})">✅ Finalizar</button>`:''}<button class="btn btn-danger btn-sm" onclick="apagarPedido(${p.id})">🗑️ Excluir</button></div></div><p><strong>${p.clienteNome}</strong> | ${p.clienteContato}</p><p style="font-size:.8rem">${p.clienteEndereco}</p><p>${p.itens.map(i=>i.qtd+'x '+i.nome).join(', ')}</p><p style="font-size:1rem;font-weight:800;color:#059669">Total: R$ ${p.total.toFixed(2)}</p>`;
+                card.innerHTML =
+                    `<div class="flex-row flex-between"><div><strong>#${p.numero}</strong> <span class="status-badge ${p.status==='pendente'?'status-pendente':'status-finalizado'}">${p.status}</span></div><div class="flex-row">${p.status==='pendente'?`<button class="btn btn-success btn-sm" onclick="marcarFinalizado(${p.id})">✅ Finalizar</button>`:''}<button class="btn btn-danger btn-sm" onclick="apagarPedido(${p.id})">🗑️ Excluir</button></div></div><p><strong>${p.clienteNome}</strong> | ${p.clienteContato}</p><p style="font-size:.8rem">${p.clienteEndereco}</p><p>${p.itens.map(i=>i.qtd+'x '+i.nome).join(', ')}</p><p style="font-size:1rem;font-weight:800;color:#059669">Total: R$ ${p.total.toFixed(2)}</p>`;
                 container.appendChild(card)
             });
         }
 
         async function marcarFinalizado(id) {
             const p = pedidos.find(x => x.id === id);
-            if (p) { p.status = 'finalizado'; await db.collection('pedidos').doc(String(id)).update({ status: 'finalizado' }); renderAdminPedidos(); mostrarToast('✅ Finalizado.', 'success') }
+            if (p) { p.status = 'finalizado';
+                await db.collection('pedidos').doc(String(id)).update({ status: 'finalizado' });
+                invalidateCache('cachePedidos');
+                renderAdminPedidos();
+                mostrarToast('✅ Finalizado.', 'success') }
         }
 
         async function apagarPedido(id) {
             if (!confirm('Excluir pedido?')) return;
-            pedidos = pedidos.filter(x => x.id !== id); renderAdminPedidos();
-            await db.collection('pedidos').doc(String(id)).delete(); mostrarToast('🗑️ Excluído.', 'info')
+            pedidos = pedidos.filter(x => x.id !== id);
+            renderAdminPedidos();
+            await db.collection('pedidos').doc(String(id)).delete();
+            invalidateCache('cachePedidos');
+            mostrarToast('🗑️ Excluído.', 'info')
         }
 
         function renderGerenciarClientes() {
@@ -2163,109 +2311,168 @@
             filtrados.forEach(u => {
                 const card = document.createElement('div');
                 card.className = 'client-card flex-row flex-between';
-                card.innerHTML = `<div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📱 ${u.contato}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️</button></div>`;
+                card.innerHTML =
+                    `<div><strong>${u.nome}</strong><br><small>CPF: ${u.cpf} | 📱 ${u.contato}</small></div><div class="flex-row"><button class="btn btn-info btn-sm" onclick="abrirModalEditarCliente(${u.id})">✏️</button><button class="btn btn-danger btn-sm" onclick="excluirCliente(${u.id})">🗑️</button></div>`;
                 container.appendChild(card)
             });
         }
 
-        async function excluirCliente(id) { if (!confirm('Excluir cliente?')) return; usuarios = usuarios.filter(u => u.id !== id); await db.collection('usuarios').doc(String(id)).delete(); if (clienteLogado?.id === id) logout(); renderGerenciarClientes(); mostrarToast('🗑️ Excluído.', 'info') }
+        async function excluirCliente(id) { if (!confirm('Excluir cliente?')) return;
+            usuarios = usuarios.filter(u => u.id !== id);
+            await db.collection('usuarios').doc(String(id)).delete();
+            invalidateCache('cacheUsuarios'); if (clienteLogado?.id === id) logout();
+            renderGerenciarClientes();
+            mostrarToast('🗑️ Excluído.', 'info') }
 
         function abrirModalEditarCliente(id) {
             const u = usuarios.find(x => x.id === id); if (!u) return;
             clienteEditandoId = id;
             document.getElementById('editClienteId').value = id;
-            document.getElementById('editNome').value = u.nome || ''; document.getElementById('editCpf').value = u.cpf || '';
-            document.getElementById('editRua').value = u.rua || ''; document.getElementById('editNumero').value = u.numero || '';
-            document.getElementById('editReferencia').value = u.referencia || ''; document.getElementById('editBairro').value = u.bairro || '';
-            document.getElementById('editCidade').value = u.cidade || ''; document.getElementById('editRegiao').value = u.regiao || '';
-            document.getElementById('editCep').value = u.cep || ''; document.getElementById('editContato').value = u.contato || '';
+            document.getElementById('editNome').value = u.nome || '';
+            document.getElementById('editCpf').value = u.cpf || '';
+            document.getElementById('editRua').value = u.rua || '';
+            document.getElementById('editNumero').value = u.numero || '';
+            document.getElementById('editReferencia').value = u.referencia || '';
+            document.getElementById('editBairro').value = u.bairro || '';
+            document.getElementById('editCidade').value = u.cidade || '';
+            document.getElementById('editRegiao').value = u.regiao || '';
+            document.getElementById('editCep').value = u.cep || '';
+            document.getElementById('editContato').value = u.contato || '';
             document.getElementById('modalEditarCliente').classList.remove('hidden')
         }
 
-        function fecharModal() { document.getElementById('modalEditarCliente').classList.add('hidden'); clienteEditandoId = null }
+        function fecharModal() { document.getElementById('modalEditarCliente').classList.add('hidden');
+            clienteEditandoId = null }
 
         async function salvarEdicaoCliente() {
             const id = parseInt(document.getElementById('editClienteId').value);
             const u = usuarios.find(x => x.id === id); if (!u) return;
-            u.nome = document.getElementById('editNome').value.trim(); u.rua = document.getElementById('editRua').value.trim();
-            u.numero = document.getElementById('editNumero').value.trim(); u.referencia = document.getElementById('editReferencia').value.trim();
-            u.bairro = document.getElementById('editBairro').value.trim(); u.cidade = document.getElementById('editCidade').value.trim();
-            u.regiao = document.getElementById('editRegiao').value; u.cep = document.getElementById('editCep').value.trim();
+            u.nome = document.getElementById('editNome').value.trim();
+            u.rua = document.getElementById('editRua').value.trim();
+            u.numero = document.getElementById('editNumero').value.trim();
+            u.referencia = document.getElementById('editReferencia').value.trim();
+            u.bairro = document.getElementById('editBairro').value.trim();
+            u.cidade = document.getElementById('editCidade').value.trim();
+            u.regiao = document.getElementById('editRegiao').value;
+            u.cep = document.getElementById('editCep').value.trim();
             u.contato = document.getElementById('editContato').value.trim();
-            u.endereco = `${u.rua}, ${u.numero} - Ref: ${u.referencia||'N/A'} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}`;
+            u.endereco =
+                `${u.rua}, ${u.numero} - Ref: ${u.referencia||'N/A'} - ${u.bairro}, ${u.cidade} - ${u.regiao}, CEP: ${u.cep}`;
             await db.collection('usuarios').doc(String(id)).update(u);
-            if (clienteLogado?.id === id) { clienteLogado = u; sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado)) }
-            fecharModal(); renderGerenciarClientes(); mostrarToast('💾 Atualizado.', 'success')
+            invalidateCache('cacheUsuarios'); if (clienteLogado?.id === id) { clienteLogado = u;
+                sessionStorage.setItem('clienteLogado', JSON.stringify(clienteLogado)) }
+            fecharModal();
+            renderGerenciarClientes();
+            mostrarToast('💾 Atualizado.', 'success')
         }
 
         function atualizarMarcaSelect() {
             const select = document.getElementById('novoProdMarcaSelect'); if (!select) return;
             const marcas = getMarcasOrdenadas();
             select.innerHTML = '<option value="">Selecione...</option>';
-            marcas.forEach(m => { const opt = document.createElement('option'); opt.value = m; opt.textContent = m; select.appendChild(opt) });
-            const optNova = document.createElement('option'); optNova.value = '__nova__'; optNova.textContent = '+ Nova Marca...'; select.appendChild(optNova);
+            marcas.forEach(m => { const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                select.appendChild(opt) });
+            const optNova = document.createElement('option');
+            optNova.value = '__nova__';
+            optNova.textContent = '+ Nova Marca...';
+            select.appendChild(optNova);
             toggleNovaMarcaInput()
         }
 
         function toggleNovaMarcaInput() {
-            const select = document.getElementById('novoProdMarcaSelect'), inputNovo = document.getElementById('novoProdMarcaNovo');
+            const select = document.getElementById('novoProdMarcaSelect'),
+                inputNovo = document.getElementById('novoProdMarcaNovo');
             if (!select || !inputNovo) return;
-            if (select.value === '__nova__') { inputNovo.classList.remove('hidden'); inputNovo.focus() } else { inputNovo.classList.add('hidden'); inputNovo.value = '' }
+            if (select.value === '__nova__') { inputNovo.classList.remove('hidden');
+                inputNovo.focus() } else { inputNovo.classList.add('hidden');
+                inputNovo.value = '' }
         }
 
         async function toggleEsgotado(id) {
             const p = produtos.find(prod => prod.id === id); if (!p) return;
             p.esgotado = !p.esgotado;
             const btn = document.getElementById('btnEsgotado-' + id);
-            if (btn) { btn.textContent = p.esgotado ? '🚫 Esgotado' : '✅ Disponível'; btn.classList.toggle('ativo', p.esgotado) }
+            if (btn) { btn.textContent = p.esgotado ? '🚫 Esgotado' : '✅ Disponível';
+                btn.classList.toggle('ativo', p.esgotado) }
             await db.collection('produtos').doc(String(id)).update({ esgotado: p.esgotado });
             invalidateCache('cacheProdutos');
         }
 
         async function salvarEdicaoProduto(id) {
             const p = produtos.find(prod => prod.id === id); if (!p) return;
-            const nome = document.getElementById('nome-' + id).value.trim(), preco = parseFloat(document.getElementById('preco-' + id).value) || 0, marca = document.getElementById('marca-' + id).value.trim();
+            const nome = document.getElementById('nome-' + id).value.trim(),
+                preco = parseFloat(document.getElementById('preco-' + id).value) || 0,
+                marca = document.getElementById('marca-' + id).value.trim();
             if (!nome) return mostrarToast('Nome obrigatório', 'error');
             const data = { id: p.id, nome, preco, marca, img: p.img, esgotado: p.esgotado };
             if (imagensTemp[id]) data.img = imagensTemp[id];
             await db.collection('produtos').doc(String(id)).set(data, { merge: true });
-            p.nome = nome; p.preco = preco; p.marca = marca;
-            if (imagensTemp[id]) { p.img = imagensTemp[id]; delete imagensTemp[id] }
+            p.nome = nome;
+            p.preco = preco;
+            p.marca = marca;
+            if (imagensTemp[id]) { p.img = imagensTemp[id];
+                delete imagensTemp[id] }
             invalidateCache('cacheProdutos');
-            renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); mostrarToast('✅ Produto atualizado', 'success')
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandCarousel();
+            mostrarToast('✅ Produto atualizado', 'success')
         }
 
         async function excluirProduto(id) {
             if (!confirm('Excluir produto?')) return;
             await db.collection('produtos').doc(String(id)).delete();
-            produtos = produtos.filter(p => p.id !== id); delete imagensTemp[id];
+            produtos = produtos.filter(p => p.id !== id);
+            delete imagensTemp[id];
             invalidateCache('cacheProdutos');
-            renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); mostrarToast('🗑️ Excluído.', 'info')
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandCarousel();
+            mostrarToast('🗑️ Excluído.', 'info')
         }
 
         async function adicionarNovoProduto() {
             if (!adminLogado) return;
-            const nome = document.getElementById('novoProdNome').value.trim(), preco = parseFloat(document.getElementById('novoProdPreco').value) || 0;
-            let marca = document.getElementById('novoProdMarcaSelect').value; if (marca === '__nova__') marca = document.getElementById('novoProdMarcaNovo').value.trim();
+            const nome = document.getElementById('novoProdNome').value.trim(),
+                preco = parseFloat(document.getElementById('novoProdPreco').value) || 0;
+            let marca = document.getElementById('novoProdMarcaSelect').value; if (marca === '__nova__') marca = document
+                .getElementById('novoProdMarcaNovo').value.trim();
             if (!nome || !marca) return mostrarToast('Nome e marca obrigatórios', 'error');
-            const esgotado = document.getElementById('novoProdEsgotado')?.checked || false, novoId = Date.now();
+            const esgotado = document.getElementById('novoProdEsgotado')?.checked || false,
+                novoId = Date.now();
             let img = 'https://placehold.co/150x150/f1f5f9/3b82f6?text=' + encodeURIComponent(nome.substring(0, 10));
-            const fileInput = document.getElementById('novoProdImg'); if (fileInput?.files[0]) { try { img = await readFileAsDataURL(fileInput.files[0]) } catch (e) {} }
+            const fileInput = document.getElementById('novoProdImg'); if (fileInput?.files[0]) { try { img =
+                    await readFileAsDataURL(fileInput.files[0]) } catch (e) {} }
             const novo = { id: novoId, nome, preco, marca, img, obs: '', esgotado };
             await db.collection('produtos').doc(String(novoId)).set(novo);
-            produtos.push(novo); invalidateCache('cacheProdutos');
-            ['novoProdNome', 'novoProdPreco', 'novoProdMarcaNovo'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '' });
-            document.getElementById('novoProdMarcaSelect').value = ''; document.getElementById('novoProdMarcaNovo').classList.add('hidden');
-            if (fileInput) fileInput.value = ''; document.getElementById('previewNovaImagem').style.display = 'none';
-            renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); atualizarMarcaSelect(); mostrarToast('✅ Produto adicionado', 'success')
+            produtos.push(novo);
+            invalidateCache('cacheProdutos');
+            ['novoProdNome', 'novoProdPreco', 'novoProdMarcaNovo'].forEach(id => { const el = document.getElementById(
+                    id); if (el) el.value = '' });
+            document.getElementById('novoProdMarcaSelect').value = '';
+            document.getElementById('novoProdMarcaNovo').classList.add('hidden');
+            if (fileInput) fileInput.value = '';
+            document.getElementById('previewNovaImagem').style.display = 'none';
+            renderGerenciarProdutos();
+            renderCatalogo();
+            renderBrandCarousel();
+            atualizarMarcaSelect();
+            mostrarToast('✅ Produto adicionado', 'success')
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             const novoImgInput = document.getElementById('novoProdImg');
             if (novoImgInput) {
                 novoImgInput.addEventListener('change', async function() {
-                    const file = this.files[0]; const previewDiv = document.getElementById('previewNovaImagem'), previewImg = document.getElementById('previewNovaImgTag');
-                    if (file && previewDiv && previewImg) { try { previewImg.src = await readFileAsDataURL(file); previewDiv.style.display = 'block' } catch (e) { previewDiv.style.display = 'none' } } else { if (previewDiv) previewDiv.style.display = 'none' }
+                    const file = this.files[0];
+                    const previewDiv = document.getElementById('previewNovaImagem'),
+                        previewImg = document.getElementById('previewNovaImgTag');
+                    if (file && previewDiv && previewImg) { try { previewImg.src = await readFileAsDataURL(
+                            file);
+                            previewDiv.style.display = 'block' } catch (e) { previewDiv.style.display =
+                            'none' } } else { if (previewDiv) previewDiv.style.display = 'none' }
                 })
             }
         });
@@ -2278,13 +2485,18 @@
             produtos.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'produto-editar-item';
-                item.innerHTML = `<div style="width:50px;height:50px;flex-shrink:0" id="thumb-${p.id}">${createImageHTML(p.img,p.nome)}</div><input type="text" value="${p.nome.replace(/"/g,'&quot;')}" id="nome-${p.id}" style="flex:2;min-width:100px"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:70px"><input type="text" value="${p.marca.replace(/"/g,'&quot;')}" id="marca-${p.id}" style="flex:1;min-width:80px"><input type="file" id="file-${p.id}" accept="image/*" style="width:90px"><button class="btn-esgotado ${p.esgotado?'ativo':''}" id="btnEsgotado-${p.id}">${p.esgotado?'🚫 Esgotado':'✅ Disponível'}</button><button class="btn btn-success btn-sm" id="salvar-${p.id}">💾</button><button class="btn btn-danger btn-sm" id="excluir-${p.id}">🗑️</button>`;
+                item.innerHTML =
+                    `<div style="width:50px;height:50px;flex-shrink:0" id="thumb-${p.id}">${createImageHTML(p.img,p.nome)}</div><input type="text" value="${p.nome.replace(/"/g,'&quot;')}" id="nome-${p.id}" style="flex:2;min-width:100px"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:70px"><input type="text" value="${p.marca.replace(/"/g,'&quot;')}" id="marca-${p.id}" style="flex:1;min-width:80px"><input type="file" id="file-${p.id}" accept="image/*" style="width:90px"><button class="btn-esgotado ${p.esgotado?'ativo':''}" id="btnEsgotado-${p.id}">${p.esgotado?'🚫 Esgotado':'✅ Disponível'}</button><button class="btn btn-success btn-sm" id="salvar-${p.id}">💾</button><button class="btn btn-danger btn-sm" id="excluir-${p.id}">🗑️</button>`;
                 container.appendChild(item)
             });
             produtos.forEach(p => {
                 document.getElementById('btnEsgotado-' + p.id).addEventListener('click', () => toggleEsgotado(p.id));
                 const fileInput = document.getElementById('file-' + p.id);
-                fileInput.addEventListener('change', async function() { const file = this.files[0]; if (file) { try { const dataUrl = await readFileAsDataURL(file); imagensTemp[p.id] = dataUrl; document.getElementById('thumb-' + p.id).innerHTML = createImageHTML(dataUrl, p.nome) } catch (e) { console.error(e) } } });
+                fileInput.addEventListener('change', async function() { const file = this.files[0]; if (file) { try { const
+                            dataUrl = await readFileAsDataURL(file);
+                        imagensTemp[p.id] = dataUrl;
+                        document.getElementById('thumb-' + p.id).innerHTML = createImageHTML(dataUrl, p
+                            .nome) } catch (e) { console.error(e) } } });
                 document.getElementById('salvar-' + p.id).addEventListener('click', () => salvarEdicaoProduto(p.id));
                 document.getElementById('excluir-' + p.id).addEventListener('click', () => excluirProduto(p.id));
             });
@@ -2297,9 +2509,11 @@
             if (!marcas.length) { container.innerHTML = '<div class="empty-state">🏷️ Nenhuma marca.</div>'; return }
             container.innerHTML = '';
             marcas.forEach((marca, idx) => {
-                const logoUrl = marcasLogos[marca] || `https://placehold.co/50x50/fff/0f172a?text=${marca.substring(0,2)}`;
+                const logoUrl = marcasLogos[marca] ||
+                    `https://placehold.co/50x50/fff/0f172a?text=${marca.substring(0,2)}`;
                 const div = document.createElement('div');
-                div.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:.6rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.4rem;background:#fff';
+                div.style.cssText =
+                    'display:flex;justify-content:space-between;align-items:center;padding:.6rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.4rem;background:#fff';
                 div.innerHTML = `
                     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                         <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;"><img src="${logoUrl}" id="logoPreview-${idx}" style="width:100%;height:100%;object-fit:contain;"></div>
@@ -2320,8 +2534,10 @@
                                 marcasLogos[marca] = dataUrl;
                                 document.getElementById(`logoPreview-${idx}`).src = dataUrl;
                                 await db.collection('config').doc('marcasLogos').set(marcasLogos, { merge: true });
-                                invalidateCache('cacheMarcasLogos'); setToCache('cacheMarcasLogos', marcasLogos);
-                                renderBrandCarousel(); mostrarToast(`✅ Logo salva!`, 'success');
+                                invalidateCache('cacheMarcasLogos');
+                                setToCache('cacheMarcasLogos', marcasLogos);
+                                renderBrandCarousel();
+                                mostrarToast(`✅ Logo salva!`, 'success');
                             } catch (error) { console.error(error); }
                         }
                     });
@@ -2334,20 +2550,35 @@
             if (!confirm(`Remover logo de ${marca}?`)) return;
             delete marcasLogos[marca];
             await db.collection('config').doc('marcasLogos').set(marcasLogos, { merge: true });
-            invalidateCache('cacheMarcasLogos'); setToCache('cacheMarcasLogos', marcasLogos);
-            renderOrdenarMarcas(); renderBrandCarousel(); mostrarToast('🗑️ Logo removida.', 'info');
+            invalidateCache('cacheMarcasLogos');
+            setToCache('cacheMarcasLogos', marcasLogos);
+            renderOrdenarMarcas();
+            renderBrandCarousel();
+            mostrarToast('🗑️ Logo removida.', 'info');
         }
 
         function moverMarca(index, dir) {
             const marcas = getMarcasOrdenadas();
-            if (dir === 'cima' && index > 0) [marcas[index - 1], marcas[index]] = [marcas[index], marcas[index - 1]];
-            else if (dir === 'baixo' && index < marcas.length - 1) [marcas[index], marcas[index + 1]] = [marcas[index + 1], marcas[index]];
+            if (dir === 'cima' && index > 0)[marcas[index - 1], marcas[index]] = [marcas[index], marcas[index - 1]];
+            else if (dir === 'baixo' && index < marcas.length - 1)[marcas[index], marcas[index + 1]] = [marcas[index + 1],
+                marcas[index]
+            ];
             else return;
-            ordemMarcas = [...marcas]; renderOrdenarMarcas(); renderBrandCarousel();
+            ordemMarcas = [...marcas];
+            renderOrdenarMarcas();
+            renderBrandCarousel();
         }
-        async function salvarOrdemMarcas() { await salvarOrdemMarcasFirestore(); renderOrdenarMarcas(); renderBrandCarousel(); renderCatalogo() }
+        async function salvarOrdemMarcas() { await salvarOrdemMarcasFirestore();
+            renderOrdenarMarcas();
+            renderBrandCarousel();
+            renderCatalogo() }
 
-        async function resetarOrdemMarcas() { ordemMarcas = []; await salvarOrdemMarcasFirestore(); renderOrdenarMarcas(); renderBrandCarousel(); renderCatalogo(); mostrarToast('🔄 Ordem restaurada', 'info') }
+        async function resetarOrdemMarcas() { ordemMarcas = [];
+            await salvarOrdemMarcasFirestore();
+            renderOrdenarMarcas();
+            renderBrandCarousel();
+            renderCatalogo();
+            mostrarToast('🔄 Ordem restaurada', 'info') }
 
         function renderBannerAdmin() {
             if (!adminLogado) return;
@@ -2359,7 +2590,8 @@
             const file = document.getElementById('bannerImgInput').files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = e => { document.getElementById('bannerPreviewImg').src = e.target.result; document.getElementById('bannerPreviewAdmin').style.display = 'block'; };
+            reader.onload = e => { document.getElementById('bannerPreviewImg').src = e.target.result;
+                document.getElementById('bannerPreviewAdmin').style.display = 'block'; };
             reader.readAsDataURL(file);
         }
 
@@ -2371,11 +2603,13 @@
                 const dataUrl = await compressImage(file, 600, 300, 0.7);
                 bannerData = { url: dataUrl };
                 await db.collection('config').doc('banner').set(bannerData, { merge: true });
-                invalidateCache('cacheBanner'); setToCache('cacheBanner', bannerData);
+                invalidateCache('cacheBanner');
+                setToCache('cacheBanner', bannerData);
                 atualizarBannerUI();
                 document.getElementById('bannerPreviewAdmin').style.display = 'none';
                 mostrarToast('✅ Banner atualizado!', 'success');
-            } catch (e) { console.error(e); mostrarToast('Erro ao salvar banner.', 'error'); }
+            } catch (e) { console.error(e);
+                mostrarToast('Erro ao salvar banner.', 'error'); }
         }
 
         async function removerBannerAdmin() {
@@ -2383,7 +2617,8 @@
             if (!confirm('Remover banner personalizado?')) return;
             bannerData = null;
             await db.collection('config').doc('banner').delete();
-            invalidateCache('cacheBanner'); localStorage.removeItem('cacheBanner');
+            invalidateCache('cacheBanner');
+            localStorage.removeItem('cacheBanner');
             atualizarBannerUI();
             document.getElementById('bannerPreviewAdmin').style.display = 'none';
             document.getElementById('bannerImgInput').value = '';
