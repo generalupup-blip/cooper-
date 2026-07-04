@@ -60,6 +60,23 @@
         .contato-item:hover { background: #f8fafc; }
         .contato-item .icon { font-size: 1.3rem; width: 24px; text-align: center; }
 
+        /* Banner de Anúncio Chamativo */
+        #anuncioBanner { position: relative; z-index: 99; margin: 0; overflow: hidden; }
+        #anuncioBanner.info { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; }
+        #anuncioBanner.warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; }
+        #anuncioBanner.success { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+        #anuncioBanner.danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; }
+        .anuncio-content { display: flex; align-items: center; padding: 12px 20px; max-width: 1200px; margin: 0 auto; gap: 15px; position: relative; z-index: 2; }
+        .anuncio-icone { font-size: 2.2rem; animation: bounceIcon 1s infinite; }
+        @keyframes bounceIcon { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        .anuncio-texto { flex: 1; font-size: 0.95rem; font-weight: 500; }
+        .anuncio-texto strong { font-size: 1.15rem; display: block; margin-bottom: 2px; }
+        .anuncio-fechar { background: rgba(255,255,255,0.2); border: none; color: inherit; font-size: 1.6rem; cursor: pointer; padding: 0 5px; line-height: 1; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .anuncio-fechar:hover { background: rgba(255,255,255,0.4); }
+        #anuncioBanner { animation: pulseAnuncio 1.8s infinite; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        @keyframes pulseAnuncio { 0% { box-shadow: 0 2px 8px rgba(0,0,0,0.15); } 50% { box-shadow: 0 8px 25px rgba(0,0,0,0.35); } 100% { box-shadow: 0 2px 8px rgba(0,0,0,0.15); } }
+        .anuncio-banner-preview { transition: background 0.3s; }
+
         main { max-width: 1200px; margin: 0 auto; padding: 0 .8rem; }
         .section { display: none; content-visibility: auto; contain-intrinsic-size: auto 400px }
         .section.active { display: block; animation: fadeUp .3s ease; content-visibility: visible; contain-intrinsic-size: none }
@@ -241,6 +258,18 @@
         </nav>
     </header>
 
+    <!-- Banner de Anúncio (aparece quando ativo) -->
+    <div id="anuncioBanner" class="hidden" style="display:none;">
+        <div class="anuncio-content">
+            <span class="anuncio-icone">📢</span>
+            <div class="anuncio-texto">
+                <strong id="anuncioTituloExibicao"></strong>
+                <span id="anuncioMensagemExibicao"></span>
+            </div>
+            <button class="anuncio-fechar" onclick="fecharAnuncioBanner()" title="Fechar">✕</button>
+        </div>
+    </div>
+
     <main>
         <div class="hero-banner" id="heroBanner">
             <div class="hero-ticker-wrapper">
@@ -387,7 +416,7 @@
         </section>
 
         <section id="gerenciarAnuncio" class="section">
-            <h2>📢 Anúncio</h2>
+            <h2>📢 Gerenciar Anúncio</h2>
             <div class="card">
                 <label style="font-size:.8rem"><input type="checkbox" id="anuncioAtivo" onchange="previewAnuncio()"> Ativar anúncio</label>
                 <div class="form-group"><label>Título</label><input type="text" id="anuncioTituloInput" oninput="previewAnuncio()"></div>
@@ -396,6 +425,13 @@
                 <div class="flex-row">
                     <button class="btn btn-danger" onclick="removerAnuncio()">🗑️ Remover</button>
                     <button class="btn btn-success" onclick="salvarAnuncio()">💾 Salvar</button>
+                </div>
+            </div>
+            <div class="card mt-2">
+                <h4>👁️ Pré-visualização</h4>
+                <div id="anuncioPreview" class="anuncio-banner-preview" style="padding:12px;border-radius:8px;color:#fff;text-align:center;">
+                    <span id="prevTitulo" style="font-weight:800;">Título do anúncio</span><br>
+                    <small id="prevMensagem">Mensagem aqui</small>
                 </div>
             </div>
         </section>
@@ -597,6 +633,83 @@
             if (bannerData && bannerData.url) el.style.backgroundImage = `url('${bannerData.url}')`;
             else el.style.backgroundImage = `url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop')`;
         }
+
+        /* ========== ANÚNCIO ========== */
+        async function carregarAnuncio() {
+            try {
+                const snap = await db.collection('config').doc('anuncio').get({ source: 'default' });
+                anuncioAtual = snap.exists ? snap.data() : null;
+                exibirAnuncioBanner();
+            } catch (e) { console.error(e); }
+        }
+
+        function exibirAnuncioBanner() {
+            const banner = document.getElementById('anuncioBanner');
+            if (!banner) return;
+            if (anuncioAtual && anuncioAtual.ativo) {
+                banner.className = anuncioAtual.cor || 'warning';
+                document.getElementById('anuncioTituloExibicao').textContent = anuncioAtual.titulo || '';
+                document.getElementById('anuncioMensagemExibicao').textContent = anuncioAtual.mensagem || '';
+                banner.style.display = '';
+            } else {
+                banner.style.display = 'none';
+            }
+        }
+
+        function fecharAnuncioBanner() {
+            const banner = document.getElementById('anuncioBanner');
+            if (banner) banner.style.display = 'none';
+        }
+
+        function renderGerenciarAnuncio() {
+            if (!adminLogado) return;
+            document.getElementById('anuncioAtivo').checked = anuncioAtual ? anuncioAtual.ativo : false;
+            document.getElementById('anuncioTituloInput').value = anuncioAtual ? anuncioAtual.titulo || '' : '';
+            document.getElementById('anuncioMensagemInput').value = anuncioAtual ? anuncioAtual.mensagem || '' : '';
+            document.getElementById('anuncioCorSelect').value = anuncioAtual ? anuncioAtual.cor || 'warning' : 'warning';
+            previewAnuncio();
+        }
+
+        function previewAnuncio() {
+            const titulo = document.getElementById('anuncioTituloInput').value;
+            const mensagem = document.getElementById('anuncioMensagemInput').value;
+            const cor = document.getElementById('anuncioCorSelect').value;
+            const preview = document.getElementById('anuncioPreview');
+            if (preview) {
+                preview.className = 'anuncio-banner-preview ' + cor;
+                document.getElementById('prevTitulo').textContent = titulo || 'Título do anúncio';
+                document.getElementById('prevMensagem').textContent = mensagem || 'Mensagem aqui';
+                const cores = { info: '#3b82f6', warning: '#f59e0b', success: '#10b981', danger: '#ef4444' };
+                preview.style.background = cores[cor] || '#f59e0b';
+            }
+        }
+
+        async function salvarAnuncio() {
+            if (!adminLogado) return;
+            const ativo = document.getElementById('anuncioAtivo').checked;
+            const titulo = document.getElementById('anuncioTituloInput').value.trim();
+            const mensagem = document.getElementById('anuncioMensagemInput').value.trim();
+            const cor = document.getElementById('anuncioCorSelect').value;
+            if (!titulo && ativo) return mostrarToast('Informe um título para o anúncio.', 'error');
+            anuncioAtual = { ativo, titulo, mensagem, cor };
+            await db.collection('config').doc('anuncio').set(anuncioAtual, { merge: true });
+            exibirAnuncioBanner();
+            mostrarToast('✅ Anúncio salvo!', 'success');
+        }
+
+        async function removerAnuncio() {
+            if (!adminLogado) return;
+            if (!confirm('Remover o anúncio completamente?')) return;
+            anuncioAtual = null;
+            await db.collection('config').doc('anuncio').delete();
+            document.getElementById('anuncioAtivo').checked = false;
+            document.getElementById('anuncioTituloInput').value = '';
+            document.getElementById('anuncioMensagemInput').value = '';
+            exibirAnuncioBanner();
+            previewAnuncio();
+            mostrarToast('🗑️ Anúncio removido.', 'info');
+        }
+        /* ============================ */
 
         async function salvarOrdemMarcasFirestore() { await db.collection('config').doc('ordemMarcas').set({ ordem: ordemMarcas }, { merge: !0 }); mostrarToast('✅ Ordem salva', 'success') }
 
@@ -892,7 +1005,7 @@
         function abrirModalEditarCliente(id) {
             const u = usuarios.find(x => x.id === id); if (!u) return;
             clienteEditandoId = id;
-            document.getElementById('editClienteId').value = id; // CORRIGIDO
+            document.getElementById('editClienteId').value = id;
             document.getElementById('editNome').value = u.nome || ''; document.getElementById('editCpf').value = u.cpf || '';
             document.getElementById('editRua').value = u.rua || ''; document.getElementById('editNumero').value = u.numero || '';
             document.getElementById('editReferencia').value = u.referencia || ''; document.getElementById('editBairro').value = u.bairro || '';
@@ -1125,22 +1238,21 @@
             clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado')) || null;
             adminLogado = JSON.parse(sessionStorage.getItem('adminLogado')) || !1;
             popularSelectsRegiao();
-            // Carrega apenas dados essenciais para o catálogo
             await Promise.all([
                 carregarProdutos(),
                 carregarOrdemMarcas(),
                 carregarLogosMarcas(),
-                carregarBanner()
+                carregarBanner(),
+                carregarAnuncio()
             ]);
-            // Restaura caches de config se não vieram do Firestore
             if (!ordemMarcas.length) ordemMarcas = getFromCache('cacheOrdemMarcas') || [];
             if (!Object.keys(marcasLogos).length) marcasLogos = getFromCache('cacheMarcasLogos') || {};
             if (!bannerData) bannerData = getFromCache('cacheBanner') || null;
             atualizarBannerUI();
+            exibirAnuncioBanner();
             renderCatalogo();
             renderBrandCarousel();
             atualizarUI();
-            // Se admin estiver logado, carrega dados administrativos em segundo plano
             if (adminLogado) {
                 carregarDadosAdmin().then(() => {
                     if (document.getElementById('admin').classList.contains('active')) renderAdmin();
