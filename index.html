@@ -1647,77 +1647,24 @@
         let bannerData = null,
             marcasLogos = {};
 
-        const CACHE_DURATION = 30 * 60 * 1000; // 30 minutos para produtos
-        const CACHE_DURATION_LONG = 60 * 60 * 1000; // 1 hora para configurações
-        const USUARIOS_CACHE_TTL = 15 * 60 * 1000; // 15 minutos para usuários
-        const PEDIDOS_CACHE_TTL = 5 * 60 * 1000; // 5 minutos para pedidos
-        const MAX_PEDIDOS = 100; // limita leitura dos pedidos mais recentes
+        // ---- CACHE CONFIGURAÇÃO AGRESSIVA ----
+        const CACHE_DURATION = 60 * 60 * 1000;       // 1 hora para produtos
+        const CACHE_DURATION_CONFIG = 24 * 60 * 60 * 1000; // 24 horas para configs
+        const USUARIOS_CACHE_TTL = 15 * 60 * 1000;   // 15 min
+        const PEDIDOS_CACHE_TTL = 5 * 60 * 1000;     // 5 min
+        const MAX_PEDIDOS = 50;
+        const MAX_USUARIOS = 100;
 
-        function compressImage(file, maxW = 300, maxH = 300, quality = .6) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        let w = img.width,
-                            h = img.height;
-                        if (w > h) { if (w > maxW) { h *= maxW / w;
-                                w = maxW } } else { if (h > maxH) { w *= maxH / h;
-                                h = maxH } }
-                        canvas.width = w;
-                        canvas.height = h;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, w, h);
-                        resolve(canvas.toDataURL('image/jpeg', quality))
-                    };
-                    img.onerror = reject;
-                    img.src = e.target.result
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file)
-            })
-        }
+        // Controla concorrência
+        const _loadingLocks = {};
 
-        function readFileAsDataURL(file, maxW = 300, maxH = 300, quality = .65) {
-            return compressImage(file, maxW, maxH, quality)
-        }
-
-        function createImageHTML(src, alt) {
-            return `<div class="img-container"><img src="${src}" alt="${alt}" loading="lazy" onerror="this.style.display='none'"></div>`
-        }
-
-        function mostrarToast(msg, tipo = 'info') {
-            const c = document.getElementById('toastContainer');
-            const t = document.createElement('div');
-            t.className = 'toast';
-            t.style.borderLeftColor = tipo === 'success' ? '#10b981' : tipo === 'error' ? '#ef4444' : '#3b82f6';
-            t.textContent = msg;
-            c.appendChild(t);
-            setTimeout(() => t.remove(), 3300)
-        }
-
-        function popularSelectsRegiao() {
-            const estados = Object.keys(fretePorRegiao).sort();
-            ['cadRegiao', 'editRegiao'].forEach(id => {
-                const s = document.getElementById(id);
-                if (!s) return;
-                const atual = s.value;
-                s.innerHTML = '<option value="">Selecione</option>';
-                estados.forEach(sigla => { const opt = document.createElement('option');
-                    opt.value = sigla;
-                    opt.textContent = sigla;
-                    s.appendChild(opt) });
-                if (atual && estados.includes(atual)) s.value = atual
-            })
-        }
-
+        // ---- FUNÇÕES DE CACHE ----
         function getFromCache(key, maxAge = CACHE_DURATION) {
             try {
                 const raw = localStorage.getItem(key);
                 if (!raw) return null;
                 const data = JSON.parse(raw);
-                if (Date.now() - data.timestamp > maxAge) { localStorage.removeItem(key); return null; }
+                if (Date.now() - data.timestamp > maxAge) return null;
                 return data.value;
             } catch (e) { return null; }
         }
@@ -1726,85 +1673,190 @@
             try { localStorage.setItem(key, JSON.stringify({ value, timestamp: Date.now() })); } catch (e) {}
         }
 
+        function getFromCacheStale(key) {
+            // Retorna mesmo se expirado (fallback)
+            try {
+                const raw = localStorage.getItem(key);
+                if (!raw) return null;
+                const data = JSON.parse(raw);
+                return data.value;
+            } catch (e) { return null; }
+        }
+
         function invalidateCache(key) { localStorage.removeItem(key); }
 
+        // ---- CARREGAMENTO COM FALLBACK ----
         async function carregarProdutos() {
+            // Se já estiver carregando, aguarda (evita múltiplas leituras)
+            if (_loadingLocks.produtos) return _loadingLocks.produtos;
+            // Tenta cache primeiro
             const cached = getFromCache('cacheProdutos', CACHE_DURATION);
-            if (cached) { produtos = cached; return; }
-            try {
-                const prodSnap = await db.collection('produtos').get();
-                if (prodSnap.empty) {
-                    const batch = db.batch();
-                    produtosBase.forEach(p => { const ref = db.collection('produtos').doc(String(p.id));
-                        batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p
-                                .obs || '', esgotado: p.esgotado || !1 }) });
-                    await batch.commit();
-                    produtos = JSON.parse(JSON.stringify(produtosBase));
-                } else {
-                    produtos = prodSnap.docs.map(fp => { const d = fp.data(); return { id: Number(fp.id), nome: d.nome,
-                            preco: parseFloat(d.preco) || 0, marca: d.marca, img: d.img || '', esgotado: !!d
-                            .esgotado } }).sort((a, b) => a.id - b.id);
-                }
-                setToCache('cacheProdutos', produtos);
-            } catch (e) {
-                console.error(e);
-                const old = getFromCache('cacheProdutos', Infinity);
-                if (old) produtos = old;
+            if (cached) {
+                produtos = cached;
+                return;
             }
+            // Inicia carga
+            const promise = (async () => {
+                try {
+                    const prodSnap = await db.collection('produtos').get();
+                    if (prodSnap.empty) {
+                        const batch = db.batch();
+                        produtosBase.forEach(p => { const ref = db.collection('produtos').doc(String(p.id));
+                            batch.set(ref, { id: p.id, nome: p.nome, preco: p.preco, marca: p.marca, img: p.img, obs: p
+                                    .obs || '', esgotado: p.esgotado || !1 }) });
+                        await batch.commit();
+                        produtos = JSON.parse(JSON.stringify(produtosBase));
+                    } else {
+                        produtos = prodSnap.docs.map(fp => { const d = fp.data(); return { id: Number(fp.id), nome: d.nome,
+                                preco: parseFloat(d.preco) || 0, marca: d.marca, img: d.img || '', esgotado: !!d
+                                .esgotado } }).sort((a, b) => a.id - b.id);
+                    }
+                    setToCache('cacheProdutos', produtos);
+                } catch (e) {
+                    console.warn('Erro ao buscar produtos, usando cache expirado.', e);
+                    const stale = getFromCacheStale('cacheProdutos');
+                    if (stale) produtos = stale;
+                    // Se não houver cache, mantém produtosBase
+                } finally {
+                    _loadingLocks.produtos = null;
+                }
+            })();
+            _loadingLocks.produtos = promise;
+            await promise;
         }
 
         async function carregarUsuarios(forcar = false) {
             if (!forcar && usuarios.length) return;
+            if (_loadingLocks.usuarios) return _loadingLocks.usuarios;
             const cached = getFromCache('cacheUsuarios', USUARIOS_CACHE_TTL);
             if (!forcar && cached) { usuarios = cached; return; }
-            try {
-                const snap = await db.collection('usuarios').get();
-                usuarios = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                setToCache('cacheUsuarios', usuarios);
-            } catch (e) { console.error(e); }
+            const promise = (async () => {
+                try {
+                    const snap = await db.collection('usuarios').limit(MAX_USUARIOS).get();
+                    usuarios = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    setToCache('cacheUsuarios', usuarios);
+                } catch (e) {
+                    console.warn('Erro ao buscar usuários, usando cache expirado.', e);
+                    const stale = getFromCacheStale('cacheUsuarios');
+                    if (stale) usuarios = stale;
+                } finally {
+                    _loadingLocks.usuarios = null;
+                }
+            })();
+            _loadingLocks.usuarios = promise;
+            await promise;
         }
 
         async function carregarPedidos(forcar = false) {
             if (!forcar && pedidos.length) return;
+            if (_loadingLocks.pedidos) return _loadingLocks.pedidos;
             const cached = getFromCache('cachePedidos', PEDIDOS_CACHE_TTL);
             if (!forcar && cached) { pedidos = cached; return; }
-            try {
-                const snap = await db.collection('pedidos').orderBy('data', 'desc').limit(MAX_PEDIDOS).get();
-                pedidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                setToCache('cachePedidos', pedidos);
-            } catch (e) { console.error(e); }
+            const promise = (async () => {
+                try {
+                    const snap = await db.collection('pedidos').orderBy('data', 'desc').limit(MAX_PEDIDOS).get();
+                    pedidos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    setToCache('cachePedidos', pedidos);
+                } catch (e) {
+                    console.warn('Erro ao buscar pedidos, usando cache expirado.', e);
+                    const stale = getFromCacheStale('cachePedidos');
+                    if (stale) pedidos = stale;
+                } finally {
+                    _loadingLocks.pedidos = null;
+                }
+            })();
+            _loadingLocks.pedidos = promise;
+            await promise;
         }
 
         async function carregarOrdemMarcas() {
-            const cached = getFromCache('cacheOrdemMarcas', CACHE_DURATION_LONG);
+            if (_loadingLocks.ordemMarcas) return _loadingLocks.ordemMarcas;
+            const cached = getFromCache('cacheOrdemMarcas', CACHE_DURATION_CONFIG);
             if (cached) { ordemMarcas = cached; return; }
-            try {
-                const snap = await db.collection('config').doc('ordemMarcas').get();
-                ordemMarcas = snap.exists ? snap.data().ordem || [] : [];
-                setToCache('cacheOrdemMarcas', ordemMarcas);
-            } catch (e) { console.error(e); }
+            const promise = (async () => {
+                try {
+                    const snap = await db.collection('config').doc('ordemMarcas').get();
+                    ordemMarcas = snap.exists ? snap.data().ordem || [] : [];
+                    setToCache('cacheOrdemMarcas', ordemMarcas);
+                } catch (e) {
+                    console.warn('Erro ao buscar ordem de marcas, usando cache expirado.', e);
+                    const stale = getFromCacheStale('cacheOrdemMarcas');
+                    if (stale) ordemMarcas = stale;
+                } finally {
+                    _loadingLocks.ordemMarcas = null;
+                }
+            })();
+            _loadingLocks.ordemMarcas = promise;
+            await promise;
         }
 
         async function carregarLogosMarcas() {
-            const cached = getFromCache('cacheMarcasLogos', CACHE_DURATION_LONG);
+            if (_loadingLocks.logosMarcas) return _loadingLocks.logosMarcas;
+            const cached = getFromCache('cacheMarcasLogos', CACHE_DURATION_CONFIG);
             if (cached) { marcasLogos = cached; return; }
-            try {
-                const snap = await db.collection('config').doc('marcasLogos').get();
-                marcasLogos = snap.exists ? snap.data() || {} : {};
-                setToCache('cacheMarcasLogos', marcasLogos);
-            } catch (e) { console.error(e); }
+            const promise = (async () => {
+                try {
+                    const snap = await db.collection('config').doc('marcasLogos').get();
+                    marcasLogos = snap.exists ? snap.data() || {} : {};
+                    setToCache('cacheMarcasLogos', marcasLogos);
+                } catch (e) {
+                    console.warn('Erro ao buscar logos, usando cache expirado.', e);
+                    const stale = getFromCacheStale('cacheMarcasLogos');
+                    if (stale) marcasLogos = stale;
+                } finally {
+                    _loadingLocks.logosMarcas = null;
+                }
+            })();
+            _loadingLocks.logosMarcas = promise;
+            await promise;
         }
 
         async function carregarBanner() {
-            const cached = getFromCache('cacheBanner', CACHE_DURATION_LONG);
+            if (_loadingLocks.banner) return _loadingLocks.banner;
+            const cached = getFromCache('cacheBanner', CACHE_DURATION_CONFIG);
             if (cached) { bannerData = cached;
                 atualizarBannerUI(); return; }
-            try {
-                const snap = await db.collection('config').doc('banner').get();
-                bannerData = snap.exists ? snap.data() : null;
-                setToCache('cacheBanner', bannerData);
-                atualizarBannerUI();
-            } catch (e) { console.error(e); }
+            const promise = (async () => {
+                try {
+                    const snap = await db.collection('config').doc('banner').get();
+                    bannerData = snap.exists ? snap.data() : null;
+                    setToCache('cacheBanner', bannerData);
+                    atualizarBannerUI();
+                } catch (e) {
+                    console.warn('Erro ao buscar banner, usando cache expirado.', e);
+                    const stale = getFromCacheStale('cacheBanner');
+                    if (stale) { bannerData = stale;
+                        atualizarBannerUI(); }
+                } finally {
+                    _loadingLocks.banner = null;
+                }
+            })();
+            _loadingLocks.banner = promise;
+            await promise;
+        }
+
+        async function carregarAnuncio() {
+            if (_loadingLocks.anuncio) return _loadingLocks.anuncio;
+            const cached = getFromCache('cacheAnuncio', CACHE_DURATION_CONFIG);
+            if (cached) { anuncioAtual = cached;
+                exibirAnuncioBanner(); return; }
+            const promise = (async () => {
+                try {
+                    const snap = await db.collection('config').doc('anuncio').get();
+                    anuncioAtual = snap.exists ? snap.data() : null;
+                    setToCache('cacheAnuncio', anuncioAtual);
+                    exibirAnuncioBanner();
+                } catch (e) {
+                    console.warn('Erro ao buscar anúncio, usando cache expirado.', e);
+                    const stale = getFromCacheStale('cacheAnuncio');
+                    if (stale) { anuncioAtual = stale;
+                        exibirAnuncioBanner(); }
+                } finally {
+                    _loadingLocks.anuncio = null;
+                }
+            })();
+            _loadingLocks.anuncio = promise;
+            await promise;
         }
 
         function atualizarBannerUI() {
@@ -1813,18 +1865,6 @@
             if (bannerData && bannerData.url) el.style.backgroundImage = `url('${bannerData.url}')`;
             else el.style.backgroundImage =
                 `url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop')`;
-        }
-
-        async function carregarAnuncio() {
-            const cached = getFromCache('cacheAnuncio', CACHE_DURATION_LONG);
-            if (cached) { anuncioAtual = cached;
-                exibirAnuncioBanner(); return; }
-            try {
-                const snap = await db.collection('config').doc('anuncio').get();
-                anuncioAtual = snap.exists ? snap.data() : null;
-                setToCache('cacheAnuncio', anuncioAtual);
-                exibirAnuncioBanner();
-            } catch (e) { console.error(e); }
         }
 
         function exibirAnuncioBanner() {
@@ -1845,6 +1885,7 @@
             if (banner) banner.style.display = 'none';
         }
 
+        // --- Restante do código (renderização, etc.) ---
         function renderGerenciarAnuncio() {
             if (!adminLogado) return;
             document.getElementById('anuncioAtivo').checked = anuncioAtual ? anuncioAtual.ativo : false;
@@ -2652,11 +2693,13 @@
             }
         });
 
+        // ---- INICIALIZAÇÃO ----
         async function init() {
             carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
             clienteLogado = JSON.parse(sessionStorage.getItem('clienteLogado')) || null;
             adminLogado = JSON.parse(sessionStorage.getItem('adminLogado')) || !1;
             popularSelectsRegiao();
+            // Carrega tudo em paralelo, com fallback
             await Promise.all([
                 carregarProdutos(),
                 carregarOrdemMarcas(),
@@ -2664,11 +2707,7 @@
                 carregarBanner(),
                 carregarAnuncio()
             ]);
-            if (!ordemMarcas.length) ordemMarcas = getFromCache('cacheOrdemMarcas', Infinity) || [];
-            if (!Object.keys(marcasLogos).length) marcasLogos = getFromCache('cacheMarcasLogos', Infinity) || {};
-            if (!bannerData) bannerData = getFromCache('cacheBanner', Infinity) || null;
-            atualizarBannerUI();
-            exibirAnuncioBanner();
+            // Se o cache expirou, ainda temos o fallback (stale)
             renderCatalogo();
             renderBrandCarousel();
             atualizarUI();
@@ -2677,6 +2716,66 @@
                     if (document.getElementById('admin').classList.contains('active')) renderAdmin();
                 });
             }
+        }
+
+        // ---- HELPERS DE IMAGEM ----
+        function compressImage(file, maxW = 300, maxH = 300, quality = .6) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        let w = img.width,
+                            h = img.height;
+                        if (w > h) { if (w > maxW) { h *= maxW / w;
+                                w = maxW } } else { if (h > maxH) { w *= maxH / h;
+                                h = maxH } }
+                        canvas.width = w;
+                        canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        resolve(canvas.toDataURL('image/jpeg', quality))
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file)
+            })
+        }
+
+        function readFileAsDataURL(file, maxW = 300, maxH = 300, quality = .65) {
+            return compressImage(file, maxW, maxH, quality)
+        }
+
+        function createImageHTML(src, alt) {
+            return `<div class="img-container"><img src="${src}" alt="${alt}" loading="lazy" onerror="this.style.display='none'"></div>`
+        }
+
+        function mostrarToast(msg, tipo = 'info') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div');
+            t.className = 'toast';
+            t.style.borderLeftColor = tipo === 'success' ? '#10b981' : tipo === 'error' ? '#ef4444' : '#3b82f6';
+            t.textContent = msg;
+            c.appendChild(t);
+            setTimeout(() => t.remove(), 3300)
+        }
+
+        function popularSelectsRegiao() {
+            const estados = Object.keys(fretePorRegiao).sort();
+            ['cadRegiao', 'editRegiao'].forEach(id => {
+                const s = document.getElementById(id);
+                if (!s) return;
+                const atual = s.value;
+                s.innerHTML = '<option value="">Selecione</option>';
+                estados.forEach(sigla => { const opt = document.createElement('option');
+                    opt.value = sigla;
+                    opt.textContent = sigla;
+                    s.appendChild(opt) });
+                if (atual && estados.includes(atual)) s.value = atual
+            })
         }
 
         window.addEventListener('DOMContentLoaded', init);
