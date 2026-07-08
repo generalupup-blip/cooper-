@@ -52,7 +52,7 @@
             background:#fff; border-left:4px solid var(--accent); border-radius:var(--radius);
             padding:.7rem 1rem; min-width:220px; max-width:280px; box-shadow:var(--shadow-hover);
             color:var(--text); font-size:.8rem;
-            animation: subirNotificacao .4s ease forwards, desaparecerNotificacao .4s 4s ease forwards;
+            animation:subirNotificacao .4s ease forwards, desaparecerNotificacao .4s 4s ease forwards;
             pointer-events:auto; display:flex; align-items:center; gap:.6rem
         }
         .buy-notification .icon { font-size:1.5rem }
@@ -835,11 +835,11 @@
         let ordemMarcas = [], anuncioAtual = null, imagensTemp = {}, debounceTimer;
         let bannerData = null, marcasLogos = {};
 
-        const CACHE_DURATION = 60*60*1000;
-        const CACHE_DURATION_CONFIG = 24*60*60*1000;
-        const USUARIOS_CACHE_TTL = 15*60*1000;
-        const PEDIDOS_CACHE_TTL = 5*60*1000;
-        const METADATA_TTL = 5*60*1000;
+        const CACHE_DURATION = 4 * 60 * 60 * 1000;           // 4 horas para produtos
+        const CACHE_DURATION_CONFIG = 24 * 60 * 60 * 1000;   // 24 horas para configurações
+        const USUARIOS_CACHE_TTL = 30 * 60 * 1000;           // 30 minutos
+        const PEDIDOS_CACHE_TTL = 30 * 60 * 1000;            // 30 minutos
+        const METADATA_TTL = 2 * 60 * 60 * 1000;             // 2 horas
         const MAX_PEDIDOS = 50;
         const MAX_USUARIOS = 100;
 
@@ -998,106 +998,41 @@
             await promise;
         }
 
-        async function carregarOrdemMarcas() {
-            if (_loadingLocks.ordemMarcas) return _loadingLocks.ordemMarcas;
+        async function carregarConfigGeral() {
+            if (_loadingLocks.configGeral) return _loadingLocks.configGeral;
             const promise = (async () => {
                 try {
                     const metadata = await carregarMetadata();
                     const cachedVersion = localStorage.getItem('cacheConfigVersion');
                     if (cachedVersion && Number(cachedVersion) === metadata.configVersion) {
-                        const cached = getFromCacheStale('cacheOrdemMarcas');
-                        if (cached) { ordemMarcas = cached; return; }
+                        ordemMarcas = getFromCacheStale('cacheOrdemMarcas') || [];
+                        marcasLogos = getFromCacheStale('cacheMarcasLogos') || {};
+                        bannerData = getFromCacheStale('cacheBanner') || null;
+                        anuncioAtual = getFromCacheStale('cacheAnuncio') || null;
+                    } else {
+                        const snap = await db.collection('config').get();
+                        snap.forEach(doc => {
+                            if (doc.id === 'ordemMarcas') ordemMarcas = doc.data().ordem || [];
+                            else if (doc.id === 'marcasLogos') marcasLogos = doc.data();
+                            else if (doc.id === 'banner') bannerData = doc.data();
+                            else if (doc.id === 'anuncio') anuncioAtual = doc.data();
+                        });
+                        setToCache('cacheOrdemMarcas', ordemMarcas);
+                        setToCache('cacheMarcasLogos', marcasLogos);
+                        setToCache('cacheBanner', bannerData);
+                        setToCache('cacheAnuncio', anuncioAtual);
+                        localStorage.setItem('cacheConfigVersion', metadata.configVersion);
                     }
-                    const snap = await db.collection('config').doc('ordemMarcas').get();
-                    ordemMarcas = snap.exists ? snap.data().ordem || [] : [];
-                    setToCache('cacheOrdemMarcas', ordemMarcas);
-                } catch(e) {
-                    console.warn('Erro ordem marcas', e);
-                    const stale = getFromCacheStale('cacheOrdemMarcas');
-                    if (stale) ordemMarcas = stale;
-                } finally {
-                    _loadingLocks.ordemMarcas = null;
-                }
-            })();
-            _loadingLocks.ordemMarcas = promise;
-            await promise;
-        }
-
-        async function carregarLogosMarcas() {
-            if (_loadingLocks.logosMarcas) return _loadingLocks.logosMarcas;
-            const promise = (async () => {
-                try {
-                    const metadata = await carregarMetadata();
-                    const cachedVersion = localStorage.getItem('cacheConfigVersion');
-                    if (cachedVersion && Number(cachedVersion) === metadata.configVersion) {
-                        const cached = getFromCacheStale('cacheMarcasLogos');
-                        if (cached) { marcasLogos = cached; return; }
-                    }
-                    const snap = await db.collection('config').doc('marcasLogos').get();
-                    marcasLogos = snap.exists ? snap.data() || {} : {};
-                    setToCache('cacheMarcasLogos', marcasLogos);
-                } catch(e) {
-                    console.warn('Erro logos', e);
-                    const stale = getFromCacheStale('cacheMarcasLogos');
-                    if (stale) marcasLogos = stale;
-                } finally {
-                    _loadingLocks.logosMarcas = null;
-                }
-            })();
-            _loadingLocks.logosMarcas = promise;
-            await promise;
-        }
-
-        async function carregarBanner() {
-            if (_loadingLocks.banner) return _loadingLocks.banner;
-            const promise = (async () => {
-                try {
-                    const metadata = await carregarMetadata();
-                    const cachedVersion = localStorage.getItem('cacheConfigVersion');
-                    if (cachedVersion && Number(cachedVersion) === metadata.configVersion) {
-                        const cached = getFromCacheStale('cacheBanner');
-                        if (cached) { bannerData = cached; atualizarBannerUI(); return; }
-                    }
-                    const snap = await db.collection('config').doc('banner').get();
-                    bannerData = snap.exists ? snap.data() : null;
-                    setToCache('cacheBanner', bannerData);
                     atualizarBannerUI();
-                } catch(e) {
-                    console.warn('Erro banner', e);
-                    const stale = getFromCacheStale('cacheBanner');
-                    if (stale) { bannerData = stale; atualizarBannerUI(); }
-                } finally {
-                    _loadingLocks.banner = null;
-                }
-            })();
-            _loadingLocks.banner = promise;
-            await promise;
-        }
-
-        async function carregarAnuncio() {
-            if (_loadingLocks.anuncio) return _loadingLocks.anuncio;
-            const promise = (async () => {
-                try {
-                    const metadata = await carregarMetadata();
-                    const cachedVersion = localStorage.getItem('cacheConfigVersion');
-                    if (cachedVersion && Number(cachedVersion) === metadata.configVersion) {
-                        const cached = getFromCacheStale('cacheAnuncio');
-                        if (cached) { anuncioAtual = cached; exibirAnuncioBanner(); return; }
-                    }
-                    const snap = await db.collection('config').doc('anuncio').get();
-                    anuncioAtual = snap.exists ? snap.data() : null;
-                    setToCache('cacheAnuncio', anuncioAtual);
                     exibirAnuncioBanner();
                 } catch(e) {
-                    console.warn('Erro anúncio', e);
-                    const stale = getFromCacheStale('cacheAnuncio');
-                    if (stale) { anuncioAtual = stale; exibirAnuncioBanner(); }
+                    console.warn('Erro config geral', e);
                 } finally {
-                    _loadingLocks.anuncio = null;
+                    _loadingLocks.configGeral = null;
                 }
             })();
-            _loadingLocks.anuncio = promise;
-            await promise;
+            _loadingLocks.configGeral = promise;
+            return promise;
         }
 
         function atualizarBannerUI() {
@@ -1843,10 +1778,7 @@
             popularSelectsRegiao();
             await Promise.all([
                 carregarProdutos(),
-                carregarOrdemMarcas(),
-                carregarLogosMarcas(),
-                carregarBanner(),
-                carregarAnuncio()
+                carregarConfigGeral()
             ]);
             renderCatalogo();
             renderBrandCarousel();
@@ -1861,4 +1793,4 @@
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
-</html> 
+</html>
