@@ -730,6 +730,16 @@
                     <img id="previewNovaImgTag" src="" alt="Preview" style="max-width:80px;border-radius:8px;border:1px solid var(--border)">
                 </div>
             </div>
+            <!-- 🔽 FILTRO POR MARCA ADICIONADO AQUI 🔽 -->
+            <div class="card" style="margin-top:10px;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="filtroMarcaGerenciar">🔎 Filtrar por marca:</label>
+                    <select id="filtroMarcaGerenciar" onchange="aplicarFiltroMarcaGerenciar()">
+                        <option value="TODAS">Todas as marcas</option>
+                    </select>
+                </div>
+            </div>
+            <!-- 🔼 FIM DO FILTRO 🔼 -->
             <div id="gerenciarContainer"></div>
         </section>
 
@@ -830,12 +840,13 @@
         let ITEMS_PER_PAGE = 20, catalogoPaginaAtual = 1, catalogoFiltrados = [];
         let ordemMarcas = [], anuncioAtual = null, imagensTemp = {}, debounceTimer;
         let bannerData = null, marcasLogos = {};
+        let filtroMarcaGerenciar = 'TODAS'; // 🔽 NOVA VARIÁVEL PARA O FILTRO DO GERENCIAR
 
-        const CACHE_DURATION = 4 * 60 * 60 * 1000;           // 4 horas para produtos
-        const CACHE_DURATION_CONFIG = 24 * 60 * 60 * 1000;   // 24 horas para configurações
-        const USUARIOS_CACHE_TTL = 30 * 60 * 1000;           // 30 minutos
-        const PEDIDOS_CACHE_TTL = 30 * 60 * 1000;            // 30 minutos
-        const METADATA_TTL = 2 * 60 * 60 * 1000;             // 2 horas
+        const CACHE_DURATION = 4 * 60 * 60 * 1000;
+        const CACHE_DURATION_CONFIG = 24 * 60 * 60 * 1000;
+        const USUARIOS_CACHE_TTL = 30 * 60 * 1000;
+        const PEDIDOS_CACHE_TTL = 30 * 60 * 1000;
+        const METADATA_TTL = 2 * 60 * 60 * 1000;
         const MAX_PEDIDOS = 50;
         const MAX_USUARIOS = 100;
 
@@ -1237,7 +1248,7 @@
                 carregarDadosAdmin().then(()=>renderAdmin());
             }
             if (id==='gerenciarClientes') carregarUsuarios().then(()=>renderGerenciarClientes());
-            if (id==='gerenciarProdutos') { atualizarMarcaSelect(); renderGerenciarProdutos(); }
+            if (id==='gerenciarProdutos') { atualizarMarcaSelect(); atualizarFiltroMarcaGerenciar(); renderGerenciarProdutos(); }
             if (id==='ordenarMarcas') renderOrdenarMarcas();
             if (id==='gerenciarAnuncio') renderGerenciarAnuncio();
             if (id==='gerenciarBanner') renderBannerAdmin();
@@ -1479,6 +1490,28 @@
             toggleNovaMarcaInput();
         }
 
+        // 🔽 NOVA FUNÇÃO: atualiza o select do filtro de marca no gerenciamento
+        function atualizarFiltroMarcaGerenciar() {
+            const select = document.getElementById('filtroMarcaGerenciar');
+            if (!select) return;
+            const marcas = getMarcasOrdenadas();
+            select.innerHTML = '<option value="TODAS">Todas as marcas</option>';
+            marcas.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = m;
+                if (m === filtroMarcaGerenciar) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+
+        // 🔽 NOVA FUNÇÃO: chamada ao alterar o filtro
+        function aplicarFiltroMarcaGerenciar() {
+            const select = document.getElementById('filtroMarcaGerenciar');
+            filtroMarcaGerenciar = select ? select.value : 'TODAS';
+            renderGerenciarProdutos();
+        }
+
         function toggleNovaMarcaInput() {
             const select=document.getElementById('novoProdMarcaSelect'), inputNovo=document.getElementById('novoProdMarcaNovo');
             if(!select||!inputNovo) return;
@@ -1537,7 +1570,7 @@
             ['novoProdNome','novoProdPreco','novoProdMarcaNovo'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
             document.getElementById('novoProdMarcaSelect').value=''; document.getElementById('novoProdMarcaNovo').classList.add('hidden');
             if(fileInput) fileInput.value=''; document.getElementById('previewNovaImagem').style.display='none';
-            renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); atualizarMarcaSelect();
+            renderGerenciarProdutos(); renderCatalogo(); renderBrandCarousel(); atualizarMarcaSelect(); atualizarFiltroMarcaGerenciar();
             mostrarToast('✅ Produto adicionado','success');
         }
 
@@ -1556,15 +1589,22 @@
         function renderGerenciarProdutos() {
             if (!adminLogado) return;
             const container = document.getElementById('gerenciarContainer');
-            if (!produtos.length) { container.innerHTML='<div class="empty-state">📦 Nenhum produto.</div>'; return; }
+            // 🔽 FILTRO APLICADO AQUI
+            const produtosFiltrados = filtroMarcaGerenciar === 'TODAS'
+                ? produtos
+                : produtos.filter(p => p.marca === filtroMarcaGerenciar);
+            if (!produtosFiltrados.length) {
+                container.innerHTML = '<div class="empty-state">📦 Nenhum produto encontrado para esta marca.</div>';
+                return;
+            }
             container.innerHTML = '';
-            produtos.forEach(p=>{
+            produtosFiltrados.forEach(p=>{
                 const item = document.createElement('div');
                 item.className='produto-editar-item';
                 item.innerHTML = `<div style="width:50px;height:50px;flex-shrink:0" id="thumb-${p.id}">${createImageHTML(p.img,p.nome)}</div><input type="text" value="${p.nome.replace(/"/g,'&quot;')}" id="nome-${p.id}" style="flex:2;min-width:100px"><input type="number" value="${p.preco}" step="0.01" id="preco-${p.id}" style="width:70px"><input type="text" value="${p.marca.replace(/"/g,'&quot;')}" id="marca-${p.id}" style="flex:1;min-width:80px"><input type="file" id="file-${p.id}" accept="image/*" style="width:90px"><button class="btn-esgotado ${p.esgotado?'ativo':''}" id="btnEsgotado-${p.id}">${p.esgotado?'🚫 Esgotado':'✅ Disponível'}</button><button class="btn btn-success btn-sm" id="salvar-${p.id}">💾</button><button class="btn btn-danger btn-sm" id="excluir-${p.id}">🗑️</button>`;
                 container.appendChild(item);
             });
-            produtos.forEach(p=>{
+            produtosFiltrados.forEach(p=>{
                 document.getElementById('btnEsgotado-'+p.id).addEventListener('click', ()=>toggleEsgotado(p.id));
                 const fileInput = document.getElementById('file-'+p.id);
                 fileInput.addEventListener('change', async function() {
