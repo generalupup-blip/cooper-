@@ -840,13 +840,14 @@
         let ITEMS_PER_PAGE = 20, catalogoPaginaAtual = 1, catalogoFiltrados = [];
         let ordemMarcas = [], anuncioAtual = null, imagensTemp = {}, debounceTimer;
         let bannerData = null, marcasLogos = {};
-        let filtroMarcaGerenciar = 'TODAS'; // 🔽 NOVA VARIÁVEL PARA O FILTRO DO GERENCIAR
+        let filtroMarcaGerenciar = 'TODAS';
 
-        const CACHE_DURATION = 4 * 60 * 60 * 1000;
-        const CACHE_DURATION_CONFIG = 24 * 60 * 60 * 1000;
+        // 🔽 CORREÇÃO DE CACHE: AUMENTAMOS O TTL PARA 30 DIAS PARA EVITAR LEITURAS EXCESSIVAS
+        const CACHE_DURATION = 30 * 24 * 60 * 60 * 1000;
+        const CACHE_DURATION_CONFIG = 30 * 24 * 60 * 60 * 1000;
         const USUARIOS_CACHE_TTL = 30 * 60 * 1000;
         const PEDIDOS_CACHE_TTL = 30 * 60 * 1000;
-        const METADATA_TTL = 2 * 60 * 60 * 1000;
+        const METADATA_TTL = 24 * 60 * 60 * 1000;
         const MAX_PEDIDOS = 50;
         const MAX_USUARIOS = 100;
 
@@ -864,14 +865,6 @@
 
         function setToCache(key, value) {
             try { localStorage.setItem(key, JSON.stringify({value, timestamp: Date.now()})); } catch(e) {}
-        }
-
-        function getFromCacheStale(key) {
-            try {
-                const raw = localStorage.getItem(key);
-                if (!raw) return null;
-                return JSON.parse(raw).value;
-            } catch(e) { return null; }
         }
 
         function invalidateCache(key) { localStorage.removeItem(key); }
@@ -926,12 +919,14 @@
             if (_loadingLocks.produtos) return _loadingLocks.produtos;
             const promise = (async () => {
                 try {
-                    const metadata = await carregarMetadata();
-                    const cachedVersion = localStorage.getItem('cacheProdutosVersion');
-                    if (cachedVersion && Number(cachedVersion) === metadata.produtosVersion) {
-                        const cached = getFromCacheStale('cacheProdutos');
-                        if (cached) { produtos = cached; return; }
+                    // 🔽 CORREÇÃO: VERIFICAR O CACHE PRIMEIRO COM O TTL DE 30 DIAS
+                    const cached = getFromCache('cacheProdutos', CACHE_DURATION);
+                    if (cached) {
+                        produtos = cached;
+                        return;
                     }
+
+                    // SE NÃO TIVER CACHE, BUSCA DO FIREBASE
                     const prodSnap = await db.collection('produtos').get();
                     if (prodSnap.empty) {
                         const batch = db.batch();
@@ -948,10 +943,9 @@
                         }).sort((a,b) => a.id-b.id);
                     }
                     setToCache('cacheProdutos', produtos);
-                    localStorage.setItem('cacheProdutosVersion', metadata.produtosVersion);
                 } catch(e) {
                     console.warn('Erro produtos', e);
-                    const stale = getFromCacheStale('cacheProdutos');
+                    const stale = getFromCache('cacheProdutos', CACHE_DURATION);
                     if (stale) produtos = stale;
                 } finally {
                     _loadingLocks.produtos = null;
@@ -973,7 +967,7 @@
                     setToCache('cacheUsuarios', usuarios);
                 } catch(e) {
                     console.warn('Erro usuários', e);
-                    const stale = getFromCacheStale('cacheUsuarios');
+                    const stale = getFromCache('cacheUsuarios', USUARIOS_CACHE_TTL);
                     if (stale) usuarios = stale;
                 } finally {
                     _loadingLocks.usuarios = null;
@@ -995,7 +989,7 @@
                     setToCache('cachePedidos', pedidos);
                 } catch(e) {
                     console.warn('Erro pedidos', e);
-                    const stale = getFromCacheStale('cachePedidos');
+                    const stale = getFromCache('cachePedidos', PEDIDOS_CACHE_TTL);
                     if (stale) pedidos = stale;
                 } finally {
                     _loadingLocks.pedidos = null;
@@ -1009,13 +1003,17 @@
             if (_loadingLocks.configGeral) return _loadingLocks.configGeral;
             const promise = (async () => {
                 try {
-                    const metadata = await carregarMetadata();
-                    const cachedVersion = localStorage.getItem('cacheConfigVersion');
-                    if (cachedVersion && Number(cachedVersion) === metadata.configVersion) {
-                        ordemMarcas = getFromCacheStale('cacheOrdemMarcas') || [];
-                        marcasLogos = getFromCacheStale('cacheMarcasLogos') || {};
-                        bannerData = getFromCacheStale('cacheBanner') || null;
-                        anuncioAtual = getFromCacheStale('cacheAnuncio') || null;
+                    // 🔽 CORREÇÃO: AGORA VERIFICAMOS O TTL PARA OS DADOS DE CONFIGURAÇÃO E USAMOS getFromCache
+                    const cachedOrdemMarcas = getFromCache('cacheOrdemMarcas', CACHE_DURATION_CONFIG);
+                    const cachedMarcasLogos = getFromCache('cacheMarcasLogos', CACHE_DURATION_CONFIG);
+                    const cachedBanner = getFromCache('cacheBanner', CACHE_DURATION_CONFIG);
+                    const cachedAnuncio = getFromCache('cacheAnuncio', CACHE_DURATION_CONFIG);
+                    
+                    if (cachedOrdemMarcas && cachedMarcasLogos && cachedBanner && cachedAnuncio) {
+                        ordemMarcas = cachedOrdemMarcas;
+                        marcasLogos = cachedMarcasLogos;
+                        bannerData = cachedBanner;
+                        anuncioAtual = cachedAnuncio;
                     } else {
                         const snap = await db.collection('config').get();
                         snap.forEach(doc => {
@@ -1028,7 +1026,6 @@
                         setToCache('cacheMarcasLogos', marcasLogos);
                         setToCache('cacheBanner', bannerData);
                         setToCache('cacheAnuncio', anuncioAtual);
-                        localStorage.setItem('cacheConfigVersion', metadata.configVersion);
                     }
                     atualizarBannerUI();
                     exibirAnuncioBanner();
@@ -1490,7 +1487,6 @@
             toggleNovaMarcaInput();
         }
 
-        // 🔽 NOVA FUNÇÃO: atualiza o select do filtro de marca no gerenciamento
         function atualizarFiltroMarcaGerenciar() {
             const select = document.getElementById('filtroMarcaGerenciar');
             if (!select) return;
@@ -1505,7 +1501,6 @@
             });
         }
 
-        // 🔽 NOVA FUNÇÃO: chamada ao alterar o filtro
         function aplicarFiltroMarcaGerenciar() {
             const select = document.getElementById('filtroMarcaGerenciar');
             filtroMarcaGerenciar = select ? select.value : 'TODAS';
@@ -1589,7 +1584,6 @@
         function renderGerenciarProdutos() {
             if (!adminLogado) return;
             const container = document.getElementById('gerenciarContainer');
-            // 🔽 FILTRO APLICADO AQUI
             const produtosFiltrados = filtroMarcaGerenciar === 'TODAS'
                 ? produtos
                 : produtos.filter(p => p.marca === filtroMarcaGerenciar);
